@@ -317,7 +317,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "Salary: ${checkNullValue(salary)}",
+                  "Expected salary: ${checkNullValue(salary)}",
                   style:
                       Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),

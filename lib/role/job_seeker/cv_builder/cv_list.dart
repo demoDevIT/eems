@@ -36,10 +36,6 @@ class _CvListScreenState extends State<CvListScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       final provider = Provider.of<CvListProvider>(context, listen: false);
       provider.clearData();
-      provider.getAllCVTemplateListApi(context);
-      provider.getColorCodeListApi(context);
-
-
 
     });
   }
@@ -50,137 +46,70 @@ class _CvListScreenState extends State<CvListScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("CV Builder", context,
-            localeProvider.currentLanguage, "", false, "", onTapClick: () {
-              localeProvider.toggleLocale();
-            }),
-        body: Consumer<CvListProvider>(builder: (context, provider, child) {
-          return   Padding(
-            padding: const EdgeInsets.all(10),
-            child:  ListView.builder(
-              itemCount: provider.allCvList.length,
-              itemBuilder: (context, index) {
-                final oldColorCode = provider.allCvList[index].colourCode;
+      appBar: commonAppBar2(
+        "CV Builder",
+        context,
+        localeProvider.currentLanguage,
+        "",
+        false,
+        "",
+        onTapClick: () {
+          localeProvider.toggleLocale();
+        },
+      ),
+      body: Consumer<CvListProvider>(
+        builder: (context, provider, child) {
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
-
-                return InkWell(
-                  onTap: () {
-
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    margin: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      gradient: index % 2 == 0 ? kWhitedGradient:kWhitedGradient  ,
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(15),
+                /// DOWNLOAD BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
-                    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: WebViewWidget(
-                            controller: WebViewController()
-                              ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                              ..loadHtmlString(provider.allCvList[index].templateHtml),),
-                        ),
-
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 80, // MUST give height
-                          child: ListView.builder(
-                            itemCount: provider.colorCodeList.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, i) {
-                              final colourCode = provider.colorCodeList[i].colourCode.toString().replaceAll("#", "");
-                              return InkWell(
-                                onTap: () {
-                                  provider.updateTemplate(index,  provider.allCvList[index].colourCode, provider.colorCodeList[i].colourCode.toString().replaceAll("", ""));
-
-                                },
-                                child: Column(
-                                  children: [
-
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        Transform.rotate(
-                                          angle: 2.00,
-                                          child: SizedBox(
-                                            width: 60,
-                                            height: 60,
-                                            child: CircularProgressIndicator(
-                                              value: 1, // 70%
-                                              strokeWidth: 5,
-                                              backgroundColor: Colors.grey[300],
-                                              valueColor: AlwaysStoppedAnimation<Color>(
-                                                Color(int.parse("0xFF$colourCode")),
-                                              ),                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 50,
-                                          width: 50,
-                                          margin: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Color(int.parse("0xFF$colourCode")),
-                                            borderRadius: BorderRadius.circular(100),
-                                          ),
-
-                                        ),
-                                      ],
-                                    ),
-
-
-
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:kPrimaryColor,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                            ),
-                            onPressed: ()  async {
-                              String vase64 = await provider.htmlToBase64(provider.allCvList[index].templateHtml);
-                             // provider.saveAndOpenPdf(context, vase64, "fileName${provider.allCvList[index].templateId}.Pdf");
-                              provider.openHtmlAsPdf(provider.allCvList[index].templateHtml);
-                             // provider.openHtmlAsPdf(provider.allCvList[index].templateHtml);
-                              },
-                            child:  Text(
-                              "Download" ,
-                              style: TextStyle(fontSize: 16, color: Colors.white),
-                            ),
-                          ),
-                        ),
-
-                      ],
+                    onPressed: provider.isLoading
+                        ? null
+                        : () {
+                      provider.downloadCvByUserId(context);
+                    },
+                    child: provider.isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                      "Download CV",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
-                );
-              },
+                ),
+
+                const SizedBox(height: 20),
+
+                /// MESSAGE BELOW BUTTON
+                if (provider.apiMessage.isNotEmpty)
+                  Text(
+                    provider.apiMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.red,
+                    ),
+                  ),
+              ],
             ),
           );
-        }));
-
-    //147664
-
-
-    //pending//62664
-
-
+        },
+      ),
+    );
   }
+
 
 
 

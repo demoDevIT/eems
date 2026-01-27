@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 buildMenuItem(context, "Language/Skills", AppLocalizations.of(context)!.langskill),
                 buildMenuItem(context, "Physical Attributes", AppLocalizations.of(context)!.physattri),
                 buildMenuItem(context, "Job Preference", AppLocalizations.of(context)!.jobpref),
-                buildMenuItem(context, "Video Profile", AppLocalizations.of(context)!.videoprof),
+               // buildMenuItem(context, "Video Profile", AppLocalizations.of(context)!.videoprof),
               ],
             ),
           );

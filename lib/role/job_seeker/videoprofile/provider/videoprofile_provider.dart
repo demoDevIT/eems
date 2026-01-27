@@ -8,6 +8,7 @@ import 'package:rajemployment/utils/location_service.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/user_new.dart';
 import '../../camera/model/video_profile_response.dart';
 
 class VideoprofileProvider with ChangeNotifier{
@@ -30,7 +31,7 @@ Future<void> getVideo(BuildContext context) async {
     Position ? CurrentLocation =  await LocationService.getCurrentLocation();
     Map<String, dynamic> body = {
         'Action': 'GetVideoProfile',
-        'UserID': '1781'
+        'UserID': UserData().model.value.userId.toString() //'1781'
     };
     Response response = await http.postRequest(Constants.GetBasicDetails, body);
     print("response$response");

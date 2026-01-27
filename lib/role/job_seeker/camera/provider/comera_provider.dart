@@ -19,6 +19,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/user_new.dart';
 import '../../add_language_skills/modal/upload_document_modal.dart';
 
 
@@ -291,19 +292,30 @@ class CameraProvider with ChangeNotifier {
       String? deviceId  = await UtilityClass.getDeviceId();
       String? appVersion = await UtilityClass.getApkVersion();
 
+      // 📍 Get location
+      final position = await LocationService.getCurrentLocation();
+      if (position == null) {
+        throw "Unable to get location";
+      }
+
+      final double userLatitude = position.latitude; //26.915486;
+      final double userLongitude = position.longitude; //75.819518;
+
+      print('userLatitude2 lat: $userLatitude');
+      print('userLongitude2 long: $userLongitude');
 
       FormData formData = FormData.fromMap({
         'FolderName': 'VideoProfile',
         'FileExtension': "mp4",
         'MinFileSize': '1kb',
         'MaxFileSize': '10MB',
-        'UserId': '1781',
+        'UserId': UserData().model.value.userId.toString(), //'1781',
         'Mobile_IP': ipAddress,
         'Mobile_Mac': deviceId,  // update this
         'DeviceId': deviceId,
         'AppVersion': appVersion,
-        'Lat': "37.4219983",
-        'Long': "-122.084",
+        'Lat': userLatitude, //"37.4219983",
+        'Long': userLongitude, //"-122.084",
         "File": await MultipartFile.fromFile(
           mergedPath,
           filename: "Video.mp4",
@@ -332,6 +344,16 @@ class CameraProvider with ChangeNotifier {
 
       ProgressDialog.closeLoadingDialog(context);
       print("videoProfileResss=>$response");
+
+      if (response.data["Success"] == true) {
+        // ✅ Success → go back
+        Navigator.pop(context, true); // pass true if you want
+      } else {
+        showAlertError(
+          response.data["Message"] ?? "Upload failed",
+          context,
+        );
+      }
 
       // if (apiResponse.response?.statusCode == 200) {
       //   var responseData = apiResponse.response?.data;

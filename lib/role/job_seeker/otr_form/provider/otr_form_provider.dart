@@ -1871,12 +1871,13 @@ class OtrFormProvider extends ChangeNotifier {
         print("printFullData -->");
         printFullJson(data);
 
+
         print("WardName => ${wardNameController.text}");
         print("WardId => ${wardIdController.text}");
 
         print("cWardName => ${cWardNameController.text}");
         print("cWardId => ${cWardIdController.text}");
-       //  return null;
+        // return null;
         String url = "OTRJanAadharDetail/SaveData";
         ProgressDialog.showLoadingDialog(context);
         // ApiResponse apiResponse = await commonRepo.postArray(url,body);

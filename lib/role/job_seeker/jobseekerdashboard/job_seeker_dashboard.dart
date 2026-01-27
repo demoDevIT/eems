@@ -26,6 +26,7 @@ import '../profile/profile.dart';
 import '../qr_scanner/qr_scanner_screen.dart';
 import '../registration_card/registration_card.dart';
 import '../select_company/select_company_page.dart';
+import '../videoprofile/videoprofile_screen.dart';
 
 class JobSeekerDashboard extends StatefulWidget {
   const JobSeekerDashboard({super.key});
@@ -449,6 +450,31 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>  GrievanceScreen(),
+                ),
+              );
+              if (result != null) {
+
+              }
+              Navigator.pop(context);
+            },
+          ),
+          Container(
+              margin: EdgeInsets.only(left: 50),
+              child: Divider(height: 1,color: E3E5F9Color,)),
+
+          ListTile(
+            leading: SvgPicture.asset(
+              'assets/icons/star.svg',
+              width: 20,
+              height: 20,
+              fit: BoxFit.cover,
+            ),
+            title: Text(AppLocalizations.of(context)!.videoprof,style: Styles.mediumTextStyle(size: 14),),
+            onTap: () async {
+              final result = await  Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  VideoprofileScreen(),
                 ),
               );
               if (result != null) {

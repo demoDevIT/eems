@@ -28,126 +28,65 @@ class CvListProvider extends ChangeNotifier {
   List<ColorCodeData>  colorCodeList = [];
   String templateHtml = "";
 
+  bool isLoading = false;
+  String apiMessage = "";
 
-
-  Future<AllCVTemplateListModal?> getAllCVTemplateListApi(BuildContext context) async {
-    var isInternet = await UtilityClass.checkInternetConnectivity();
-    if (isInternet) {
-      try {
-        String ? IpAddress =  await UtilityClass.getIpAddress();
-
-        Map<String, dynamic> bodyy =
-        {
-          "TemplateId":0,
-          "HeadshotType":0,
-          "ColumnsType":0,
-          "ClourId":0,
-          "TradeId":0,
-          "UserID":324
-        };
-
-        String url = "https://eems.devitsandbox.com/api/api/CVTemplate/GetAllCVTemplateList";
-        ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.post(url,bodyy);
-       ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
-          var responseData = apiResponse.response?.data;
-          if (responseData is String) {
-            responseData = jsonDecode(responseData);
-          }
-          final sm = AllCVTemplateListModal.fromJson(responseData);
-          if (sm.state == 1) {
-            allCvList.clear();
-            allCvList.addAll(sm.data!);
-            notifyListeners();
-            return sm;
-          } else {
-            final smmm = AllCVTemplateListModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
-            return smmm;
-          }
-        } else {
-          return AllCVTemplateListModal(state: 0, message: 'Something went wrong',
-          );
-        }
-      } on Exception catch (err) {
-        ProgressDialog.closeLoadingDialog(context);
-        final sm = AllCVTemplateListModal(state: 0, message: err.toString());
-        showAlertError(sm.message.toString(), context);
-        return sm;
-      }
-    } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
-    }
-  }
-
-  Future<ColorCodeModal?> getColorCodeListApi(BuildContext context) async {
-    var isInternet = await UtilityClass.checkInternetConnectivity();
-    if (isInternet) {
-      try {
-        String ? IpAddress =  await UtilityClass.getIpAddress();
-        String url = "https://eems.devitsandbox.com/api/api/CVTemplate/GetAllColourCode";
-        //ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
-       // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
-          var responseData = apiResponse.response?.data;
-          if (responseData is String) {
-            responseData = jsonDecode(responseData);
-          }
-          final sm = ColorCodeModal.fromJson(responseData);
-          if (sm.state == 1) {
-            colorCodeList.clear();
-            colorCodeList.addAll(sm.data!);
-            notifyListeners();
-            return sm;
-          } else {
-            final smmm = ColorCodeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
-            return smmm;
-          }
-        } else {
-          return ColorCodeModal(state: 0, message: 'Something went wrong',
-          );
-        }
-      } on Exception catch (err) {
-        //ProgressDialog.closeLoadingDialog(context);
-        final sm = ColorCodeModal(state: 0, message: err.toString());
-        showAlertError(sm.message.toString(), context);
-        return sm;
-      }
-    } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
-    }
-  }
-
-
-
-  updateTemplate(int index, String oldColourCode, String newColor) {
-    // Clean values (remove # if present)
-    final oldClean = oldColourCode.replaceAll("", "");
-    final newClean = newColor.replaceAll("", "");
-
-    final html = allCvList[index].templateHtml.replaceAll(oldClean, newClean);
-
-    // Save updated html
-    allCvList[index].templateHtml = html;
-    // IMPORTANT: Update the stored colour
-    allCvList[index].colourCode = newClean;
-
+  Future<void> downloadCvByUserId(BuildContext context) async {
+    apiMessage = "";
+    isLoading = true;
     notifyListeners();
 
-  }
+    try {
+      String url =
+          "https://eems.devitsandbox.com/mobileapi/api/CvTemplate/CvBuilderDownloadByUserid";
 
+      Map<String, dynamic> body = {
+        "UserID": UserData().model.value.userId.toString(), //8253
+      };
+
+      ApiResponse apiResponse = await commonRepo.post(url, body);
+
+      isLoading = false;
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final dataList = responseData["Data"] as List;
+
+        if (dataList.isNotEmpty) {
+          final cvPath = dataList[0]["CVPath"] ?? "";
+          final message = dataList[0]["Message"] ?? "";
+
+          if (cvPath.toString().isNotEmpty) {
+            /// OPEN PDF
+            final fullUrl =
+                "https://eems.devitsandbox.com$cvPath";
+            await OpenFile.open(fullUrl);
+          } else {
+            /// SHOW MESSAGE
+            apiMessage = message;
+          }
+        }
+      } else {
+        apiMessage = "Something went wrong. Please try again.";
+      }
+    } catch (e) {
+      isLoading = false;
+      apiMessage = e.toString();
+    }
+
+    notifyListeners();
+  }
 
   String htmlToBase64(String html) {
     final bytes = utf8.encode(html);
     return base64.encode(bytes);
   }
-
-
-
-
 
   Future<void> saveAndOpenPdf(BuildContext context, String base64String, String fileName) async {
     try {

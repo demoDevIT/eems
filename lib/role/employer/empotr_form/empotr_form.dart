@@ -38,8 +38,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final provider =
-      Provider.of<EmpOTRFormProvider>(context, listen: false);
+      final provider = Provider.of<EmpOTRFormProvider>(context, listen: false);
       provider.clearData();
       provider.setSSO(ssoId);
     });
@@ -67,12 +66,12 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                 key: _formKey,
                 child: SingleChildScrollView(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 18),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 18),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       const SizedBox(height: 12),
+
                       /// SSO ID
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -85,193 +84,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                         child: buildTextWithBorderField(
                             provider.ssoController,
                             "Enter sso id",
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            MediaQuery.of(context).size.width,
                             50,
                             TextInputType.text,
                             isEnabled: false,
-                            boxColor: fafafaColor
-                        ),
+                            boxColor: fafafaColor),
                       ),
 
-                  // 1. basic detail card
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: kPrimaryColor,
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10)),
-                          ),
-                          padding: EdgeInsets.all(10),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "1. Basic Details",
-                            style: Styles.semiBoldTextStyle(
-                                size: 14, color: kWhite),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: labelWithStar('BRN', required: true),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: buildTextWithBorderField(
-                            provider.brnController,
-                            "Enter BRN",
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            50,
-                            TextInputType.text,
-                            isEnabled: false,
-                            boxColor: fafafaColor,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: labelWithStar('District', required: true),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: buildTextWithBorderField(
-                            provider.districtController,
-                            "Enter District",
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            50,
-                            TextInputType.text,
-                            isEnabled: false,
-                            boxColor: fafafaColor,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: labelWithStar('Area',
-                              required: true),
-                        ),
-
-                        Row(
-                          children: [
-                            Row(
-                              children: [
-                                Radio<String>(
-                                  value: 'Rural',
-                                  groupValue: provider.areaType,
-                                  onChanged: (val) =>
-                                      setState(() =>
-                                      provider.areaType =
-                                          val ??
-                                              provider.areaType),
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Rural',
-                                  style: Styles.mediumTextStyle(
-                                      color: kBlackColor, size: 14),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 12),
-                            Row(
-                              children: [
-                                Radio<String>(
-                                  value: 'Urban',
-                                  groupValue: provider.areaType,
-                                  onChanged: (val) =>
-                                      setState(() =>
-                                      provider.areaType =
-                                          val ??
-                                              provider.areaType),
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'No',
-                                  style: Styles.mediumTextStyle(
-                                      color: kBlackColor, size: 14),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 12),
-
-                          ],
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: labelWithStar('Tehsil', required: true),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: buildTextWithBorderField(
-                            provider.tehsilController,
-                            "Enter Tehsil",
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            50,
-                            TextInputType.text,
-                            isEnabled: false,
-                            boxColor: fafafaColor,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: labelWithStar('Local Body', required: true),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: buildTextWithBorderField(
-                            provider.localBodyController,
-                            "Enter Local Body",
-                            MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            50,
-                            TextInputType.text,
-                            isEnabled: false,
-                            boxColor: fafafaColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // 2. branch office detail card
+                      // 1. basic detail card
                       Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -281,10 +101,156 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "1. Basic Details",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('BRN', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.brnController,
+                                "Enter BRN",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('District', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.districtController,
+                                "Enter District",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Area', required: true),
+                            ),
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'Rural',
+                                      groupValue: provider.areaType,
+                                      onChanged: (val) => setState(() =>
+                                          provider.areaType =
+                                              val ?? provider.areaType),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      'Rural',
+                                      style: Styles.mediumTextStyle(
+                                          color: kBlackColor, size: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 12),
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'Urban',
+                                      groupValue: provider.areaType,
+                                      onChanged: (val) => setState(() =>
+                                          provider.areaType =
+                                              val ?? provider.areaType),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      'No',
+                                      style: Styles.mediumTextStyle(
+                                          color: kBlackColor, size: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 12),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Tehsil', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.tehsilController,
+                                "Enter Tehsil",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('Local Body', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.localBodyController,
+                                "Enter Local Body",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // 2. branch office detail card
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
                               height: 60,
                               decoration: BoxDecoration(
                                 color: kPrimaryColor,
@@ -301,11 +267,11 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     size: 14, color: kWhite),
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Company Name', required: true),
+                              child:
+                                  labelWithStar('Company Name', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -313,21 +279,18 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.companyNameController,
                                 "Company Name",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('House Number', required: true),
+                              child:
+                                  labelWithStar('House Number', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -335,17 +298,13 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.houseNoController,
                                 "House Number",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -357,17 +316,13 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.laneController,
                                 "Lane",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -379,17 +334,13 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.localityController,
                                 "Locality",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -401,17 +352,194 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.pinCodeController,
                                 "Pin Code",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Tel No', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.telNoController,
+                                "Tel No",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Email', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.emailController,
+                                "Email",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('GST Number', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.gstController,
+                                "GST Number",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('PAN Number', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.panController,
+                                "PAN Number",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('PAN Holder', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.panHolderController,
+                                "PAN Holder",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('PAN Verified', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.panVerifiedController,
+                                "PAN Verified",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  labelWithStar('TAN Number', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.tanController,
+                                "TAN Number",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
 
+                      // 3. head office detail card
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "3. Head Office Details (As on Sanstha Aadhaar) :-",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Company Name', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoCompanyNameController,
+                                "Company Name",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -422,321 +550,939 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
-                                provider.telNoController,
+                                provider.hoTelNoController,
                                 "Tel No",
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
                                 isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Email', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoEmailController,
+                                "Email",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('PAN No.', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoPanController,
+                                "PAN No.",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('House Number', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoHouseNoController,
+                                "House Number",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Lane', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoLaneController,
+                                "Lane",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Locality', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoLocalityController,
+                                "Locality",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Pincode', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoPincodeController,
+                                "Pincode",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
                           ],
                         ),
                       ),
 
-
-
-                      /// 2. Branch Office Details
-                      _sectionHeader(
-                          "2. Branch Office Details (As on Sanstha Aadhaar) :-"),
-
-                      _row(
-                        _textField(
-                            controller: provider.companyNameController,
-                            label: "Company Name *"),
-                        _textField(
-                            controller: provider.houseNoController,
-                            label: "House Number *"),
+                      // 4. head office Applicant detail card
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "4. Head Office Applicant Details (As on Sanstha Aadhaar) :-",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Applicant Name', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.applicantNameController,
+                                "Applicant Name",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Applicant Mobile', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.applicantMobileController,
+                                "Applicant Mobile",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Applicant Email', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.applicantEmailController,
+                                "Applicant Email",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Year', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.yearController,
+                                "Year",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Ownership', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.ownershipController,
+                                "Ownership",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Total Person', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.totalPersonController,
+                                "Total Person",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Act Authority Reg', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.actAuthorityRegController,
+                                "Act Authority Reg",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('TAN No', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.tanNoController,
+                                "TAN No",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Email', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.hoApplicantEmailController,
+                                "Email",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Website', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.websiteController,
+                                "Website",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('NIC Code', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.nicCodeController,
+                                "NIC Code",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Applicant Address', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.applicantAddressController,
+                                "Applicant Address",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('State', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.stateController,
+                                "State",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('District', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.districtHoController,
+                                "District",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('City', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.cityHoController,
+                                "City",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
-                      _row(
-                        _textField(
-                            controller: provider.laneController,
-                            label: "Lane *"),
-                        _textField(
-                            controller: provider.localityController,
-                            label: "Locality *"),
+                      // 5. Contact Person detail card
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "5. Contact Person Details :-",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('PAN No', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactPanController,
+                                "PAN No",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Full Name', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactNameController,
+                                "Full Name",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Mobile Number', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactMobileController,
+                                "Mobile Number",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Alternate Mobile', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactAltMobileController,
+                                "Alternate Mobile",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Email', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactEmailController,
+                                "Email",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Designation', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactDesignationController,
+                                "Designation",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Department', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactDepartmentController,
+                                "Department",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Pincode', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactPincodeController,
+                                "Pincode",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('State', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactStateController,
+                                "State",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('District', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactDistrictController,
+                                "District",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('City', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactCityController,
+                                "City",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Address', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.contactAddressController,
+                                "Address",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-
-                      _row(
-                        _textField(
-                            controller: provider.pinCodeController,
-                            label: "Pin Code *"),
-                        _textField(
-                            controller: provider.telNoController,
-                            label: "Tel No *"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.emailController,
-                            label: "Email *"),
-                        _textField(
-                            controller: provider.gstController,
-                            label: "GST Number"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.panController,
-                            label: "PAN Number"),
-                        _textField(
-                            controller: provider.panHolderController,
-                            label: "PAN Holder"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.panVerifiedController,
-                            label: "PAN Verified"),
-                        _textField(
-                            controller: provider.tanController,
-                            label: "TAN Number"),
-                      ),
-
                       const SizedBox(height: 24),
 
-                      /// 3. Head Office Details
-                      _sectionHeader(
-                        "3. Head Office Details (As on Sanstha Aadhaar) :-",
+                      // 6. Exchange Name / District Employment Office
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "6. Exchange Name / District Employment Office :-",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Exchange Name', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.exchangeNameController,
+                                "Exchange Name",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-
-                      _row(
-                        _textField(
-                            controller: provider.hoCompanyNameController,
-                            label: "Company Name *"),
-                        _textField(
-                            controller: provider.hoTelNoController,
-                            label: "Tel No *"),
+                      // 7. Exchange Market Information Program
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10)),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "7. Exchange Market Information Program :-",
+                                style: Styles.semiBoldTextStyle(
+                                    size: 14, color: kWhite),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Type of Organization', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.organisationTypeController,
+                                "Type of Organization",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Government Body', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.govtBodyController,
+                                "Government Body",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('No of Male Employee', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.noOfMaleEmpController,
+                                "No of Male Employee",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('No of Female Employee', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.noOfFemaleEmpController,
+                                "No of Female Employee",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('No of Transgender', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.noOfTransEmpController,
+                                "No of Transgender",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Total No of Employee', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.noOfTotalEmpController,
+                                "Total No of Employee",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('Act Establishment', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.actEstController,
+                                "Act Establishment",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Industry Type', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.industryTypetController,
+                                "Industry Type",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                              labelWithStar('Sector', required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.sectorController,
+                                "Sector",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.text,
+                                isEnabled: false,
+                                boxColor: fafafaColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-
-                      _row(
-                        _textField(
-                            controller: provider.hoEmailController,
-                            label: "Email *"),
-                        _textField(
-                            controller: provider.hoPanController,
-                            label: "PAN No"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.hoHouseNoController,
-                            label: "House Number"),
-                        _textField(
-                            controller: provider.hoLaneController,
-                            label: "Lane"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.hoLocalityController,
-                            label: "Locality"),
-                        _textField(
-                            controller: provider.hoPincodeController,
-                            label: "Pincode"),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      /// 4. Head Office Applicant Details
-                      _sectionHeader(
-                        "4. Head Office Applicant Details (As on Sanstha Aadhaar):-",
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.applicantNameController,
-                            label: "Applicant Name *"),
-                        _textField(
-                            controller: provider.applicantMobileController,
-                            label: "Applicant Mobile No. *"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.applicantEmailController,
-                            label: "Applicant Email *"),
-                        _textField(
-                            controller: provider.yearController,
-                            label: "Year"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.ownershipController,
-                            label: "Ownership"),
-                        _textField(
-                            controller: provider.totalPersonController,
-                            label: "Total Person"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.actAuthorityRegController,
-                            label: "Act Authority Reg No"),
-                        _textField(
-                            controller: provider.tanNoController,
-                            label: "TAN No"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.hoApplicantEmailController,
-                            label: "Email"),
-                        _textField(
-                            controller: provider.websiteController,
-                            label: "Website"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.nicCodeController,
-                            label: "NIC Code"),
-                        _textField(
-                            controller: provider.applicantAddressController,
-                            label: "Applicant Address"),
-                      ),
-
-                      /// NOTE: Dropdowns placeholder (same OTR pattern)
-                      _row(
-                        _textField(
-                            controller: provider.stateController,
-                            label: "State *"),
-                        _textField(
-                            controller: provider.districtHoController,
-                            label: "District *"),
-                      ),
-
-                      _textField(
-                          controller: provider.cityHoController,
-                          label: "City"),
-
-                      const SizedBox(height: 24),
-
-                      /// 5. Contact Person Details
-                      _sectionHeader(
-                        "5. Contact person Details :-",
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.contactPanController,
-                            label: "PAN No"),
-                        _textField(
-                            controller: provider.contactNameController,
-                            label: "Full Name *"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.contactMobileController,
-                            label: "Mobile Number *"),
-                        _textField(
-                            controller: provider.contactAltMobileController,
-                            label: "Alternate Mobile Number"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.contactEmailController,
-                            label: "Email *"),
-                        _textField(
-                            controller: provider.contactDesignationController,
-                            label: "Designation"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.contactDepartmentController,
-                            label: "Department"),
-                        _textField(
-                            controller: provider.contactPincodeController,
-                            label: "Pincode"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.contactStateController,
-                            label: "State"),
-                        _textField(
-                            controller: provider.contactDistrictController,
-                            label: "District"),
-                      ),
-
-                      _textField(
-                          controller: provider.contactCityController,
-                          label: "City"),
-
-                      _textField(
-                          controller: provider.contactAddressController,
-                          label: "Address"),
-
-                      const SizedBox(height: 24),
-
-                      /// 6. Exchange Name / District Employment Office
-                      _sectionHeader(
-                        "6. Exchange Name / District Employment Office :-",
-                      ),
-
-                      _textField(
-                          controller: provider.exchangeNameController,
-                          label: "Exchange Name"),
-
-                      const SizedBox(height: 24),
-
-                      /// 7. Exchange Market Information Program
-                      _sectionHeader(
-                        "7. Exchange Market Information Program :-",
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.organisationTypeController,
-                            label: "Type of Organization *"),
-                        _textField(
-                            controller: provider.govtBodyController,
-                            label: "Government Body*"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.noOfMaleEmpController,
-                            label: "No of Male Employees *"),
-                        _textField(
-                            controller: provider.noOfFemaleEmpController,
-                            label: "No of Female Employees*"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.noOfTransEmpController,
-                            label: "No of Transgender Employees *"),
-                        _textField(
-                            controller: provider.noOfTotalEmpController,
-                            label: "Total Number of Employees *"),
-                      ),
-
-                      _row(
-                        _textField(
-                            controller: provider.actEstController,
-                            label: "Act Establishment *"),
-                        _textField(
-                            controller: provider.industryTypetController,
-                            label: "Industry Type *"),
-                      ),
-
-                      _textField(
-                          controller: provider.sectorController,
-                          label: "Sector *"),
-
-
-                      const SizedBox(height: 24),
 
                       /// 8. Upload Organization/Company Documents
                       _sectionHeader(
@@ -778,8 +1524,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
               ),
             );
           },
-        )
-    );
+        ));
   }
 
   // ================= UI HELPERS =================
@@ -792,8 +1537,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
       color: Colors.teal,
       child: Text(
         title,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
   }
