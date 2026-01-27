@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729592413832",
+    "project_id": "eems-32849",
+    "storage_bucket": "eems-32849.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729592413832:android:4cb5e85ccb5efe2c6a293d",
+        "android_client_info": {
+          "package_name": "com.rajemployment.eems.rajemployment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-o88GcFdMg9Sb_4w9vmqj6Iy4MbbL-8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

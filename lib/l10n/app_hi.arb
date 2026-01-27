@@ -1,0 +1,47 @@
+{
+  "dashboard": "डैशबोर्ड",
+  "login": "लॉगिन",
+  "forgetpass": "पासवर्ड भूल गए ?",
+  "rememberme": "याद रखें",
+  "ssoid": "एसएसओ आईडी",
+  "password": "पासवर्ड",
+  "or": "अथवा",
+  "donthaveaccount": "क्या आपके पास खाता नहीं है?",
+  "dosignup": "साइन अप करें",
+  "searchhere": "यहां तलाश करो...",
+  "home": "होम",
+  "jobs": "नौकरियाँ",
+  "notifications": "सूचनाएं",
+  "settings": "सेटिंग्स",
+  "profile": "प्रोफ़ाइल",
+  "updateprofile": "प्रोफ़ाइल अपडेट करें",
+  "scheduledinterviews": "अनुसूचित साक्षात्कार",
+  "cvbuilder": "सीवी बिल्डर",
+  "searchcounselor": "परामर्शदाता खोजें",
+  "jobfairevents": "रोजगार मेले के आयोजन",
+  "downldregiscard": "पंजीकरण कार्ड डाउनलोड करें",
+  "grievfeedbak": "शिकायत/प्रतिक्रिया",
+  "selfassess": "आत्म मूल्यांकन",
+  "appntmntschdl": "नियुक्ति अनुसूची",
+  "logout": "लॉग आउट",
+  "schemes": "योजनाएं",
+  "viewall" : "सभी को देखें",
+  "applynow": "अभी अप्लाई करें",
+  "jobevents": "नौकरी की घटनाएँ",
+  "jobsbasedprofile": "प्रोफ़ाइल आधारित नौकरियां",
+  "featurcompany": "विशेष रुप से प्रदर्शित कंपनियाँ",
+  "compltprofle": "प्रोफ़ाइल पूरी करें",
+  "basicdetl": "बुनियादी विवरण",
+  "addinfo": "पते की जानकारी",
+  "edudetl": "शिक्षा विवरण",
+  "workexp": "कार्य अनुभव",
+  "jobpref": "नौकरी की प्राथमिकता",
+  "langskill": "भाषा/कौशल",
+  "physattri": "भौतिक गुण",
+  "videoprof": "वीडियो प्रोफ़ाइल"
+}
+
+
+
+
+
