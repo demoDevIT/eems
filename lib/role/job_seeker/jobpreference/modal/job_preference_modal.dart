@@ -56,6 +56,7 @@ class JobPreferenceData {
   dynamic shiftName;
   dynamic preferredRegionName;
   dynamic nCO;
+  dynamic salaryENUM;
 
   JobPreferenceData(
       {this.maximumm,
@@ -78,7 +79,8 @@ class JobPreferenceData {
         this.jobTypeName,
         this.shiftName,
         this.preferredRegionName,
-        this.nCO});
+        this.nCO,
+        this.salaryENUM});
 
   JobPreferenceData.fromJson(Map<String, dynamic> json) {
     maximumm = json['Maximum'];
@@ -102,6 +104,7 @@ class JobPreferenceData {
     shiftName = json['ShiftName'];
     preferredRegionName = json['PreferredRegionName'];
     nCO = json['NCO'];
+    salaryENUM = json['SalaryEnumValue'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +130,7 @@ class JobPreferenceData {
     data['ShiftName'] = this.shiftName;
     data['PreferredRegionName'] = this.preferredRegionName;
     data['NCO'] = this.nCO;
+    data['SalaryEnumValue'] = this.salaryENUM;
     return data;
   }
 }

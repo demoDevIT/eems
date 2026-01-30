@@ -28,6 +28,7 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
       final provider = Provider.of<JobPreferenceProvider>(context, listen: false);
       provider.clearData();
       provider.getJobPreferenceApi(context);
+      provider.getInternationalJobStatus(context);
     });
   }
 
@@ -46,6 +47,70 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                Text(
+                  'Are you interested in International Jobs?',
+                  style: Styles.semiBoldTextStyle(size: 14, color: kBlackColor),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: ['Yes', 'No'].map((opt) {
+                    final bool selected =
+                        provider.internationalJobPreference == opt;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Row(
+                        children: [
+                          Radio<String>(
+                            value: opt,
+                            groupValue: provider.internationalJobPreference,
+                            activeColor: kPrimaryColor,
+                            onChanged: (v) {
+                              provider.internationalJobPreference = v ?? "No";
+                              provider.isInternationalJob =
+                              v == "Yes" ? "1" : "2";
+                              provider.notifyListeners();
+                            },
+
+                          ),
+                          Text(
+                            opt,
+                            style: Styles.regularTextStyle(
+                              color: selected ? Colors.black : Colors.black54,
+                              size: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 10),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      provider.updateInternationalJobPreference(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kPrimaryColor,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    child: const Text(
+                      "Update",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 14),
                 Text("Note : (Maximum of 5 Job Preferences Allowed)",
                   style: Styles.mediumTextStyle(size: 12,color: kRedColor),),
                  hSpace(10),
@@ -125,7 +190,7 @@ class DottedBorder extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AddJobPreferenceScreen(
-                        isUpdate: false, jobPreferenceData: null)),
+                        isUpdate: false, jobPreferenceData: null, isInternationalJob: provider.isInternationalJob)),
               );
 
               if (result != null) {
@@ -240,7 +305,7 @@ class EducationCard extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddJobPreferenceScreen(
-                                      isUpdate: true, jobPreferenceData: provider.jobPreferenceList[index])),
+                                      isUpdate: true, jobPreferenceData: provider.jobPreferenceList[index], isInternationalJob: provider.isInternationalJob)),
                             );
                             if (result != null) {
                               provider.getJobPreferenceApi(context);

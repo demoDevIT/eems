@@ -31,21 +31,104 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
   /// SUBMIT SANSTHA AADHAAR / BRN API
   /// ===============================
 
-  void submitSansthaAadhaarApi(
+  Future<void> submitSansthaAadhaarApi(
       BuildContext context,
       String ssoId,
       String userID,
-      ) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => EmpOTRFormScreen(
-          ssoId: ssoId,
-          userID: userID,
+      ) async {
+
+    /// ==========================
+    /// CASE 1: NO BRN SELECTED
+    /// ==========================
+    if (hasBrn == false) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => EmpOTRFormScreen(
+            ssoId: ssoId,
+            userID: userID,
+          ),
         ),
-      ),
-    );
+      );
+      return;
+    }
+
+    /// ==========================
+    /// CASE 2: YES → VALIDATION
+    /// ==========================
+    if (sansthaAadhaarController.text.isEmpty) {
+      showAlertError(
+        "Please enter Sanstha Aadhaar number",
+        context,
+      );
+      return;
+    }
+
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+      /// 🔹 Dynamic BRN number
+      String brnNumber = sansthaAadhaarController.text.trim();
+      /// 🔹 API URL
+      String url =
+          "https://rajemployment.rajasthan.gov.in/mobileapi/api/OTRJanAadharDetail/BRNMembersList/$brnNumber";
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post(url,body);
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        /// ✅ SUCCESS RESPONSE
+        if (responseData['State'] == 200) {
+
+          final brnData = responseData['Data'] != null && responseData['Data'].isNotEmpty
+              ? responseData['Data'][0]
+              : null;
+
+          /// 🔹 PASS COMPLETE RESPONSE TO NEXT PAGE
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EmpOTRFormScreen(
+                ssoId: ssoId,
+                userID: userID,
+                brnResponseData: brnData, // 👈 TEMP PASS
+              ),
+            ),
+          );
+
+        } else {
+          showAlertError(
+            responseData['ErrorMessage'] ??
+                "Invalid Sanstha Aadhaar number",
+            context,
+          );
+        }
+
+      } else {
+        showAlertError("Something went wrong", context);
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
   }
+
 
 
   // Future<void> submitSansthaAadhaarApi(

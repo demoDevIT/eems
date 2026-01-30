@@ -706,7 +706,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             return sm;
           } else {
             final smmm = SaveDataEducationModal(state: 0, message: sm.message.toString());
-            showAlertError( sm.errorMessage.toString() , context);
+            showAlertError( sm.message.toString() , context); // previously sm.errorMessage.toString() was working , as changed in API by Amit Tripathi so i changed this errorMessage to message
             return smmm;
           }
         } else {

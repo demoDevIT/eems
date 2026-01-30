@@ -6,6 +6,7 @@ import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 import '../../../utils/textfeild.dart';
 import 'provider/sansthadhaarflow_provider.dart';
+import 'package:flutter/services.dart';
 
 class SansthaAadhaarFlowPage extends StatefulWidget {
   final String ssoId;
@@ -117,6 +118,10 @@ class _SansthaAadhaarFlowPageState extends State<SansthaAadhaarFlowPage> {
                             MediaQuery.of(context).size.width,
                             50,
                             TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,   // ✅ only numbers
+                              LengthLimitingTextInputFormatter(16),     // ✅ max 16 digits
+                            ],
                           ),
 
                           SizedBox(height: SizeConfig.screenHeight! * 0.03),

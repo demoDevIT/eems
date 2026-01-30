@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,15 +42,14 @@ class CvListProvider extends ChangeNotifier {
           "https://eems.devitsandbox.com/mobileapi/api/CvTemplate/CvBuilderDownloadByUserid";
 
       Map<String, dynamic> body = {
-        "UserID": UserData().model.value.userId.toString(), //8253
+        "UserID": UserData().model.value.userId.toString() //8253
       };
 
       ApiResponse apiResponse = await commonRepo.post(url, body);
 
-      isLoading = false;
+     // isLoading = false;
 
-      if (apiResponse.response != null &&
-          apiResponse.response?.statusCode == 200) {
+      if (apiResponse.response?.statusCode == 200) {
 
         var responseData = apiResponse.response?.data;
         if (responseData is String) {
@@ -59,29 +59,59 @@ class CvListProvider extends ChangeNotifier {
         final dataList = responseData["Data"] as List;
 
         if (dataList.isNotEmpty) {
-          final cvPath = dataList[0]["CVPath"] ?? "";
+          // final cvPath = dataList[0]["CVPath"] ?? "";
+          // if (cvPath.toString().isNotEmpty) {
+          //   /// OPEN PDF
+          //   final fullUrl =
+          //       "https://eems.devitsandbox.com$cvPath";
+          //   await OpenFile.open(fullUrl);
+          // } else {
+          //   /// SHOW MESSAGE
+          //   apiMessage = message;
+          // }
+
+          final String cvUrl = dataList[0]["CVPath"] ?? "";
           final message = dataList[0]["Message"] ?? "";
 
-          if (cvPath.toString().isNotEmpty) {
-            /// OPEN PDF
-            final fullUrl =
-                "https://eems.devitsandbox.com$cvPath";
-            await OpenFile.open(fullUrl);
+          if (cvUrl.isNotEmpty) {
+            await _downloadAndOpenPdf(cvUrl);
           } else {
-            /// SHOW MESSAGE
             apiMessage = message;
           }
+
+
         }
       } else {
         apiMessage = "Something went wrong. Please try again.";
       }
     } catch (e) {
-      isLoading = false;
+
       apiMessage = e.toString();
     }
-
+    isLoading = false;
     notifyListeners();
   }
+
+  Future<void> _downloadAndOpenPdf(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final dir = await getApplicationDocumentsDirectory();
+        final filePath = "${dir.path}/Resume.pdf";
+
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        await OpenFile.open(filePath);
+      } else {
+        apiMessage = "Failed to download file";
+      }
+    } catch (e) {
+      apiMessage = "Download error: $e";
+    }
+  }
+
 
   String htmlToBase64(String html) {
     final bytes = utf8.encode(html);

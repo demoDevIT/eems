@@ -448,9 +448,9 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       ),
                     ),
 
-                    // provider.universityIdController.text == "3"
-                    //     ? labelWithStar('Other University', required: true)
-                    //     : SizedBox(),
+                    provider.universityIdController.text == "-1"
+                        ? labelWithStar('Other University', required: true)
+                        : SizedBox(),
 
                     /* provider.universityIdController.text == "3"  ? Padding(
                       padding: const EdgeInsets.symmetric(
@@ -463,19 +463,19 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       ),
                     ) : SizedBox(),
 */
-                    // provider.universityIdController.text == "3"
-                    //     ? Padding(
-                    //         padding: const EdgeInsets.symmetric(
-                    //             horizontal: 0, vertical: 5),
-                    //         child: buildTextWithBorderField(
-                    //           provider.otherEducationUniversity,
-                    //           "Enter Other University",
-                    //           MediaQuery.of(context).size.width,
-                    //           50,
-                    //           TextInputType.text,
-                    //         ),
-                    //       )
-                    //     : SizedBox(),
+                    provider.universityIdController.text == "-1"
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 5),
+                            child: buildTextWithBorderField(
+                              provider.otherEducationUniversity,
+                              "Enter Other University",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text,
+                            ),
+                          )
+                        : SizedBox(),
 
                     provider.educationLevelIdController.text == "5" ||
                             provider.educationLevelIdController.text == "6" ||

@@ -14,16 +14,18 @@ import '../loginscreen/provider/locale_provider.dart';
 class AddJobPreferenceScreen extends StatefulWidget {
   bool isUpdate;
   JobPreferenceData? jobPreferenceData;
-  AddJobPreferenceScreen({super.key, required this.isUpdate,required this.jobPreferenceData});
+  String isInternationalJob;
+  AddJobPreferenceScreen({super.key, required this.isUpdate,required this.jobPreferenceData, required this.isInternationalJob});
 
   @override
-  State<AddJobPreferenceScreen> createState() => _AddJobPreferenceScreenState(isUpdate,jobPreferenceData);
+  State<AddJobPreferenceScreen> createState() => _AddJobPreferenceScreenState(isUpdate,jobPreferenceData, this.isInternationalJob);
 }
 
 class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
   bool isUpdate;
   JobPreferenceData? jobPreferenceData;
-  _AddJobPreferenceScreenState(this.isUpdate,this.jobPreferenceData);
+  String isInternationalJob;
+  _AddJobPreferenceScreenState(this.isUpdate,this.jobPreferenceData, this.isInternationalJob);
 
   String _formatRupee(double v) {
     int n = v.round();
@@ -51,6 +53,9 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
       final provider = Provider.of<AddJobPreferenceProvider>(context, listen: false);
       provider.clearData();
       provider.ncoCodeApi(context,isUpdate,jobPreferenceData);
+
+      provider.isInternationalJob = widget.isInternationalJob;
+      print("AddJobPreferenceScreen → isInternationalJob: $isInternationalJob");
 
     });
   }
@@ -203,32 +208,51 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     SizedBox(height: fieldSpacing),
 
                     // Salary range (RangeSlider)
-                    Text('Expected Salary Range (Monthly)', style: Styles.semiBoldTextStyle(
-                        color: kBlackColor, size: 14),),
-                    const SizedBox(height: 12),
-                    RangeSlider(
-                      values: provider.salaryRange,
-                      min: 5000,
-                      max: 200000,
-                      divisions: 90,
-                      labels: RangeLabels(_formatRupee(provider.salaryRange.start), _formatRupee(provider.salaryRange.end)),
-                      activeColor: const Color(0xFF2563EB),
-                      onChanged: (RangeValues newRange) {
-                        setState(() => provider.salaryRange = newRange);
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_formatRupee(provider.salaryRange.start), style: Styles.semiBoldTextStyle(
-                              color: kBlackColor, size: 14),),
-                          Text(_formatRupee(provider.salaryRange.end), style:Styles.semiBoldTextStyle(
-                              color: kBlackColor, size: 14),),
-                        ],
+                    // Text('Expected Salary Range (Monthly)', style: Styles.semiBoldTextStyle(
+                    //     color: kBlackColor, size: 14),),
+                    // const SizedBox(height: 12),
+                    // RangeSlider(
+                    //   values: provider.salaryRange,
+                    //   min: 5000,
+                    //   max: 200000,
+                    //   divisions: 90,
+                    //   labels: RangeLabels(_formatRupee(provider.salaryRange.start), _formatRupee(provider.salaryRange.end)),
+                    //   activeColor: const Color(0xFF2563EB),
+                    //   onChanged: (RangeValues newRange) {
+                    //     setState(() => provider.salaryRange = newRange);
+                    //   },
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text(_formatRupee(provider.salaryRange.start), style: Styles.semiBoldTextStyle(
+                    //           color: kBlackColor, size: 14),),
+                    //       Text(_formatRupee(provider.salaryRange.end), style:Styles.semiBoldTextStyle(
+                    //           color: kBlackColor, size: 14),),
+                    //     ],
+                    //   ),
+                    // ),
+
+                    labelWithStar('Expected Salary Range (Monthly)', required: true),
+                    const SizedBox(height: 8),
+
+                    IgnorePointer(
+                      ignoring: false,
+                      child: buildDropdownWithBorderField(
+                        items: provider.salaryRangeList,
+                        controller: provider.salaryRangeNameController,
+                        idController: provider.salaryRangeIdController,
+                        hintText: "--Select Option--",
+                        height: 50,
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        onChanged: (value) {},
                       ),
                     ),
+
+
                     const SizedBox(height: fieldSpacing),
 
                     // Shift
@@ -278,69 +302,69 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     const SizedBox(height:8),
 
                     // International jobs radio
-                    Text('Are you interested in International Jobs?', style: Styles.regularTextStyle(color: kBlackColor, size: 14),),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: ['Yes', 'No'].map((opt) {
-                        final bool selected = provider.international == opt;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: Row(
-                            children: [
-                              Radio<String>(
-                                value: opt,
-                                groupValue: provider.international,
-                                activeColor: const Color(0xFF2563EB),
-                                onChanged: (v) => setState(() => provider.international = v ?? provider.international),
-                              ),
-                              Text(opt, style: Styles.regularTextStyle(
-                                  color:  selected ? Colors.black : Colors.black87, size: 14), ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                    // Text('Are you interested in International Jobs?', style: Styles.regularTextStyle(color: kBlackColor, size: 14),),
+                    // const SizedBox(height: 8),
+                    // Row(
+                    //   children: ['Yes', 'No'].map((opt) {
+                    //     final bool selected = provider.international == opt;
+                    //     return Padding(
+                    //       padding: const EdgeInsets.only(right: 16.0),
+                    //       child: Row(
+                    //         children: [
+                    //           Radio<String>(
+                    //             value: opt,
+                    //             groupValue: provider.international,
+                    //             activeColor: const Color(0xFF2563EB),
+                    //             onChanged: (v) => setState(() => provider.international = v ?? provider.international),
+                    //           ),
+                    //           Text(opt, style: Styles.regularTextStyle(
+                    //               color:  selected ? Colors.black : Colors.black87, size: 14), ),
+                    //         ],
+                    //       ),
+                    //     );
+                    //   }).toList(),
+                    // ),
 
-                    const SizedBox(height: 8), // spacing so content doesn't hide behind button
-
-
-                    provider.international == "Yes" ? labelWithStar('Preferred Region', required: true) : SizedBox(),
-                    provider.international == "Yes" ? const SizedBox(height: 8) : SizedBox(),
-                    provider.international == "Yes" ? IgnorePointer(
-
-                      ignoring: false,
-                      child: buildDropdownWithBorderField(
-                        items: provider.preferredRegionList,
-                        controller: provider.preferredRegionNameController,
-                        idController: provider.preferredRegionIdController,
-                        hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
-                        onChanged: (value) {
-
-                        },
-                      ),
-                    ) : SizedBox(),
-
-
-                    provider.international == "Yes" ? labelWithStar('Foreign Language Known', required: false) : SizedBox(),
-                    provider.international == "Yes" ? const SizedBox(height: 8) : SizedBox(),
-                    provider.international == "Yes" ? IgnorePointer(
-                      ignoring: false,
-                      child: buildDropdownWithBorderField(
-                        items: provider.languageKnownList,
-                        controller: provider.languageKnownNameController,
-                        idController: provider.languageKnownIdController,
-                        hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
-                        onChanged: (value) {
-
-                        },
-                      ),
-                    ) : SizedBox(),
+                    // const SizedBox(height: 8), // spacing so content doesn't hide behind button
+                    //
+                    //
+                    // provider.international == "Yes" ? labelWithStar('Preferred Region', required: true) : SizedBox(),
+                    // provider.international == "Yes" ? const SizedBox(height: 8) : SizedBox(),
+                    // provider.international == "Yes" ? IgnorePointer(
+                    //
+                    //   ignoring: false,
+                    //   child: buildDropdownWithBorderField(
+                    //     items: provider.preferredRegionList,
+                    //     controller: provider.preferredRegionNameController,
+                    //     idController: provider.preferredRegionIdController,
+                    //     hintText: "--Select Option--",
+                    //     height: 50,
+                    //     color: Colors.transparent,
+                    //     borderRadius: BorderRadius.circular(8),
+                    //     onChanged: (value) {
+                    //
+                    //     },
+                    //   ),
+                    // ) : SizedBox(),
+                    //
+                    //
+                    // provider.international == "Yes" ? labelWithStar('Foreign Language Known', required: false) : SizedBox(),
+                    // provider.international == "Yes" ? const SizedBox(height: 8) : SizedBox(),
+                    // provider.international == "Yes" ? IgnorePointer(
+                    //   ignoring: false,
+                    //   child: buildDropdownWithBorderField(
+                    //     items: provider.languageKnownList,
+                    //     controller: provider.languageKnownNameController,
+                    //     idController: provider.languageKnownIdController,
+                    //     hintText: "--Select Option--",
+                    //     height: 50,
+                    //     color: Colors.transparent,
+                    //     borderRadius: BorderRadius.circular(8),
+                    //     onChanged: (value) {
+                    //
+                    //     },
+                    //   ),
+                    // ) : SizedBox(),
 
                     const SizedBox(height: 30),
                   ],
