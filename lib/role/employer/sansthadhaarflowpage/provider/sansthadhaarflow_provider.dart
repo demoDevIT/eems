@@ -20,9 +20,9 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
   TextEditingController();
 
   /// BRN Radio
-  bool hasBrn = true;
+  bool? hasBrn = true;
 
-  void setHasBrn(bool value) {
+  void setHasBrn(bool? value) {
     hasBrn = value;
     notifyListeners();
   }
@@ -53,6 +53,10 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
       return;
     }
 
+    if (hasBrn == null) {
+      showAlertError("Please select Yes or No", context);
+      return;
+    }
     /// ==========================
     /// CASE 2: YES → VALIDATION
     /// ==========================
@@ -197,7 +201,7 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
   /// ===============================
   void clearData() {
     sansthaAadhaarController.clear();
-    hasBrn = true;
+    hasBrn = null;
     notifyListeners();
   }
 }

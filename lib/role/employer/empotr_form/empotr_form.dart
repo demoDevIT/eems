@@ -55,6 +55,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
       provider.stateApi(context);
       provider.actEstablishmentApi(context);
       provider.sectorApi(context);
+      provider.fetchDocumentMastersApi(context);
 
       // ✅ AUTO FILL FROM BRN
       if (widget.brnResponseData != null) {
@@ -150,9 +151,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 "Enter BRN",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.number  ,
-                                isEnabled: provider.isEditable(provider.brnController),
-                               // isEnabled: false,
+                                TextInputType.number,
+                                isEnabled:
+                                    provider.isEditable(provider.brnController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 textLenght: 16,
                                 inputFormatters: [
@@ -175,15 +177,18 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.districtController),
-                              //  isEnabled: false,
+                                //isEnabled: provider.isEditable(provider.districtController),
+                                isEnabled: !provider.districtPrefilled,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                                 fun: (value) {
                                   if (value.length > 0 && value.length < 4) {
-                                    provider.districtError = "Minimum 3 characters required.";
+                                    provider.districtError =
+                                        "Minimum 3 characters required.";
                                   } else {
                                     provider.districtError = null;
                                   }
@@ -193,13 +198,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             if (provider.districtError != null)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
                                   provider.districtError!,
-                                  style: TextStyle(color: Colors.red, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -212,7 +218,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     Radio<String>(
                                       value: 'Rural',
                                       groupValue: provider.areaType,
-                                      onChanged: provider.isAreaFromBRN ? null : provider.setArea,
+                                      onChanged: provider.isAreaFromBRN
+                                          ? null
+                                          : provider.setArea,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
@@ -228,7 +236,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     Radio<String>(
                                       value: 'Urban',
                                       groupValue: provider.areaType,
-                                      onChanged: provider.isAreaFromBRN ? null : provider.setArea,
+                                      onChanged: provider.isAreaFromBRN
+                                          ? null
+                                          : provider.setArea,
                                       // onChanged: (val) => setState(() =>
                                       //     provider.areaType =
                                       //         val ?? provider.areaType),
@@ -258,33 +268,37 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.tehsilController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.tehsilController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             if (provider.areaType == 'Rural') ...[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
                                 child: labelWithStar('Village', required: true),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
                                 child: buildTextWithBorderField(
                                   provider.villageController,
                                   "Enter Village",
                                   MediaQuery.of(context).size.width,
                                   50,
                                   TextInputType.text,
-                                  isEnabled: provider.isEditable(provider.villageController),
+                                  isEnabled: provider
+                                      .isEditable(provider.villageController),
                                   boxColor: fafafaColor,
                                   inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z\s]')),
                                   ],
                                 ),
                               ),
                             ],
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -300,37 +314,41 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.localBodyController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.localBodyController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
-
                             if (provider.areaType == 'Urban') ...[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
                                 child: labelWithStar('Ward', required: true),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
                                 child: buildTextWithBorderField(
                                   provider.wardController,
                                   "Enter Ward",
                                   MediaQuery.of(context).size.width,
                                   50,
                                   TextInputType.text,
-                                  isEnabled: provider.isEditable(provider.wardController),
+                                  isEnabled: provider
+                                      .isEditable(provider.wardController),
                                   boxColor: fafafaColor,
                                   inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[a-zA-Z0-9\s]')),
                                   ],
                                 ),
                               ),
                             ],
-
                           ],
                         ),
                       ),
@@ -377,8 +395,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.companyNameController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.companyNameController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -397,8 +416,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.houseNoController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.houseNoController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -416,8 +436,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.laneController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.laneController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -435,8 +456,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.localityController),
-                               // isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.localityController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -454,9 +476,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                isEnabled: provider.isEditable(provider.pinCodeController),
+                                // isEnabled: provider.isEditable(provider.pinCodeController),
+                                isEnabled: !provider.pinCodePrefilled,
                                 textLenght: 6,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -464,7 +487,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 ],
                                 fun: (value) {
                                   if (value.length != 6) {
-                                    provider.pinCodeError = "Pin Code must be 6 digits";
+                                    provider.pinCodeError =
+                                        "Pin Code must be 6 digits";
                                   } else {
                                     provider.pinCodeError = null;
                                   }
@@ -476,7 +500,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 12),
                                 child: Text(provider.pinCodeError!,
-                                    style: const TextStyle(color: Colors.red, fontSize: 12)),
+                                    style: const TextStyle(
+                                        color: Colors.red, fontSize: 12)),
                               ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -493,7 +518,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.phone,
                                 textLenght: 15,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -501,7 +526,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 ],
                                 fun: (value) {
                                   if (value.length != 15) {
-                                    provider.telError = "Telephone number must be 15 digits";
+                                    provider.telError =
+                                        "Telephone number must be 15 digits";
                                   } else {
                                     provider.telError = null;
                                   }
@@ -523,8 +549,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
-                                isEnabled: provider.isEditable(provider.emailController),
-                              //  isEnabled: false,
+                                // isEnabled: provider.isEditable(provider.emailController),
+                                isEnabled: !provider.emailPrefilled,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 fun: provider.validateEmail,
                               ),
@@ -533,7 +560,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 12),
                                 child: Text(provider.emailErrorText!,
-                                    style: const TextStyle(color: Colors.red, fontSize: 12)),
+                                    style: const TextStyle(
+                                        color: Colors.red, fontSize: 12)),
                               ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -551,23 +579,24 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.text,
                                 textLenght: 15,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(15),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: provider.validateGST,
                               ),
                             ),
                             if (provider.gstLengthError != null)
                               Text(provider.gstLengthError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12)),
-
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12)),
                             if (provider.gstFormatError != null)
                               Text(provider.gstFormatError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12)),
-
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12)),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -583,23 +612,28 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.panController),
+                                // isEnabled: provider.isEditable(provider.panController),
+                                isEnabled: !provider.panPrefilled,
                                 textLenght: 10,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
                                   final pan = value.toUpperCase();
-                                  provider.panController.value =
-                                      provider.panController.value.copyWith(text: pan);
+                                  provider.panController.value = provider
+                                      .panController.value
+                                      .copyWith(text: pan);
 
-                                  if (pan.length == 10 && pan.isValidPanCardNo()) {
+                                  if (pan.length == 10 &&
+                                      pan.isValidPanCardNo()) {
                                     provider.panErrorText = null;
                                   } else {
-                                    provider.panErrorText = "Invalid PAN number";
+                                    provider.panErrorText =
+                                        "Invalid PAN number";
                                   }
 
                                   provider.panVerifiedController.text = pan;
@@ -609,7 +643,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             if (provider.panErrorText != null)
                               Text(provider.panErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12)),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12)),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -625,7 +660,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -644,16 +679,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.panVerifiedController),
+                                isEnabled: provider
+                                    .isEditable(provider.panVerifiedController),
                                 textLenght: 10,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
-                                  provider.panController.text = value.toUpperCase();
+                                  provider.panController.text =
+                                      value.toUpperCase();
                                   provider.notifyListeners();
                                 },
                               ),
@@ -673,26 +711,29 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.tanController),
+                                // isEnabled: provider.isEditable(provider.tanController),
+                                isEnabled: !provider.tanPrefilled,
                                 textLenght: 10,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
                                   final tan = value.toUpperCase();
-                                  provider.tanErrorText =
-                                  tan.isValidTan() ? null : "Enter valid TAN (e.g. DELA12345B)";
+                                  provider.tanErrorText = tan.isValidTan()
+                                      ? null
+                                      : "Enter valid TAN (e.g. DELA12345B)";
                                   provider.notifyListeners();
                                 },
                               ),
                             ),
                             if (provider.tanErrorText != null)
                               Text(provider.tanErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12)),
-
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12)),
                           ],
                         ),
                       ),
@@ -728,7 +769,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                              labelWithStar('Company Name', required: true),
+                                  labelWithStar('Company Name', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -739,19 +780,20 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.hoCompanyNameController),
-                              //  isEnabled: false,
+                                isEnabled: provider.isEditable(
+                                    provider.hoCompanyNameController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Tel No', required: true),
+                              child: labelWithStar('Tel No', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -762,9 +804,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
-                                isEnabled: provider.isEditable(provider.hoTelNoController),
+                                isEnabled: provider
+                                    .isEditable(provider.hoTelNoController),
                                 textLenght: 15,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -786,8 +829,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
-                                isEnabled: provider.isEditable(provider.hoEmailController),
-                              //  isEnabled: false,
+                                //isEnabled: provider.isEditable(provider.hoEmailController),
+                                isEnabled: !provider.hoEmailPrefilled,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 fun: provider.validateEmail,
                               ),
@@ -797,10 +841,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 padding: const EdgeInsets.only(left: 12),
                                 child: Text(
                                   provider.emailErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -815,23 +859,26 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.hoPanController),
+                                // isEnabled: provider.isEditable(provider.hoPanController),
+                                isEnabled: !provider.hoPanPrefilled,
                                 textLenght: 10,
-                             //   isEnabled: false,
+                                //   isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
                                   final pan = value.toUpperCase();
-                                  provider.hoPanController.value =
-                                      provider.hoPanController.value.copyWith(text: pan);
+                                  provider.hoPanController.value = provider
+                                      .hoPanController.value
+                                      .copyWith(text: pan);
 
                                   provider.panErrorText =
-                                  pan.length == 10 && pan.isValidPanCardNo()
-                                      ? null
-                                      : "Invalid PAN number";
+                                      pan.length == 10 && pan.isValidPanCardNo()
+                                          ? null
+                                          : "Invalid PAN number";
 
                                   provider.notifyListeners();
                                 },
@@ -839,12 +886,13 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             if (provider.panErrorText != null)
                               Text(provider.panErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12)),
-
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12)),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('House Number', required: true),
+                              child:
+                                  labelWithStar('House Number', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -855,8 +903,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.hoHouseNoController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.hoHouseNoController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -874,8 +923,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.hoLaneController),
-                              //  isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.hoLaneController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -893,19 +943,20 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.hoLocalityController),
-                               // isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.hoLocalityController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Pincode', required: true),
+                              child: labelWithStar('Pincode', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -916,9 +967,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                isEnabled: provider.isEditable(provider.hoPincodeController),
+                                isEnabled: provider
+                                    .isEditable(provider.hoPincodeController),
                                 textLenght: 6,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -960,8 +1012,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Applicant Name', required: true),
+                              child: labelWithStar('Applicant Name',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -972,19 +1024,21 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.applicantNameController),
-                               // isEnabled: false,
+                                isEnabled: provider.isEditable(
+                                    provider.applicantNameController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Applicant Mobile', required: true),
+                              child: labelWithStar('Applicant Mobile',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -995,8 +1049,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                isEnabled: provider.isEditable(provider.applicantMobileController),
-                               // isEnabled: false,
+                                isEnabled: provider.isEditable(
+                                    provider.applicantMobileController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -1007,7 +1062,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Applicant Email', required: true),
+                              child: labelWithStar('Applicant Email',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1018,27 +1074,29 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
-                                isEnabled: provider.isEditable(provider.applicantEmailController),
-                               // isEnabled: false,
+                                //isEnabled: provider.isEditable(provider.applicantEmailController),
+                                isEnabled: !provider.applicantEmailPrefilled,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 fun: (value) {
                                   provider.applicantEmailError =
-                                  value.isNotEmpty && value.isValidEmail()
-                                      ? null
-                                      : "Invalid email address";
+                                      value.isNotEmpty && value.isValidEmail()
+                                          ? null
+                                          : "Invalid email address";
                                   provider.notifyListeners();
                                 },
                               ),
                             ),
                             if (provider.applicantEmailError != null)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                                 child: Text(
                                   provider.applicantEmailError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -1053,8 +1111,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                isEnabled: provider.isEditable(provider.yearController),
-                               // isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.yearController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -1076,15 +1135,17 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.ownershipController),
-                               // isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.ownershipController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Total Person', required: true),
+                              child:
+                                  labelWithStar('Total Person', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1095,8 +1156,9 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                isEnabled: provider.isEditable(provider.totalPersonController),
-                               // isEnabled: false,
+                                isEnabled: provider
+                                    .isEditable(provider.totalPersonController),
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -1107,7 +1169,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Act Authority Reg', required: true),
+                              child: labelWithStar('Act Authority Reg',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1118,16 +1181,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.actAuthorityRegController),
-                              //  isEnabled: false,
+                                isEnabled: provider.isEditable(
+                                    provider.actAuthorityRegController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('TAN No', required: true),
+                              child: labelWithStar('TAN No', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1138,24 +1201,26 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
                                   final tan = value.toUpperCase();
                                   provider.tanNoController.value =
                                       provider.tanNoController.value.copyWith(
-                                        text: tan,
-                                        selection: TextSelection.collapsed(offset: tan.length),
-                                      );
+                                    text: tan,
+                                    selection: TextSelection.collapsed(
+                                        offset: tan.length),
+                                  );
 
                                   provider.hoTanErrorText =
-                                  tan.length == 10 && tan.isValidTan()
-                                      ? null
-                                      : "Invalid TAN number";
+                                      tan.length == 10 && tan.isValidTan()
+                                          ? null
+                                          : "Invalid TAN number";
 
                                   provider.notifyListeners();
                                 },
@@ -1163,18 +1228,18 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             if (provider.hoTanErrorText != null)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                                 child: Text(
                                   provider.hoTanErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Email', required: true),
+                              child: labelWithStar('Email', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1185,32 +1250,37 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 fun: (value) {
                                   provider.hoApplicantEmailError =
-                                  value.isNotEmpty && value.isValidEmail()
-                                      ? null
-                                      : "Invalid email address";
+                                      value.isNotEmpty && value.isValidEmail()
+                                          ? null
+                                          : "Invalid email address";
                                   provider.notifyListeners();
                                 },
                               ),
                             ),
                             if (provider.hoApplicantEmailError != null)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                                 child: Text(
                                   provider.hoApplicantEmailError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('State', required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<StateData>(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                                  StateData>(
                                 items: provider.stateList,
                                 controller: provider.stateController,
                                 idController: provider.stateIdController,
@@ -1221,8 +1291,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 onChanged: (value) {
                                   provider.selectedState = value;
 
-                                  provider.stateController.text = value?.name ?? "";
-                                  provider.stateIdController.text = value?.iD.toString() ?? "";
+                                  provider.stateController.text =
+                                      value?.name ?? "";
+                                  provider.stateIdController.text =
+                                      value?.iD.toString() ?? "";
 
                                   // 🔴 CLEAR DEPENDENTS
                                   // provider.selectedDistrict = null;
@@ -1244,49 +1316,58 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 },
                               ),
                             ),
-
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('District', required: true),
                             ),
                             provider.isDistrictLoading
-                                ? const Center(child: CircularProgressIndicator())
+                                ? const Center(
+                                    child: CircularProgressIndicator())
                                 : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
-                                items: provider.districtList,
-                                controller: provider.districtHoController,
-                                idController: provider.districtIdController,
-                                hintText: "--Select District--",
-                                height: 50,
-                                selectedValue: provider.selectedDistrict,
-                                getLabel: (e) => e.name ?? "",
-                                onChanged: (value) {
-                                  provider.selectedDistrict = value;
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child:
+                                        buildDropdownWithBorderFieldOnlyThisPage<
+                                            DistrictData>(
+                                      items: provider.districtList,
+                                      controller: provider.districtHoController,
+                                      idController:
+                                          provider.districtIdController,
+                                      hintText: "--Select District--",
+                                      height: 50,
+                                      selectedValue: provider.selectedDistrict,
+                                      getLabel: (e) => e.name ?? "",
+                                      onChanged: (value) {
+                                        provider.selectedDistrict = value;
 
-                                  provider.districtHoController.text = value?.name ?? "";
-                                  provider.districtIdController.text =
-                                      value?.iD.toString() ?? "";
+                                        provider.districtHoController.text =
+                                            value?.name ?? "";
+                                        provider.districtIdController.text =
+                                            value?.iD.toString() ?? "";
 
-                                  // 🔴 CLEAR CITY
-                                  provider.selectedCity = null;
-                                  provider.cityHoController.clear();
-                                  provider.cityIdController.clear();
-                                  provider.locationList.clear();
+                                        // 🔴 CLEAR CITY
+                                        provider.selectedCity = null;
+                                        provider.cityHoController.clear();
+                                        provider.cityIdController.clear();
+                                        provider.locationList.clear();
 
-                                  provider.getCityApi(context, value!.iD!.toString());
-                                  provider.notifyListeners();
-                                },
-                              ),
-                            ),
-
+                                        provider.getCityApi(
+                                            context, value!.iD!.toString());
+                                        provider.notifyListeners();
+                                      },
+                                    ),
+                                  ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('City', required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<CityData>(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                                  CityData>(
                                 items: provider.locationList,
                                 controller: provider.cityHoController,
                                 idController: provider.cityIdController,
@@ -1297,7 +1378,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 onChanged: (value) {
                                   provider.selectedCity = value;
 
-                                  provider.cityHoController.text = value?.nameEng ?? "";
+                                  provider.cityHoController.text =
+                                      value?.nameEng ?? "";
                                   provider.cityIdController.text =
                                       value?.iD.toString() ?? "";
 
@@ -1308,8 +1390,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Website', required: true),
+                              child: labelWithStar('Website', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1320,15 +1401,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Applicant Address', required: true),
+                              child: labelWithStar('Applicant Address',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1339,16 +1420,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.applicantAddressController),
-                              //  isEnabled: false,
+                                isEnabled: provider.isEditable(
+                                    provider.applicantAddressController),
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('NIC Code', required: true),
+                              child: labelWithStar('NIC Code', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1359,7 +1440,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                                isEnabled: provider.isEditable(provider.nicCodeController),
+                                isEnabled: provider
+                                    .isEditable(provider.nicCodeController),
                                 //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
@@ -1398,8 +1480,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('PAN No', required: true),
+                              child: labelWithStar('PAN No', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1411,27 +1492,30 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.text,
                                 textLenght: 10,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(10),
-                                  FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z0-9]')),
                                 ],
                                 fun: (value) {
                                   final pan = value.toUpperCase();
 
                                   // force uppercase in field
-                                  provider.contactPanController.value =
-                                      provider.contactPanController.value.copyWith(
-                                        text: pan,
-                                        selection: TextSelection.collapsed(offset: pan.length),
-                                      );
+                                  provider.contactPanController.value = provider
+                                      .contactPanController.value
+                                      .copyWith(
+                                    text: pan,
+                                    selection: TextSelection.collapsed(
+                                        offset: pan.length),
+                                  );
 
                                   // validation (same as HO PAN)
                                   provider.contactPanError =
-                                  pan.length == 10 && pan.isValidPanCardNo()
-                                      ? null
-                                      : "Invalid PAN number";
+                                      pan.length == 10 && pan.isValidPanCardNo()
+                                          ? null
+                                          : "Invalid PAN number";
 
                                   provider.notifyListeners();
                                 },
@@ -1439,18 +1523,18 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             if (provider.contactPanError != null)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                                 child: Text(
                                   provider.contactPanError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Full Name', required: true),
+                              child: labelWithStar('Full Name', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1461,17 +1545,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Mobile Number', required: true),
+                              child: labelWithStar('Mobile Number',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1483,15 +1569,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.phone,
                                 textLenght: 10,
-                             //   isEnabled: false,
+                                //   isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                   LengthLimitingTextInputFormatter(15),
                                 ],
                                 fun: (value) {
-                                  if (value.length != 15) {
-                                    provider.contactMobileError = "Telephone number must be 10 digits";
+                                  if (value.length != 10) {
+                                    provider.contactMobileError =
+                                        "Telephone number must be 10 digits";
                                   } else {
                                     provider.contactMobileError = null;
                                   }
@@ -1502,7 +1589,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Alternate Mobile', required: true),
+                              child: labelWithStar('Alternate Mobile',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1514,15 +1602,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.phone,
                                 textLenght: 10,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                   LengthLimitingTextInputFormatter(10),
                                 ],
                                 fun: (value) {
-                                  if (value.length != 15) {
-                                    provider.contactAlterMobileError = "Telephone number must be 10 digits";
+                                  if (value.length != 10) {
+                                    provider.contactAlterMobileError =
+                                        "Telephone number must be 10 digits";
                                   } else {
                                     provider.contactAlterMobileError = null;
                                   }
@@ -1544,7 +1633,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 fun: provider.validateEmail,
                               ),
@@ -1554,19 +1643,20 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 padding: const EdgeInsets.only(left: 12),
                                 child: Text(
                                   provider.emailErrorText!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 12),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 12),
                                 ),
                               ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('State', required: true),
+                              child: labelWithStar('State', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<StateData>(
+                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                                  StateData>(
                                 items: provider.coStateList,
                                 controller: provider.coStateController,
                                 idController: provider.coStateIdController,
@@ -1577,8 +1667,10 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 onChanged: (value) {
                                   provider.coSelectedState = value;
 
-                                  provider.coStateController.text = value?.name ?? "";
-                                  provider.coStateIdController.text = value?.iD.toString() ?? "";
+                                  provider.coStateController.text =
+                                      value?.name ?? "";
+                                  provider.coStateIdController.text =
+                                      value?.iD.toString() ?? "";
 
                                   provider.coSelectedDistrict = null;
                                   provider.coDistrictController.clear();
@@ -1590,46 +1682,58 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('District', required: true),
                             ),
                             provider.iscoDistrictLoading
-                                ? const Center(child: CircularProgressIndicator())
+                                ? const Center(
+                                    child: CircularProgressIndicator())
                                 : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
-                                items: provider.coDistrictList,
-                                controller: provider.coDistrictController,
-                                idController: provider.coDistrictIdController,
-                                hintText: "--Select District--",
-                                height: 50,
-                                selectedValue: provider.coSelectedDistrict,
-                                getLabel: (e) => e.name ?? "",
-                                onChanged: (value) {
-                                  provider.coSelectedDistrict = value;
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child:
+                                        buildDropdownWithBorderFieldOnlyThisPage<
+                                            DistrictData>(
+                                      items: provider.coDistrictList,
+                                      controller: provider.coDistrictController,
+                                      idController:
+                                          provider.coDistrictIdController,
+                                      hintText: "--Select District--",
+                                      height: 50,
+                                      selectedValue:
+                                          provider.coSelectedDistrict,
+                                      getLabel: (e) => e.name ?? "",
+                                      onChanged: (value) {
+                                        provider.coSelectedDistrict = value;
 
-                                  provider.coDistrictController.text = value?.name ?? "";
-                                  provider.coDistrictIdController.text =
-                                      value?.iD.toString() ?? "";
+                                        provider.coDistrictController.text =
+                                            value?.name ?? "";
+                                        provider.coDistrictIdController.text =
+                                            value?.iD.toString() ?? "";
 
-                                  // 🔴 CLEAR CITY
-                                  provider.coSelectedCity = null;
-                                  provider.coCityController.clear();
-                                  provider.coCityIdController.clear();
-                                  provider.coLocationList.clear();
+                                        // 🔴 CLEAR CITY
+                                        provider.coSelectedCity = null;
+                                        provider.coCityController.clear();
+                                        provider.coCityIdController.clear();
+                                        provider.coLocationList.clear();
 
-                                  provider.getCityApi(context, value!.iD!.toString());
-                                  provider.notifyListeners();
-                                },
-                              ),
-                            ),
+                                        provider.getCityApi(
+                                            context, value!.iD!.toString());
+                                        provider.notifyListeners();
+                                      },
+                                    ),
+                                  ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('City', required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<CityData>(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                                  CityData>(
                                 items: provider.coLocationList,
                                 controller: provider.coCityController,
                                 idController: provider.coCityIdController,
@@ -1640,7 +1744,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 onChanged: (value) {
                                   provider.coSelectedCity = value;
 
-                                  provider.coCityController.text = value?.nameEng ?? "";
+                                  provider.coCityController.text =
+                                      value?.nameEng ?? "";
                                   provider.coCityIdController.text =
                                       value?.iD.toString() ?? "";
 
@@ -1651,8 +1756,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Pincode', required: true),
+                              child: labelWithStar('Pincode', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1674,7 +1778,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Designation', required: true),
+                              child:
+                                  labelWithStar('Designation', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1685,14 +1790,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Department', required: true),
+                              child:
+                                  labelWithStar('Department', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1703,20 +1809,18 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                              //  isEnabled: false,
+                                //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[a-zA-Z\s]')),
                                 ],
                               ),
                             ),
-
-
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Address', required: true),
+                              child: labelWithStar('Address', required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1727,7 +1831,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                             //   isEnabled: false,
+                                //   isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -1766,8 +1870,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Exchange Name', required: true),
+                              child: labelWithStar('Exchange Name',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1778,7 +1882,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
@@ -1816,55 +1920,69 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Type of Organization', required: true),
+                              child: labelWithStar('Type of Organization',
+                                  required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: buildDropdownWithBorder(
                                 hint: "--Select Option--",
                                 value: provider.organisationType,
                                 boxColor: fafafaColor,
                                 onChanged: provider.setOrganisationType,
                                 items: const [
-                                  DropdownMenuItem(value: "Private", child: Text("Private")),
-                                  DropdownMenuItem(value: "Government", child: Text("Government")),
-                                  DropdownMenuItem(value: "PSU", child: Text("PSU")),
+                                  DropdownMenuItem(
+                                      value: "Private", child: Text("Private")),
+                                  DropdownMenuItem(
+                                      value: "Government",
+                                      child: Text("Government")),
+                                  DropdownMenuItem(
+                                      value: "PSU", child: Text("PSU")),
                                 ],
                               ),
                             ),
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Government Body', required: true),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorder(
-                                hint: "--Select Option--",
-                                value: provider.govtBody,
-                                boxColor: fafafaColor,
-                                onChanged: provider.setGovtBody,
-                                items: const [
-                                  DropdownMenuItem(value: "Central", child: Text("Central Government")),
-                                  DropdownMenuItem(value: "Local Body", child: Text("Local Body")),
-                                  DropdownMenuItem(value: "State Government", child: Text("State Government")),
-                                  DropdownMenuItem(
-                                      value: "State Quasi Government",
-                                      child: Text("State Quasi Government")),
-                                  DropdownMenuItem(
-                                      value: "Central Quasi Government",
-                                      child: Text("Central Quasi Government")),
-                                ],
+                            if (provider.showGovtBody) ...[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: labelWithStar('Government Body',
+                                    required: true),
                               ),
-                            ),
-
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: buildDropdownWithBorder(
+                                  hint: "--Select Option--",
+                                  value: provider.govtBody,
+                                  boxColor: fafafaColor,
+                                  onChanged: provider.setGovtBody,
+                                  items: const [
+                                    DropdownMenuItem(
+                                        value: "Central",
+                                        child: Text("Central Government")),
+                                    DropdownMenuItem(
+                                        value: "Local Body",
+                                        child: Text("Local Body")),
+                                    DropdownMenuItem(
+                                        value: "State Government",
+                                        child: Text("State Government")),
+                                    DropdownMenuItem(
+                                        value: "State Quasi Government",
+                                        child: Text("State Quasi Government")),
+                                    DropdownMenuItem(
+                                        value: "Central Quasi Government",
+                                        child:
+                                            Text("Central Quasi Government")),
+                                  ],
+                                ),
+                              ),
+                            ],
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Male Employee', required: true),
+                              child: labelWithStar('No of Male Employee',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1875,16 +1993,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 fun: (_) => provider.calculateTotalEmployees(),
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Female Employee', required: true),
+                              child: labelWithStar('No of Female Employee',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1895,16 +2016,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 fun: (_) => provider.calculateTotalEmployees(),
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Transgender', required: true),
+                              child: labelWithStar('No of Transgender',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1915,16 +2039,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 fun: (_) => provider.calculateTotalEmployees(),
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Total No of Employee', required: true),
+                              child: labelWithStar('Total No of Employee',
+                                  required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1936,71 +2063,80 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 50,
                                 TextInputType.number,
                                 isEnabled: false,
-                               // isEnabled: false,
+                                // isEnabled: false,
                                 boxColor: fafafaColor,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: labelWithStar('Act Establishment', required: true),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: DropdownButtonFormField<ActEstablishmentData>(
-                                value: provider.selectedActEst,
-                                isExpanded: true,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: fafafaColor,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                hint: const Text("--Select Option--"),
-                                items: provider.actEstList
-                                    .map(
-                                      (e) => DropdownMenuItem<ActEstablishmentData>(
-                                    value: e,
-                                    child: Text(e.actEstablishment ?? ""),
-                                  ),
-                                )
-                                    .toList(),
-
-                                // 🔒 ALWAYS DISABLED
-                                onChanged: null,
+                            if (provider.showActEst) ...[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: labelWithStar('Act Establishment',
+                                    required: true),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: DropdownButtonFormField<
+                                    ActEstablishmentData>(
+                                  value: provider.selectedActEst,
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: fafafaColor,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  hint: const Text("--Select Option--"),
+                                  items: provider.actEstList
+                                      .map(
+                                        (e) => DropdownMenuItem<
+                                            ActEstablishmentData>(
+                                          value: e,
+                                          child: Text(e.actEstablishment ?? ""),
+                                        ),
+                                      )
+                                      .toList(),
 
-
-
+                                  // 🔒 ALWAYS DISABLED
+                                  onChanged: null,
+                                ),
+                              ),
+                            ],
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child:
-                              labelWithStar('Industry Type', required: true),
+                              child: labelWithStar('Industry Type',
+                                  required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: buildDropdownWithBorder(
                                 hint: "--Select Option--",
                                 value: provider.industryType,
                                 boxColor: fafafaColor,
                                 onChanged: provider.setIndustryType,
                                 items: const [
-                                  DropdownMenuItem(value: "Manufacturing", child: Text("Manufacturing")),
-                                  DropdownMenuItem(value: "IT", child: Text("IT")),
-                                  DropdownMenuItem(value: "Service", child: Text("Service")),
+                                  DropdownMenuItem(
+                                      value: "Manufacturing",
+                                      child: Text("Manufacturing")),
+                                  DropdownMenuItem(
+                                      value: "IT", child: Text("IT")),
+                                  DropdownMenuItem(
+                                      value: "Service", child: Text("Service")),
                                 ],
                               ),
                             ),
-
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: labelWithStar('Sector', required: true),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: DropdownButtonFormField<SectorData>(
                                 value: provider.selectedSector,
                                 isExpanded: true,
@@ -2015,19 +2151,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 items: provider.sectorList
                                     .map(
                                       (e) => DropdownMenuItem<SectorData>(
-                                    value: e,
-                                    child: Text(e.name ?? ""),
-                                  ),
-                                )
+                                        value: e,
+                                        child: Text(e.name ?? ""),
+                                      ),
+                                    )
                                     .toList(),
 
                                 // ✅ ALWAYS ENABLED
                                 onChanged: (val) => provider.setSector(val),
                               ),
                             ),
-
-
-
                           ],
                         ),
                       ),
@@ -2059,45 +2192,113 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     size: 14, color: kWhite),
                               ),
                             ),
-                            buildImageUploadBox(
-                              title: "PAN Certificate",
-                              imageFile: provider.panCertificateController,
-                              onTap: () {
-                                provider.pickImage((file) {
-                                  //provider.panCertificateController = file;
-                                });
+                            // buildImageUploadBox(
+                            //   title: "PAN Certificate",
+                            //   imageFile: provider.panCertificateController,
+                            //   onTap: () {
+                            //     provider.pickAndUploadPdf(
+                            //       context: context,
+                            //       onFileSelected: (file) {
+                            //         provider.panCertificateController = file;
+                            //       },
+                            //       onUploadSuccess: (path, name) {
+                            //         provider.panFilePath = path;
+                            //       },
+                            //     );
+                            //   },
+                            // ),
+                            // buildImageUploadBox(
+                            //   title: "TAN Certificate",
+                            //   imageFile: provider.tanCertificateController,
+                            //   onTap: () {
+                            //     provider.pickAndUploadPdf(
+                            //       context: context,
+                            //       onFileSelected: (file) {
+                            //         provider.tanCertificateController = file;
+                            //       },
+                            //       onUploadSuccess: (path, name) {
+                            //         provider.tanFilePath = path;
+                            //       },
+                            //     );
+                            //   },
+                            // ),
+                            // buildImageUploadBox(
+                            //   title: "GST Certificate",
+                            //   imageFile: provider.gstCertificateController,
+                            //   onTap: () {
+                            //     provider.pickAndUploadPdf(
+                            //       context: context,
+                            //       onFileSelected: (file) {
+                            //         provider.gstCertificateController = file;
+                            //       },
+                            //       onUploadSuccess: (path, name) {
+                            //         provider.gstFilePath = path;
+                            //       },
+                            //     );
+                            //   },
+                            // ),
+                            // buildImageUploadBox(
+                            //   title: "Choose Logo (PNG/JPG/JPEG)",
+                            //   imageFile: provider.logoController,
+                            //   onTap: () {
+                            //     provider.pickAndUploadImage(
+                            //       context: context,
+                            //       allowedExtensions: ['png', 'jpg', 'jpeg'],
+                            //       onFileSelected: (file) {
+                            //         provider.logoController = file;
+                            //       },
+                            //       onUploadSuccess: (path, name) {
+                            //         provider.logoFilePath = path;
+                            //       },
+                            //     );
+                            //   },
+                            // ),
+
+                            Consumer<EmpOTRFormProvider>(
+                              builder: (context, provider, _) {
+                                return Column(
+                                  children: provider.documentMasterList.map((doc) {
+                                    final isLogo = doc.shortName == "Logo";
+
+                                    return buildImageUploadBox(
+                                      title: doc.documentMasterEn ?? "",
+                                      imageFile:
+                                      provider.documentFileMap[doc.documentMasterId],
+                                      onTap: () {
+                                        if (isLogo) {
+                                          provider.pickAndUploadImage(
+                                            context: context,
+                                            allowedExtensions: ['png', 'jpg', 'jpeg'],
+                                            onFileSelected: (file) {
+                                              provider.documentFileMap[doc.documentMasterId!] =
+                                                  file;
+                                            },
+                                            onUploadSuccess: (path, name) {
+                                              provider.documentUploadedPathMap[
+                                              doc.documentMasterId!] = name;
+                                            },
+                                          );
+                                        } else {
+                                          provider.pickAndUploadPdf(
+                                            context: context,
+                                            onFileSelected: (file) {
+                                              provider.documentFileMap[doc.documentMasterId!] =
+                                                  file;
+                                            },
+                                            onUploadSuccess: (path, name) {
+                                              provider.documentUploadedPathMap[
+                                              doc.documentMasterId!] = name;
+                                            },
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }).toList(),
+                                );
                               },
                             ),
 
-                            buildImageUploadBox(
-                              title: "TAN Certificate",
-                              imageFile: provider.tanCertificateController,
-                              onTap: () {
-                                provider.pickImage((file) {
-                                  provider.tanCertificateController = file;
-                                });
-                              },
-                            ),
 
-                            buildImageUploadBox(
-                              title: "GST Certificate",
-                              imageFile: provider.gstCertificateController,
-                              onTap: () {
-                                provider.pickImage((file) {
-                                  provider.gstCertificateController = file;
-                                });
-                              },
-                            ),
-
-                            buildImageUploadBox(
-                              title: "Choose Logo (PNG/JPG/JPEG)",
-                              imageFile: provider.logoController,
-                              onTap: () {
-                                provider.pickImage((file) {
-                                  provider.logoController = file;
-                                });
-                              },
-                            ),
                             const SizedBox(height: 24),
                           ],
                         ),
@@ -2110,23 +2311,20 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // if (validateBasicDetails(context, provider)) {
-                            //   confirmAlertDialog(
-                            //     context,
-                            //     "Confirm Submission",
-                            //     "Are you sure you want to submit the form ?",
-                            //         (value) {
-                            //       if (value.toString() == "success") {
-                            //         provider.sendSMSApi(
-                            //             context,
-                            //             feachJanAadhaarDataList,
-                            //             janMemberId,
-                            //             userID);
-                            //       }
-                            //     },
-                            //   );
-                            //   // NEXT STEP
-                            // }
+                            if (validateEmpOTRBasicAndOfficeDetails(
+                                context, provider)) {
+                              confirmAlertDialog(
+                                context,
+                                "Confirm Submission",
+                                "Are you sure you want to submit the form ?",
+                                (value) {
+                                  if (value.toString() == "success") {
+                                    provider.submitEmpOTRForm(context);
+                                  }
+                                },
+                              );
+                              // NEXT STEP
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: kPrimaryColor, // nicer blue
@@ -2137,7 +2335,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                           ),
                           child: const Text('Save',
                               style:
-                              TextStyle(fontSize: 16, color: Colors.white)),
+                                  TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       )
                     ],
@@ -2152,36 +2350,55 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
   Widget buildImageUploadBox({
     required String title,
     required File? imageFile,
-    required VoidCallback onTap,
+    VoidCallback? onTap,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: labelWithStar(title, required: true),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: InkWell(
+    final bool isPdf =
+        imageFile != null && imageFile.path.toLowerCase().endsWith('.pdf');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+          GestureDetector(
             onTap: onTap,
             child: Container(
-              height: 80,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: fafafaColor,
+                border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade400),
               ),
               child: imageFile == null
-                  ? Column(
+                  ? const Center(
+                child: Icon(Icons.cloud_upload, size: 30),
+              )
+
+              // ✅ PDF UI
+                  : isPdf
+                  ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.cloud_upload_outlined, size: 35),
-                  SizedBox(height: 8),
-                  Text("Tap to upload image"),
+                children: [
+                  const Icon(
+                    Icons.picture_as_pdf,
+                    color: Colors.red,
+                    size: 36,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      imageFile.path.split('/').last,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ),
                 ],
               )
+
+              // ✅ IMAGE UI
                   : ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.file(
@@ -2192,11 +2409,517 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
+}
+
+bool validateEmpOTRBasicAndOfficeDetails(
+  BuildContext context,
+  EmpOTRFormProvider provider,
+) {
+  /// =========================
+  /// 1️⃣ BASIC DETAILS
+  /// =========================
+
+  if (provider.brnController.text.trim().isEmpty) {
+    showAlertError("Please enter BRN", context);
+    return false;
+  }
+
+  if (provider.districtController.text.trim().isEmpty) {
+    showAlertError("Please enter District", context);
+    return false;
+  }
+
+  if (provider.areaType == null || provider.areaType!.isEmpty) {
+    showAlertError("Please select Area (Rural / Urban)", context);
+    return false;
+  }
+
+  if (provider.tehsilController.text.trim().isEmpty) {
+    showAlertError("Please enter Tehsil", context);
+    return false;
+  }
+
+  if (provider.areaType == 'Rural' &&
+      provider.villageController.text.trim().isEmpty) {
+    showAlertError("Please enter Village", context);
+    return false;
+  }
+
+  if (provider.localBodyController.text.trim().isEmpty) {
+    showAlertError("Please enter Local Body", context);
+    return false;
+  }
+
+  if (provider.areaType == 'Urban' &&
+      provider.wardController.text.trim().isEmpty) {
+    showAlertError("Please enter Ward", context);
+    return false;
+  }
+
+  /// =========================
+  /// 2️⃣ BRANCH OFFICE DETAILS
+  /// =========================
+
+  if (provider.companyNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Company Name", context);
+    return false;
+  }
+
+  if (provider.houseNoController.text.trim().isEmpty) {
+    showAlertError("Please enter House Number", context);
+    return false;
+  }
+
+  if (provider.laneController.text.trim().isEmpty) {
+    showAlertError("Please enter Lane", context);
+    return false;
+  }
+
+  if (provider.localityController.text.trim().isEmpty) {
+    showAlertError("Please enter Locality", context);
+    return false;
+  }
+
+  if (provider.pinCodeController.text.trim().isEmpty) {
+    showAlertError("Please enter Pin Code", context);
+    return false;
+  }
+
+  if (provider.pinCodeController.text.length != 6) {
+    showAlertError("Pin Code must be 6 digits", context);
+    return false;
+  }
+
+  if (provider.telNoController.text.trim().isEmpty) {
+    showAlertError("Please enter Telephone Number", context);
+    return false;
+  }
+
+  if (provider.telError != null) {
+    showAlertError(provider.telError!, context);
+    return false;
+  }
+
+  if (provider.emailController.text.trim().isEmpty) {
+    showAlertError("Please enter Email", context);
+    return false;
+  }
+
+  if (provider.emailErrorText != null) {
+    showAlertError(provider.emailErrorText!, context);
+    return false;
+  }
+
+  if (provider.gstController.text.trim().isEmpty) {
+    showAlertError("Please enter GST Number", context);
+    return false;
+  }
+
+  if (provider.gstLengthError != null || provider.gstFormatError != null) {
+    showAlertError(
+      provider.gstLengthError ?? provider.gstFormatError!,
+      context,
+    );
+    return false;
+  }
+
+  if (provider.panController.text.trim().isEmpty) {
+    showAlertError("Please enter PAN Number", context);
+    return false;
+  }
+
+  if (provider.panErrorText != null) {
+    showAlertError(provider.panErrorText!, context);
+    return false;
+  }
+
+  if (provider.panHolderController.text.trim().isEmpty) {
+    showAlertError("Please enter PAN Holder Name", context);
+    return false;
+  }
+
+  if (provider.panVerifiedController.text.trim().isEmpty) {
+    showAlertError("Please verify PAN", context);
+    return false;
+  }
+
+  if (provider.tanController.text.trim().isEmpty) {
+    showAlertError("Please enter TAN Number", context);
+    return false;
+  }
+
+  if (provider.tanErrorText != null) {
+    showAlertError(provider.tanErrorText!, context);
+    return false;
+  }
+
+  /// =========================
+  /// 3️⃣ HEAD OFFICE DETAILS
+  /// =========================
+
+  if (provider.hoCompanyNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Company Name", context);
+    return false;
+  }
+
+  if (provider.hoTelNoController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Telephone Number", context);
+    return false;
+  }
+
+  if (provider.hoEmailController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Email", context);
+    return false;
+  }
+
+  if (provider.emailErrorText != null) {
+    showAlertError(provider.emailErrorText!, context);
+    return false;
+  }
+
+  if (provider.hoPanController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office PAN Number", context);
+    return false;
+  }
+
+  if (provider.panErrorText != null) {
+    showAlertError(provider.panErrorText!, context);
+    return false;
+  }
+
+  if (provider.hoHouseNoController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office House Number", context);
+    return false;
+  }
+
+  if (provider.hoLaneController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Lane", context);
+    return false;
+  }
+
+  if (provider.hoLocalityController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Locality", context);
+    return false;
+  }
+
+  if (provider.hoPincodeController.text.trim().isEmpty) {
+    showAlertError("Please enter Head Office Pincode", context);
+    return false;
+  }
+
+  if (provider.hoPincodeController.text.length != 6) {
+    showAlertError("Head Office Pincode must be 6 digits", context);
+    return false;
+  }
+
+  /// =========================
+  /// 4️⃣ HEAD OFFICE APPLICANT DETAILS
+  /// =========================
+  if (provider.applicantNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Applicant Name", context);
+    return false;
+  }
+
+  if (provider.applicantMobileController.text.trim().isEmpty) {
+    showAlertError("Please enter Applicant Mobile Number", context);
+    return false;
+  }
+
+  if (provider.applicantMobileController.text.length != 10) {
+    showAlertError("Applicant Mobile must be 10 digits", context);
+    return false;
+  }
+
+  if (provider.applicantEmailController.text.trim().isEmpty) {
+    showAlertError("Please enter Applicant Email", context);
+    return false;
+  }
+
+  if (provider.applicantEmailError != null) {
+    showAlertError(provider.applicantEmailError!, context);
+    return false;
+  }
+
+  /// STATE
+  if (provider.selectedState == null ||
+      provider.stateController.text.trim().isEmpty) {
+    showAlertError("Please select State", context);
+    return false;
+  }
+
+  /// DISTRICT
+  if (provider.selectedDistrict == null ||
+      provider.districtHoController.text.trim().isEmpty) {
+    showAlertError("Please select District", context);
+    return false;
+  }
+
+  /// CITY
+  if (provider.selectedCity == null ||
+      provider.cityHoController.text.trim().isEmpty) {
+    showAlertError("Please select City", context);
+    return false;
+  }
+
+  if (provider.yearController.text.trim().isEmpty) {
+    showAlertError("Please enter Year", context);
+    return false;
+  }
+
+  if (provider.ownershipController.text.trim().isEmpty) {
+    showAlertError("Please enter Ownership", context);
+    return false;
+  }
+
+  if (provider.totalPersonController.text.trim().isEmpty) {
+    showAlertError("Please enter Total Person", context);
+    return false;
+  }
+
+  if (provider.actAuthorityRegController.text.trim().isEmpty) {
+    showAlertError("Please enter Act Authority Reg", context);
+    return false;
+  }
+
+  if (provider.tanNoController.text.trim().isEmpty) {
+    showAlertError("Please enter TAN Number", context);
+    return false;
+  }
+
+  if (provider.hoTanErrorText != null) {
+    showAlertError(provider.hoTanErrorText!, context);
+    return false;
+  }
+
+  if (provider.hoApplicantEmailController.text.trim().isEmpty) {
+    showAlertError("Please enter Email", context);
+    return false;
+  }
+
+  if (provider.hoApplicantEmailError != null) {
+    showAlertError(provider.hoApplicantEmailError!, context);
+    return false;
+  }
+
+  if (provider.stateController.text.trim().isEmpty) {
+    showAlertError("Please select State", context);
+    return false;
+  }
+
+  if (provider.districtHoController.text.trim().isEmpty) {
+    showAlertError("Please select District", context);
+    return false;
+  }
+
+  if (provider.cityHoController.text.trim().isEmpty) {
+    showAlertError("Please select City", context);
+    return false;
+  }
+
+  if (provider.websiteController.text.trim().isEmpty) {
+    showAlertError("Please enter Website", context);
+    return false;
+  }
+
+  if (provider.applicantAddressController.text.trim().isEmpty) {
+    showAlertError("Please enter Applicant Address", context);
+    return false;
+  }
+
+  if (provider.nicCodeController.text.trim().isEmpty) {
+    showAlertError("Please enter NIC Code", context);
+    return false;
+  }
+
+  /// =========================
+  /// 5️⃣ CONTACT PERSON DETAILS
+  /// =========================
+  if (provider.contactPanController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact PAN No", context);
+    return false;
+  }
+
+  if (provider.contactPanError != null) {
+    showAlertError(provider.contactPanError!, context);
+    return false;
+  }
+
+  if (provider.contactNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Full Name", context);
+    return false;
+  }
+
+  if (provider.contactMobileController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Mobile Number", context);
+    return false;
+  }
+
+  if (provider.contactMobileError != null) {
+    showAlertError(provider.contactMobileError!, context);
+    return false;
+  }
+
+  if (provider.contactAltMobileController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Alternate Mobile", context);
+    return false;
+  }
+
+  if (provider.contactAlterMobileError != null) {
+    showAlertError(provider.contactAlterMobileError!, context);
+    return false;
+  }
+
+  if (provider.contactEmailController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Email", context);
+    return false;
+  }
+
+  if (provider.emailErrorText != null) {
+    showAlertError(provider.emailErrorText!, context);
+    return false;
+  }
+
+  /// CONTACT STATE
+  if (provider.coSelectedState == null ||
+      provider.coStateController.text.trim().isEmpty) {
+    showAlertError("Please select Contact State", context);
+    return false;
+  }
+
+  /// CONTACT DISTRICT
+  if (provider.coSelectedDistrict == null ||
+      provider.coDistrictController.text.trim().isEmpty) {
+    showAlertError("Please select Contact District", context);
+    return false;
+  }
+
+  /// CONTACT CITY
+  if (provider.coSelectedCity == null ||
+      provider.coCityController.text.trim().isEmpty) {
+    showAlertError("Please select Contact City", context);
+    return false;
+  }
+
+  if (provider.coStateController.text.trim().isEmpty) {
+    showAlertError("Please select Contact State", context);
+    return false;
+  }
+
+  if (provider.coDistrictController.text.trim().isEmpty) {
+    showAlertError("Please select Contact District", context);
+    return false;
+  }
+
+  if (provider.coCityController.text.trim().isEmpty) {
+    showAlertError("Please select Contact City", context);
+    return false;
+  }
+
+  if (provider.contactPincodeController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Pincode", context);
+    return false;
+  }
+
+  if (provider.contactDesignationController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Designation", context);
+    return false;
+  }
+
+  if (provider.contactDepartmentController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Department", context);
+    return false;
+  }
+
+  if (provider.contactAddressController.text.trim().isEmpty) {
+    showAlertError("Please enter Contact Address", context);
+    return false;
+  }
+
+  /// =========================
+  /// 6️⃣ EXCHANGE / DISTRICT EMPLOYMENT OFFICE
+  /// =========================
+  if (provider.exchangeNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Exchange Name", context);
+    return false;
+  }
+
+  /// 7 exchange market information
+  int male = int.tryParse(provider.noOfMaleEmpController.text) ?? 0;
+  int female = int.tryParse(provider.noOfFemaleEmpController.text) ?? 0;
+  int trans = int.tryParse(provider.noOfTransEmpController.text) ?? 0;
+  int total = int.tryParse(provider.noOfTotalEmpController.text) ?? 0;
+
+  /// MALE
+  if (provider.noOfMaleEmpController.text.trim().isEmpty) {
+    showAlertError("Please enter No of Male Employee", context);
+    return false;
+  }
+
+  /// FEMALE
+  if (provider.noOfFemaleEmpController.text.trim().isEmpty) {
+    showAlertError("Please enter No of Female Employee", context);
+    return false;
+  }
+
+  /// TRANSGENDER
+  if (provider.noOfTransEmpController.text.trim().isEmpty) {
+    showAlertError("Please enter No of Transgender Employee", context);
+    return false;
+  }
+
+  /// TOTAL CHECK
+  if (total != (male + female + trans)) {
+    showAlertError("Total employees count is incorrect", context);
+    return false;
+  }
+
+  /// ORGANIZATION TYPE
+  if (provider.organisationType == null ||
+      provider.organisationType!.isEmpty) {
+    showAlertError("Please select Type of Organization", context);
+    return false;
+  }
+
+  /// GOVERNMENT BODY
+  if (provider.showGovtBody &&
+      provider.organisationType != null) {
+    if (provider.govtBody == null || provider.govtBody!.isEmpty) {
+      showAlertError("Please select Government Body", context);
+      return false;
+    }
+  }
+
+  /// ACT ESTABLISHMENT
+  if (provider.showActEst &&
+      provider.organisationType != null) {
+    if (provider.selectedActEst == null) {
+      showAlertError("Please select Act Establishment", context);
+      return false;
+    }
+  }
+
+
+  /// INDUSTRY TYPE
+  if (provider.industryType == null ||
+      provider.industryType!.isEmpty) {
+    showAlertError("Please select Industry Type", context);
+    return false;
+  }
+
+  /// SECTOR
+  if (provider.selectedSector == null) {
+    showAlertError("Please select Sector", context);
+    return false;
+  }
+
+
+  /// ✅ ALL VALIDATIONS PASSED
+  return true;
 }
 
 Widget buildDropdownWithBorderFieldOnlyThisPage<T>({
@@ -2214,8 +2937,10 @@ Widget buildDropdownWithBorderFieldOnlyThisPage<T>({
     child: InputDecorator(
       decoration: InputDecoration(
         filled: true,
-        fillColor: fafafaColor, // SAME as text field
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        fillColor: fafafaColor,
+        // SAME as text field
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade400),
@@ -2281,5 +3006,3 @@ Widget buildDropdownWithBorder({
     ),
   );
 }
-
-

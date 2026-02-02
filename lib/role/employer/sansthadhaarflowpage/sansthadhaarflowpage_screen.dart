@@ -5,6 +5,7 @@ import 'package:rajemployment/utils/gradient_scaffold.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 import '../../../utils/textfeild.dart';
+import '../empotr_form/empotr_form.dart';
 import 'provider/sansthadhaarflow_provider.dart';
 import 'package:flutter/services.dart';
 
@@ -24,6 +25,17 @@ class SansthaAadhaarFlowPage extends StatefulWidget {
 }
 
 class _SansthaAadhaarFlowPageState extends State<SansthaAadhaarFlowPage> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Reset provider when page is (re)opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SansthaAadhaarFlowProvider>().clearData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -102,7 +114,17 @@ class _SansthaAadhaarFlowPageState extends State<SansthaAadhaarFlowPage> {
                                 value: false,
                                 groupValue: provider.hasBrn,
                                 onChanged: (value) {
-                                  provider.setHasBrn(value!);
+                                  // provider.setHasBrn(value!);
+                                  provider.clearData();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => EmpOTRFormScreen(
+                                        ssoId: widget.ssoId,
+                                        userID: widget.userID,
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                               const Text("No"),

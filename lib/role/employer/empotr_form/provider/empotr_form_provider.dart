@@ -1,15 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../api_service/model/base/api_response.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/global.dart';
+import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/user_new.dart';
+import '../../../../utils/utility_class.dart';
 import '../modal/actEstablishment_modal.dart';
 import '../modal/city_modal.dart';
 import '../modal/district_modal.dart';
+import '../modal/document_master_modal.dart';
 import '../modal/sector_modal.dart';
 import '../modal/state_modal.dart';
+import '../modal/upload_document_modal.dart';
 
 
 class EmpOTRFormProvider with ChangeNotifier {
@@ -64,6 +72,19 @@ class EmpOTRFormProvider with ChangeNotifier {
   final TextEditingController hoLaneController = TextEditingController();
   final TextEditingController hoLocalityController = TextEditingController();
   final TextEditingController hoPincodeController = TextEditingController();
+
+
+  bool districtPrefilled = false;
+  bool pinCodePrefilled = false;
+  bool emailPrefilled = false;
+  bool panPrefilled = false;
+  bool tanPrefilled = false;
+
+  bool hoEmailPrefilled = false;
+  bool hoPanPrefilled = false;
+  bool applicantEmailPrefilled = false;
+
+
 
   /// 4. Head Office Applicant Details
   final TextEditingController applicantNameController = TextEditingController();
@@ -182,6 +203,18 @@ class EmpOTRFormProvider with ChangeNotifier {
   final TextEditingController industryTypetController = TextEditingController();
   final TextEditingController sectorController = TextEditingController();
 
+  bool get showGovtBody {
+    if (organisationType == null) return true;
+    return organisationType == "Government" || organisationType == "PSU";
+  }
+
+  bool get showActEst {
+    if (organisationType == null) return true;
+    return organisationType == "Private" || organisationType == "PSU";
+  }
+
+
+
   String? organisationType;
   String? govtBody;
   String? industryType;
@@ -196,15 +229,17 @@ class EmpOTRFormProvider with ChangeNotifier {
 
 
   /// 8. Upload Organization/Company Documents
-  // final TextEditingController panCertificateController = TextEditingController();
-  // final TextEditingController tanCertificateController = TextEditingController();
-  // final TextEditingController gstCertificateController = TextEditingController();
-  // final TextEditingController logoController = TextEditingController();
-
   File? panCertificateController;
   File? tanCertificateController;
   File? gstCertificateController;
   File? logoController;
+
+  String panFilePath = "";
+  String tanFilePath = "";
+  String gstFilePath = "";
+  String logoFilePath = "";
+
+
 
 
 
@@ -222,6 +257,11 @@ class EmpOTRFormProvider with ChangeNotifier {
 
   void setOrganisationType(String? value) {
     organisationType = value;
+
+    // Reset dependent fields
+    govtBody = null;
+    selectedActEst = null;
+
     notifyListeners();
   }
 
@@ -388,9 +428,6 @@ class EmpOTRFormProvider with ChangeNotifier {
     }
   }
 
-
-
-
   void calculateTotalEmployees() {
     final male = int.tryParse(noOfMaleEmpController.text) ?? 0;
     final female = int.tryParse(noOfFemaleEmpController.text) ?? 0;
@@ -424,11 +461,212 @@ class EmpOTRFormProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> pickAndUploadImage({
+    required BuildContext context,
+    required List<String> allowedExtensions,
+    required Function(File file) onFileSelected,
+    required Function(String filePath, String fileName) onUploadSuccess,
+  }) async {
+    showImagePicker(context, (pickedImage) async {
+      if (pickedImage == null) return;
+
+      final ext = pickedImage.path.split('.').last.toLowerCase();
+
+      // ✅ File type validation (DYNAMIC)
+      if (!allowedExtensions.contains(ext)) {
+        showAlertError(
+          "Allowed file types: ${allowedExtensions.join(', ').toUpperCase()}",
+          context,
+        );
+        return;
+      }
+
+      final file = File(pickedImage.path);
+
+      // ✅ Size validation (25 KB)
+      final fileSizeInKB = (await file.length()) / 1024;
+      if (fileSizeInKB > 50) {
+        showAlertError(
+          "File size must be less than 50 KB",
+          context,
+        );
+        return;
+      }
+
+      // ✅ Show preview immediately
+      onFileSelected(file);
+      notifyListeners();
+
+      try {
+        String timestamp =
+            "${DateTime.now().millisecondsSinceEpoch}.$ext";
+
+        FormData param = FormData.fromMap({
+          "file": await MultipartFile.fromFile(
+            file.path,
+            filename: timestamp,
+          ),
+        });
+
+        final res = await uploadDocumentApi(context, param);
+
+        if (res != null &&
+            res.state == 1 &&
+            res.data != null &&
+            res.data!.isNotEmpty) {
+
+          // ✅ Show preview ONLY after success
+          onFileSelected(file);
+
+          onUploadSuccess(
+            res.data![0].filePath ?? "",
+            res.data![0].fileName ?? "",
+          );
+
+          notifyListeners();
+        }
+
+      } catch (e) {
+        showAlertError(e.toString(), context);
+      }
+    });
+  }
+
+
+  List<DocumentMasterData> documentMasterList = [];
+
+// store picked files against DocumentMasterId
+  Map<int, File?> documentFileMap = {};
+  Map<int, String?> documentUploadedPathMap = {};
+
+  Future<void> fetchDocumentMastersApi(BuildContext context) async {
+    final apiResponse =
+    await commonRepo.get("Common/FetchDocumentMastersByScheme/0");
+
+    if (apiResponse.response?.statusCode == 200) {
+      var responseData = apiResponse.response?.data;
+      if (responseData is String) {
+        responseData = jsonDecode(responseData);
+      }
+
+        final modal = DocumentMasterModal.fromJson(responseData);
+
+        documentMasterList.clear();
+
+      if (modal.data != null) {
+        for (final doc in modal.data!) {
+          // ❌ EXCLUDE Job Description ONLY
+          if (doc.shortName != "JobDescriptionDoc_ForGovtJobPost") {
+            documentMasterList.add(doc);
+          }
+        }
+      }
+
+        notifyListeners();
+
+
+
+    }
+  }
+
+
+  Future<void> pickAndUploadPdf({
+    required BuildContext context,
+    required Function(File file) onFileSelected,
+    required Function(String filePath, String fileName) onUploadSuccess,
+  }) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result == null) return;
+
+    final file = File(result.files.single.path!);
+
+    // ✅ Size validation (25 KB)
+    final sizeInKB = (await file.length()) / 1024;
+    if (sizeInKB > 300) {
+      showAlertError("File size must be less than 300 KB", context);
+      return;
+    }
+
+    // ✅ Preview immediately
+    onFileSelected(file);
+    notifyListeners();
+
+    String timestamp =
+        "${DateTime.now().millisecondsSinceEpoch}.pdf";
+
+    FormData param = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: timestamp,
+      ),
+    });
+
+    final res = await uploadDocumentApi(context, param);
+
+    if (res != null &&
+        res.state == 1 &&
+        res.data != null &&
+        res.data!.isNotEmpty) {
+      onUploadSuccess(
+        res.data![0].filePath ?? "",
+        res.data![0].fileName ?? "",
+      );
+    }
+  }
+
+
+
+  Future<UploadDocumentModal?> uploadDocumentApi(
+      BuildContext context, FormData inputText) async {
+
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+      return null;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.uploadDocumentRepo(
+        "Common/UploadDocument",
+        inputText,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        return UploadDocumentModal.fromJson(responseData);
+      } else {
+        showAlertError("Something went wrong", context);
+        return null;
+      }
+    } catch (e) {
+      showAlertError(e.toString(), context);
+      return null;
+    }
+  }
+
 
   void autoFillFromBRN(Map<String, dynamic> data) {
     // -------- BASIC DETAILS --------
     brnController.text = data['BRN']?.toString() ?? "";
+
     districtController.text = data['District']?.toString() ?? "";
+    districtPrefilled = districtController.text.isNotEmpty;
+
     areaType = data['Area']?.toString() ?? "";
     isAreaFromBRN = areaType.isNotEmpty;
     tehsilController.text = data['Tehsil']?.toString() ?? "";
@@ -441,12 +679,20 @@ class EmpOTRFormProvider with ChangeNotifier {
     houseNoController.text = data['BO_HouseNo']?.toString() ?? "";
     laneController.text = data['BO_Lane']?.toString() ?? "";
     localityController.text = data['BO_Locality']?.toString() ?? "";
+
     pinCodeController.text = data['BO_PinCode']?.toString() ?? "";
+    pinCodePrefilled = pinCodeController.text.isNotEmpty;
+
     emailController.text = data['BO_Email']?.toString() ?? "";
+    emailPrefilled = emailController.text.isNotEmpty;
 
     panController.text = data['BO_PanNo']?.toString() ?? "";
+    panPrefilled = panController.text.isNotEmpty;
+
     panVerifiedController.text = data['BO_PanNo']?.toString() ?? "";
+
     tanController.text = data['BO_TanNo']?.toString() ?? "";
+    tanPrefilled = tanController.text.isNotEmpty;
 
     // -------- HEAD OFFICE DETAILS (3rd SECTION) --------
     hoCompanyNameController.text = data['HO_Name']?.toString() ?? "";
@@ -455,8 +701,13 @@ class EmpOTRFormProvider with ChangeNotifier {
     hoLocalityController.text = data['HO_Locality']?.toString() ?? "";
     hoPincodeController.text = data['HO_PinCode']?.toString() ?? "";
     hoTelNoController.text = data['HO_TelNo']?.toString() ?? "";
+
     hoEmailController.text = data['HO_EMail']?.toString() ?? "";
+    hoEmailPrefilled = hoEmailController.text.isNotEmpty;
+
     hoPanController.text = data['HO_PanNo']?.toString() ?? "";
+    hoPanPrefilled = hoPanController.text.isNotEmpty;
+
 
     // -------- APPLICANT / OTHER DETAILS (4th SECTION) --------
     nicCodeController.text = data['NIC_Code']?.toString() ?? "";
@@ -470,8 +721,11 @@ class EmpOTRFormProvider with ChangeNotifier {
         data['Applicant_Name']?.toString() ?? "";
     applicantMobileController.text =
         data['Applicant_No']?.toString() ?? "";
+
     applicantEmailController.text =
         data['Applicant_EMail']?.toString() ?? "";
+    applicantEmailPrefilled = applicantEmailController.text.isNotEmpty;
+
     applicantAddressController.text =
         data['Applicant_Address']?.toString() ?? "";
 
@@ -483,16 +737,179 @@ class EmpOTRFormProvider with ChangeNotifier {
     return controller.text.isEmpty;
   }
 
-  void submitEmpOTRForm(BuildContext context) {
-    // TEMP: bypass API
-    debugPrint("Emp OTR Form Submitted");
-    debugPrint("SSO: ${ssoController.text}");
-    debugPrint("Area: $areaType");
+  Future<void> submitEmpOTRForm(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Form saved successfully (mock)")),
-    );
+    try {
+      String? ipAddress = await UtilityClass.getIpAddress();
+
+      /// 🔹 Employer document list (DYNAMIC)
+      List<Map<String, dynamic>> employerDocs = [];
+
+      for (final doc in documentMasterList) {
+        final uploadedFileName =
+        documentUploadedPathMap[doc.documentMasterId];
+
+        if (uploadedFileName != null && uploadedFileName.isNotEmpty) {
+          employerDocs.add({
+            "SchemeID": doc.schemeID ?? 0,
+            "DocumentMasterId": doc.documentMasterId ?? 0,
+            "FileName": uploadedFileName,
+          });
+        }
+      }
+
+      String logoFileName = "";
+      for (final doc in documentMasterList) {
+        if (doc.shortName == "Logo") {
+          logoFileName =
+              documentUploadedPathMap[doc.documentMasterId] ?? "";
+          break;
+        }
+      }
+
+      /// 🔹 MAIN REQUEST BODY
+      Map<String, dynamic> data = {
+        "ActionName": "InsertData",
+        "SSOID": ssoController.text,
+        "UserId": UserData().model.value.userId.toString(),
+        "IsActive": 1,
+        "IPAddress": ipAddress ?? "",
+        "IPAddressv6": "::1",
+
+        "Sector": selectedSector?.iD.toString() ?? "0",
+        "ROCity": "",
+        "RODistrict": "",
+        "ROPinCode": "",
+        "ROContactNumber": "",
+        "ROPhone": "",
+
+        "BRN": brnController.text,
+        "Area": areaType,
+        "District": districtController.text,
+        "Tehsil": tehsilController.text,
+        "Village": "",
+        "LocalBody": localBodyController.text,
+        "Ward": wardController.text,
+
+        "OrganizationType": organisationType ?? "",
+        "Ownership": ownershipController.text,
+        "NIC_Code": nicCodeController.text,
+        "IndustryType": industryType ?? "",
+
+        "Website": websiteController.text,
+        "ExchangeName": exchangeNameController.text,
+        "GovernmentBody":
+        organisationType == "Government" || organisationType == "PSU"
+            ? govtBody ?? ""
+            : "",
+
+        "HO_Name": hoCompanyNameController.text,
+        "HO_HouseNo": hoHouseNoController.text,
+        "HO_Lane": hoLaneController.text,
+        "HO_Locality": hoLocalityController.text,
+        "HO_PinCode": hoPincodeController.text,
+        "HO_Phone": hoTelNoController.text,
+        "HO_Email": hoEmailController.text,
+        "HO_PanNo": hoPanController.text,
+        "HO_TanNo": "",
+        "HOStateId": int.tryParse(stateIdController.text) ?? 0,
+        "HODistrictId": int.tryParse(districtIdController.text) ?? 0,
+        "HOCityId": int.tryParse(cityIdController.text) ?? 0,
+
+        "Branch_Name": companyNameController.text,
+        "Branch_HouseNumber": houseNoController.text,
+        "Branch_Lane": laneController.text,
+        "Branch_Locality": localityController.text,
+        "Branch_Email": emailController.text,
+        "Branch_PANHolder": panHolderController.text,
+        "Branch_PANVerified": panVerifiedController.text,
+        "Branch_Pincode": pinCodeController.text,
+        "Branch_TANNumber": tanController.text,
+
+        "Applicant_Name": applicantNameController.text,
+        "Applicant_No": applicantMobileController.text,
+        "Applicant_Email": applicantEmailController.text,
+        "Applicant_Address": applicantAddressController.text,
+
+        "Contact_AadharNumber": "",
+        "Contact_FirstName": contactNameController.text,
+        "Contact_LastName": "",
+        "Contact_MobileNumber": contactMobileController.text,
+        "Contact_AlternateMobileNumber": contactAltMobileController.text,
+        "Contact_Email": contactEmailController.text,
+        "Contact_PAN_No": contactPanController.text,
+        "Contact_State": int.tryParse(coStateIdController.text) ?? 0,
+        "Contact_District": int.tryParse(coDistrictIdController.text) ?? 0,
+        "Contact_City": int.tryParse(coCityIdController.text) ?? 0,
+        "Contact_Pincode": contactPincodeController.text,
+        "Contact_Address": contactAddressController.text,
+        "Contact_Designation": contactDesignationController.text,
+        "Contact_Department": contactDepartmentController.text,
+
+        "DocGSTNumber": "",
+        "DocPANNumber": "",
+        "DocTANNumber": "",
+        "DocEPFNumber": "",
+        "DocESINumber": "",
+        "RegistrationNumber": "",
+        "ActEstablishment":
+        organisationType == "Private" || organisationType == "PSU"
+            ? selectedActEst?.actEstablishment ?? ""
+            : "",
+        "ActAuthorityRegNo": "NA",
+
+        "NumberOfMaleEmployees":
+        int.tryParse(noOfMaleEmpController.text) ?? 0,
+        "NumberOfFemaleEmployees":
+        int.tryParse(noOfFemaleEmpController.text) ?? 0,
+        "NumberOfTransgenderEmployees":
+        int.tryParse(noOfTransEmpController.text) ?? 0,
+        "TotalNumberOfEmployees":
+        int.tryParse(noOfTotalEmpController.text) ?? 0,
+
+        "EMIP_Sector": "",
+        "Total_Person": 0,
+        "Year": DateTime.now().year.toString(),
+
+        "LogoFileName": logoFileName,
+        "EmployerDocumentList": employerDocs,
+      };
+
+      printFullJson(data);
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Employer/SaveEmployerDetail",
+        data,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+        successDialog(
+          context,
+          "Employer details saved successfully",
+              (_) {},
+        );
+      } else {
+        showAlertError("Something went wrong", context);
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
   }
+
 
   void validateGST(String value) {
     final gst = value.toUpperCase();
@@ -530,6 +947,8 @@ class EmpOTRFormProvider with ChangeNotifier {
     panHolderController.clear();
     panVerifiedController.clear();
     tanController.clear();
+    emailErrorText = null;
+    panErrorText = null;
 
     organisationType = null;
     govtBody = null;
@@ -563,6 +982,79 @@ class EmpOTRFormProvider with ChangeNotifier {
     selectedSector = null;
     sectorController.clear();
 
+    hoCompanyNameController.clear();
+    hoTelNoController.clear();
+    hoEmailController.clear();
+    hoPanController.clear();
+    panErrorText = null;
+    hoHouseNoController.clear();
+    hoLaneController.clear();
+    hoLocalityController.clear();
+    hoPincodeController.clear();
+
+    applicantNameController.clear();
+    applicantMobileController.clear();
+    applicantEmailController.clear();
+    applicantEmailError = null;
+    yearController.clear();
+    ownershipController.clear();
+    totalPersonController.clear();
+    actAuthorityRegController.clear();
+    tanNoController.clear();
+    hoTanErrorText = null;
+    hoApplicantEmailController.clear();
+    hoApplicantEmailError = null;
+    websiteController.clear();
+    applicantAddressController.clear();
+    nicCodeController.clear();
+
+    contactPanController.clear();
+    contactPanError = null;
+    contactNameController.clear();
+    contactMobileController.clear();
+    contactAltMobileController.clear();
+    contactAlterMobileError = null;
+    contactEmailController.clear();
+    contactEmailError = null;
+    contactDesignationController.clear();
+    contactDepartmentController.clear();
+    contactPincodeController.clear();
+    contactAddressController.clear();
+
+    exchangeNameController.clear();
+
+    noOfMaleEmpController.clear();
+    noOfFemaleEmpController.clear();
+    noOfTransEmpController.clear();
+    noOfTotalEmpController.clear();
+
+
+    coStateController.clear();
+    coStateIdController.clear();
+    coSelectedState = null;
+
+    coDistrictController.clear();
+    coDistrictIdController.clear();
+    coSelectedDistrict = null;
+
+    coCityController.clear();
+    coCityIdController.clear();
+    coSelectedCity = null;
+
+    districtPrefilled = false;
+    pinCodePrefilled = false;
+    emailPrefilled = false;
+    panPrefilled = false;
+    tanPrefilled = false;
+
+    hoEmailPrefilled = false;
+    hoPanPrefilled = false;
+    applicantEmailPrefilled = false;
+
+    panCertificateController = null;
+    tanCertificateController = null;
+    gstCertificateController = null;
+    logoController = null;
 
     notifyListeners();
   }
@@ -607,4 +1099,10 @@ extension TanValidator on String {
   bool isValidTan() {
     return RegExp(r'^[A-Z]{4}[0-9]{5}[A-Z]{1}$').hasMatch(this);
   }
+}
+
+void printFullJson(Map<String, dynamic> json) {
+  const encoder = JsonEncoder.withIndent('  ');
+  final prettyString = encoder.convert(json);
+  prettyString.split('\n').forEach((line) => debugPrint(line));
 }
