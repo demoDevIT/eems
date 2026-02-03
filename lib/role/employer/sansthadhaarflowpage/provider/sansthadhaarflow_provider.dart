@@ -41,12 +41,14 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
     /// CASE 1: NO BRN SELECTED
     /// ==========================
     if (hasBrn == false) {
+
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => EmpOTRFormScreen(
             ssoId: ssoId,
             userID: userID,
+            isFreshForm: true,
           ),
         ),
       );
@@ -111,6 +113,7 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
               builder: (_) => EmpOTRFormScreen(
                 ssoId: ssoId,
                 userID: userID,
+                isFreshForm: true,
                 brnResponseData: brnData, // 👈 TEMP PASS
               ),
             ),

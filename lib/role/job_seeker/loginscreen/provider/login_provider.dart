@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../constants/colors.dart';
 import '../../../../constants/constants.dart';
@@ -206,8 +207,19 @@ class LoginProvider with ChangeNotifier {
                 );
 
               } else {
-                print("22");
-                getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+                 // print("22");
+                 // getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+                ///// for work on employer dashboard design so as of now this login redirection is on employer dashboard page
+
+                Navigator.of(context).push(
+                  RightToLeftRoute(
+                    page:  EmployerDashboard(),
+                    duration: const Duration(milliseconds: 500),
+                    startOffset: const Offset(-1.0, 0.0),
+                  ),
+                );
+
+
               }
             }
             else{

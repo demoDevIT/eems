@@ -9,8 +9,10 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../employerdashboard/employer_dashboard.dart';
 import '../modal/actEstablishment_modal.dart';
 import '../modal/city_modal.dart';
 import '../modal/district_modal.dart';
@@ -18,6 +20,7 @@ import '../modal/document_master_modal.dart';
 import '../modal/sector_modal.dart';
 import '../modal/state_modal.dart';
 import '../modal/upload_document_modal.dart';
+import 'package:http_parser/http_parser.dart';
 
 
 class EmpOTRFormProvider with ChangeNotifier {
@@ -463,6 +466,7 @@ class EmpOTRFormProvider with ChangeNotifier {
 
   Future<void> pickAndUploadImage({
     required BuildContext context,
+    required int documentMasterId,
     required List<String> allowedExtensions,
     required Function(File file) onFileSelected,
     required Function(String filePath, String fileName) onUploadSuccess,
@@ -501,22 +505,35 @@ class EmpOTRFormProvider with ChangeNotifier {
         String timestamp =
             "${DateTime.now().millisecondsSinceEpoch}.$ext";
 
+
+
         FormData param = FormData.fromMap({
           "file": await MultipartFile.fromFile(
             file.path,
             filename: timestamp,
+            contentType: MediaType("image", ext),
           ),
+          "FileExtension": "image/$ext",
+          "FolderName": "Employer/OTRDocument",
+          "MaxFileSize": "51200", // 50 KB
+          "MinFileSize": "0",
+          "Password": "",
         });
 
         final res = await uploadDocumentApi(context, param);
 
         if (res != null &&
-            res.state == 1 &&
             res.data != null &&
             res.data!.isNotEmpty) {
+          final uploadedFileName = res.data![0].fileName ?? "";
+          documentUploadedPathMap[documentMasterId] = uploadedFileName;
+
+          debugPrint(
+            "✅ Stored upload: DocId=$documentMasterId File=$uploadedFileName",
+          );
 
           // ✅ Show preview ONLY after success
-          onFileSelected(file);
+         // onFileSelected(file);
 
           onUploadSuccess(
             res.data![0].filePath ?? "",
@@ -572,6 +589,7 @@ class EmpOTRFormProvider with ChangeNotifier {
 
   Future<void> pickAndUploadPdf({
     required BuildContext context,
+    required int documentMasterId,
     required Function(File file) onFileSelected,
     required Function(String filePath, String fileName) onUploadSuccess,
   }) async {
@@ -602,15 +620,28 @@ class EmpOTRFormProvider with ChangeNotifier {
       "file": await MultipartFile.fromFile(
         file.path,
         filename: timestamp,
+        contentType: MediaType("application", "pdf"),
       ),
+      // 👇 SAME AS POSTMAN
+      "FileExtension": "application/pdf",
+      "FolderName": "Employer/OTRDocument",
+      "MaxFileSize": "307200",
+      "MinFileSize": "0",
+      "Password": "",
     });
 
     final res = await uploadDocumentApi(context, param);
 
     if (res != null &&
-        res.state == 1 &&
         res.data != null &&
         res.data!.isNotEmpty) {
+      final uploadedFileName = res.data![0].fileName ?? "";
+      documentUploadedPathMap[documentMasterId] = uploadedFileName;
+
+      debugPrint(
+        "✅ Stored upload: DocId=$documentMasterId File=$uploadedFileName",
+      );
+
       onUploadSuccess(
         res.data![0].filePath ?? "",
         res.data![0].fileName ?? "",
@@ -657,6 +688,55 @@ class EmpOTRFormProvider with ChangeNotifier {
       showAlertError(e.toString(), context);
       return null;
     }
+  }
+
+
+  Future<void> getExchangeOfficeByDistrict(
+      BuildContext context,
+      String districtName,
+      ) async {
+    try {
+      Map<String, dynamic> body = {
+        "DistrictName": districtName,
+      };
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/GetExchangeNameOfficeListByDistrictName",
+        body,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        // ✅ Safety check
+        if (responseData != null &&
+            responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"].isNotEmpty) {
+
+          // ✅ Take first office (as per API response)
+          final officeName = responseData["Data"][0]["OfficeName"];
+
+          exchangeNameController.text = officeName?.toString() ?? "";
+        }
+      } else {
+        debugPrint("❌ Exchange Office API failed");
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      debugPrint("❌ Exchange Office Exception: $e");
+    }
+
+    notifyListeners();
   }
 
 
@@ -753,6 +833,16 @@ class EmpOTRFormProvider with ChangeNotifier {
       /// 🔹 Employer document list (DYNAMIC)
       List<Map<String, dynamic>> employerDocs = [];
 
+      debugPrint("📄 documentMasterList length: ${documentMasterList.length}");
+
+      for (final doc in documentMasterList) {
+        debugPrint(
+          "➡️ DocId: ${doc.documentMasterId}, "
+              "ShortName: ${doc.shortName}, "
+              "SchemeID: ${doc.schemeID}",
+        );
+      }
+
       for (final doc in documentMasterList) {
         final uploadedFileName =
         documentUploadedPathMap[doc.documentMasterId];
@@ -766,6 +856,12 @@ class EmpOTRFormProvider with ChangeNotifier {
         }
       }
 
+      debugPrint("📂 documentUploadedPathMap111:");
+      documentUploadedPathMap.forEach((key, value) {
+        debugPrint("   DocId: $key  => FileName: $value");
+      });
+
+
       String logoFileName = "";
       for (final doc in documentMasterList) {
         if (doc.shortName == "Logo") {
@@ -775,69 +871,199 @@ class EmpOTRFormProvider with ChangeNotifier {
         }
       }
 
+      debugPrint("📂 documentUploadedPathMap222:");
+      documentUploadedPathMap.forEach((key, value) {
+        debugPrint("   DocId: $key  => FileName: $value");
+      });
+
+      debugPrint("🧾 employerDocs length: ${employerDocs.length}");
+
+      for (final doc in employerDocs) {
+        debugPrint(doc.toString());
+      }
+
+      // OLD parameters which was also working and give successfull message
+      // Map<String, dynamic> data = {
+      //   "ActionName": "InsertData",
+      //   "SSOID": ssoController.text,
+      //   "UserId": UserData().model.value.userId.toString(),
+      //   "IsActive": 1,
+      //   "IPAddress": ipAddress ?? "",
+      //   "IPAddressv6": "::1",
+      //
+      //   "Sector": selectedSector?.iD.toString() ?? "0",
+      //   "ROCity": "",
+      //   "RODistrict": "",
+      //   "ROPinCode": "",
+      //   "ROContactNumber": "",
+      //   "ROPhone": "",
+      //
+      //   "BRN": brnController.text,
+      //   "Area": areaType,
+      //   "District": districtController.text,
+      //   "Tehsil": tehsilController.text,
+      //   "Village": "",
+      //   "LocalBody": localBodyController.text,
+      //   "Ward": wardController.text,
+      //
+      //   "OrganizationType": organisationType ?? "",
+      //   "Ownership": ownershipController.text,
+      //   "NIC_Code": nicCodeController.text,
+      //   "IndustryType": industryType ?? "",
+      //
+      //   "Website": websiteController.text,
+      //   "ExchangeName": exchangeNameController.text,
+      //   "GovernmentBody":
+      //   organisationType == "Government" || organisationType == "PSU"
+      //       ? govtBody ?? ""
+      //       : "",
+      //
+      //   "HO_Name": hoCompanyNameController.text,
+      //   "HO_HouseNo": hoHouseNoController.text,
+      //   "HO_Lane": hoLaneController.text,
+      //   "HO_Locality": hoLocalityController.text,
+      //   "HO_PinCode": hoPincodeController.text,
+      //   "HO_Phone": hoTelNoController.text,
+      //   "HO_Email": hoEmailController.text,
+      //   "HO_PanNo": hoPanController.text,
+      //   "HO_TanNo": "",
+      //   "HOStateId": int.tryParse(stateIdController.text) ?? 0,
+      //   "HODistrictId": int.tryParse(districtIdController.text) ?? 0,
+      //   "HOCityId": int.tryParse(cityIdController.text) ?? 0,
+      //
+      //   "Branch_Name": companyNameController.text,
+      //   "Branch_HouseNumber": houseNoController.text,
+      //   "Branch_Lane": laneController.text,
+      //   "Branch_Locality": localityController.text,
+      //   "Branch_Email": emailController.text,
+      //   "Branch_PANHolder": panHolderController.text,
+      //   "Branch_PANVerified": panVerifiedController.text,
+      //   "Branch_Pincode": pinCodeController.text,
+      //   "Branch_TANNumber": tanController.text,
+      //
+      //   "Applicant_Name": applicantNameController.text,
+      //   "Applicant_No": applicantMobileController.text,
+      //   "Applicant_Email": applicantEmailController.text,
+      //   "Applicant_Address": applicantAddressController.text,
+      //
+      //   "Contact_AadharNumber": "",
+      //   "Contact_FirstName": contactNameController.text,
+      //   "Contact_LastName": "",
+      //   "Contact_MobileNumber": contactMobileController.text,
+      //   "Contact_AlternateMobileNumber": contactAltMobileController.text,
+      //   "Contact_Email": contactEmailController.text,
+      //   "Contact_PAN_No": contactPanController.text,
+      //   "Contact_State": int.tryParse(coStateIdController.text) ?? 0,
+      //   "Contact_District": int.tryParse(coDistrictIdController.text) ?? 0,
+      //   "Contact_City": int.tryParse(coCityIdController.text) ?? 0,
+      //   "Contact_Pincode": contactPincodeController.text,
+      //   "Contact_Address": contactAddressController.text,
+      //   "Contact_Designation": contactDesignationController.text,
+      //   "Contact_Department": contactDepartmentController.text,
+      //
+      //   "DocGSTNumber": "",
+      //   "DocPANNumber": "",
+      //   "DocTANNumber": "",
+      //   "DocEPFNumber": "",
+      //   "DocESINumber": "",
+      //   "RegistrationNumber": "",
+      //   "ActEstablishment":
+      //   organisationType == "Private" || organisationType == "PSU"
+      //       ? selectedActEst?.actEstablishment ?? ""
+      //       : "",
+      //   "ActAuthorityRegNo": "NA",
+      //
+      //   "NumberOfMaleEmployees":
+      //   int.tryParse(noOfMaleEmpController.text) ?? 0,
+      //   "NumberOfFemaleEmployees":
+      //   int.tryParse(noOfFemaleEmpController.text) ?? 0,
+      //   "NumberOfTransgenderEmployees":
+      //   int.tryParse(noOfTransEmpController.text) ?? 0,
+      //   "TotalNumberOfEmployees":
+      //   int.tryParse(noOfTotalEmpController.text) ?? 0,
+      //
+      //   "EMIP_Sector": "",
+      //   "Total_Person": 0,
+      //   "Year": DateTime.now().year.toString(),
+      //
+      //   "LogoFileName": logoFileName,
+      //   "EmployerDocumentList": employerDocs,
+      // };
+
+      // NEW parameters get from Amit Tripathi which is also working and give successfull message
       /// 🔹 MAIN REQUEST BODY
       Map<String, dynamic> data = {
         "ActionName": "InsertData",
         "SSOID": ssoController.text,
-        "UserId": UserData().model.value.userId.toString(),
-        "IsActive": 1,
-        "IPAddress": ipAddress ?? "",
-        "IPAddressv6": "::1",
-
+        "UserId": 0,
+        "ID": 0,
         "Sector": selectedSector?.iD.toString() ?? "0",
         "ROCity": "",
-        "RODistrict": "",
+        "RODistrict": 0,
         "ROPinCode": "",
         "ROContactNumber": "",
         "ROPhone": "",
-
+        // "IPAddress": ipAddress ?? "",
+        // "IPAddressv6": "::1",
         "BRN": brnController.text,
         "Area": areaType,
         "District": districtController.text,
         "Tehsil": tehsilController.text,
-        "Village": "",
+        "Village": villageController.text,
         "LocalBody": localBodyController.text,
         "Ward": wardController.text,
-
+        "NCSID": "",
+        "OrganizationName": "",
+        "OrganizationCategory": "",
         "OrganizationType": organisationType ?? "",
-        "Ownership": ownershipController.text,
-        "NIC_Code": nicCodeController.text,
-        "IndustryType": industryType ?? "",
-
+        "Description": "",
+        "HOState": stateNameController.text,
+        "HOCity": locationNameController.text,
+        "HODistrict": districtNameController.text,
+        "HOSubdistrict": "",
+        "HOAddress": "",
+        "HOPinCode": hoPincodeController.text,
+        "HOPhone": hoTelNoController.text,
+        "HOCompanyEmail": hoEmailController.text,
+        "HOAlterEmail": "",
         "Website": websiteController.text,
-        "ExchangeName": exchangeNameController.text,
-        "GovernmentBody":
-        organisationType == "Government" || organisationType == "PSU"
-            ? govtBody ?? ""
-            : "",
-
-        "HO_Name": hoCompanyNameController.text,
-        "HO_HouseNo": hoHouseNoController.text,
-        "HO_Lane": hoLaneController.text,
-        "HO_Locality": hoLocalityController.text,
-        "HO_PinCode": hoPincodeController.text,
-        "HO_Phone": hoTelNoController.text,
-        "HO_Email": hoEmailController.text,
-        "HO_PanNo": hoPanController.text,
-        "HO_TanNo": "",
-        "HOStateId": int.tryParse(stateIdController.text) ?? 0,
-        "HODistrictId": int.tryParse(districtIdController.text) ?? 0,
-        "HOCityId": int.tryParse(cityIdController.text) ?? 0,
-
+        "ROAddress": "",
+        "DocPANNumber": "",
+        "DocTANNumber": "",
+        "DocGSTNumber": "27ABCDE1234F1Z2",
+        "DocEPFNumber": "",
+        "DocESINumber": "",
+        "DocRegNumber": "",
+        "DocUdyogNumber": "",
+        "DocCertificateNumber": "",
+        "DocAdditionalDetails": "",
         "Branch_Name": companyNameController.text,
         "Branch_HouseNumber": houseNoController.text,
         "Branch_Lane": laneController.text,
         "Branch_Locality": localityController.text,
         "Branch_Email": emailController.text,
         "Branch_PANHolder": panHolderController.text,
-        "Branch_PANVerified": panVerifiedController.text,
-        "Branch_Pincode": pinCodeController.text,
         "Branch_TANNumber": tanController.text,
-
+        "Branch_Pincode": pinCodeController.text,
+        "Branch_PANVerified": panVerifiedController.text,
+        "Head_Name": hoCompanyNameController.text,
+        "Head_HouseNumber": hoHouseNoController.text,
+        "Head_Lane": hoLaneController.text,
+        "Head_Locality": hoLocalityController.text,
+        "Head_Pincode": hoPincodeController.text,
+        "Head_TANNumber": "",
         "Applicant_Name": applicantNameController.text,
         "Applicant_No": applicantMobileController.text,
         "Applicant_Email": applicantEmailController.text,
         "Applicant_Address": applicantAddressController.text,
+        "Total_Person": 7,
+        "Year": yearController.text.trim(), //DateTime.now().year.toString(),
+        "Ownership": ownershipController.text,
+        "NIC_Code": nicCodeController.text,
+        "HOApp_City": cityHoController.text,
+        "HOApp_Email": applicantEmailController.text,
+        "HOApp_Website": websiteController.text,
+        "HOApp_State": stateController.text,
 
         "Contact_AadharNumber": "",
         "Contact_FirstName": contactNameController.text,
@@ -845,7 +1071,6 @@ class EmpOTRFormProvider with ChangeNotifier {
         "Contact_MobileNumber": contactMobileController.text,
         "Contact_AlternateMobileNumber": contactAltMobileController.text,
         "Contact_Email": contactEmailController.text,
-        "Contact_PAN_No": contactPanController.text,
         "Contact_State": int.tryParse(coStateIdController.text) ?? 0,
         "Contact_District": int.tryParse(coDistrictIdController.text) ?? 0,
         "Contact_City": int.tryParse(coCityIdController.text) ?? 0,
@@ -853,19 +1078,12 @@ class EmpOTRFormProvider with ChangeNotifier {
         "Contact_Address": contactAddressController.text,
         "Contact_Designation": contactDesignationController.text,
         "Contact_Department": contactDepartmentController.text,
-
-        "DocGSTNumber": "",
-        "DocPANNumber": "",
-        "DocTANNumber": "",
-        "DocEPFNumber": "",
-        "DocESINumber": "",
-        "RegistrationNumber": "",
-        "ActEstablishment":
-        organisationType == "Private" || organisationType == "PSU"
-            ? selectedActEst?.actEstablishment ?? ""
+        "Contact_UploadIDCard": "",
+        "ExchangeName": exchangeNameController.text,
+        "GovernmentBody":
+        organisationType == "Government" || organisationType == "PSU"
+            ? govtBody ?? ""
             : "",
-        "ActAuthorityRegNo": "NA",
-
         "NumberOfMaleEmployees":
         int.tryParse(noOfMaleEmpController.text) ?? 0,
         "NumberOfFemaleEmployees":
@@ -874,17 +1092,30 @@ class EmpOTRFormProvider with ChangeNotifier {
         int.tryParse(noOfTransEmpController.text) ?? 0,
         "TotalNumberOfEmployees":
         int.tryParse(noOfTotalEmpController.text) ?? 0,
-
+        "ActEstablishment":
+        organisationType == "Private" || organisationType == "PSU"
+            ? selectedActEst?.actEstablishment ?? ""
+            : "",
+        "IndustryType": industryType ?? "",
         "EMIP_Sector": "",
-        "Total_Person": 0,
-        "Year": DateTime.now().year.toString(),
-
-        "LogoFileName": logoFileName,
+        "RegistrationNumber": "",
+        "ActAuthorityRegNo": actAuthorityRegController.text,
+        "HO_PanNo": hoPanController.text,
+        "HO_TanNo": "",
+        "BO_TelNo": telNoController.text,
+        "LogofileName": logoFileName,
+        "HO_ApplicationEmail": applicantEmailController.text,
+        "HOStateId": int.tryParse(stateIdController.text) ?? 0,
+        "HODistrictId": int.tryParse(districtIdController.text) ?? 0,
+        "HOCityId": int.tryParse(cityIdController.text) ?? 0,
+        "Contact_PAN_No": contactPanController.text,
+        "IsActive": true,
         "EmployerDocumentList": employerDocs,
       };
 
       printFullJson(data);
 
+     // return null;
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
@@ -896,13 +1127,53 @@ class EmpOTRFormProvider with ChangeNotifier {
 
       if (apiResponse.response != null &&
           apiResponse.response?.statusCode == 200) {
-        successDialog(
-          context,
-          "Employer details saved successfully",
-              (_) {},
-        );
+
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final int state = responseData["State"] ?? 0;
+        final bool status = responseData["Status"] ?? false;
+        final String? message = responseData["Message"];
+        final String? errorMessage = responseData["ErrorMessage"];
+
+        // ✅ SUCCESS CASE
+        if (state == 200 && status == false) {
+          successDialog(
+            context,
+            message ?? "Employer details saved successfully",
+                (_) {
+              Navigator.of(context).push(
+                RightToLeftRoute(
+                  page: const EmployerDashboard(),
+                  duration: const Duration(milliseconds: 500),
+                  startOffset: const Offset(-1.0, 0.0),
+                ),
+              );
+            },
+          );
+        }
+        // ⚠️ RECORD ALREADY EXISTS
+        else if (state == 3) {
+          showAlertError(
+            message ?? "Record already exists!",
+            context,
+          );
+        }
+        // ❌ SERVER / SQL / NULL REFERENCE ERROR
+        else {
+          showAlertError(
+            errorMessage ??
+                message ??
+                "Something went wrong. Please try again.",
+            context,
+          );
+        }
       } else {
-        showAlertError("Something went wrong", context);
+        ProgressDialog.closeLoadingDialog(context);
+        showAlertError("Server error. Please try again.", context);
       }
     } catch (e) {
       ProgressDialog.closeLoadingDialog(context);
@@ -1055,6 +1326,13 @@ class EmpOTRFormProvider with ChangeNotifier {
     tanCertificateController = null;
     gstCertificateController = null;
     logoController = null;
+
+    // 🔹 IMPORTANT: clear uploaded docs
+    documentFileMap.clear();
+    documentUploadedPathMap.clear();
+
+    // 🔹 optional but safe
+    documentMasterList.clear();
 
     notifyListeners();
   }

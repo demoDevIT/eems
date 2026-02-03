@@ -22,12 +22,14 @@ import 'provider/empotr_form_provider.dart';
 class EmpOTRFormScreen extends StatefulWidget {
   final String ssoId;
   final String userID;
+  final bool isFreshForm;
   final Map<String, dynamic>? brnResponseData;
 
   const EmpOTRFormScreen({
     super.key,
     required this.ssoId,
     required this.userID,
+    this.isFreshForm = true,
     this.brnResponseData,
   });
 
@@ -50,7 +52,12 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<EmpOTRFormProvider>(context, listen: false);
-      provider.clearData();
+      //provider.clearData();
+      // ✅ CLEAR ONLY FOR NEW FORM
+      if (widget.isFreshForm) {
+        provider.clearData();
+      }
+
       provider.setSSO(ssoId);
       provider.stateApi(context);
       provider.actEstablishmentApi(context);
@@ -60,6 +67,17 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
       // ✅ AUTO FILL FROM BRN
       if (widget.brnResponseData != null) {
         provider.autoFillFromBRN(widget.brnResponseData!);
+
+        // ✅ CALL Exchange API USING DISTRICT
+        final districtName =
+        provider.districtController.text.trim();
+
+        if (districtName.isNotEmpty) {
+          provider.getExchangeOfficeByDistrict(
+            context,
+            districtName,
+          );
+        }
       }
     });
   }
@@ -2268,6 +2286,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                         if (isLogo) {
                                           provider.pickAndUploadImage(
                                             context: context,
+                                            documentMasterId: doc.documentMasterId!,
                                             allowedExtensions: ['png', 'jpg', 'jpeg'],
                                             onFileSelected: (file) {
                                               provider.documentFileMap[doc.documentMasterId!] =
@@ -2281,6 +2300,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                         } else {
                                           provider.pickAndUploadPdf(
                                             context: context,
+                                            documentMasterId: doc.documentMasterId!,
                                             onFileSelected: (file) {
                                               provider.documentFileMap[doc.documentMasterId!] =
                                                   file;
@@ -2311,6 +2331,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
+                            //provider.submitEmpOTRForm(context);
                             if (validateEmpOTRBasicAndOfficeDetails(
                                 context, provider)) {
                               confirmAlertDialog(

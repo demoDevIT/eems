@@ -10,6 +10,7 @@ import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/otp/screen/otp_screen.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
 import 'package:rajemployment/role/counselor/registration/screen/registration_screen.dart';
+import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
@@ -254,6 +255,10 @@ class _MyHomePageState extends State<MyHomePage>
       Navigator.pushAndRemoveUntil<dynamic>(context,
           MaterialPageRoute<dynamic>(builder: (BuildContext context) => const JobSeekerDashboard()),
               (route) => false);
+
+      // Navigator.pushAndRemoveUntil<dynamic>(context,
+      //     MaterialPageRoute<dynamic>(builder: (BuildContext context) => const EmployerDashboard()),
+      //         (route) => false);
 
      /* Navigator.of(context).push(
         RightToLeftRoute(
