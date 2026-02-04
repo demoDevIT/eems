@@ -1,25 +1,24 @@
-class LoginModal {
+class EmpInfoModal {
   int? state;
   bool? status;
   String? message;
   dynamic errorMessage;
-  LoginData? data;
+  List<EmpInfoData>? data;
 
-  LoginModal(
-      {
-        this.state,
-        this.status,
-        this.message,
-        this.errorMessage,
-        this.data
-      });
+  EmpInfoModal(
+      {this.state, this.status, this.message, this.errorMessage, this.data});
 
-  LoginModal.fromJson(Map<String, dynamic> json) {
+  EmpInfoModal.fromJson(Map<String, dynamic> json) {
     state = json['State'];
     status = json['Status'];
     message = json['Message'];
     errorMessage = json['ErrorMessage'];
-    data = json['Data'] != null ? new LoginData.fromJson(json['Data']) : null;
+    if (json['Data'] != null) {
+      data = <EmpInfoData>[];
+      json['Data'].forEach((v) {
+        data!.add(new EmpInfoData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -29,45 +28,14 @@ class LoginModal {
     data['Message'] = this.message;
     data['ErrorMessage'] = this.errorMessage;
     if (this.data != null) {
-      data['Data'] = this.data!.toJson();
+      data['Data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class LoginData {
-  int? userId;
-  int? roleId;
-  dynamic isLogin;
-  dynamic username;
-  dynamic password;
-
-  //jobseeker
-  dynamic jobSeekerID;
-  dynamic registrationNumber;
-  dynamic registrationDate;
-  dynamic nAMEENG;
-  dynamic nAMEHINDI;
-  dynamic fATHERNAMEENG;
-  dynamic fATHERNAMEHND;
-  dynamic dOB;
-  dynamic gENDER;
-  dynamic mOBILENO;
-  dynamic eMAILID;
-  dynamic caste;
-  dynamic religion;
-  dynamic latestPhoto;
-  dynamic nCOCode;
-  dynamic aadharNo;
-  dynamic miniority;
-  dynamic uIDName;
-  dynamic uIDType;
-  dynamic uIDNumber;
-  dynamic latestPhotoPath;
-  dynamic maritalStatus;
-  dynamic familyIncome;
-
-  //employer
+class EmpInfoData {
+  dynamic userID;
   dynamic brn;
   dynamic district;
   dynamic area;
@@ -122,127 +90,67 @@ class LoginData {
   dynamic contactDesignation;
   dynamic contactdepartment;
 
-  LoginData({
-    this.userId,
-    this.roleId,
-    this.isLogin,
-    this.username,
-    this.password,
 
-    //jobseeker
-    this.jobSeekerID,
-    this.registrationNumber,
-    this.registrationDate,
-    this.nAMEENG,
-    this.nAMEHINDI,
-    this.fATHERNAMEENG,
-    this.fATHERNAMEHND,
-    this.dOB,
-    this.gENDER,
-    this.mOBILENO,
-    this.eMAILID,
-    this.caste,
-    this.religion,
-    this.latestPhoto,
-    this.nCOCode,
-    this.aadharNo,
-    this.miniority,
-    this.uIDName,
-    this.uIDType,
-    this.uIDNumber,
-    this.latestPhotoPath,
-    this.maritalStatus,
-    this.familyIncome,
 
-    //employer
-    this.brn,
-    this.district,
-    this.area,
-    this.tehsil,
-    this.localBody,
-    this.ward,
-    this.branchName,
-    this.branchHouseNumber,
-    this.branchLane,
-    this.branchLocality,
-    this.branchPincode,
-    this.boTelNo,
-    this.branchEmail,
-    this.docGSTNumber,
-    this.branchPANVerified,
-    this.branchPANHolder,
-    this.branchTANNumber,
-    this.headName,
-    this.hoTelno,
-    this.hoCompanyEmail,
-    this.hoPanNumber,
-    this.headHouseNumber,
-    this.headLane,
-    this.headLocality,
-    this.hoPinCode,
-    this.applicantName,
-    this.applicantNo,
-    this.applicantEmail,
-    this.year,
-    this.ownership,
-    this.totalPerson,
-    this.actRegNo,
-    this.hoTanNo,
-    this.hoApplicationEmail,
-    this.hoStateId,
-    this.hoDistrictId,
-    this.hoCityId,
-    this.webSite,
-    this.applicantAddress,
-    this.nicCode,
-    this.contactPANNo,
-    this.contactFirstName,
-    this.contactLastName,
-    this.contactMobileNumber,
-    this.contactAlternateMobileNumber,
-    this.contactEmail,
-    this.contactState,
-    this.contactDistrict,
-    this.contactCity,
-    this.contactPincode,
-    this.contactAddress,
-    this.contactDesignation,
-    this.contactdepartment
-  });
+  EmpInfoData(
+      {this.userID,
+        this.brn,
+        this.district,
+        this.area,
+        this.tehsil,
+        this.localBody,
+        this.ward,
+        this.branchName,
+        this.branchHouseNumber,
+        this.branchLane,
+        this.branchLocality,
+        this.branchPincode,
+        this.boTelNo,
+        this.branchEmail,
+        this.docGSTNumber,
+        this.branchPANVerified,
+        this.branchPANHolder,
+        this.branchTANNumber,
+        this.headName,
+        this.hoTelno,
+        this.hoCompanyEmail,
+        this.hoPanNumber,
+        this.headHouseNumber,
+        this.headLane,
+        this.headLocality,
+        this.hoPinCode,
+        this.applicantName,
+        this.applicantNo,
+        this.applicantEmail,
+        this.year,
+        this.ownership,
+        this.totalPerson,
+        this.actRegNo,
+        this.hoTanNo,
+        this.hoApplicationEmail,
+        this.hoStateId,
+        this.hoDistrictId,
+        this.hoCityId,
+        this.webSite,
+        this.applicantAddress,
+        this.nicCode,
+        this.contactPANNo,
+        this.contactFirstName,
+        this.contactLastName,
+        this.contactMobileNumber,
+        this.contactAlternateMobileNumber,
+        this.contactEmail,
+        this.contactState,
+        this.contactDistrict,
+        this.contactCity,
+        this.contactPincode,
+        this.contactAddress,
+        this.contactDesignation,
+        this.contactdepartment
+      });
 
-  LoginData.fromJson(Map<String, dynamic> json) {
-    userId = json['UserId'];
-    roleId = json['RoleId'];
-    isLogin = json['isLogin'];
-    username = json['username'];
-    password = json['password'];
-
-    //jobseeker
-    jobSeekerID = json['JobSeekerID'];
-    registrationNumber = json['RegistrationNumber'];
-    registrationDate = json['RegistrationDate'];
-    nAMEENG = json['NAME_ENG'];
-    nAMEHINDI = json['NAME_HINDI'];
-    fATHERNAMEENG = json['FATHER_NAME_ENG'];
-    fATHERNAMEHND = json['FATHER_NAME_HND'];
-    dOB = json['DOB'];
-    gENDER = json['GENDER'];
-    mOBILENO = json['MOBILE_NO'];
-    eMAILID = json['EMAIL_ID'];
-    caste = json['Caste'];
-    religion = json['Religion'];
-    latestPhoto = json['LatestPhoto'];
-    nCOCode = json['NCO_Code'];
-    aadharNo = json['AadharNo'];
-    miniority = json['Miniority'];
-    uIDName = json['UIDName'];
-    uIDType = json['UIDType'];
-    uIDNumber = json['UIDNumber'];
-    latestPhotoPath = json['LatestPhotoPath'];
-    maritalStatus = json['MaritalStatus'];
-    familyIncome = json['FamilyIncome'];
-
-    //employer
+  EmpInfoData.fromJson(Map<String, dynamic> json) {
+    userID = json['UserID'];
     brn = json['BRN'];
     district = json['District'];
     area = json['Area'];
@@ -271,7 +179,7 @@ class LoginData {
     applicantName = json['Applicant_Name'];
     applicantNo = json['Applicant_No'];
     applicantEmail = json['Applicant_Email'];
-    year = json['Year'];
+    year = json['Year'].toString();
     ownership = json['Ownership'];
     totalPerson = json['Total_Person'];
     actRegNo = json['ACTRegNo'];
@@ -300,38 +208,7 @@ class LoginData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['UserId'] = this.userId;
-    data['RoleId'] = this.roleId;
-    data['isLogin'] = this.isLogin;
-    data['username'] = this.username;
-    data['password'] = this.password;
-
-    //jobseeker
-    data['JobSeekerID'] = this.jobSeekerID;
-    data['RegistrationNumber'] = this.registrationNumber;
-    data['RegistrationDate'] = this.registrationDate;
-    data['NAME_ENG'] = this.nAMEENG;
-    data['NAME_HINDI'] = this.nAMEHINDI;
-    data['FATHER_NAME_ENG'] = this.fATHERNAMEENG;
-    data['FATHER_NAME_HND'] = this.fATHERNAMEHND;
-    data['DOB'] = this.dOB;
-    data['GENDER'] = this.gENDER;
-    data['MOBILE_NO'] = this.mOBILENO;
-    data['EMAIL_ID'] = this.eMAILID;
-    data['Caste'] = this.caste;
-    data['Religion'] = this.religion;
-    data['LatestPhoto'] = this.latestPhoto;
-    data['NCO_Code'] = this.nCOCode;
-    data['AadharNo'] = this.aadharNo;
-    data['Miniority'] = this.miniority;
-    data['UIDName'] = this.uIDName;
-    data['UIDType'] = this.uIDType;
-    data['UIDNumber'] = this.uIDNumber;
-    data['LatestPhotoPath'] = this.latestPhotoPath;
-    data['MaritalStatus'] = this.maritalStatus;
-    data['FamilyIncome'] = this.familyIncome;
-
-    //employer
+    data['UserID'] = this.userID;
     data['BRN'] = this.brn;
     data['District'] = this.district;
     data['Area'] = this.area;
@@ -385,8 +262,6 @@ class LoginData {
     data['Contact_Address'] = this.contactAddress;
     data['Contact_Designation'] = this.contactDesignation;
     data['Contact_Department'] = this.contactdepartment;
-
     return data;
   }
 }
- 

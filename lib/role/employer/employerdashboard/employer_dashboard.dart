@@ -3,8 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/app_shared_prefrence.dart';
+import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
+import '../../job_seeker/loginscreen/screen/login_screen.dart';
+import '../emp_profile/profile_screen.dart';
 
 class EmployerDashboard extends StatefulWidget {
   const EmployerDashboard({super.key});
@@ -51,10 +55,19 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
           _dashboardTile(
             title: "View/\nUpdate Profile",
             color: const Color(0xFF4A76C9),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EmployerProfileScreen(),
+                ),
+              );
+            },
           ),
+
           _dashboardTile(
             title: "Search Job\nSeekers Near Me",
-            color: const Color(0xFFE67E22),
+            color: const Color(0xFF4A76C9),
           ),
           _dashboardTile(
             title: "Post Job",
@@ -88,12 +101,11 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
   Widget _dashboardTile({
     required String title,
     required Color color,
+    VoidCallback? onTap,
   }) {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
-      onTap: () {
-        // TODO: Add navigation
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: color,
@@ -122,11 +134,13 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
   }
 
 
+
   /// Side Drawer
   Drawer _buildSideDrawer() {
     return Drawer(
       child: ListView(
         children: [
+          // ===== Header =====
           Container(
             padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
             color: Colors.white,
@@ -156,7 +170,8 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          UserData().model.value.nAMEENG.toString(),
+                          //UserData().model.value.nAMEENG.toString(),
+                          "Anil Singh",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -207,6 +222,88 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
             },
           ),
           const Divider(),
+          // ===== Job Fair Events =====
+          ExpansionTile(
+            leading: SvgPicture.asset(
+              'assets/icons/calendarNew.svg',
+              width: 20,
+              height: 20,
+              fit: BoxFit.cover,
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.jobfairevents,
+              style: Styles.mediumTextStyle(size: 14),
+            ),
+            children: [
+              ListTile(
+                title: Text("Events", style: Styles.mediumTextStyle(size: 14)),
+                onTap: () {
+                  Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => JobsFairEventScreen()),
+                  // );
+                },
+              ),
+              ListTile(
+                title: Text("Registered Event", style: Styles.mediumTextStyle(size: 14)),
+                onTap: () {
+                  Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => RegisteredEventListScreen()),
+                  // );
+                },
+              ),
+              ListTile(
+                title: Text("Job Apply", style: Styles.mediumTextStyle(size: 14)),
+                onTap: () {
+                  Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => SelectCompanyPage()),
+                  // );
+                },
+              ),
+            ],
+          ),
+
+          // ===== Divider before Logout =====
+          Container(
+            margin: const EdgeInsets.only(left: 50),
+            child: const Divider(height: 1, color: E3E5F9Color),
+          ),
+
+          // ===== Logout =====
+          ListTile(
+            leading: SvgPicture.asset(
+              'assets/icons/logout.svg',
+              width: 20,
+              height: 20,
+              fit: BoxFit.cover,
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.logout,
+              style: Styles.mediumTextStyle(size: 14),
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) {
+                if (value.toString() == "success") {
+                  final pref = AppSharedPref();
+                  pref.save('UserData', '');
+                  pref.remove('UserData');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                      const LoginScreen(),
+                    ),
+                  );
+                }
+              },
+              );
+            },
+          ),
         ],
       ),
     );

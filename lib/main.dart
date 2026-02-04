@@ -10,6 +10,10 @@ import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/otp/screen/otp_screen.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
 import 'package:rajemployment/role/counselor/registration/screen/registration_screen.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/branch_office_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/emp_basic_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/head_office_applicant_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/head_office_detail_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
@@ -137,6 +141,10 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<QrScannerScreenProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<SansthaAadhaarFlowProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<EmpOTRFormProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<EmpBasicDetailProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<BranchOfficeDetailProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<HeadOfficeDetailProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<HeadOfficeApplicantDetailProvider>()),
        ],
         child:MyApp(),
       ),
@@ -252,13 +260,19 @@ class _MyHomePageState extends State<MyHomePage>
           MaterialPageRoute<dynamic>(builder: (BuildContext context) => const OtpScreen()),
               (route) => false);*/
 
-      Navigator.pushAndRemoveUntil<dynamic>(context,
-          MaterialPageRoute<dynamic>(builder: (BuildContext context) => const JobSeekerDashboard()),
-              (route) => false);
+      if(UserData().model.value.roleId == 4){
 
-      // Navigator.pushAndRemoveUntil<dynamic>(context,
-      //     MaterialPageRoute<dynamic>(builder: (BuildContext context) => const EmployerDashboard()),
-      //         (route) => false);
+        Navigator.pushAndRemoveUntil<dynamic>(context,
+            MaterialPageRoute<dynamic>(builder: (BuildContext context) => const JobSeekerDashboard()),
+                (route) => false);
+
+      } else if(UserData().model.value.roleId == 7){
+
+        Navigator.pushAndRemoveUntil<dynamic>(context,
+            MaterialPageRoute<dynamic>(builder: (BuildContext context) => const EmployerDashboard()),
+                (route) => false);
+
+      }
 
      /* Navigator.of(context).push(
         RightToLeftRoute(

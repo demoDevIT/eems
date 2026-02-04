@@ -39,88 +39,87 @@ class LoginData {
   int? userId;
   int? roleId;
   dynamic isLogin;
-  dynamic username;
-  dynamic password;
+  String? username;
+  String? password;
 
   //jobseeker
-  dynamic jobSeekerID;
-  dynamic registrationNumber;
-  dynamic registrationDate;
-  dynamic nAMEENG;
-  dynamic nAMEHINDI;
-  dynamic fATHERNAMEENG;
-  dynamic fATHERNAMEHND;
-  dynamic dOB;
-  dynamic gENDER;
-  dynamic mOBILENO;
-  dynamic eMAILID;
-  dynamic caste;
-  dynamic religion;
-  dynamic latestPhoto;
-  dynamic nCOCode;
-  dynamic aadharNo;
-  dynamic miniority;
+  int? jobSeekerID;
+  String? registrationNumber;
+  String? registrationDate;
+  String? nAMEENG;
+  String? nAMEHINDI;
+  String? fATHERNAMEENG;
+  String? fATHERNAMEHND;
+  String? dOB;
+  String? gENDER;
+  String? mOBILENO;
+  String? eMAILID;
+  String? caste;
+  String? religion;
+  String? latestPhoto;
+  String? nCOCode;
+  String? aadharNo;
+  int? miniority;
   dynamic uIDName;
-  dynamic uIDType;
-  dynamic uIDNumber;
-  dynamic latestPhotoPath;
-  dynamic maritalStatus;
-  dynamic familyIncome;
+  int? uIDType;
+  String? uIDNumber;
+  String? latestPhotoPath;
+  String? maritalStatus;
+  String? familyIncome;
 
   //employer
-  dynamic brn;
-  dynamic district;
-  dynamic area;
-  dynamic tehsil;
-  dynamic localBody;
-  dynamic ward;
-  dynamic branchName;
-  dynamic branchHouseNumber;
-  dynamic branchLane;
-  dynamic branchLocality;
-  dynamic branchPincode;
-  dynamic boTelNo;
-  dynamic branchEmail;
-  dynamic docGSTNumber;
-  dynamic branchPANVerified;
-  dynamic branchPANHolder;
-  dynamic branchTANNumber;
-  dynamic headName;
-  dynamic hoTelno;
-  dynamic hoCompanyEmail;
-  dynamic hoPanNumber;
-  dynamic headHouseNumber;
-  dynamic headLane;
-  dynamic headLocality;
-  dynamic hoPinCode;
-  dynamic applicantName;
-  dynamic applicantNo;
-  dynamic applicantEmail;
-  dynamic year;
-  dynamic ownership;
-  dynamic totalPerson;
-  dynamic actRegNo;
-  dynamic hoTanNo;
-  dynamic hoApplicationEmail;
-  dynamic hoStateId;
-  dynamic hoDistrictId;
-  dynamic hoCityId;
-  dynamic webSite;
-  dynamic applicantAddress;
-  dynamic nicCode;
-  dynamic contactPANNo;
-  dynamic contactFirstName;
-  dynamic contactLastName;
-  dynamic contactMobileNumber;
-  dynamic contactAlternateMobileNumber;
-  dynamic contactEmail;
-  dynamic contactState;
-  dynamic contactDistrict;
-  dynamic contactCity;
-  dynamic contactPincode;
-  dynamic contactAddress;
-  dynamic contactDesignation;
-  dynamic contactdepartment;
+  String? brn;
+  String? district;
+  String? area;
+  String? tehsil;
+  String? localBody;
+  String? ward;
+  String? branchName;
+  String? branchHouseNumber;
+  String? branchLane;
+  String? branchLocality;
+  String? branchPincode;
+  String? boTelNo;
+  String? branchEmail;
+  String? docGSTNumber;
+  String? branchPANVerified;
+  String? branchPANHolder;
+  String? branchTANNumber;
+  String? headName;
+  String? hoTelno;
+  String? hoCompanyEmail;
+  String? hoPanNumber;
+  String? headHouseNumber;
+  String? headLane;
+  String? headLocality;
+  String? hoPinCode;
+  String? applicantName;
+  String? applicantNo;
+  String? applicantEmail;
+  String? year;
+  String? ownership;
+  String? totalPerson;
+  String? actRegNo;
+  String? hoTanNo;
+  String? hoApplicationEmail;
+  String? hoStateId;
+  String? hoDistrictId;
+  String? hoCityId;
+  String? webSite;
+  String? applicantAddress;
+  String? contactPANNo;
+  String? contactFirstName;
+  String? contactLastName;
+  String? contactMobileNumber;
+  String? contactAlternateMobileNumber;
+  String? contactEmail;
+  String? contactState;
+  String? contactDistrict;
+  String? contactCity;
+  String? contactPincode;
+  String? contactAddress;
+  String? contactDesignation;
+  String? contactdepartment;
 
   LoginData({
     this.userId,
@@ -194,7 +193,6 @@ class LoginData {
     this.hoCityId,
     this.webSite,
     this.applicantAddress,
-    this.nicCode,
     this.contactPANNo,
     this.contactFirstName,
     this.contactLastName,
@@ -282,7 +280,6 @@ class LoginData {
     hoCityId = json['HOCityId'];
     webSite = json['WebSite'];
     applicantAddress = json['Applicant_Address'];
-    nicCode = json['NIC_Code'];
     contactPANNo = json['Contact_PAN_No'];
     contactFirstName = json['Contact_FirstName'];
     contactLastName = json['Contact_LastName'];
@@ -371,7 +368,6 @@ class LoginData {
     data['HOCityId'] = this.hoCityId;
     data['WebSite'] = this.webSite;
     data['Applicant_Address'] = this.applicantAddress;
-    data['NIC_Code'] = this.nicCode;
     data['Contact_PAN_No'] = this.contactPANNo;
     data['Contact_FirstName'] = this.contactFirstName;
     data['Contact_LastName'] = this.contactLastName;

@@ -15,6 +15,7 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../employer/emp_profile/modal/emp_info_modal.dart';
 import '../../candidate_attendance/candidate_attendance_screen.dart';
 import '../../candidate_attendance/provider/candidate_attendance_provider.dart';
 import '../../jobseekerdashboard/job_seeker_dashboard.dart';
@@ -206,20 +207,21 @@ class LoginProvider with ChangeNotifier {
                   ),
                 );
 
-              } else {
+              } else if (sm.data!.roleID == 4){
                  // print("22");
-                 // getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-                ///// for work on employer dashboard design so as of now this login redirection is on employer dashboard page
+                  getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
 
-                Navigator.of(context).push(
-                  RightToLeftRoute(
-                    page:  EmployerDashboard(),
-                    duration: const Duration(milliseconds: 500),
-                    startOffset: const Offset(-1.0, 0.0),
-                  ),
-                );
+              } else if (sm.data!.roleID == 7){
 
+                getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
 
+                // Navigator.of(context).push(
+                //   RightToLeftRoute(
+                //     page:  EmployerDashboard(),
+                //     duration: const Duration(milliseconds: 500),
+                //     startOffset: const Offset(-1.0, 0.0),
+                //   ),
+                // );
               }
             }
             else{
@@ -280,7 +282,7 @@ class LoginProvider with ChangeNotifier {
             responseData = jsonDecode(responseData);
           }
           String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
-          print(authToken);
+          print("authtoken => $authToken");
           final sm = JobseekerBasicInfoModal.fromJson(responseData);
           if (sm.state == 200) {
             if(isChecked){
@@ -390,7 +392,200 @@ class LoginProvider with ChangeNotifier {
   }
 
 
+  Future<EmpInfoModal?> getEmpBasicDetailsApi(BuildContext context,String userId,int? roleId) async {
+    print("44");
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        Map<String, dynamic> body = {
+          "ActionName": "BasicDetails",
+          "UserID":userId
+        };
+        ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse = await commonRepo.post("Employer/GetEmployerDetail",body);
+        ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
+          print("authToken => $authToken");
+          final sm = EmpInfoModal.fromJson(responseData);
+          if (sm.state == 200) {
+            if(isChecked){
+              print("55");
+              final pref = AppSharedPref();
 
+              //Job seekar Userdata
+              UserData().model.value.userId = sm.data![0].userID;
+
+              UserData().model.value.isLogin = true;
+              UserData().model.value.username = SSOIDController.text.toString();
+              UserData().model.value.password = passwordController.text.toString();
+
+              UserData().model.value.roleId = roleId;
+
+              //Employer Userdata
+              UserData().model.value.brn = sm.data![0].brn;
+              UserData().model.value.district = sm.data![0].district;
+              UserData().model.value.area = sm.data![0].area;
+              UserData().model.value.tehsil = sm.data![0].tehsil;
+              UserData().model.value.localBody = sm.data![0].localBody;
+              UserData().model.value.ward = sm.data![0].ward;
+              UserData().model.value.branchName = sm.data![0].branchName;
+              UserData().model.value.branchHouseNumber = sm.data![0].branchHouseNumber;
+              UserData().model.value.branchLane = sm.data![0].branchLane;
+              UserData().model.value.branchLocality = sm.data![0].branchLocality;
+              UserData().model.value.branchPincode = sm.data![0].branchPincode;
+              UserData().model.value.boTelNo = sm.data![0].boTelNo;
+              UserData().model.value.branchEmail = sm.data![0].branchEmail;
+              UserData().model.value.docGSTNumber = sm.data![0].docGSTNumber;
+              UserData().model.value.branchPANVerified = sm.data![0].branchPANVerified;
+              UserData().model.value.branchPANHolder = sm.data![0].branchPANHolder;
+              UserData().model.value.branchTANNumber = sm.data![0].branchTANNumber;
+              UserData().model.value.headName = sm.data![0].headName;
+              UserData().model.value.hoTelno = sm.data![0].hoTelno;
+              UserData().model.value.hoCompanyEmail = sm.data![0].hoCompanyEmail;
+              UserData().model.value.hoPanNumber = sm.data![0].hoPanNumber;
+              UserData().model.value.headHouseNumber = sm.data![0].headHouseNumber;
+              UserData().model.value.headLane = sm.data![0].headLane;
+              UserData().model.value.headLocality = sm.data![0].headLocality;
+              UserData().model.value.hoPinCode = sm.data![0].hoPinCode;
+              UserData().model.value.applicantName = sm.data![0].applicantName;
+              UserData().model.value.applicantNo = sm.data![0].applicantNo;
+              UserData().model.value.applicantEmail = sm.data![0].applicantEmail;
+              UserData().model.value.year = sm.data![0].year;
+              UserData().model.value.ownership = sm.data![0].ownership;
+              UserData().model.value.totalPerson = sm.data![0].totalPerson;
+              UserData().model.value.actRegNo = sm.data![0].actRegNo;
+              UserData().model.value.hoTanNo = sm.data![0].hoTanNo;
+              UserData().model.value.hoApplicationEmail = sm.data![0].hoApplicationEmail;
+              UserData().model.value.hoStateId = sm.data![0].hoStateId;
+              UserData().model.value.hoDistrictId = sm.data![0].hoDistrictId;
+              UserData().model.value.hoCityId = sm.data![0].hoCityId;
+              UserData().model.value.webSite = sm.data![0].webSite;
+              UserData().model.value.applicantAddress = sm.data![0].applicantAddress;
+              UserData().model.value.nicCode = sm.data![0].nicCode;
+              UserData().model.value.contactPANNo = sm.data![0].contactPANNo;
+              UserData().model.value.contactFirstName = sm.data![0].contactFirstName;
+              UserData().model.value.contactLastName = sm.data![0].contactLastName;
+              UserData().model.value.contactMobileNumber = sm.data![0].contactMobileNumber;
+              UserData().model.value.contactAlternateMobileNumber = sm.data![0].contactAlternateMobileNumber;
+              UserData().model.value.contactEmail = sm.data![0].contactEmail;
+              UserData().model.value.contactState = sm.data![0].contactState;
+              UserData().model.value.contactDistrict = sm.data![0].contactDistrict;
+              UserData().model.value.contactCity = sm.data![0].contactCity;
+              UserData().model.value.contactPincode = sm.data![0].contactPincode;
+              UserData().model.value.contactAddress = sm.data![0].contactAddress;
+              UserData().model.value.contactDesignation = sm.data![0].contactDesignation;
+              UserData().model.value.contactdepartment = sm.data![0].contactdepartment;
+              pref.save('UserData', UserData().model.value);
+            }
+            else{
+              print("66");
+              final pref = AppSharedPref();
+              UserData().model.value.userId = sm.data![0].userID;
+              UserData().model.value.isLogin = true;
+              UserData().model.value.username = "";
+              UserData().model.value.password = "";
+              UserData().model.value.roleId = roleId;
+
+//            employer userdata
+              UserData().model.value.brn = sm.data![0].brn;
+              UserData().model.value.district = sm.data![0].district;
+              UserData().model.value.area = sm.data![0].area;
+              UserData().model.value.tehsil = sm.data![0].tehsil;
+              UserData().model.value.localBody = sm.data![0].localBody;
+              UserData().model.value.ward = sm.data![0].ward;
+              UserData().model.value.branchName = sm.data![0].branchName;
+              UserData().model.value.branchHouseNumber = sm.data![0].branchHouseNumber;
+              UserData().model.value.branchLane = sm.data![0].branchLane;
+              UserData().model.value.branchLocality = sm.data![0].branchLocality;
+              UserData().model.value.branchPincode = sm.data![0].branchPincode;
+              UserData().model.value.boTelNo = sm.data![0].boTelNo;
+              UserData().model.value.branchEmail = sm.data![0].branchEmail;
+              UserData().model.value.docGSTNumber = sm.data![0].docGSTNumber;
+              UserData().model.value.branchPANVerified = sm.data![0].branchPANVerified;
+              UserData().model.value.branchPANHolder = sm.data![0].branchPANHolder;
+              UserData().model.value.branchTANNumber = sm.data![0].branchTANNumber;
+              UserData().model.value.headName = sm.data![0].headName;
+              UserData().model.value.hoTelno = sm.data![0].hoTelno;
+              UserData().model.value.hoCompanyEmail = sm.data![0].hoCompanyEmail;
+              UserData().model.value.hoPanNumber = sm.data![0].hoPanNumber;
+              UserData().model.value.headHouseNumber = sm.data![0].headHouseNumber;
+              UserData().model.value.headLane = sm.data![0].headLane;
+              UserData().model.value.headLocality = sm.data![0].headLocality;
+              UserData().model.value.hoPinCode = sm.data![0].hoPinCode;
+              UserData().model.value.applicantName = sm.data![0].applicantName;
+              UserData().model.value.applicantNo = sm.data![0].applicantNo;
+              UserData().model.value.applicantEmail = sm.data![0].applicantEmail;
+              UserData().model.value.year = sm.data![0].year;
+              UserData().model.value.ownership = sm.data![0].ownership;
+              UserData().model.value.totalPerson = sm.data![0].totalPerson;
+              UserData().model.value.actRegNo = sm.data![0].actRegNo;
+              UserData().model.value.hoTanNo = sm.data![0].hoTanNo;
+              UserData().model.value.hoApplicationEmail = sm.data![0].hoApplicationEmail;
+              UserData().model.value.hoStateId = sm.data![0].hoStateId;
+              UserData().model.value.hoDistrictId = sm.data![0].hoDistrictId;
+              UserData().model.value.hoCityId = sm.data![0].hoCityId;
+              UserData().model.value.webSite = sm.data![0].webSite;
+              UserData().model.value.applicantAddress = sm.data![0].applicantAddress;
+              UserData().model.value.nicCode = sm.data![0].nicCode;
+              UserData().model.value.contactPANNo = sm.data![0].contactPANNo;
+              UserData().model.value.contactFirstName = sm.data![0].contactFirstName;
+              UserData().model.value.contactLastName = sm.data![0].contactLastName;
+              UserData().model.value.contactMobileNumber = sm.data![0].contactMobileNumber;
+              UserData().model.value.contactAlternateMobileNumber = sm.data![0].contactAlternateMobileNumber;
+              UserData().model.value.contactEmail = sm.data![0].contactEmail;
+              UserData().model.value.contactState = sm.data![0].contactState;
+              UserData().model.value.contactDistrict = sm.data![0].contactDistrict;
+              UserData().model.value.contactCity = sm.data![0].contactCity;
+              UserData().model.value.contactPincode = sm.data![0].contactPincode;
+              UserData().model.value.contactAddress = sm.data![0].contactAddress;
+              UserData().model.value.contactDesignation = sm.data![0].contactDesignation;
+              UserData().model.value.contactdepartment = sm.data![0].contactdepartment;
+              pref.save('UserData', UserData().model.value);
+              print("--Hello---2");
+            }
+            print("77");
+            Navigator.of(context).push(
+              RightToLeftRoute(
+                page: const EmployerDashboard(),
+                duration: const Duration(milliseconds: 500),
+                startOffset: const Offset(-1.0, 0.0),
+              ),
+            );
+            return sm;
+          } else {
+            print("88");
+            final smmm = EmpInfoModal(state: 0, message: sm.message.toString());
+            Navigator.of(context).push(
+              RightToLeftRoute(
+                page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:userId),
+                duration: const Duration(milliseconds: 500),
+                startOffset: const Offset(-1.0, 0.0),
+              ),
+            );
+            // showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+        } else {
+          print("99");
+          return EmpInfoModal(state: 0, message: 'Something went wrong',);
+        }
+      } on Exception catch (err) {
+        print("1010");
+        ProgressDialog.closeLoadingDialog(context);
+        final sm = EmpInfoModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      print("1111");
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
 
 
   rememberMe(bool? value) {
