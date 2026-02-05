@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_market_info_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/dropdown.dart';
+import '../empotr_form/modal/actEstablishment_modal.dart';
+import '../empotr_form/modal/sector_modal.dart';
 
 class ExchangeMarketInformationProgram extends StatefulWidget {
   const ExchangeMarketInformationProgram({super.key});
@@ -14,12 +18,49 @@ class ExchangeMarketInformationProgram extends StatefulWidget {
 
 class _ExchangeMarketInformationProgramState
     extends State<ExchangeMarketInformationProgram> {
+  @override
+  void initState() {
+    super.initState();
+    final provider =
+        Provider.of<ExchangeMarketInfoProvider>(context, listen: false);
 
-  // Text Controllers
-  final TextEditingController maleEmpCtrl = TextEditingController();
-  final TextEditingController femaleEmpCtrl = TextEditingController();
-  final TextEditingController transgenderEmpCtrl = TextEditingController();
-  final TextEditingController totalEmpCtrl = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      provider.setExchangeMarketData();
+      await provider.loadAndBindActEstablishment(context);
+
+      final data = provider.userModel;
+
+      // 🔹 Type of Organization
+      if (data != null &&
+          provider.organizationTypes.contains(data.organizationType)) {
+        setState(() {
+          orgType = data.organizationType;
+        });
+      }
+
+      // 🔹 Government Body
+      if (data != null &&
+          provider.governmentBodies.contains(data.governmentBody)) {
+        setState(() {
+          govtBody = data.governmentBody;
+        });
+      }
+
+      // Industry Type
+      if (data != null && provider.industryTypes.contains(data.industryType)) {
+        setState(() {
+          industryType = data.industryType;
+        });
+      }
+
+      await provider.sectorApi(context);
+
+      final sectorID = data?.emipSector;
+      print("sectorID ====> $sectorID");
+
+      // provider.setSectorFromId(sectorID);
+    });
+  }
 
   // Dropdown values
   String? orgType;
@@ -49,75 +90,140 @@ class _ExchangeMarketInformationProgramState
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: Consumer<ExchangeMarketInfoProvider>(
+        builder: (context, provider, _) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// ===== Dropdowns =====
+                _label("Type of Organization"),
+                buildDropdownFieldStaticValue(
+                  "Type of Organization",
+                  "Select type",
+                  value: orgType,
+                  items: provider.organizationTypes,
+                  onChanged: null, // disabled
+                ),
 
-            /// ===== Dropdowns =====
-            _label("Type of Organization"),
-            buildDropdownField(
-              "Type of Organization",
-              "Select type",
-              value: orgType,
-              items: const ["Private", "Public"],
-              onChanged: (value) {}, // disabled
+                if (orgType != null && orgType != "Private") ...[
+                  _label("Government Body"),
+                  buildDropdownFieldStaticValue(
+                    "Government Body",
+                    "Select government body",
+                    value: govtBody,
+                    items: provider.governmentBodies,
+                    onChanged: null, // 👈 disabled
+                  ),
+                ],
+
+                /// ===== Employee Count =====
+                _label("No of Male Employees"),
+                _field(provider.maleEmpCtrl, "Enter male employees",
+                    TextInputType.number),
+
+                _label("No of Female Employees"),
+                _field(provider.femaleEmpCtrl, "Enter female employees",
+                    TextInputType.number),
+
+                _label("No of Transgender Employees"),
+                _field(provider.transgenderEmpCtrl,
+                    "Enter transgender employees", TextInputType.number),
+
+                _label("Total Number of Employees"),
+                _field(provider.totalEmpCtrl, "Enter total employees",
+                    TextInputType.number),
+
+                /// ===== More Dropdowns =====
+                if (orgType != "Government") ...[
+                  _label("Act Establishment"),
+                  DropdownButtonFormField<ActEstablishmentData>(
+                    value: provider.selectedActEst,
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 14),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: borderColor,
+                          width: 0.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: borderColor,
+                          width: 0.5,
+                        ),
+                      ),
+                    ),
+                    hint: const Text("--Select Option--"),
+                    items: provider.actEstList
+                        .map(
+                          (e) => DropdownMenuItem<ActEstablishmentData>(
+                            value: e,
+                            child: Text(e.actEstablishment ?? ""),
+                          ),
+                        )
+                        .toList(),
+
+                    // 🔒 ALWAYS DISABLED
+                    onChanged: null,
+                  ),
+                ],
+
+                _label("Industry Type"),
+                buildDropdownFieldStaticValue(
+                  "Industry Type",
+                  "Select industry type",
+                  value: industryType,
+                  items: provider.industryTypes,
+                  onChanged: null, // ✅ disabled like previous dropdowns
+                ),
+
+                _label("Sector"),
+                DropdownButtonFormField<int>(
+                  value: provider.selectedSectorId,
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 14),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: borderColor, width: 0.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: borderColor, width: 0.5),
+                    ),
+                  ),
+                  hint: const Text("--Select Option--"),
+                  items: provider.sectorList
+                      .map(
+                        (e) => DropdownMenuItem<int>(
+                          value: e.iD,
+                          child: Text(e.name ?? ""),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: null, // 🔒 disabled
+                ),
+
+                const SizedBox(height: 30),
+              ],
             ),
-
-            _label("Government Body"),
-            buildDropdownField(
-              "Government Body",
-              "Select government body",
-              value: govtBody,
-              items: const ["Central", "State"],
-              onChanged: (value) {}, // disabled
-            ),
-
-            /// ===== Employee Count =====
-            _label("No of Male Employees"),
-            _field(maleEmpCtrl, "Enter male employees", TextInputType.number),
-
-            _label("No of Female Employees"),
-            _field(femaleEmpCtrl, "Enter female employees", TextInputType.number),
-
-            _label("No of Transgender Employees"),
-            _field(transgenderEmpCtrl, "Enter transgender employees", TextInputType.number),
-
-            _label("Total Number of Employees"),
-            _field(totalEmpCtrl, "Enter total employees", TextInputType.number),
-
-            /// ===== More Dropdowns =====
-            _label("Act Establishment"),
-            buildDropdownField(
-              "Act Establishment",
-              "Select act establishment",
-              value: actEstablishment,
-              items: const ["Act 1", "Act 2"],
-              onChanged: (value) {}, // disabled
-            ),
-
-            _label("Industry Type"),
-            buildDropdownField(
-              "Industry Type",
-              "Select industry type",
-              value: industryType,
-              items: const ["Manufacturing", "Service"],
-              onChanged: (value) {}, // disabled
-            ),
-
-            _label("Sector"),
-            buildDropdownField(
-              "Sector",
-              "Select sector",
-              value: sector,
-              items: const ["Public", "Private"],
-              onChanged: (value) {}, // disabled
-            ),
-
-            const SizedBox(height: 30),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -135,10 +241,10 @@ class _ExchangeMarketInformationProgramState
 
   /// ===== Disabled Text Field =====
   Widget _field(
-      TextEditingController controller,
-      String hint, [
-        TextInputType keyboardType = TextInputType.text,
-      ]) {
+    TextEditingController controller,
+    String hint, [
+    TextInputType keyboardType = TextInputType.text,
+  ]) {
     return buildTextWithBorderField(
       controller,
       hint,
@@ -148,4 +254,51 @@ class _ExchangeMarketInformationProgramState
       isEnabled: false,
     );
   }
+}
+
+Widget buildDropdownFieldStaticValue(
+  String label,
+  String hint, {
+  required String? value,
+  required List<String> items,
+  ValueChanged<String?>? onChanged,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        //Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+        DropdownButtonFormField<String>(
+          isExpanded: true,
+          value: value,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: borderColor, // 👉 Default border color
+                width: 0.5, // 👉 Default border width
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: borderColor, // 👉 Default border color
+                width: 0.5, // 👉 Default border width
+              ),
+            ),
+          ),
+          hint: Text(hint),
+          items: items
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: onChanged,
+        ),
+      ],
+    ),
+  );
 }

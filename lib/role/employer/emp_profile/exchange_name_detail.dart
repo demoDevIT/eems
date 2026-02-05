@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../utils/textfeild.dart';
 
@@ -13,7 +15,25 @@ class ExchangeNameDetail extends StatefulWidget {
 
 class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
 
-  final TextEditingController exchangeNameCtrl = TextEditingController();
+ // final TextEditingController exchangeNameCtrl = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+
+    final provider =
+    Provider.of<ExchangeNameProvider>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+      provider.setExchangeNameData();
+
+      // final data = provider.userModel;
+      // debugPrint("userModel => $data");
+
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +56,25 @@ class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: Consumer<ExchangeNameProvider>(
+          builder: (context, provider, _) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-            _label("Exchange Name"),
-            _field(exchangeNameCtrl, "Enter exchange name"),
+                  _label("Exchange Name"),
+                  _field(provider.exchangeNameCtrl, "Enter exchange name"),
 
-            const SizedBox(height: 30),
-          ],
-        ),
-      ),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            );
+          },),
     );
   }
+
 
   /// ===== Label =====
   Widget _label(String text) {

@@ -7,9 +7,13 @@ import 'package:rajemployment/role/counselor/home/provider/counselor_provider.da
 import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/branch_office_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/contact_person_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/emp_basic_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_market_info_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_applicant_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/uploaded_documents_provider.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
@@ -122,7 +126,9 @@ Future<void> init() async {
   sl.registerFactory(() => BranchOfficeDetailProvider(commonRepo: sl()));
   sl.registerFactory(() => HeadOfficeDetailProvider(commonRepo: sl()));
   sl.registerFactory(() => HeadOfficeApplicantDetailProvider(commonRepo: sl()));
-
-
+  sl.registerFactory(() => ContactPersonDetailProvider(commonRepo: sl()));
+  sl.registerFactory(() => ExchangeNameProvider(commonRepo: sl()));
+  sl.registerFactory(() => ExchangeMarketInfoProvider(commonRepo: sl()));
+  sl.registerFactory(() => UploadedDocumentsProvider(commonRepo: sl()));
 
 }

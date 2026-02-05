@@ -26,7 +26,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       drawer: _buildSideDrawer(),
       appBar: AppBar(
         title: const Text(
-          "Welcome, Anil Singh",
+          "Dashboard",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -53,7 +53,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
         childAspectRatio: 1.1,
         children: [
           _dashboardTile(
-            title: "View/\nUpdate Profile",
+            title: "View Profile",
             color: const Color(0xFF4A76C9),
             onTap: () {
               Navigator.push(
@@ -170,8 +170,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          //UserData().model.value.nAMEENG.toString(),
-                          "Anil Singh",
+                          UserData().model.value.branchName.toString(),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

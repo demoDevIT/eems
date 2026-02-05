@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+
+import 'provider/uploaded_documents_provider.dart';
 
 class UploadOrganizationDocuments extends StatefulWidget {
   const UploadOrganizationDocuments({super.key});
@@ -13,6 +16,21 @@ class UploadOrganizationDocuments extends StatefulWidget {
 
 class _UploadOrganizationDocumentsState
     extends State<UploadOrganizationDocuments> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider =
+      Provider.of<UploadedDocumentsProvider>(context, listen: false);
+
+      provider.loadUploadedDocuments(
+        userId: "8442", // 🔴 dynamic later
+      );
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +53,47 @@ class _UploadOrganizationDocumentsState
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        body: Consumer<UploadedDocumentsProvider>(
+            builder: (context, provider, _) {
+              if (provider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            /// ===== PDFs =====
-            _label("Uploaded Documents (PDF)"),
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-            _pdfTile("Company Registration Certificate.pdf"),
-            _pdfTile("GST Certificate.pdf"),
-            _pdfTile("PAN Card Document.pdf"),
+                    /// ===== PDFs =====
+                    _label("Uploaded Documents (PDF)"),
 
-            const SizedBox(height: 20),
+                    ...provider.pdfUrls.map(
+                          (url) =>
+                          _pdfTile(
+                            url
+                                .split("/")
+                                .last,
+                            onTap: () => provider.downloadAndOpenPdf(url),
+                          ),
+                    ),
 
-            /// ===== Image =====
-            _label("Organization Image"),
+                    const SizedBox(height: 20),
 
-            _imagePreview(),
+                    /// ===== Image =====
+                    _label("Organization Image"),
 
-            const SizedBox(height: 30),
-          ],
+                    if (provider.imageUrl != null)
+                      _imagePreview(provider.imageUrl!)
+                    else
+                      const Text("No image uploaded"),
+
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              );
+            },
         ),
-      ),
     );
   }
 
@@ -74,37 +109,38 @@ class _UploadOrganizationDocumentsState
   }
 
   /// ===== Static PDF Tile =====
-  Widget _pdfTile(String fileName) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            'https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg',
-            width: 32,
-            height: 32,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              fileName,
-              style: Styles.mediumTextStyle(size: 14, color: kBlackColor),
+  Widget _pdfTile(String fileName, {required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.picture_as_pdf,
+                color: Colors.red, size: 32),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                fileName,
+                style: Styles.mediumTextStyle(size: 14, color: kBlackColor),
+              ),
             ),
-          ),
-          const Icon(Icons.visibility, size: 18, color: kPrimaryColor),
-        ],
+            const Icon(Icons.download, size: 18, color: kPrimaryColor),
+          ],
+        ),
       ),
     );
   }
 
+
   /// ===== Static Image Preview =====
-  Widget _imagePreview() {
+  Widget _imagePreview(String imageUrl) {
     return Container(
       height: 180,
       width: double.infinity,
@@ -114,11 +150,14 @@ class _UploadOrganizationDocumentsState
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: Image.asset(
-          'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg', // 🔴 static image
+        child: Image.network(
+          imageUrl,
           fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) =>
+          const Center(child: Icon(Icons.broken_image)),
         ),
       ),
     );
   }
+
 }

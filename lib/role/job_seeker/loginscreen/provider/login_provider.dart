@@ -480,6 +480,16 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.contactAddress = sm.data![0].contactAddress;
               UserData().model.value.contactDesignation = sm.data![0].contactDesignation;
               UserData().model.value.contactdepartment = sm.data![0].contactdepartment;
+              UserData().model.value.exchangeName = sm.data![0].exchangeName;
+              UserData().model.value.organizationType = sm.data![0].organizationType;
+              UserData().model.value.governmentBody = sm.data![0].governmentBody;
+              UserData().model.value.numberOfMaleEmployees = sm.data![0].numberOfMaleEmployees;
+              UserData().model.value.numberOfFemaleEmployees = sm.data![0].numberOfFemaleEmployees;
+              UserData().model.value.numberOfTransgenderEmployees = sm.data![0].numberOfTransgenderEmployees;
+              UserData().model.value.totalNumberOfEmployees = sm.data![0].totalNumberOfEmployees;
+              UserData().model.value.actEstablishment = sm.data![0].actEstablishment;
+              UserData().model.value.emipSector = sm.data![0].emipSector;
+              UserData().model.value.industryType = sm.data![0].industryType;
               pref.save('UserData', UserData().model.value);
             }
             else{
@@ -545,6 +555,16 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.contactAddress = sm.data![0].contactAddress;
               UserData().model.value.contactDesignation = sm.data![0].contactDesignation;
               UserData().model.value.contactdepartment = sm.data![0].contactdepartment;
+              UserData().model.value.exchangeName = sm.data![0].exchangeName;
+              UserData().model.value.organizationType = sm.data![0].organizationType;
+              UserData().model.value.governmentBody = sm.data![0].governmentBody;
+              UserData().model.value.numberOfMaleEmployees = sm.data![0].numberOfMaleEmployees;
+              UserData().model.value.numberOfFemaleEmployees = sm.data![0].numberOfFemaleEmployees;
+              UserData().model.value.numberOfTransgenderEmployees = sm.data![0].numberOfTransgenderEmployees;
+              UserData().model.value.totalNumberOfEmployees = sm.data![0].totalNumberOfEmployees;
+              UserData().model.value.actEstablishment = sm.data![0].actEstablishment;
+              UserData().model.value.emipSector = sm.data![0].emipSector;
+              UserData().model.value.industryType = sm.data![0].industryType;
               pref.save('UserData', UserData().model.value);
               print("--Hello---2");
             }

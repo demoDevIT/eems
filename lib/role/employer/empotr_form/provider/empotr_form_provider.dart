@@ -1101,7 +1101,7 @@ class EmpOTRFormProvider with ChangeNotifier {
         "RegistrationNumber": "",
         "ActAuthorityRegNo": actAuthorityRegController.text,
         "HO_PanNo": hoPanController.text,
-        "HO_TanNo": "",
+        "HO_TanNo": tanNoController.text,
         "BO_TelNo": telNoController.text,
         "LogofileName": logoFileName,
         "HO_ApplicationEmail": applicantEmailController.text,

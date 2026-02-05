@@ -11,9 +11,13 @@ import 'package:rajemployment/role/counselor/otp/screen/otp_screen.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
 import 'package:rajemployment/role/counselor/registration/screen/registration_screen.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/branch_office_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/contact_person_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/emp_basic_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_market_info_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_applicant_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_detail_provider.dart';
+import 'package:rajemployment/role/employer/emp_profile/provider/uploaded_documents_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
@@ -145,6 +149,10 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<BranchOfficeDetailProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<HeadOfficeDetailProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<HeadOfficeApplicantDetailProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<ContactPersonDetailProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<ExchangeNameProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<ExchangeMarketInfoProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<UploadedDocumentsProvider>())
        ],
         child:MyApp(),
       ),

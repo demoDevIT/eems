@@ -44,43 +44,43 @@ class EmployerProfileScreen extends StatelessWidget {
             /// ===== Profile Header =====
             Row(
               children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: 90,
-                      height: 90,
-                      child: CircularProgressIndicator(
-                        value: 0.7,
-                        strokeWidth: 7,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: const AlwaysStoppedAnimation(kViewAllColor),
-                      ),
-                    ),
-                    ClipOval(
-                      child: Image.network(
-                        UserData().model.value.latestPhotoPath.toString(),
-                        width: 65,
-                        height: 65,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
-                            width: 65,
-                            height: 65,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   alignment: Alignment.center,
+                //   children: [
+                //     SizedBox(
+                //       width: 90,
+                //       height: 90,
+                //       child: CircularProgressIndicator(
+                //         value: 0.7,
+                //         strokeWidth: 7,
+                //         backgroundColor: Colors.grey[300],
+                //         valueColor: const AlwaysStoppedAnimation(kViewAllColor),
+                //       ),
+                //     ),
+                //     ClipOval(
+                //       child: Image.network(
+                //         UserData().model.value.latestPhotoPath.toString(),
+                //         width: 65,
+                //         height: 65,
+                //         fit: BoxFit.cover,
+                //         errorBuilder: (_, __, ___) {
+                //           return Image.asset(
+                //             'assets/images/placeholder.png',
+                //             width: 65,
+                //             height: 65,
+                //           );
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        UserData().model.value.nAMEENG.toString(),
+                        UserData().model.value.branchName.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class EmployerProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        UserData().model.value.eMAILID.toString(),
+                        UserData().model.value.branchEmail.toString(),
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],

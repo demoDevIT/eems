@@ -121,6 +121,16 @@ class LoginData {
   dynamic contactAddress;
   dynamic contactDesignation;
   dynamic contactdepartment;
+  dynamic exchangeName;
+  dynamic organizationType;
+  dynamic governmentBody;
+  dynamic numberOfMaleEmployees;
+  dynamic numberOfFemaleEmployees;
+  dynamic numberOfTransgenderEmployees;
+  dynamic totalNumberOfEmployees;
+  dynamic actEstablishment;
+  dynamic emipSector;
+  dynamic industryType;
 
   LoginData({
     this.userId,
@@ -207,7 +217,17 @@ class LoginData {
     this.contactPincode,
     this.contactAddress,
     this.contactDesignation,
-    this.contactdepartment
+    this.contactdepartment,
+    this.exchangeName,
+    this.organizationType,
+    this.governmentBody,
+    this.numberOfMaleEmployees,
+    this.numberOfFemaleEmployees,
+    this.numberOfTransgenderEmployees,
+    this.totalNumberOfEmployees,
+    this.actEstablishment,
+    this.emipSector,
+    this.industryType,
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -296,6 +316,16 @@ class LoginData {
     contactAddress = json['Contact_Address'];
     contactDesignation = json['Contact_Designation'];
     contactdepartment = json['Contact_Department'];
+    exchangeName = json['ExchangeName'];
+    organizationType = json['OrganizationType'];
+    governmentBody = json['GovernmentBody'];
+    numberOfMaleEmployees = json['NumberOfMaleEmployees'];
+    numberOfFemaleEmployees = json['NumberOfFemaleEmployees'];
+    numberOfTransgenderEmployees = json['NumberOfTransgenderEmployees'];
+    totalNumberOfEmployees = json['TotalNumberOfEmployees'];
+    actEstablishment = json['ActEstablishment'];
+    emipSector = json['EMIP_Sector'];
+    industryType = json['IndustryType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -385,6 +415,16 @@ class LoginData {
     data['Contact_Address'] = this.contactAddress;
     data['Contact_Designation'] = this.contactDesignation;
     data['Contact_Department'] = this.contactdepartment;
+    data['ExchangeName'] = this.exchangeName;
+    data['OrganizationType'] = this.organizationType;
+    data['GovernmentBody'] = this.governmentBody;
+    data['NumberOfMaleEmployees'] = this.numberOfMaleEmployees;
+    data['NumberOfFemaleEmployees'] = this.numberOfFemaleEmployees;
+    data['NumberOfTransgenderEmployees'] = this.numberOfTransgenderEmployees;
+    data['TotalNumberOfEmployees'] = this.totalNumberOfEmployees;
+    data['ActEstablishment'] = this.actEstablishment;
+    data['EMIP_Sector'] = this.emipSector;
+    data['IndustryType'] = this.industryType;
 
     return data;
   }
