@@ -6,6 +6,10 @@ import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_j
 import 'package:rajemployment/role/counselor/home/provider/counselor_provider.dart';
 import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
+import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
+import 'package:rajemployment/role/department/dept_join_attendance_list/provider/dept_join_attendance_list_provider.dart';
+import 'package:rajemployment/role/department/dept_join_pending_list/provider/dept_join_pending_list_provider.dart';
+import 'package:rajemployment/role/department/register_form/provider/register_form_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/branch_office_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/contact_person_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/emp_basic_detail_provider.dart';
@@ -130,5 +134,9 @@ Future<void> init() async {
   sl.registerFactory(() => ExchangeNameProvider(commonRepo: sl()));
   sl.registerFactory(() => ExchangeMarketInfoProvider(commonRepo: sl()));
   sl.registerFactory(() => UploadedDocumentsProvider(commonRepo: sl()));
+  //sl.registerFactory(() => DepartmentDashboardProvider(commonRepo: sl()));
+  sl.registerFactory(() => RegisterFormProvider(commonRepo: sl()));
+  sl.registerFactory(() => DeptJoinAttendanceListProvider(commonRepo: sl()));
+  sl.registerFactory(() => DeptJoinPendingListProvider(commonRepo: sl()));
 
 }

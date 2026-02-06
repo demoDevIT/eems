@@ -7,11 +7,15 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/user_new.dart';
 
 class UploadedDocumentsProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
 
   UploadedDocumentsProvider({required this.commonRepo});
+
+  final UserData _userData = UserData();
+  get userModel => _userData.model.value;
 
   /// PDFs
   List<String> pdfUrls = [];

@@ -36,6 +36,7 @@ class EmpInfoModal {
 
 class EmpInfoData {
   dynamic userID;
+  dynamic registrationNumber;
   dynamic brn;
   dynamic district;
   dynamic area;
@@ -103,6 +104,7 @@ class EmpInfoData {
 
   EmpInfoData(
       {this.userID,
+        this.registrationNumber,
         this.brn,
         this.district,
         this.area,
@@ -170,6 +172,7 @@ class EmpInfoData {
 
   EmpInfoData.fromJson(Map<String, dynamic> json) {
     userID = json['UserID'];
+    registrationNumber = json['RegistrationNumber'];
     brn = json['BRN'];
     district = json['District'];
     area = json['Area'];
@@ -238,6 +241,7 @@ class EmpInfoData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['UserID'] = this.userID;
+    data['RegistrationNumber'] = this.registrationNumber;
     data['BRN'] = this.brn;
     data['District'] = this.district;
     data['Area'] = this.area;

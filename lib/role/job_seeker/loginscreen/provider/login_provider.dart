@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../constants/colors.dart';
@@ -15,6 +16,7 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../department/dept_dashboard/dept_dashboard.dart';
 import '../../../employer/emp_profile/modal/emp_info_modal.dart';
 import '../../candidate_attendance/candidate_attendance_screen.dart';
 import '../../candidate_attendance/provider/candidate_attendance_provider.dart';
@@ -157,6 +159,19 @@ class LoginProvider with ChangeNotifier {
 
 
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
+
+//     Navigator.of(context).push(
+//       RightToLeftRoute(
+//         page: ChangeNotifierProvider(
+//           create: (_) => DepartmentDashboardProvider(),
+//           child: const DepartmentDashboardPage(), // ✅ UI widget
+//         ),
+//         duration: const Duration(milliseconds: 500),
+//         startOffset: const Offset(-1.0, 0.0),
+//       ),
+//     );
+// return null;
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
 

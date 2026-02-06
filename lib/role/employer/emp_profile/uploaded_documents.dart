@@ -25,6 +25,9 @@ class _UploadOrganizationDocumentsState
       final provider =
       Provider.of<UploadedDocumentsProvider>(context, listen: false);
 
+      final data = provider.userModel;
+      debugPrint("userModel => $data");
+
       provider.loadUploadedDocuments(
         userId: "8442", // 🔴 dynamic later
       );
