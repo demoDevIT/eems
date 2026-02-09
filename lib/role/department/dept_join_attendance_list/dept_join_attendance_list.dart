@@ -70,19 +70,24 @@ class DeptJoinAttendanceListScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton.icon(
+                // ElevatedButton.icon(
+                //   onPressed: () =>
+                //       provider.pickAttendanceDate(context, item),
+                //   icon: const Icon(Icons.calendar_month),
+                //   label: const Text("Mark Attendance"),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.green,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //   ),
+                // ),
+
+                OutlinedButton(
                   onPressed: () =>
                       provider.pickAttendanceDate(context, item),
-                  icon: const Icon(Icons.calendar_month),
-                  label: const Text("Mark Attendance"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                  child: const Text("Mark Attendance"),
                 ),
-
               ],
             )
 
@@ -122,14 +127,14 @@ class DeptJoinAttendanceListScreen extends StatelessWidget {
     );
   }
 
-  Widget _iconBtn({
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return IconButton(
-      icon: Icon(icon, color: color),
-      onPressed: onTap,
-    );
-  }
+  // Widget _iconBtn({
+  //   required IconData icon,
+  //   required Color color,
+  //   required VoidCallback onTap,
+  // }) {
+  //   return IconButton(
+  //     icon: Icon(icon, color: color),
+  //     onPressed: onTap,
+  //   );
+  // }
 }

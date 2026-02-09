@@ -2,7 +2,7 @@ abstract class Constants {
 
   // url devit staging:
      static const baseurl ="https://eems.devitsandbox.com/mobileapi/api/"; //sandbox URL
-    //static const baseurl ="https://rajemployment.rajasthan.gov.in/mobileapi/api/"; //live URL
+     //static const baseurl ="https://rajemployment.rajasthan.gov.in/mobileapi/api/"; //live URL
      static const janAadhaarBaseUrl ="https://rajemployment.rajasthan.gov.in/api/api/"; //live URL
 
     // static const loginUrl = "Authentication/Login";

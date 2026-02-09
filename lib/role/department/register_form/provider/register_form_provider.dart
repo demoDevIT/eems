@@ -1,6 +1,18 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:rajemployment/role/department/register_form/modal/reg_form_modal.dart';
+import '../../../../api_service/model/base/api_response.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/global.dart';
+import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/utility_class.dart';
+import '../modal/department_modal.dart';
+import '../modal/district_modal.dart';
+import '../modal/city_modal.dart';
+import '../modal/ward_modal.dart';
+
 
 class RegisterFormProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -22,39 +34,308 @@ class RegisterFormProvider extends ChangeNotifier {
   /// AREA (URBAN / RURAL)
   /// ======================
   String areaType = "Rural";
-  bool isAreaFromBRN = false;
+  //bool isAreaFromBRN = false;
+
+  ///city dropdown
+  bool isCityLoading = false;
+
+  List<CityData> cityList = [];
+  CityData? selectedCity;
+
+  final TextEditingController cityNameController = TextEditingController();
+  final TextEditingController cityIdController = TextEditingController();
+
 
   void setArea(String? value) {
     if (value == null) return;
     areaType = value;
+
+    /// 🔴 CLEAR RURAL DATA
+    selectedCity = null;
+    cityNameController.clear();
+    cityIdController.clear();
+    cityList.clear();
+
+    selectedWard = null;
+    wardNameController.clear();
+    wardIdController.clear();
+    wardList.clear();
+
+    /// 🔴 CLEAR URBAN DATA
+    gramPanchayatController.clear();
+    villageController.clear();
+
     notifyListeners();
   }
+
+  /// WARD DROPDOWN
+  bool isWardLoading = false;
+
+  List<WardData> wardList = [];
+  WardData? selectedWard;
+
+  final TextEditingController wardNameController = TextEditingController();
+  final TextEditingController wardIdController = TextEditingController();
+
+
+  /// DEPARTMENT DROPDOWN
+  bool isDepartmentLoading = false;
+
+  List<DepartmentData> departmentList = [];
+  DepartmentData? selectedDepartment;
+
+  final TextEditingController departmentNameController =
+  TextEditingController();
+  final TextEditingController departmentIdController =
+  TextEditingController();
+
 
   /// ======================
   /// FORM CONTROLLERS
   /// ======================
-  final TextEditingController cityGramController = TextEditingController();
-  final TextEditingController wardVillageController = TextEditingController();
-  final TextEditingController departmentNameController = TextEditingController();
+  final TextEditingController gramPanchayatController = TextEditingController();
+  final TextEditingController villageController = TextEditingController();
+  //final TextEditingController departmentNameController = TextEditingController();
   final TextEditingController officeNameController = TextEditingController();
   final TextEditingController ssoIdController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController designationController = TextEditingController();
 
-  /// ======================
-  /// INIT DATA
-  /// ======================
+  Future<void> getDistrictApi(BuildContext context, int stateId) async {
+    isDistrictLoading = true;
+    selectedDistrict = null;
+    districtController.clear();
+    districtIdController.clear();
+    notifyListeners();
+
+    try {
+      final apiResponse =
+      await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        districtList.clear();
+
+        if (responseData['Data'] != null) {
+          for (var e in responseData['Data']) {
+            districtList.add(DistrictData.fromJson(e));
+          }
+        }
+
+      }
+    } catch (_) {
+      districtList.clear();
+    }
+
+    isDistrictLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getCityApi(BuildContext context, String districtCode) async {
+    isCityLoading = true;
+
+    selectedCity = null;
+    cityNameController.clear();
+    cityIdController.clear();
+    cityList.clear();
+
+    notifyListeners();
+
+    try {
+      final apiResponse =
+      await commonRepo.get("Common/GetCityMaster/$districtCode");
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData['Data'] != null) {
+          for (var e in responseData['Data']) {
+            cityList.add(CityData.fromJson(e));
+          }
+        }
+      }
+    } catch (_) {
+      cityList.clear();
+    }
+
+    isCityLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getWardApi(BuildContext context, String cityCode) async {
+    isWardLoading = true;
+
+    selectedWard = null;
+    wardNameController.clear();
+    wardIdController.clear();
+    wardList.clear();
+
+    notifyListeners();
+
+    try {
+      final apiResponse = await commonRepo.get(
+        "Common/GetWardMaster/$cityCode",
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData['Data'] != null) {
+          for (var e in responseData['Data']) {
+            wardList.add(WardData.fromJson(e));
+          }
+        }
+      }
+    } catch (_) {
+      wardList.clear();
+    }
+
+    isWardLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getDepartmentApi(BuildContext context) async {
+    isDepartmentLoading = true;
+
+    selectedDepartment = null;
+    departmentNameController.clear();
+    departmentIdController.clear();
+    departmentList.clear();
+
+    notifyListeners();
+
+    try {
+      final apiResponse = await commonRepo.get(
+        "Common/DepartmentMasterList",
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData['Data'] != null) {
+          for (var e in responseData['Data']) {
+            departmentList.add(DepartmentData.fromJson(e));
+          }
+        }
+      }
+    } catch (_) {
+      departmentList.clear();
+    }
+
+    isDepartmentLoading = false;
+    notifyListeners();
+  }
+
+
+  Future<RegFormModal> submitForm(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return RegFormModal(
+        state: 0,
+        message: AppLocalizations.of(context)!.internet_connection,
+      );
+    }
+
+    try {
+      Map<String, dynamic> data = {
+       // "ActionName": "InsertData",
+        "District": "",
+        "Area": "",
+        "City": "",
+        "Ward": "",
+        "Department": "",
+        "Office": "",
+        "SSOID": "",
+        "Mobile": "",
+        "Designation": "",
+      };
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "************** Department Save API ****************",
+        data,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final sm = RegFormModal.fromJson(responseData);
+
+        if (sm.state == 200) {
+          successDialog(
+            context,
+            sm.message ?? "Success",
+                (value) {
+              if (value.toString() == "success") {
+                if (sm.data != null &&
+                    sm.data!.isNotEmpty &&
+                    sm.data![0].userId != null) {
+
+                }
+              }
+            },
+          );
+          return sm;
+        } else {
+          showAlertError(
+            sm.message?.toString() ?? "Something went wrong",
+            context,
+          );
+          return sm;
+        }
+      } else {
+        return RegFormModal(
+          state: 0,
+          message: "Something went wrong",
+        );
+      }
+
+
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+      return RegFormModal(
+        state: 0,
+        message: e.toString(),
+      );
+    }
+  }
+
   void init(String ssoId) {
     ssoIdController.text = ssoId; // disabled field
   }
+
+  void clearData() {
+    // districtList.clear();
+    // selectedDistrict = null;
+  }
 }
 
-/// ======================
-/// DUMMY MODEL (already exists in your project)
-/// ======================
-class DistrictData {
-  final int? iD;
-  final String? name;
 
-  DistrictData({this.iD, this.name});
-}
+
+

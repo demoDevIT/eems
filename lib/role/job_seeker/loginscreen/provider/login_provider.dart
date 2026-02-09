@@ -160,17 +160,17 @@ class LoginProvider with ChangeNotifier {
 
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
 
-//     Navigator.of(context).push(
-//       RightToLeftRoute(
-//         page: ChangeNotifierProvider(
-//           create: (_) => DepartmentDashboardProvider(),
-//           child: const DepartmentDashboardPage(), // ✅ UI widget
-//         ),
-//         duration: const Duration(milliseconds: 500),
-//         startOffset: const Offset(-1.0, 0.0),
-//       ),
-//     );
-// return null;
+    Navigator.of(context).push(
+      RightToLeftRoute(
+        page: ChangeNotifierProvider(
+          create: (_) => DepartmentDashboardProvider(),
+          child: const DepartmentDashboardPage(), // ✅ UI widget
+        ),
+        duration: const Duration(milliseconds: 500),
+        startOffset: const Offset(-1.0, 0.0),
+      ),
+    );
+return null;
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
@@ -278,6 +278,51 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
+    Future<void> callSSOAuthApi(BuildContext buildContext) async {
+      Map<String, dynamic> body = {
+        "usrnm": "rgavp",
+        "psw": "rgavp@123", // Placeholder encrypted password
+        "srvnm": "RGAVPLogin",
+        "srvmethodnm": "SSOAuthentication",
+        "srvparam": json.encode({
+          "sso_id": SSOIDController.text,
+          "password": passwordController.text
+        }),
+      };
+
+      print("body => $body");
+
+      try {
+        ApiResponse apiResponse = await commonRepo.post("https://rajeevika.devitsandbox.com/Service/AppService",body);
+
+        ProgressDialog.closeLoadingDialog(buildContext);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+
+          var responseData = apiResponse.response!.data;
+
+          // ✅ Decode ONLY if it's String
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          print("Full response => $responseData");
+          final List<dynamic> jsonArray = responseData;
+          final Map<String, dynamic> result = jsonArray[0];
+
+          print("Status => ${result['Status']}");
+          print("IsSuccess => ${result['IsSuccess']}");
+          print("Message => ${result['Message']}");
+
+        } else {
+          print("elseeee");
+        }
+
+      } catch (e) {
+        print("Login error: $e");
+        UtilityClass.showSnackBar(
+            buildContext, "Login failed. Please try again.", Colors.red);
+      }
+    }
 
   Future<JobseekerBasicInfoModal?> getBasicDetailsApi(BuildContext context,String userId,int? roleId) async {
     print("44");

@@ -70,16 +70,21 @@ class DeptJoinPendingListScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
+                // ElevatedButton(
+                //   onPressed: () =>
+                //       provider.onApproveJoining(context, item),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.green,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //   ),
+                //   child: const Text("Approve Joining"),
+                // ),
+                OutlinedButton(
                   onPressed: () =>
                       provider.onApproveJoining(context, item),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text("Approve Joining"),
+                  child: const Text("Approve Joining"), //first this button will show only, when click on this button then next 2 buttons will show and this button will be hide
                 ),
 
                 OutlinedButton(
@@ -87,6 +92,12 @@ class DeptJoinPendingListScreen extends StatelessWidget {
                       provider.onViewJoiningLetter(context, item),
                   child: const Text("View Joining Letter"),
                 ),
+
+                // OutlinedButton(
+                //   onPressed: () =>
+                //       provider.onViewJoiningLetter(context, item),
+                //   child: const Text("E-sign"),
+                // ),
 
                 // 2 buttons conditionally, not 3 always***************
                 // IconButton(
@@ -136,14 +147,14 @@ class DeptJoinPendingListScreen extends StatelessWidget {
     );
   }
 
-  Widget _iconBtn({
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return IconButton(
-      icon: Icon(icon, color: color),
-      onPressed: onTap,
-    );
-  }
+  // Widget _iconBtn({
+  //   required IconData icon,
+  //   required Color color,
+  //   required VoidCallback onTap,
+  // }) {
+  //   return IconButton(
+  //     icon: Icon(icon, color: color),
+  //     onPressed: onTap,
+  //   );
+  // }
 }

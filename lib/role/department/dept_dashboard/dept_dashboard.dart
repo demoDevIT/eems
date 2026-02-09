@@ -44,7 +44,7 @@ class DepartmentDashboardPage extends StatelessWidget {
                 children: [
                   _dashboardButton(
                     title: "Register yourself for MYSY",
-                    icon: Icons.app_registration_rounded,
+                   // icon: Icons.app_registration_rounded,
                     onTap: () => {
                       Navigator.push(
                         context,
@@ -59,7 +59,7 @@ class DepartmentDashboardPage extends StatelessWidget {
 
                   _dashboardButton(
                     title: "Attendance List for Department Joining",
-                    icon: Icons.pending_actions_rounded,
+                   // icon: Icons.pending_actions_rounded,
                     onTap: () => {
                       Navigator.push(
                         context,
@@ -74,7 +74,7 @@ class DepartmentDashboardPage extends StatelessWidget {
 
                   _dashboardButton(
                     title: "Pending List for Department Joining",
-                    icon: Icons.pending_actions_rounded,
+                   // icon: Icons.pending_actions_rounded,
                     onTap: () => {
                       Navigator.push(
                         context,
@@ -96,7 +96,7 @@ class DepartmentDashboardPage extends StatelessWidget {
   /// ===== Reusable Button =====
   Widget _dashboardButton({
     required String title,
-    required IconData icon,
+   // required IconData icon,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -113,7 +113,7 @@ class DepartmentDashboardPage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: kPrimaryColor),
+           // Icon(icon, color: kPrimaryColor),
             const SizedBox(width: 14),
             Expanded(
               child: Text(
