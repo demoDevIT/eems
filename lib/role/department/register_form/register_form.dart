@@ -4,7 +4,10 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import 'modal/block_modal.dart';
 import 'modal/department_modal.dart';
+import 'modal/gp_modal.dart';
+import 'modal/village_modal.dart';
 import 'modal/ward_modal.dart';
 import 'provider/register_form_provider.dart';
 import 'package:flutter/scheduler.dart';
@@ -80,15 +83,25 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                           provider.districtIdController.text =
                               value?.iD.toString() ?? "";
 
-                          /// 🔴 CLEAR CITY DATA
+                          // clear selections
                           provider.selectedCity = null;
-                          provider.cityNameController.clear();
-                          provider.cityIdController.clear();
+                          provider.selectedBlock = null;
+                          // provider.cityNameController.clear();
+                          // provider.cityIdController.clear();
+                         // provider.cityList.clear();
+
+                          // clear lists (district dependency)
                           provider.cityList.clear();
+                          provider.blockList.clear();
+                          provider.wardList.clear();
+                          provider.gpList.clear();
+                          provider.villageList.clear();
 
                           /// 🔵 LOAD CITY
                           if (value?.iD != null) {
                             provider.getCityApi(context, value!.iD.toString());
+                            provider.getBlockApi(context, value!.code!);
+
                           }
 
                           provider.notifyListeners();
@@ -174,16 +187,75 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         ),
                 ],
 
-        if (provider.areaType == "Urban") ...[
-                /// ===== GRAM PANCHAYAT =====
-                _label("Gram Panchayat"),
-                _field(
-                    provider.gramPanchayatController, "Enter city / gram panchayat"),
+                if (provider.areaType == "Urban") ...[
 
-                /// ===== VILLAGE =====
-                _label("Village"),
-                _field(provider.villageController, "Enter ward / village"),
+                  /// ===== BLOCK =====
+                  _label("Block *"),
+                  provider.isBlockLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : buildDropdownWithBorderFieldOnlyThisPage<BlockData>(
+                    items: provider.blockList,
+                    controller: provider.blockNameController,
+                    idController: provider.blockIdController,
+                    hintText: "--Select Block--",
+                    height: 50,
+                    selectedValue: provider.selectedBlock,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      provider.selectedBlock = value;
+                      provider.blockNameController.text = value?.nameEng ?? "";
+                      provider.blockIdController.text = value?.iD.toString() ?? "";
+
+                      provider.getGpApi(context, value!.code!);
+                      provider.notifyListeners();
+                    },
+                  ),
+
+                  /// ===== GRAM PANCHAYAT =====
+                  _label("Gram Panchayat *"),
+                  provider.isGpLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : buildDropdownWithBorderFieldOnlyThisPage<GramPanchayatData>(
+                    items: provider.gpList,
+                    controller: provider.gpNameController,
+                    idController: provider.gpIdController,
+                    hintText: "--Select Gram Panchayat--",
+                    height: 50,
+                    selectedValue: provider.selectedGp,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      provider.selectedGp = value;
+                      provider.gpNameController.text = value?.nameEng ?? "";
+                      provider.gpIdController.text = value?.iD.toString() ?? "";
+
+                      provider.getVillageApi(context, value!.code!);
+                      provider.notifyListeners();
+                    },
+                  ),
+
+                  /// ===== VILLAGE =====
+                  _label("Village *"),
+                  provider.isVillageLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : buildDropdownWithBorderFieldOnlyThisPage<VillageData>(
+                    items: provider.villageList,
+                    controller: provider.villageNameController,
+                    idController: provider.villageIdController,
+                    hintText: "--Select Village--",
+                    height: 50,
+                    selectedValue: provider.selectedVillage,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      provider.selectedVillage = value;
+                      provider.villageNameController.text =
+                          value?.nameEng ?? "";
+                      provider.villageIdController.text =
+                          value?.iD.toString() ?? "";
+                      provider.notifyListeners();
+                    },
+                  ),
                 ],
+
                 /// ===== DEPARTMENT NAME =====
                 _label("Department Name"),
                 provider.isDepartmentLoading
@@ -392,20 +464,14 @@ bool validateBasicDetails(
     }
   }
   if (provider.areaType == "Urban") {
-    if (provider.gramPanchayatController.text
-        .trim()
-        .isEmpty) {
-      showAlertError("Please enter Gram Panchayat", context);
-      return false;
-    }
-
-    if (provider.villageController.text
-        .trim()
-        .isEmpty) {
-      showAlertError("Please enter Ward/Village", context);
+    if (provider.selectedBlock == null ||
+        provider.selectedGp == null ||
+        provider.selectedVillage == null) {
+      showAlertError("Please complete location details", context);
       return false;
     }
   }
+
   if (provider.departmentNameController.text.trim().isEmpty) {
     showAlertError("Please enter Department Name", context);
     return false;

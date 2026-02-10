@@ -8,9 +8,12 @@ import '../../../../repo/common_repo.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
+import '../modal/block_modal.dart';
 import '../modal/department_modal.dart';
 import '../modal/district_modal.dart';
 import '../modal/city_modal.dart';
+import '../modal/gp_modal.dart';
+import '../modal/village_modal.dart';
 import '../modal/ward_modal.dart';
 
 
@@ -54,16 +57,25 @@ class RegisterFormProvider extends ChangeNotifier {
     selectedCity = null;
     cityNameController.clear();
     cityIdController.clear();
-    cityList.clear();
+    // cityList.clear();
 
     selectedWard = null;
     wardNameController.clear();
     wardIdController.clear();
-    wardList.clear();
+    // wardList.clear();
 
-    /// 🔴 CLEAR URBAN DATA
-    gramPanchayatController.clear();
-    villageController.clear();
+    // Urban selections
+    selectedBlock = null;
+    blockNameController.clear();
+    blockIdController.clear();
+
+    selectedGp = null;
+    gpNameController.clear();
+    gpIdController.clear();
+
+    selectedVillage = null;
+    villageNameController.clear();
+    villageIdController.clear();
 
     notifyListeners();
   }
@@ -76,6 +88,27 @@ class RegisterFormProvider extends ChangeNotifier {
 
   final TextEditingController wardNameController = TextEditingController();
   final TextEditingController wardIdController = TextEditingController();
+
+  /// ===== BLOCK =====
+  bool isBlockLoading = false;
+  List<BlockData> blockList = [];
+  BlockData? selectedBlock;
+  final blockNameController = TextEditingController();
+  final blockIdController = TextEditingController();
+
+  /// ===== GRAM PANCHAYAT =====
+  bool isGpLoading = false;
+  List<GramPanchayatData> gpList = [];
+  GramPanchayatData? selectedGp;
+  final gpNameController = TextEditingController();
+  final gpIdController = TextEditingController();
+
+  /// ===== VILLAGE =====
+  bool isVillageLoading = false;
+  List<VillageData> villageList = [];
+  VillageData? selectedVillage;
+  final villageNameController = TextEditingController();
+  final villageIdController = TextEditingController();
 
 
   /// DEPARTMENT DROPDOWN
@@ -203,6 +236,85 @@ class RegisterFormProvider extends ChangeNotifier {
     isWardLoading = false;
     notifyListeners();
   }
+
+  Future<void> getBlockApi(BuildContext context, String districtCode) async {
+    isBlockLoading = true;
+
+    selectedBlock = null;
+    blockList.clear();
+    blockNameController.clear();
+    blockIdController.clear();
+
+    notifyListeners();
+
+    final apiResponse =
+    await commonRepo.get("Common/GetBlockMaster/$districtCode");
+
+    if (apiResponse.response?.statusCode == 200) {
+      dynamic data = apiResponse.response!.data;
+      if (data is String) data = jsonDecode(data);
+
+      for (var e in data['Data']) {
+        blockList.add(BlockData.fromJson(e));
+      }
+    }
+
+    isBlockLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getGpApi(BuildContext context, String blockCode) async {
+    isGpLoading = true;
+
+    selectedGp = null;
+    gpList.clear();
+    gpNameController.clear();
+    gpIdController.clear();
+
+    notifyListeners();
+
+    final apiResponse =
+    await commonRepo.get("Common/GetGrampanchyatMaster/$blockCode");
+
+    if (apiResponse.response?.statusCode == 200) {
+      dynamic data = apiResponse.response!.data;
+      if (data is String) data = jsonDecode(data);
+
+      for (var e in data['Data']) {
+        gpList.add(GramPanchayatData.fromJson(e));
+      }
+    }
+
+    isGpLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getVillageApi(BuildContext context, String gpCode) async {
+    isVillageLoading = true;
+
+    selectedVillage = null;
+    villageList.clear();
+    villageNameController.clear();
+    villageIdController.clear();
+
+    notifyListeners();
+
+    final apiResponse =
+    await commonRepo.get("Common/GetVillageMaster/$gpCode");
+
+    if (apiResponse.response?.statusCode == 200) {
+      dynamic data = apiResponse.response!.data;
+      if (data is String) data = jsonDecode(data);
+
+      for (var e in data['Data']) {
+        villageList.add(VillageData.fromJson(e));
+      }
+    }
+
+    isVillageLoading = false;
+    notifyListeners();
+  }
+
 
   Future<void> getDepartmentApi(BuildContext context) async {
     isDepartmentLoading = true;
