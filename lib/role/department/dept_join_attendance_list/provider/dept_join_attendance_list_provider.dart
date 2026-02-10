@@ -19,6 +19,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   DeptJoinAttendanceListProvider({required this.commonRepo});
 
+  bool isPageLoading = false;
+
   /// LEVEL
   bool isLevelLoading = false;
   List<LevelData> levelList = [];
@@ -43,6 +45,23 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   List<FinancialYearData> financialYearList = [];
   FinancialYearData? selectedFinancialYear;
 
+  Future<void> initPageApis(BuildContext context) async {
+    isPageLoading = true;
+    notifyListeners();
+
+    try {
+      await Future.wait([
+        getLevelApi(context),
+        getFinancialYearApi(context),
+        getDistrictApi(context, 1),
+      ]);
+    } catch (e) {
+      debugPrint("Init API error: $e");
+    }
+
+    isPageLoading = false;
+    notifyListeners();
+  }
 
 
   Future<void> getLevelApi(BuildContext context) async {

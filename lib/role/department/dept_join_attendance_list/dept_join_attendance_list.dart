@@ -30,10 +30,10 @@ class _DeptJoinAttendanceListScreenState
       Provider.of<DeptJoinAttendanceListProvider>(context, listen: false);
 
       provider.clearData();
-
-      provider.getLevelApi(context);
-      provider.getFinancialYearApi(context);
-      provider.getDistrictApi(context, 1); // default stateId
+      provider.initPageApis(context);
+      // provider.getLevelApi(context);
+      // provider.getFinancialYearApi(context);
+      // provider.getDistrictApi(context, 1); // default stateId
     });
   }
 
@@ -56,6 +56,11 @@ class _DeptJoinAttendanceListScreenState
       ),
       body: Consumer<DeptJoinAttendanceListProvider>(
         builder: (context, provider, _) {
+          if (provider.isPageLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return Column(
             children: [
               _filterSection(context, provider),
@@ -203,9 +208,7 @@ class _DeptJoinAttendanceListScreenState
         children: [
 
           /// LEVEL NAME
-          provider.isLevelLoading
-              ? const CircularProgressIndicator()
-              : DropdownButtonFormField<LevelData>(
+          DropdownButtonFormField<LevelData>(
             value: provider.selectedLevel,
             decoration: _inputDecoration("Select Level"),
             items: provider.levelList
@@ -230,9 +233,7 @@ class _DeptJoinAttendanceListScreenState
           const SizedBox(height: 10),
 
           /// DISTRICT
-          provider.isDistrictLoading
-              ? const CircularProgressIndicator()
-              : buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
+          buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
             items: provider.districtList,
             controller: provider.districtController,
             idController: provider.districtIdController,
@@ -252,9 +253,7 @@ class _DeptJoinAttendanceListScreenState
           const SizedBox(height: 10),
 
           /// FINANCIAL YEAR (API later)
-          provider.isFinancialYearLoading
-              ? const CircularProgressIndicator()
-              : DropdownButtonFormField<FinancialYearData>(
+          DropdownButtonFormField<FinancialYearData>(
             value: provider.selectedFinancialYear,
             decoration: _inputDecoration("--Select Financial Year--"),
             items: provider.financialYearList
