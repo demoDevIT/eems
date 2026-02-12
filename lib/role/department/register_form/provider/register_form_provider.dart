@@ -193,6 +193,7 @@ class RegisterFormProvider extends ChangeNotifier {
             cityList.add(CityData.fromJson(e));
           }
         }
+        print(CityData);
       }
     } catch (_) {
       cityList.clear();
@@ -367,22 +368,43 @@ class RegisterFormProvider extends ChangeNotifier {
 
     try {
       Map<String, dynamic> data = {
-       // "ActionName": "InsertData",
-        "District": "",
-        "Area": "",
-        "City": "",
-        "Ward": "",
-        "Department": "",
-        "Office": "",
-        "SSOID": "",
-        "Mobile": "",
-        "Designation": "",
+        "ActionName": "AllotCenter",
+        "AreaType": areaType,
+        "PrivateCityCode": areaType == "Urban" && selectedCity?.code != null
+            ? selectedCity!.code
+            : "0",
+        "PrivateBlockCode": areaType == "Rural" && selectedBlock?.code != null
+            ? selectedBlock!.code
+            : "0",
+        "PrivateGPCode": areaType == "Rural" && selectedGp?.code != null
+            ? selectedGp!.code
+            : "0",
+        "PrivateWardCode": areaType == "Urban" && selectedWard?.code != null
+            ? selectedWard!.code
+            : "0",
+        "PrivateVillageCode": areaType == "Rural" && selectedVillage?.code != null
+            ? selectedVillage!.code
+            : "0",
+        "PrivateDepartmentID": departmentIdController.text.isNotEmpty
+            ? departmentIdController.text
+            : "0",
+        "SSOID": ssoIdController.text.trim(),
+        "OfficerName": officeNameController.text.trim(),
+        "MobileNo": mobileController.text.trim(),
+        "Designation": designationController.text.trim(),
+        "JobSeekerUserId": 8253,
+        "DEOUserId": 1820
       };
+
+      /// ✅ PRINT FULL REQUEST DATA
+      print("========== SUBMIT API PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("=========================================");
 
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
-        "************** Department Save API ****************",
+        "Common/Allotcenter",
         data,
       );
 

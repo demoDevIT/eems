@@ -45,6 +45,14 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   List<FinancialYearData> financialYearList = [];
   FinancialYearData? selectedFinancialYear;
 
+  int totalDays = 0;
+  int absentDays = 0;
+  int presentDays = 0;
+
+  TextEditingController absentController = TextEditingController();
+
+  DateTime selectedMonth = DateTime.now();
+
   Future<void> initPageApis(BuildContext context) async {
     isPageLoading = true;
     notifyListeners();
@@ -262,6 +270,476 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       showAlertError(e.toString(), context);
       return DeptJoinAttendanceModal(state: 0, message: e.toString());
     }
+  }
+
+  void openAttendancePopup(
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) {
+
+    // Reset values
+    selectedMonth = DateTime.now();
+    absentDays = 0;
+    absentController.clear();
+
+    _calculateTotalDays();
+    _calculatePresentDays();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      /// HEADER
+                      const Center(
+                        child: Text(
+                          "Mark Attendance",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// USER DETAILS
+                      _labelValue("Name", item.name),
+                      _labelValue("Father Name", item.fatherName),
+                      _labelValue("Scheme Name", item.schemeName),
+                      _labelValue("Technical Course", item.technicalCourse),
+
+                      const SizedBox(height: 10),
+                      const Divider(),
+                      const SizedBox(height: 10),
+
+                      /// MONTH PICKER
+                      const Text(
+                        "Select Month",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      InkWell(
+                        onTap: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate: selectedMonth,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                            helpText: "Select Month",
+                          );
+
+                          if (picked != null) {
+                            selectedMonth =
+                                DateTime(picked.year, picked.month);
+
+                            _calculateTotalDays();
+                            _calculatePresentDays();
+                            setStateDialog(() {});
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 14),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${selectedMonth.month}-${selectedMonth.year}",
+                              ),
+                              const Icon(Icons.calendar_month),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// TOTAL DAYS BOX
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          "Total No. of Days - $totalDays days",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// ABSENT FIELD
+                      const Text(
+                        "No. of Absent Days",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      TextField(
+                        controller: absentController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "Enter absent days",
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 14),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          absentDays = int.tryParse(value) ?? 0;
+
+                          if (absentDays > totalDays) {
+                            absentDays = totalDays;
+                            absentController.text =
+                                totalDays.toString();
+                            absentController.selection =
+                                TextSelection.fromPosition(
+                                    TextPosition(
+                                        offset: absentController.text.length));
+                          }
+
+                          _calculatePresentDays();
+                          setStateDialog(() {});
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// PRESENT DAYS BOX
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          "Total No. of Present Days - $presentDays",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 26),
+
+                      /// SUBMIT BUTTON
+                      SizedBox(
+                        width: double.infinity,
+                        height: 45,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            _submitAttendance(context, item);
+                          },
+                          child: const Text("Submit"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+
+          },
+        );
+      },
+    );
+  }
+
+  void viewAttendance(
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) {
+
+    // Reset values
+    selectedMonth = DateTime.now();
+    absentDays = 0;
+    absentController.clear();
+
+    _calculateTotalDays();
+    _calculatePresentDays();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      /// HEADER
+                      const Center(
+                        child: Text(
+                          "View Attendance",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // /// USER DETAILS
+                      // _labelValue("Name", item.name),
+                      // _labelValue("Father Name", item.fatherName),
+                      // _labelValue("Scheme Name", item.schemeName),
+                      // _labelValue("Technical Course", item.technicalCourse),
+                      //
+                      // const SizedBox(height: 10),
+                      // const Divider(),
+                      // const SizedBox(height: 10),
+                      //
+                      // /// MONTH PICKER
+                      // const Text(
+                      //   "Select Month",
+                      //   style: TextStyle(fontWeight: FontWeight.w600),
+                      // ),
+                      //
+                      // const SizedBox(height: 8),
+                      //
+                      // InkWell(
+                      //   onTap: () async {
+                      //     final picked = await showDatePicker(
+                      //       context: context,
+                      //       initialDate: selectedMonth,
+                      //       firstDate: DateTime(2000),
+                      //       lastDate: DateTime(2100),
+                      //       helpText: "Select Month",
+                      //     );
+                      //
+                      //     if (picked != null) {
+                      //       selectedMonth =
+                      //           DateTime(picked.year, picked.month);
+                      //
+                      //       _calculateTotalDays();
+                      //       _calculatePresentDays();
+                      //       setStateDialog(() {});
+                      //     }
+                      //   },
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 14, vertical: 14),
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       border: Border.all(color: Colors.grey.shade400),
+                      //     ),
+                      //     child: Row(
+                      //       mainAxisAlignment:
+                      //       MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "${selectedMonth.month}-${selectedMonth.year}",
+                      //         ),
+                      //         const Icon(Icons.calendar_month),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      //
+                      // const SizedBox(height: 20),
+                      //
+                      // /// TOTAL DAYS BOX
+                      // Container(
+                      //   padding: const EdgeInsets.all(12),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.grey.shade100,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Text(
+                      //     "Total No. of Days - $totalDays days",
+                      //     style: const TextStyle(
+                      //         fontWeight: FontWeight.w600),
+                      //   ),
+                      // ),
+                      //
+                      // const SizedBox(height: 20),
+                      //
+                      // /// ABSENT FIELD
+                      // const Text(
+                      //   "No. of Absent Days",
+                      //   style: TextStyle(fontWeight: FontWeight.w600),
+                      // ),
+                      //
+                      // const SizedBox(height: 8),
+                      //
+                      // TextField(
+                      //   controller: absentController,
+                      //   keyboardType: TextInputType.number,
+                      //   decoration: InputDecoration(
+                      //     hintText: "Enter absent days",
+                      //     contentPadding: const EdgeInsets.symmetric(
+                      //         horizontal: 14, vertical: 14),
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //   ),
+                      //   onChanged: (value) {
+                      //     absentDays = int.tryParse(value) ?? 0;
+                      //
+                      //     if (absentDays > totalDays) {
+                      //       absentDays = totalDays;
+                      //       absentController.text =
+                      //           totalDays.toString();
+                      //       absentController.selection =
+                      //           TextSelection.fromPosition(
+                      //               TextPosition(
+                      //                   offset: absentController.text.length));
+                      //     }
+                      //
+                      //     _calculatePresentDays();
+                      //     setStateDialog(() {});
+                      //   },
+                      // ),
+                      //
+                      // const SizedBox(height: 20),
+                      //
+                      // /// PRESENT DAYS BOX
+                      // Container(
+                      //   padding: const EdgeInsets.all(12),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.green.shade50,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Text(
+                      //     "Total No. of Present Days - $presentDays",
+                      //     style: const TextStyle(
+                      //       fontWeight: FontWeight.w600,
+                      //       color: Colors.green,
+                      //     ),
+                      //   ),
+                      // ),
+                      //
+                      // const SizedBox(height: 26),
+                      //
+                      // /// SUBMIT BUTTON
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   height: 45,
+                      //   child: ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //     ),
+                      //     onPressed: () {
+                      //       _submitAttendance(context, item);
+                      //     },
+                      //     child: const Text("Submit"),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+
+          },
+        );
+      },
+    );
+  }
+
+  void _calculateTotalDays() {
+    final firstDay =
+    DateTime(selectedMonth.year, selectedMonth.month, 1);
+
+    final lastDay =
+    DateTime(selectedMonth.year, selectedMonth.month + 1, 0);
+
+    totalDays = lastDay.day;
+  }
+
+  void _calculatePresentDays() {
+    presentDays = totalDays - absentDays;
+  }
+
+  Widget _labelValue(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: RichText(
+        text: TextSpan(
+          style: const TextStyle(color: Colors.black),
+          children: [
+            TextSpan(
+                text: "$label: ",
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold)),
+            TextSpan(text: value ?? "-"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _submitAttendance(
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) {
+
+    if (absentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter absent days"),
+        ),
+      );
+      return;
+    }
+
+    debugPrint("Submitting Attendance:");
+    debugPrint("User: ${item.name}");
+    debugPrint("Month: ${selectedMonth.month}-${selectedMonth.year}");
+    debugPrint("Total Days: $totalDays");
+    debugPrint("Absent Days: $absentDays");
+    debugPrint("Present Days: $presentDays");
+
+    Navigator.pop(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Attendance Submitted Successfully"),
+      ),
+    );
+
+    // 👉 Call API here
   }
 
 

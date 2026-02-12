@@ -119,10 +119,16 @@ class _DeptJoinAttendanceListScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
+            _row("Application No.", item.applicationNo),
             _row("Name", item.name),
             _row("Father Name", item.fatherName),
+            _row("Scheme Name", item.schemeName),
+            _row("Aadhaar No.", item.aadharNo),
+            _row("gender", item.gender),
+            _row("Category", item.category),
+            _row("Scheme Status", item.schemeStatus),
             _row("Date of Allotment", item.allotmentDate),
-            _row("Exchange Name", item.exchangeName),
+            _row("Technical Course", item.technicalCourse),
 
             const Divider(height: 20),
 
@@ -144,9 +150,16 @@ class _DeptJoinAttendanceListScreenState
 
                 OutlinedButton(
                   onPressed: () =>
-                      provider.pickAttendanceDate(context, item),
+                      provider.viewAttendance(context, item),
+                  child: const Text("View Attendance"),
+                ),
+
+                OutlinedButton(
+                  onPressed: () =>
+                      provider.openAttendancePopup(context, item),
                   child: const Text("Mark Attendance"),
                 ),
+
               ],
             )
 

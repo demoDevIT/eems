@@ -113,22 +113,22 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 Row(
                   children: [
                     Radio<String>(
-                      value: 'Rural',
-                      groupValue: provider.areaType,
-                      onChanged: provider.setArea,
-                    ),
-                    const Text("Rural"),
-                    const SizedBox(width: 20),
-                    Radio<String>(
                       value: 'Urban',
                       groupValue: provider.areaType,
                       onChanged: provider.setArea,
                     ),
                     const Text("Urban"),
+                    const SizedBox(width: 20),
+                    Radio<String>(
+                      value: 'Rural',
+                      groupValue: provider.areaType,
+                      onChanged: provider.setArea,
+                    ),
+                    const Text("Rural"),
                   ],
                 ),
 
-                if (provider.areaType == "Rural") ...[
+                if (provider.areaType == "Urban") ...[
                   /// ===== CITY =====
                   _label("City *"),
                   provider.isCityLoading
@@ -187,7 +187,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         ),
                 ],
 
-                if (provider.areaType == "Urban") ...[
+                if (provider.areaType == "Rural") ...[
 
                   /// ===== BLOCK =====
                   _label("Block *"),
@@ -446,7 +446,7 @@ bool validateBasicDetails(
     showAlertError("Please select Area (Rural / Urban)", context);
     return false;
   }
-  if (provider.areaType == "Rural") {
+  if (provider.areaType == "Urban") {
     if (provider.selectedCity == null ||
         provider.cityNameController.text
             .trim()
@@ -463,7 +463,7 @@ bool validateBasicDetails(
       return false;
     }
   }
-  if (provider.areaType == "Urban") {
+  if (provider.areaType == "Rural") {
     if (provider.selectedBlock == null ||
         provider.selectedGp == null ||
         provider.selectedVillage == null) {

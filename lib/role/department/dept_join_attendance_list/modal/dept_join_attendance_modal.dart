@@ -33,16 +33,26 @@ class DeptJoinAttendanceItem {
   String? applicationNo;
   String? name;
   String? fatherName;
+  String? schemeName;
+  String? aadharNo;
+  String? gender;
+  String? category;
+  String? schemeStatus;
   String? allotmentDate;
-  String? exchangeName;
+  String? technicalCourse;
 
   DeptJoinAttendanceItem({
     this.jobseekerUserId,
     this.applicationNo,
     this.name,
     this.fatherName,
+    this.schemeName,
+    this.aadharNo,
+    this.gender,
+    this.category,
+    this.schemeStatus,
     this.allotmentDate,
-    this.exchangeName,
+    this.technicalCourse,
   });
 
   factory DeptJoinAttendanceItem.fromJson(Map<String, dynamic> json) {
@@ -51,8 +61,13 @@ class DeptJoinAttendanceItem {
       applicationNo: json['ApplicationNo'],
       name: json['JobseekerName'],
       fatherName: json['FatherName'],
+      schemeName: json['SchemeName'],
+      aadharNo: json['AadharNo'],
+      gender: json['Gender'],
+      category: json['Category'],
+      schemeStatus: json['SchemeStatus'],
       allotmentDate: json['CreatedOn'],
-      exchangeName: json['SchemeName'], // shown as Exchange Name
+      technicalCourse: json['TechnicalCourse'], // shown as Exchange Name
     );
   }
 }
