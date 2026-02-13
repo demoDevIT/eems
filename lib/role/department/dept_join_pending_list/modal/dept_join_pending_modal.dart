@@ -29,45 +29,90 @@ class DeptJoinPendingModal {
 }
 
 class DeptJoinPendingItem {
-  String? jobseekerUserId;
-  String? applicationNo;
-  String? name;
-  String? fatherName;
-  String? schemeName;
-  String? aadharNo;
-  String? gender;
-  String? category;
-  String? schemeStatus;
-  String? allotmentDate;
-  String? technicalCourse;
+  // String? jobseekerUserId;
+  // String? applicationNo;
+  // String? name;
+  // String? fatherName;
+  // String? schemeName;
+  // String? aadharNo;
+  // String? gender;
+  // String? category;
+  // String? schemeStatus;
+  // String? allotmentDate;
+  // String? technicalCourse;
+
+    int? jobSeekerUserId;
+    String? areaType;
+    String? privateDistrictCode;
+    String? privateCityCode;
+    String? privateBlockCode;
+    String? privateGPCode;
+    String? privateWardCode;
+    String? privateVillageCode;
+    int? privateDepartmentID;
+    String? ssoid;
+    String? officerName;
+    String? mobileNo;
+    String? designation;
+    String? nameEng;
+    String? districtName;
+    String? cityName;
+    String? wardName;
+    String? blockName;
+    String? gpName;
+    String? villageName;
+    String? departmentNameEn;
+    String? internshipPdfPath;
 
   DeptJoinPendingItem({
-    this.jobseekerUserId,
-    this.applicationNo,
-    this.name,
-    this.fatherName,
-    this.schemeName,
-    this.aadharNo,
-    this.gender,
-    this.category,
-    this.schemeStatus,
-    this.allotmentDate,
-    this.technicalCourse,
+    this.jobSeekerUserId,
+    this.areaType,
+    this.privateDistrictCode,
+    this.privateCityCode,
+    this.privateBlockCode,
+    this.privateGPCode,
+    this.privateWardCode,
+    this.privateVillageCode,
+    this.privateDepartmentID,
+    this.ssoid,
+    this.officerName,
+    this.mobileNo,
+    this.designation,
+    this.nameEng,
+    this.districtName,
+    this.cityName,
+    this.wardName,
+    this.blockName,
+    this.gpName,
+    this.villageName,
+    this.departmentNameEn,
+    this.internshipPdfPath,
   });
 
   factory DeptJoinPendingItem.fromJson(Map<String, dynamic> json) {
     return DeptJoinPendingItem(
-      jobseekerUserId: json['JobseekerUserID']?.toString(),
-      applicationNo: json['ApplicationNo'],
-      name: json['JobseekerName'],
-      fatherName: json['FatherName'],
-      schemeName: json['SchemeName'],
-      aadharNo: json['AadharNo'],
-      gender: json['Gender'],
-      category: json['Category'],
-      schemeStatus: json['SchemeStatus'],
-      allotmentDate: json['CreatedOn'],
-      technicalCourse: json['TechnicalCourse'], // shown as Exchange Name
+      jobSeekerUserId: json['JobSeekerUserId'],
+      areaType: json['AreaType'],
+      privateDistrictCode: json['PrivateDistrictCode'],
+      privateCityCode: json['PrivateCityCode'],
+      privateBlockCode: json['PrivateBlockCode'],
+      privateGPCode: json['PrivateGPCode'],
+      privateWardCode: json['PrivateWardCode'],
+      privateVillageCode: json['PrivateVillageCode'],
+      privateDepartmentID: json['PrivateDepartmentID'],
+      ssoid: json['SSOID'],
+      officerName: json['OfficerName'], // shown as Exchange Name
+      mobileNo: json['MobileNo'], // shown as Exchange Name
+      designation: json['Designation'], // shown as Exchange Name
+      nameEng: json['NAME_ENG'], // shown as Exchange Name
+      districtName: json['DistrictName'], // shown as Exchange Name
+      cityName: json['CityName'], // shown as Exchange Name
+      wardName: json['WardName'], // shown as Exchange Name
+      blockName: json['BlockName'], // shown as Exchange Name
+      gpName: json['GPName'], // shown as Exchange Name
+      villageName: json['VillageName'], // shown as Exchange Name
+      departmentNameEn: json['DepartmentNameEn'], // shown as Exchange Name
+      internshipPdfPath: json['InternshipPdfPath'], // shown as Exchange Name
     );
   }
 }

@@ -160,17 +160,17 @@ class LoginProvider with ChangeNotifier {
 
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
 
-    Navigator.of(context).push(
-      RightToLeftRoute(
-        page: ChangeNotifierProvider(
-          create: (_) => DepartmentDashboardProvider(),
-          child: const DepartmentDashboardPage(), // ✅ UI widget
-        ),
-        duration: const Duration(milliseconds: 500),
-        startOffset: const Offset(-1.0, 0.0),
-      ),
-    );
-return null;
+//     Navigator.of(context).push(
+//       RightToLeftRoute(
+//         page: ChangeNotifierProvider(
+//           create: (_) => DepartmentDashboardProvider(),
+//           child: const DepartmentDashboardPage(), // ✅ UI widget
+//         ),
+//         duration: const Duration(milliseconds: 500),
+//         startOffset: const Offset(-1.0, 0.0),
+//       ),
+//     );
+// return null;
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {

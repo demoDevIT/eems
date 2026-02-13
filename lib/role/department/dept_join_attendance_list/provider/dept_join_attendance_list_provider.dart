@@ -22,28 +22,28 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   bool isPageLoading = false;
 
   /// LEVEL
-  bool isLevelLoading = false;
-  List<LevelData> levelList = [];
-  LevelData? selectedLevel;
+  // bool isLevelLoading = false;
+  // List<LevelData> levelList = [];
+  // LevelData? selectedLevel;
 
   /// DISTRICT
-  bool isDistrictLoading = false;
-  List<DistrictData> districtList = [];
-  DistrictData? selectedDistrict;
-  TextEditingController districtController = TextEditingController();
-  TextEditingController districtIdController = TextEditingController();
+  // bool isDistrictLoading = false;
+  // List<DistrictData> districtList = [];
+  // DistrictData? selectedDistrict;
+  // TextEditingController districtController = TextEditingController();
+  // TextEditingController districtIdController = TextEditingController();
 
   /// DATE
-  String? fromDate;
-  String? endDate;
-
-  TextEditingController fromDateController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
+  // String? fromDate;
+  // String? endDate;
+  //
+  // TextEditingController fromDateController = TextEditingController();
+  // TextEditingController endDateController = TextEditingController();
 
   /// FINANCIAL YEAR
-  bool isFinancialYearLoading = false;
-  List<FinancialYearData> financialYearList = [];
-  FinancialYearData? selectedFinancialYear;
+  // bool isFinancialYearLoading = false;
+  // List<FinancialYearData> financialYearList = [];
+  // FinancialYearData? selectedFinancialYear;
 
   int totalDays = 0;
   int absentDays = 0;
@@ -53,156 +53,163 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   DateTime selectedMonth = DateTime.now();
 
-  Future<void> initPageApis(BuildContext context) async {
-    isPageLoading = true;
-    notifyListeners();
+  int? selectedYear;
+  int? selectedMonthNumber;
 
-    try {
-      await Future.wait([
-        getLevelApi(context),
-        getFinancialYearApi(context),
-        getDistrictApi(context, 1),
-      ]);
-    } catch (e) {
-      debugPrint("Init API error: $e");
-    }
-
-    isPageLoading = false;
-    notifyListeners();
-  }
+  List<int> yearList = [];
+  List<int> monthList = List.generate(12, (index) => index + 1);
 
 
-  Future<void> getLevelApi(BuildContext context) async {
-    isLevelLoading = true;
-    levelList.clear();
-    selectedLevel = null;
-    notifyListeners();
-
-    try {
-      final apiResponse = await commonRepo.get(
-        "Common/CommonMasterDataByCode/DDLLevelList_jobFair/0/0",
-      );
-
-      if (apiResponse.response?.statusCode == 200) {
-        dynamic responseData = apiResponse.response!.data;
-        if (responseData is String) {
-          responseData = jsonDecode(responseData);
-        }
-
-        if (responseData['Data'] != null) {
-          for (var e in responseData['Data']) {
-            levelList.add(LevelData.fromJson(e));
-          }
-        }
-      }
-    } catch (_) {
-      levelList.clear();
-    }
-
-    isLevelLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> getDistrictApi(BuildContext context, int stateId) async {
-    isDistrictLoading = true;
-    selectedDistrict = null;
-    districtController.clear();
-    districtIdController.clear();
-    notifyListeners();
-
-    try {
-      final apiResponse =
-      await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
-
-      if (apiResponse.response?.statusCode == 200) {
-        dynamic responseData = apiResponse.response!.data;
-        if (responseData is String) {
-          responseData = jsonDecode(responseData);
-        }
-
-        districtList.clear();
-
-        if (responseData['Data'] != null) {
-          for (var e in responseData['Data']) {
-            districtList.add(DistrictData.fromJson(e));
-          }
-        }
-      }
-    } catch (_) {
-      districtList.clear();
-    }
-
-    isDistrictLoading = false;
-    notifyListeners();
-  }
-
-  Future<void> getFinancialYearApi(BuildContext context) async {
-    isFinancialYearLoading = true;
-    financialYearList.clear();
-    selectedFinancialYear = null;
-    notifyListeners();
-
-    try {
-      final apiResponse = await commonRepo.get(
-        "Common/GetFinancialYear",
-      );
-
-      if (apiResponse.response?.statusCode == 200) {
-        dynamic responseData = apiResponse.response!.data;
-        if (responseData is String) {
-          responseData = jsonDecode(responseData);
-        }
-
-        if (responseData['Data'] != null) {
-          for (var e in responseData['Data']) {
-            final fy = FinancialYearData.fromJson(e);
-            financialYearList.add(fy);
-
-            /// 🔵 Auto-select current FY
-            if (fy.isCurrentFY == 1) {
-              selectedFinancialYear = fy;
-            }
-          }
-        }
-      }
-    } catch (_) {
-      financialYearList.clear();
-    }
-
-    isFinancialYearLoading = false;
-    notifyListeners();
-  }
-
-
-  Future<void> pickFromDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null) {
-      fromDateController.text =
-          picked.toString().split(" ").first;
-      notifyListeners();
-    }
-  }
-
-  Future<void> pickEndDate(BuildContext context) async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null) {
-      endDateController.text =
-          picked.toString().split(" ").first;
-      notifyListeners();
-    }
-  }
+  // Future<void> initPageApis(BuildContext context) async {
+  //   isPageLoading = true;
+  //   notifyListeners();
+  //
+  //   try {
+  //     await Future.wait([
+  //       getLevelApi(context),
+  //       getFinancialYearApi(context),
+  //       getDistrictApi(context, 1),
+  //     ]);
+  //   } catch (e) {
+  //     debugPrint("Init API error: $e");
+  //   }
+  //
+  //   isPageLoading = false;
+  //   notifyListeners();
+  // }
+  //
+  //
+  // Future<void> getLevelApi(BuildContext context) async {
+  //   isLevelLoading = true;
+  //   levelList.clear();
+  //   selectedLevel = null;
+  //   notifyListeners();
+  //
+  //   try {
+  //     final apiResponse = await commonRepo.get(
+  //       "Common/CommonMasterDataByCode/DDLLevelList_jobFair/0/0",
+  //     );
+  //
+  //     if (apiResponse.response?.statusCode == 200) {
+  //       dynamic responseData = apiResponse.response!.data;
+  //       if (responseData is String) {
+  //         responseData = jsonDecode(responseData);
+  //       }
+  //
+  //       if (responseData['Data'] != null) {
+  //         for (var e in responseData['Data']) {
+  //           levelList.add(LevelData.fromJson(e));
+  //         }
+  //       }
+  //     }
+  //   } catch (_) {
+  //     levelList.clear();
+  //   }
+  //
+  //   isLevelLoading = false;
+  //   notifyListeners();
+  // }
+  //
+  // Future<void> getDistrictApi(BuildContext context, int stateId) async {
+  //   isDistrictLoading = true;
+  //   selectedDistrict = null;
+  //   districtController.clear();
+  //   districtIdController.clear();
+  //   notifyListeners();
+  //
+  //   try {
+  //     final apiResponse =
+  //     await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+  //
+  //     if (apiResponse.response?.statusCode == 200) {
+  //       dynamic responseData = apiResponse.response!.data;
+  //       if (responseData is String) {
+  //         responseData = jsonDecode(responseData);
+  //       }
+  //
+  //       districtList.clear();
+  //
+  //       if (responseData['Data'] != null) {
+  //         for (var e in responseData['Data']) {
+  //           districtList.add(DistrictData.fromJson(e));
+  //         }
+  //       }
+  //     }
+  //   } catch (_) {
+  //     districtList.clear();
+  //   }
+  //
+  //   isDistrictLoading = false;
+  //   notifyListeners();
+  // }
+  //
+  // Future<void> getFinancialYearApi(BuildContext context) async {
+  //   isFinancialYearLoading = true;
+  //   financialYearList.clear();
+  //   selectedFinancialYear = null;
+  //   notifyListeners();
+  //
+  //   try {
+  //     final apiResponse = await commonRepo.get(
+  //       "Common/GetFinancialYear",
+  //     );
+  //
+  //     if (apiResponse.response?.statusCode == 200) {
+  //       dynamic responseData = apiResponse.response!.data;
+  //       if (responseData is String) {
+  //         responseData = jsonDecode(responseData);
+  //       }
+  //
+  //       if (responseData['Data'] != null) {
+  //         for (var e in responseData['Data']) {
+  //           final fy = FinancialYearData.fromJson(e);
+  //           financialYearList.add(fy);
+  //
+  //           /// 🔵 Auto-select current FY
+  //           if (fy.isCurrentFY == 1) {
+  //             selectedFinancialYear = fy;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (_) {
+  //     financialYearList.clear();
+  //   }
+  //
+  //   isFinancialYearLoading = false;
+  //   notifyListeners();
+  // }
+  //
+  //
+  // Future<void> pickFromDate(BuildContext context) async {
+  //   final picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2100),
+  //   );
+  //
+  //   if (picked != null) {
+  //     fromDateController.text =
+  //         picked.toString().split(" ").first;
+  //     notifyListeners();
+  //   }
+  // }
+  //
+  // Future<void> pickEndDate(BuildContext context) async {
+  //   final picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2100),
+  //   );
+  //
+  //   if (picked != null) {
+  //     endDateController.text =
+  //         picked.toString().split(" ").first;
+  //     notifyListeners();
+  //   }
+  // }
 
   bool isAttendanceLoading = false;
   List<DeptJoinAttendanceItem> attendanceList = [];
@@ -218,15 +225,20 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
 
     try {
+      // Map<String, dynamic> body = {
+      //   "ActionName": "RSLDCTrainingApprovedApplications",
+      //   "DDLLevelID": selectedLevel?.levelID ?? 0,
+      //   "UserID": 1820, //UserData().model.value.userId,
+      //   "RoleId": 6, //UserData().model.value.roleId,
+      //   "DistrictCode": 108, //districtIdController.text, //108
+      //   "FinancialYearName": selectedFinancialYear?.financialYearName ?? "",
+      //   "FromDate": fromDateController.text,
+      //   "EndDate": endDateController.text,
+      // };
+
       Map<String, dynamic> body = {
-        "ActionName": "RSLDCTrainingApprovedApplications",
-        "DDLLevelID": selectedLevel?.levelID ?? 0,
-        "UserID": 1820, //UserData().model.value.userId,
-        "RoleId": 6, //UserData().model.value.roleId,
-        "DistrictCode": 108, //districtIdController.text, //108
-        "FinancialYearName": selectedFinancialYear?.financialYearName ?? "",
-        "FromDate": fromDateController.text,
-        "EndDate": endDateController.text,
+        "ActionName": "ApproveList",
+        "DepartmentID": "1",
       };
 
       isAttendanceLoading = true;
@@ -235,7 +247,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
-        "Common/GetRSLDCTrainingApplicationsList",
+        // "Common/GetRSLDCTrainingApplicationsList",
+        "Common/GetAllotedtraining",
         body,
       );
 
@@ -253,6 +266,17 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         if (sm.state == 200 && sm.data != null) {
           attendanceList.addAll(sm.data!);
         }
+        // if (sm.state == 200 && sm.data != null && sm.data!.isNotEmpty) {
+        //   attendanceList.clear();
+        //
+        //   // Add original record
+        //   attendanceList.add(sm.data!.first);
+        //
+        //   // Duplicate it for testing (3 total records)
+        //   attendanceList.add(sm.data!.first);
+        //   attendanceList.add(sm.data!.first);
+        // }
+
 
         isAttendanceLoading = false;
         notifyListeners();
@@ -278,9 +302,42 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       ) {
 
     // Reset values
-    selectedMonth = DateTime.now();
+    final now = DateTime.now();
+
+    selectedYear = null;
+    selectedMonthNumber = null;
+
+    yearList = [
+      now.year - 1,
+      now.year,
+      now.year + 1,
+    ];
+
     absentDays = 0;
     absentController.clear();
+
+    totalDays = 0;
+    presentDays = 0;
+
+    String _getMonthName(int month) {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      return months[month - 1];
+    }
+
 
     _calculateTotalDays();
     _calculatePresentDays();
@@ -316,10 +373,14 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       const SizedBox(height: 20),
 
                       /// USER DETAILS
-                      _labelValue("Name", item.name),
-                      _labelValue("Father Name", item.fatherName),
-                      _labelValue("Scheme Name", item.schemeName),
-                      _labelValue("Technical Course", item.technicalCourse),
+                      _labelValue("Name", item.nameEng),
+                      _labelValue("Officer Name", item.officerName),
+                      _labelValue("Designation", item.designation),
+                      _labelValue("District", item.districtName),
+                      _labelValue("City", item.cityName),
+                      _labelValue("Ward", item.wardName),
+                      _labelValue("Mobile No.", item.mobileNo),
+                      _labelValue("Department Name", item.departmentNameEn),
 
                       const SizedBox(height: 10),
                       const Divider(),
@@ -333,43 +394,127 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
                       const SizedBox(height: 8),
 
-                      InkWell(
-                        onTap: () async {
-                          final picked = await showDatePicker(
-                            context: context,
-                            initialDate: selectedMonth,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                            helpText: "Select Month",
-                          );
+                      // InkWell(
+                      //   onTap: () async {
+                      //     final picked = await showDatePicker(
+                      //       context: context,
+                      //       initialDate: selectedMonth,
+                      //       firstDate: DateTime(2000),
+                      //       lastDate: DateTime(2100),
+                      //       helpText: "Select Month",
+                      //     );
+                      //
+                      //     if (picked != null) {
+                      //       selectedMonth =
+                      //           DateTime(picked.year, picked.month);
+                      //
+                      //       _calculateTotalDays();
+                      //       _calculatePresentDays();
+                      //       setStateDialog(() {});
+                      //     }
+                      //   },
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 14, vertical: 14),
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       border: Border.all(color: Colors.grey.shade400),
+                      //     ),
+                      //     child: Row(
+                      //       mainAxisAlignment:
+                      //       MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           "${selectedMonth.month}-${selectedMonth.year}",
+                      //         ),
+                      //         const Icon(Icons.calendar_month),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
 
-                          if (picked != null) {
-                            selectedMonth =
-                                DateTime(picked.year, picked.month);
+                      /// YEAR DROPDOWN
+                      const Text(
+                        "Select Year",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
 
-                            _calculateTotalDays();
-                            _calculatePresentDays();
-                            setStateDialog(() {});
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 14),
-                          decoration: BoxDecoration(
+                      const SizedBox(height: 8),
+
+                      DropdownButtonFormField<int>(
+                        value: selectedYear,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey.shade400),
                           ),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${selectedMonth.month}-${selectedMonth.year}",
-                              ),
-                              const Icon(Icons.calendar_month),
-                            ],
-                          ),
+                          contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                         ),
+                        hint: const Text("Select Year"),
+                        items: yearList
+                            .map(
+                              (year) => DropdownMenuItem(
+                            value: year,
+                            child: Text(year.toString()),
+                          ),
+                        )
+                            .toList(),
+                        onChanged: (value) {
+                          selectedYear = value;
+                          selectedMonthNumber = null;
+                          totalDays = 0;
+                          presentDays = 0;
+                          setStateDialog(() {});
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// MONTH DROPDOWN
+                      const Text(
+                        "Select Month",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      DropdownButtonFormField<int>(
+                        value: selectedMonthNumber,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                        ),
+                        hint: const Text("Select Month"),
+                        items: monthList
+                            .map(
+                              (month) => DropdownMenuItem(
+                            value: month,
+                            child: Text(_getMonthName(month)),
+                          ),
+                        )
+                            .toList(),
+                        onChanged: selectedYear == null
+                            ? null
+                            : (value) {
+                          selectedMonthNumber = value;
+
+                          if (selectedYear != null &&
+                              selectedMonthNumber != null) {
+                            final firstDay = DateTime(
+                                selectedYear!, selectedMonthNumber!, 1);
+
+                            final lastDay = DateTime(
+                                selectedYear!, selectedMonthNumber! + 1, 0);
+
+                            totalDays = lastDay.day;
+                            presentDays = totalDays - absentDays;
+                          }
+
+                          setStateDialog(() {});
+                        },
                       ),
 
                       const SizedBox(height: 20),
@@ -725,7 +870,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
 
     debugPrint("Submitting Attendance:");
-    debugPrint("User: ${item.name}");
+    debugPrint("User: ${item.nameEng}");
     debugPrint("Month: ${selectedMonth.month}-${selectedMonth.year}");
     debugPrint("Total Days: $totalDays");
     debugPrint("Absent Days: $absentDays");
@@ -744,7 +889,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
 
   void markAttendance(DeptJoinAttendanceItem item) {
-    debugPrint("Mark attendance for: ${item.name}");
+    debugPrint("Mark attendance for: ${item.nameEng}");
     // TODO: API call for marking attendance
   }
 
@@ -761,24 +906,24 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     if (pickedDate != null) {
       debugPrint(
-        "Attendance marked for ${item.name} on ${pickedDate.toIso8601String()}",
+        "Attendance marked for ${item.nameEng} on ${pickedDate.toIso8601String()}",
       );
     }
   }
 
   void clearData() {
     /// dropdown selections
-    selectedLevel = null;
-    selectedDistrict = null;
-    selectedFinancialYear = null;
-
-    districtController.clear();
-    districtIdController.clear();
-
-    financialYearList.clear();
-
-    fromDateController.clear();
-    endDateController.clear();
+    // selectedLevel = null;
+    // selectedDistrict = null;
+    // selectedFinancialYear = null;
+    //
+    // districtController.clear();
+    // districtIdController.clear();
+    //
+    // financialYearList.clear();
+    //
+    // fromDateController.clear();
+    // endDateController.clear();
 
     /// clear list
     attendanceList.clear();

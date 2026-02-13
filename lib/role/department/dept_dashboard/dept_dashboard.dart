@@ -58,13 +58,13 @@ class DepartmentDashboardPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   _dashboardButton(
-                    title: "Attendance List for Department Joining",
-                   // icon: Icons.pending_actions_rounded,
+                    title: "Pending List for Department Joining",
+                    // icon: Icons.pending_actions_rounded,
                     onTap: () => {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const DeptJoinAttendanceListScreen()
+                            builder: (_) => const DeptJoinPendingListScreen()
                         ),
                       ),
                     },
@@ -73,13 +73,13 @@ class DepartmentDashboardPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   _dashboardButton(
-                    title: "Pending List for Department Joining",
-                   // icon: Icons.pending_actions_rounded,
+                    title: "Attendance List for Department Joining",
+                    // icon: Icons.pending_actions_rounded,
                     onTap: () => {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const DeptJoinPendingListScreen()
+                            builder: (_) => const DeptJoinAttendanceListScreen()
                         ),
                       ),
                     },

@@ -30,7 +30,8 @@ class _DeptJoinAttendanceListScreenState
       Provider.of<DeptJoinAttendanceListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.initPageApis(context);
+      provider.getDeptJoinAttendanceListApi(context);
+      //provider.initPageApis(context);
       // provider.getLevelApi(context);
       // provider.getFinancialYearApi(context);
       // provider.getDistrictApi(context, 1); // default stateId
@@ -63,20 +64,20 @@ class _DeptJoinAttendanceListScreenState
           }
           return Column(
             children: [
-              _filterSection(context, provider),
+            //  _filterSection(context, provider),
 
-              const SizedBox(height: 8),
-
-              ElevatedButton(
-                onPressed: provider.isAttendanceLoading
-                    ? null
-                    : () {
-                  provider.getDeptJoinAttendanceListApi(context);
-                },
-                child: const Text("Apply Filter"),
-              ),
-
-              const SizedBox(height: 8),
+              // const SizedBox(height: 8),
+              //
+              // ElevatedButton(
+              //   onPressed: provider.isAttendanceLoading
+              //       ? null
+              //       : () {
+              //     provider.getDeptJoinAttendanceListApi(context);
+              //   },
+              //   child: const Text("Apply Filter"),
+              // ),
+              //
+              // const SizedBox(height: 8),
 
               /// 🔵 THIS IS MANDATORY
               Expanded(
@@ -119,16 +120,22 @@ class _DeptJoinAttendanceListScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _row("Application No.", item.applicationNo),
-            _row("Name", item.name),
-            _row("Father Name", item.fatherName),
-            _row("Scheme Name", item.schemeName),
-            _row("Aadhaar No.", item.aadharNo),
-            _row("gender", item.gender),
-            _row("Category", item.category),
-            _row("Scheme Status", item.schemeStatus),
-            _row("Date of Allotment", item.allotmentDate),
-            _row("Technical Course", item.technicalCourse),
+            _row("Name", item.nameEng),
+            _row("Mobile No", item.mobileNo),
+            _row("Department Name", item.departmentNameEn),
+            _row("Officer Name", item.officerName),
+            _row("Office Address", item.officerName),
+            _row("Joinig date", item.officerName),
+            // _row("Area", item.areaType),
+            // _row("SSO ID", item.ssoid),
+            // _row("Designation", item.designation),
+            // _row("District Name", item.districtName),
+            // _row("City Name", item.cityName),
+            // _row("Ward Name", item.wardName),
+            // _row("Block Name", item.blockName),
+            // _row("GP Name", item.gpName),
+            // _row("Village Name", item.villageName),
+
 
             const Divider(height: 20),
 
@@ -170,6 +177,8 @@ class _DeptJoinAttendanceListScreenState
   }
 
   Widget _row(String label, String? value) {
+    final bool isNameField = label.toLowerCase() == "name";
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
@@ -182,6 +191,8 @@ class _DeptJoinAttendanceListScreenState
               style: Styles.mediumTextStyle(
                 size: 14,
                 color: kBlackColor,
+              ).copyWith(
+                fontWeight: FontWeight.bold, // 🔹 All labels bold
               ),
             ),
           ),
@@ -191,6 +202,10 @@ class _DeptJoinAttendanceListScreenState
               style: Styles.regularTextStyle(
                 size: 14,
                 color: Colors.black87,
+              ).copyWith(
+                fontWeight: isNameField
+                    ? FontWeight.bold // 🔹 Name value bold
+                    : FontWeight.normal,
               ),
             ),
           ),
@@ -199,7 +214,8 @@ class _DeptJoinAttendanceListScreenState
     );
   }
 
-  // Widget _iconBtn({
+
+// Widget _iconBtn({
   //   required IconData icon,
   //   required Color color,
   //   required VoidCallback onTap,
@@ -210,115 +226,115 @@ class _DeptJoinAttendanceListScreenState
   //   );
   // }
 
-  Widget _filterSection(
-      BuildContext context,
-      DeptJoinAttendanceListProvider provider,
-      ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      color: Colors.white,
-      child: Column(
-        children: [
-
-          /// LEVEL NAME
-          DropdownButtonFormField<LevelData>(
-            value: provider.selectedLevel,
-            decoration: _inputDecoration("Select Level"),
-            items: provider.levelList
-                .map(
-                  (e) => DropdownMenuItem(
-                value: e,
-                child: Text(e.levelNameEnglish ?? ""),
-              ),
-            )
-                .toList(),
-            onChanged: (value) {
-              provider.selectedLevel = value;
-              provider.notifyListeners();
-
-              if (value?.levelNameEnglish == "State") {
-                provider.getDistrictApi(context, 1);
-              }
-            },
-          ),
-
-
-          const SizedBox(height: 10),
-
-          /// DISTRICT
-          buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
-            items: provider.districtList,
-            controller: provider.districtController,
-            idController: provider.districtIdController,
-            hintText: "Select District",
-            height: 50,
-            selectedValue: provider.selectedDistrict,
-            getLabel: (e) => e.name ?? "",
-            onChanged: (value) {
-              provider.selectedDistrict = value;
-              provider.districtController.text = value?.name ?? "";
-              provider.districtIdController.text =
-                  value?.iD.toString() ?? "";
-              provider.notifyListeners();
-            },
-          ),
-
-          const SizedBox(height: 10),
-
-          /// FINANCIAL YEAR (API later)
-          DropdownButtonFormField<FinancialYearData>(
-            value: provider.selectedFinancialYear,
-            decoration: _inputDecoration("--Select Financial Year--"),
-            items: provider.financialYearList
-                .map(
-                  (e) => DropdownMenuItem(
-                value: e,
-                child: Text(e.financialYearName ?? ""),
-              ),
-            )
-                .toList(),
-            onChanged: (value) {
-              provider.selectedFinancialYear = value;
-              provider.notifyListeners();
-            },
-          ),
-
-
-
-          const SizedBox(height: 10),
-
-          /// FROM DATE & END DATE
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: provider.fromDateController,
-                  readOnly: true,
-                  decoration: _inputDecoration("From Date").copyWith(
-                    suffixIcon: const Icon(Icons.calendar_month),
-                  ),
-                  onTap: () => provider.pickFromDate(context),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: TextFormField(
-                  controller: provider.endDateController,
-                  readOnly: true,
-                  decoration: _inputDecoration("End Date").copyWith(
-                    suffixIcon: const Icon(Icons.calendar_month),
-                  ),
-                  onTap: () => provider.pickEndDate(context),
-                ),
-              ),
-            ],
-          ),
-
-
-        ],
-      ),
-    );
-  }
+  // Widget _filterSection(
+  //     BuildContext context,
+  //     DeptJoinAttendanceListProvider provider,
+  //     ) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(12),
+  //     color: Colors.white,
+  //     child: Column(
+  //       children: [
+  //
+  //         /// LEVEL NAME
+  //         DropdownButtonFormField<LevelData>(
+  //           value: provider.selectedLevel,
+  //           decoration: _inputDecoration("Select Level"),
+  //           items: provider.levelList
+  //               .map(
+  //                 (e) => DropdownMenuItem(
+  //               value: e,
+  //               child: Text(e.levelNameEnglish ?? ""),
+  //             ),
+  //           )
+  //               .toList(),
+  //           onChanged: (value) {
+  //             provider.selectedLevel = value;
+  //             provider.notifyListeners();
+  //
+  //             if (value?.levelNameEnglish == "State") {
+  //               provider.getDistrictApi(context, 1);
+  //             }
+  //           },
+  //         ),
+  //
+  //
+  //         const SizedBox(height: 10),
+  //
+  //         /// DISTRICT
+  //         buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
+  //           items: provider.districtList,
+  //           controller: provider.districtController,
+  //           idController: provider.districtIdController,
+  //           hintText: "Select District",
+  //           height: 50,
+  //           selectedValue: provider.selectedDistrict,
+  //           getLabel: (e) => e.name ?? "",
+  //           onChanged: (value) {
+  //             provider.selectedDistrict = value;
+  //             provider.districtController.text = value?.name ?? "";
+  //             provider.districtIdController.text =
+  //                 value?.iD.toString() ?? "";
+  //             provider.notifyListeners();
+  //           },
+  //         ),
+  //
+  //         const SizedBox(height: 10),
+  //
+  //         /// FINANCIAL YEAR (API later)
+  //         DropdownButtonFormField<FinancialYearData>(
+  //           value: provider.selectedFinancialYear,
+  //           decoration: _inputDecoration("--Select Financial Year--"),
+  //           items: provider.financialYearList
+  //               .map(
+  //                 (e) => DropdownMenuItem(
+  //               value: e,
+  //               child: Text(e.financialYearName ?? ""),
+  //             ),
+  //           )
+  //               .toList(),
+  //           onChanged: (value) {
+  //             provider.selectedFinancialYear = value;
+  //             provider.notifyListeners();
+  //           },
+  //         ),
+  //
+  //
+  //
+  //         const SizedBox(height: 10),
+  //
+  //         /// FROM DATE & END DATE
+  //         Row(
+  //           children: [
+  //             Expanded(
+  //               child: TextFormField(
+  //                 controller: provider.fromDateController,
+  //                 readOnly: true,
+  //                 decoration: _inputDecoration("From Date").copyWith(
+  //                   suffixIcon: const Icon(Icons.calendar_month),
+  //                 ),
+  //                 onTap: () => provider.pickFromDate(context),
+  //               ),
+  //             ),
+  //             const SizedBox(width: 12),
+  //             Expanded(
+  //               child: TextFormField(
+  //                 controller: provider.endDateController,
+  //                 readOnly: true,
+  //                 decoration: _inputDecoration("End Date").copyWith(
+  //                   suffixIcon: const Icon(Icons.calendar_month),
+  //                 ),
+  //                 onTap: () => provider.pickEndDate(context),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //
+  //
+  //       ],
+  //     ),
+  //   );
+  // }
 
 }
 
