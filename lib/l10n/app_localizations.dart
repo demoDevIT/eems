@@ -203,6 +203,12 @@ abstract class AppLocalizations {
   /// **'CV Builder'**
   String get cvbuilder;
 
+  /// No description provided for @searchJobApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Job/Apply'**
+  String get searchJobApply;
+
   /// No description provided for @searchcounselor.
   ///
   /// In en, this message translates to:

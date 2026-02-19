@@ -26,6 +26,7 @@ import 'package:rajemployment/role/job_seeker/addjobpreference/provider/add_job_
 import 'package:rajemployment/role/job_seeker/addphysicalattribute/provider/addphysicalattribute_provider.dart';
 import 'package:rajemployment/role/job_seeker/addressinfo/provider/address_info_provider.dart';
 import 'package:rajemployment/role/job_seeker/addworkexperience/provider/add_work_experience_provider.dart';
+import 'package:rajemployment/role/job_seeker/applied_jobs/provider/applied_jobs_provider.dart';
 import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_details_provider.dart' show BasicDetailsProvider;
 import 'package:rajemployment/role/job_seeker/camera/provider/comera_provider.dart';
 import 'package:rajemployment/role/job_seeker/cv_builder/provider/cv_list_provider.dart';
@@ -45,13 +46,16 @@ import 'package:rajemployment/role/job_seeker/jobs/provider/jobs_list_provider.d
 import 'package:rajemployment/role/job_seeker/languageandskill/provider/language_and_skill_provider.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/login_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/mysy_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/provider/otr_form_provider.dart';
 import 'package:rajemployment/role/job_seeker/physicalattribute/provider/physicalattribute_provider.dart';
+import 'package:rajemployment/role/job_seeker/preferred_jobs/provider/preferred_jobs_provider.dart';
 import 'package:rajemployment/role/job_seeker/profile/provider/profile_provider.dart';
 import 'package:rajemployment/role/job_seeker/qr_scanner/provider/qr_scanner_screen_provider.dart';
 import 'package:rajemployment/role/job_seeker/registration_card/provider/registration_card_provider.dart';
 import 'package:rajemployment/role/job_seeker/roleselectionscreen/provider/role_selection_provider.dart';
 import 'package:rajemployment/role/job_seeker/select_company/provider/select_company_page_provider.dart';
+import 'package:rajemployment/role/job_seeker/self_assessment/provider/self_assessment_provider.dart';
 import 'package:rajemployment/role/job_seeker/share_feedback/provider/share_feedback_details_provider.dart';
 import 'package:rajemployment/role/job_seeker/videoprofile/provider/videoprofile_provider.dart';
 import 'package:rajemployment/role/job_seeker/workexperience/provider/work_experience_provider.dart';
@@ -138,5 +142,8 @@ Future<void> init() async {
   sl.registerFactory(() => RegisterFormProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptJoinAttendanceListProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptJoinPendingListProvider(commonRepo: sl()));
-
+  sl.registerFactory(() => PreferredJobsProvider(commonRepo: sl()));
+  sl.registerFactory(() => AppliedJobsProvider(commonRepo: sl()));
+  sl.registerFactory(() => MysyListProvider(commonRepo: sl()));
+  sl.registerFactory(() => SelfAssessmentProvider(commonRepo: sl()));
 }

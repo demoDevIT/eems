@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rajemployment/role/job_seeker/cv_builder/cv_list.dart';
 import 'package:rajemployment/role/job_seeker/grievance/add_grievance_screen.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/mysy_list.dart';
+import 'package:rajemployment/role/job_seeker/self_assessment/self_assessment.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_shared_prefrence.dart';
@@ -14,6 +16,7 @@ import '../../../utils/global.dart';
 import '../../../utils/images.dart';
 import '../../../utils/user_new.dart';
 import '../../notification/notification_list.dart';
+import '../applied_jobs/applied_jobs.dart';
 import '../departmental_schemes/mysy_pending_list.dart';
 import '../grievance/grievance_list.dart';
 import '../homescreen/home_screen.dart';
@@ -22,6 +25,8 @@ import '../job_fair_event/jobs_fair_event.dart';
 import '../job_fair_event/registered_event_list.dart';
 import '../jobs/jobs_list.dart';
 import '../loginscreen/screen/login_screen.dart';
+import '../mysy/provider/mysy_list_provider.dart';
+import '../preferred_jobs/preferred_jobs.dart';
 import '../profile/profile.dart';
 import '../qr_scanner/qr_scanner_screen.dart';
 import '../registration_card/registration_card.dart';
@@ -285,6 +290,43 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
               );
             },
           ),
+          ExpansionTile(
+            leading: SvgPicture.asset(
+              'assets/icons/calendarNew.svg',
+              width: 20,
+              height: 20,
+              fit: BoxFit.cover,
+            ),
+            title: Text(AppLocalizations.of(context)!.searchJobApply,style: Styles.mediumTextStyle(size: 14),),
+
+            children: [
+
+              // 1️⃣ Preferred/Recommended Jobs
+              ListTile(
+                title: Text("Preferred/Recommended Jobs",style: Styles.mediumTextStyle(size: 14),),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PreferredJobsScreen()),
+                  );
+                },
+              ),
+
+              // 2️⃣ Applied Jobs
+              ListTile(
+                title: Text("Applied Jobs",style: Styles.mediumTextStyle(size: 14),),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppliedJobsScreen()),
+                  );
+                },
+              ),
+
+            ],
+          ),
           Container(
               margin: EdgeInsets.only(left: 50),
               child: Divider(height: 1,color: E3E5F9Color,)),
@@ -409,13 +451,13 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
             children: [
 
 
-              ListTile(
-                title: Text("MYRPY",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-
-                },
-              ),
+              // ListTile(
+              //   title: Text("MYRPY",style: Styles.mediumTextStyle(size: 14),),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //
+              //   },
+              // ),
 
 
               ListTile(
@@ -424,10 +466,11 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MysyPendingListScreen()),
+                    MaterialPageRoute(builder: (context) => MysyListScreen()),
                   );
                 },
               ),
+
 
 
 
@@ -494,8 +537,20 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
               fit: BoxFit.cover,
             ),
             title: Text(AppLocalizations.of(context)!.selfassess,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () {
-              setState(() => _currentIndex = 3);
+            // onTap: () {
+            //   setState(() => _currentIndex = 3);
+            //   Navigator.pop(context);
+            // },
+            onTap: () async {
+              final result = await  Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  SelfAssessmentScreen(),
+                ),
+              );
+              if (result != null) {
+
+              }
               Navigator.pop(context);
             },
           ),

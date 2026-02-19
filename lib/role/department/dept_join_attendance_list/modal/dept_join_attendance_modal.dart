@@ -29,109 +29,72 @@ class DeptJoinAttendanceModal {
 }
 
 class DeptJoinAttendanceItem {
-  // String? jobseekerUserId;
-  // String? applicationNo;
-  // String? name;
-  // String? fatherName;
-  // String? schemeName;
-  // String? aadharNo;
-  // String? gender;
-  // String? category;
-  // String? schemeStatus;
-  // String? allotmentDate;
-  // String? technicalCourse;
-
-    String? areaType;
-    String? privateDistrictCode;
-    String? privateCityCode;
-    String? privateBlockCode;
-    String? privateGPCode;
-    String? privateWardCode;
-    String? privateVillageCode;
-    int? privateDepartmentID;
-    String? ssoid;
-    String? officerName;
-    String? mobileNo;
-    String? designation;
+    String? jobseekerUserId;
+    String? jobSeekerID;
     String? nameEng;
-    String? districtName;
-    String? cityName;
-    String? wardName;
-    String? blockName;
-    String? gpName;
-    String? villageName;
+    String? fatherNameEng;
+    String? mobileNo;
+    String? ssoid;
+    String? privateDistrictCode;
+    int? joiningID;
+    String? officeName;
+    String? registrationNo;
     String? departmentNameEn;
+    String? internJoiningDate;
+    int? workingYear;
+    int? attendanceMonthId;
+    String? attendanceMonthName;
+    String? yearMonth;
+    String? address;
+    String? districtEn;
+    String? assembly;
+    int? attendanceMarkStatus;
 
   DeptJoinAttendanceItem({
-    // this.jobseekerUserId,
-    // this.applicationNo,
-    // this.name,
-    // this.fatherName,
-    // this.schemeName,
-    // this.aadharNo,
-    // this.gender,
-    // this.category,
-    // this.schemeStatus,
-    // this.allotmentDate,
-    // this.technicalCourse,
-
-      this.areaType,
-      this.privateDistrictCode,
-      this.privateCityCode,
-      this.privateBlockCode,
-      this.privateGPCode,
-      this.privateWardCode,
-      this.privateVillageCode,
-      this.privateDepartmentID,
-      this.ssoid,
-      this.officerName,
-      this.mobileNo,
-      this.designation,
-      this.nameEng,
-      this.districtName,
-      this.cityName,
-      this.wardName,
-      this.blockName,
-      this.gpName,
-      this.villageName,
-      this.departmentNameEn,
+    this.jobseekerUserId,
+    this.jobSeekerID,
+    this.nameEng,
+    this.fatherNameEng,
+    this.mobileNo,
+    this.ssoid,
+    this.privateDistrictCode,
+    this.joiningID,
+    this.officeName,
+    this.registrationNo,
+    this.departmentNameEn,
+    this.internJoiningDate,
+    this.workingYear,
+    this.attendanceMonthId,
+    this.attendanceMonthName,
+    this.yearMonth,
+    this.address,
+    this.districtEn,
+    this.assembly,
+    this.attendanceMarkStatus
   });
 
   factory DeptJoinAttendanceItem.fromJson(Map<String, dynamic> json) {
     return DeptJoinAttendanceItem(
-      // jobseekerUserId: json['JobseekerUserID']?.toString(),
-      // applicationNo: json['ApplicationNo'],
-      // name: json['JobseekerName'],
-      // fatherName: json['FatherName'],
-      // schemeName: json['SchemeName'],
-      // aadharNo: json['AadharNo'],
-      // gender: json['Gender'],
-      // category: json['Category'],
-      // schemeStatus: json['SchemeStatus'],
-      // allotmentDate: json['CreatedOn'],
-      // technicalCourse: json['TechnicalCourse'], // shown as Exchange Name
-
-      areaType: json['AreaType']?.toString(),
-      privateDistrictCode: json['PrivateDistrictCode'],
-      privateCityCode: json['PrivateCityCode'],
-      privateBlockCode: json['PrivateBlockCode'],
-      privateGPCode: json['PrivateGPCode'],
-      privateWardCode: json['PrivateWardCode'],
-      privateVillageCode: json['PrivateVillageCode'],
-      privateDepartmentID: json['PrivateDepartmentID'],
-      ssoid: json['SSOID'],
-      officerName: json['OfficerName'],
-      mobileNo: json['MobileNo'],
-      designation: json['Designation'],
+      jobseekerUserId: json['JobSeekerUserId']?.toString(),
+      jobSeekerID: json['JobSeekerID']?.toString(),
       nameEng: json['NAME_ENG'],
-      districtName: json['DistrictName'],
-      cityName: json['CityName'],
-      wardName: json['WardName'],
-      blockName: json['BlockName'],
-      gpName: json['GPName'],
-      villageName: json['VillageName'],
+      fatherNameEng: json['FATHER_NAME_ENG'],
+      mobileNo: json['MOBILE_NO'],
+      ssoid: json['DepartmentSSOID'],
+      privateDistrictCode: json['PrivateDistrictCode'],
+      joiningID: json['JoiningID'],
+      officeName: json['OfficeName'],
+      registrationNo: json['RegistrationNo'],
       departmentNameEn: json['DepartmentNameEn'],
-
+      internJoiningDate: json['InternJoiningDate'],
+      workingYear: json['WorkingYear'],
+      attendanceMonthId: json['AttendanceMonthId'],
+      attendanceMonthName: json['AttendanceMonthName'],
+      yearMonth: json['YearMonth'], // shown as Exchange Name
+      address: json['Address'],
+      districtEn: json['DistrictEn'],
+      assembly: json['Assembly'],
+      attendanceMarkStatus: json['AttendanceMarkStatus'],
     );
   }
 }

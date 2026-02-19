@@ -63,6 +63,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get cvbuilder => 'सीवी बिल्डर';
 
   @override
+  String get searchJobApply => 'नौकरी खोजें/आवेदन करें';
+
+  @override
   String get searchcounselor => 'परामर्शदाता खोजें';
 
   @override

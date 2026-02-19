@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,15 @@ class RegisteredEventListScreen extends StatefulWidget {
 
 class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
 
+  TextEditingController fromDateController = TextEditingController();
+  TextEditingController toDateController = TextEditingController();
+
+  DateTime? selectedFromDate;
+  DateTime? selectedToDate;
+
+  String? fromDateApi;
+  String? toDateApi;
+
 
   @override
   void initState() {
@@ -53,700 +63,838 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
               localeProvider.toggleLocale();
             }),
 
+      body: Consumer<RegisteredEventListProvider>(
+        builder: (context, provider, child) {
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
 
-       body: Consumer<RegisteredEventListProvider>(builder: (context, provider, child) {
-            return   Padding(
-              padding: const EdgeInsets.all(10),
-              child:  ListView.builder(
-                itemCount: provider.registeredEventListList.length,
-                itemBuilder: (context, index) {
-                  final data = provider.registeredEventListList[index];
-                  return InkWell(
-                    onTap: () {
+                /// 🔹 FILTER CARD
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
 
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        gradient: index % 2 == 0 ? kWhitedGradient : jobsCardGradient,
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: fromDateController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: "From Date",
+                                  border: OutlineInputBorder(),
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                ),
+                                onTap: () => _selectDate(context, true),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: TextField(
+                                controller: toDateController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: "End Date",
+                                  border: OutlineInputBorder(),
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                ),
+                                onTap: () => _selectDate(context, false),
+                              ),
+                            ),
+                          ],
+                        ),
 
-                     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        SizedBox(height: 10),
 
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Event Id",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          provider.registeredEventListList[index].eventId.toString(),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
 
+                                  if (selectedFromDate != null &&
+                                      selectedToDate != null &&
+                                      selectedFromDate!
+                                          .isAfter(selectedToDate!)) {
+                                    showAlertError(
+                                        "From Date cannot be greater than End Date",
+                                        context);
+                                    return;
+                                  }
 
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Event Name",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
+                                  provider.allJobMatchingListApi(
+                                    context,
+                                    fromDate: fromDateApi,
+                                    endDate: toDateApi,
+                                  );
+                                },
+                                child: Text("Apply Filter"),
                               ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          localeProvider.currentLanguage == "en" ? provider.registeredEventListList[index].eventNameENG.toString() : provider.registeredEventListList[index].eventNameHI.toString(),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    fromDateController.clear();
+                                    toDateController.clear();
+                                    fromDateApi = null;
+                                    toDateApi = null;
+                                    selectedFromDate = null;
+                                    selectedToDate = null;
+                                  });
 
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Event Description",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
+                                  provider.allJobMatchingListApi(context);
+                                },
+                                child: Text("Clear"),
                               ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          provider.registeredEventListList[index].eventDescription.toString(),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Start Date",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:getFormattedDate(provider.registeredEventListList[index].startDate.toString()),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"End Date",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:getFormattedDate(provider.registeredEventListList[index].endDate.toString()),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Level",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          provider.registeredEventListList[index].levelNameEnglish.toString(),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Venue",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: RichText(
-                                    text: TextSpan(
-                                      style: Styles
-                                          .mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          provider.registeredEventListList[index].venue.toString(),
-                                          style: Styles
-                                              .regularTextStyle(
-                                              size: 12,
-                                              color: kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .end // Align text to the start
-                                ),
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-                          hSpace(5),
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.40,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style:
-                                    Styles.mediumTextStyle(
-                                      size: 12,
-                                      color: kBlackColor, // Default text color
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:"Get Pass",
-                                        // Normal text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                      TextSpan(
-                                        text: ' :-',
-                                        // Asterisk text
-                                        style: Styles
-                                            .mediumTextStyle(
-                                            size: 12,
-                                            color: kBlackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  textAlign: TextAlign
-                                      .start, // Align text to the start
-                                ),
-                              ),
-                              Container(
-                                alignment:
-                                Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5),
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.45,
-                                child: Icon(Icons.visibility,color: kbuttonColor,)
-                              ),
-                            ],
-                          ),
-                          hSpace(5),
-                          Divider(
-                            color: dividerColor,
-                            height: 2,
-                          ),
-
-
-
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            );
-          }));
+                  ),
+                ),
+
+                SizedBox(height: 15),
+
+                /// 🔹 EVENT LIST
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: provider.registeredEventListList.length,
+                    itemBuilder: (context, index) {
+                      final data = provider.registeredEventListList[index];
+
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 12),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Event ID: ${data.eventId}"),
+                            Text("Event Name: ${data.eventNameENG}"),
+                            Text("Start Date: ${data.startDate}"),
+                            Text("End Date: ${data.endDate}"),
+                            Text("Venue: ${data.venue}"),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+
+
+      // body: Consumer<RegisteredEventListProvider>(builder: (context, provider, child) {
+       //      return   Padding(
+       //        padding: const EdgeInsets.all(10),
+       //        child:  ListView.builder(
+       //          itemCount: provider.registeredEventListList.length,
+       //          itemBuilder: (context, index) {
+       //            final data = provider.registeredEventListList[index];
+       //            return InkWell(
+       //              onTap: () {
+       //
+       //              },
+       //              child: Container(
+       //                margin: const EdgeInsets.only(bottom: 12),
+       //                decoration: BoxDecoration(
+       //                  gradient: index % 2 == 0 ? kWhitedGradient : jobsCardGradient,
+       //                  border: Border.all(color: Colors.grey.shade300),
+       //                  borderRadius: BorderRadius.circular(12),
+       //                ),
+       //
+       //               // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+       //                child: Column(
+       //                  crossAxisAlignment: CrossAxisAlignment.start,
+       //                  children: [
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Event Id",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:
+       //                                    provider.registeredEventListList[index].eventId.toString(),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Event Name",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:
+       //                                    localeProvider.currentLanguage == "en" ? provider.registeredEventListList[index].eventNameENG.toString() : provider.registeredEventListList[index].eventNameHI.toString(),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Event Description",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:
+       //                                    provider.registeredEventListList[index].eventDescription.toString(),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Start Date",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:getFormattedDate(provider.registeredEventListList[index].startDate.toString()),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"End Date",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:getFormattedDate(provider.registeredEventListList[index].endDate.toString()),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Level",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:
+       //                                    provider.registeredEventListList[index].levelNameEnglish.toString(),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Venue",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: RichText(
+       //                              text: TextSpan(
+       //                                style: Styles
+       //                                    .mediumTextStyle(
+       //                                  size: 12,
+       //                                  color: kBlackColor, // Default text color
+       //                                ),
+       //                                children: [
+       //                                  TextSpan(
+       //                                    text:
+       //                                    provider.registeredEventListList[index].venue.toString(),
+       //                                    style: Styles
+       //                                        .regularTextStyle(
+       //                                        size: 12,
+       //                                        color: kBlackColor),
+       //                                  ),
+       //                                ],
+       //                              ),
+       //                              textAlign: TextAlign
+       //                                  .end // Align text to the start
+       //                          ),
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //                    hSpace(5),
+       //                    Row(
+       //                      crossAxisAlignment:
+       //                      CrossAxisAlignment.start,
+       //                      mainAxisAlignment:
+       //                      MainAxisAlignment.spaceBetween,
+       //                      children: [
+       //                        Container(
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.40,
+       //                          child: RichText(
+       //                            text: TextSpan(
+       //                              style:
+       //                              Styles.mediumTextStyle(
+       //                                size: 12,
+       //                                color: kBlackColor, // Default text color
+       //                              ),
+       //                              children: [
+       //                                TextSpan(
+       //                                  text:"Get Pass",
+       //                                  // Normal text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                                TextSpan(
+       //                                  text: ' :-',
+       //                                  // Asterisk text
+       //                                  style: Styles
+       //                                      .mediumTextStyle(
+       //                                      size: 12,
+       //                                      color: kBlackColor),
+       //                                ),
+       //                              ],
+       //                            ),
+       //                            textAlign: TextAlign
+       //                                .start, // Align text to the start
+       //                          ),
+       //                        ),
+       //                        Container(
+       //                          alignment:
+       //                          Alignment.centerRight,
+       //                          padding: EdgeInsets.symmetric(
+       //                              horizontal: 10,
+       //                              vertical: 5),
+       //                          width: MediaQuery.of(context)
+       //                              .size
+       //                              .width *
+       //                              0.45,
+       //                          child: Icon(Icons.visibility,color: kbuttonColor,)
+       //                        ),
+       //                      ],
+       //                    ),
+       //                    hSpace(5),
+       //                    Divider(
+       //                      color: dividerColor,
+       //                      height: 2,
+       //                    ),
+       //
+       //
+       //
+       //                  ],
+       //                ),
+       //              ),
+       //            );
+       //          },
+       //        ),
+       //      );
+       //    })
+
+    );
 
     //147664
 
@@ -755,6 +903,35 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
 
 
   }
+
+  Future<void> _selectDate(BuildContext context, bool isFromDate) async {
+    DateTime initialDate = DateTime.now();
+
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      setState(() {
+        String formattedDisplay = DateFormat("dd-MM-yyyy").format(picked);
+        String formattedApi = DateFormat("yyyy-MM-dd").format(picked);
+
+        if (isFromDate) {
+          selectedFromDate = picked;
+          fromDateController.text = formattedDisplay;
+          fromDateApi = formattedApi;
+        } else {
+          selectedToDate = picked;
+          toDateController.text = formattedDisplay;
+          toDateApi = formattedApi;
+        }
+      });
+    }
+  }
+
 }
 
 

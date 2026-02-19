@@ -63,6 +63,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cvbuilder => 'CV Builder';
 
   @override
+  String get searchJobApply => 'Search Job/Apply';
+
+  @override
   String get searchcounselor => 'Search Counselor';
 
   @override

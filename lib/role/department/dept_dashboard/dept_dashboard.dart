@@ -73,7 +73,8 @@ class DepartmentDashboardPage extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   _dashboardButton(
-                    title: "Attendance List for Department Joining",
+                    // title: "Attendance List for Department Joining",
+                    title: "Pending Attendance list for Approval",
                     // icon: Icons.pending_actions_rounded,
                     onTap: () => {
                       Navigator.push(

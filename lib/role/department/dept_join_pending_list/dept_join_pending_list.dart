@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../utils/global.dart';
 import 'modal/financial_year_modal.dart';
 import 'modal/level_name_modal.dart';
 import 'provider/dept_join_pending_list_provider.dart';
@@ -120,60 +121,50 @@ class _DeptJoinPendingListScreenState
 
             _row("Name", item.nameEng),
             _row("Mobile No", item.mobileNo),
-            _row("Department Name", item.departmentNameEn),
-            _row("Officer Name", item.officerName),
-            _row("Office Address", item.officerName),
-
-            // _row("SSO ID", item.ssoid),
-            // _row("Area Type", item.areaType),
-            // _row("Designation", item.designation),
-            // _row("District Name", item.districtName),
-            // _row("City Name", item.cityName),
-            // _row("Ward Name", item.wardName),
-            // _row("Block Name", item.blockName),
-            // _row("GP Name", item.gpName),
-            // _row("Village Name", item.villageName),
-
-            // _row("Internship PDF Path", item.internshipPdfPath),
+            _row("Designation", item.designation),
+            _row("Department", item.departmentNameEn),
 
             const Divider(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                /// 🔹 CASE 2: If PDF already generated → Show View + E-Sign
+                // if (item.internshipPdfPath != null &&
+                //     item.internshipPdfPath!.isNotEmpty) ...[
+
+                OutlinedButton(
+                  onPressed: () =>
+                      provider.generateAndOpenInternshipPdf(
+                        context,
+                        item.jobSeekerUserId ?? 0,
+                      ),
+                  child: const Text("View Joining Letter"),
+                ),
+
+                //],
 
                 /// 🔹 CASE 1: If PDF NOT generated → Show Approve Button
-                if (item.internshipPdfPath == null ||
-                    item.internshipPdfPath!.isEmpty)
-                  OutlinedButton(
-                    onPressed: () =>
-                        provider.generateAndOpenInternshipPdf(
-                          context,
-                          item.jobSeekerUserId ?? 0,
-                        ),
-                    child: const Text("Approve Joining"),
-                  ),
+                // if (item.internshipPdfPath == null ||
+                //     item.internshipPdfPath!.isEmpty)
+                OutlinedButton(
+                  onPressed: () {
+                    confirmAlertDialog(
+                      context,
+                      "Confirm Approval",
+                      "Are you sure you want to approve this joining?",
+                          (value) {
+                        if (value.toString() == "success") {
+                          provider.approveJoining(context, item);
+                        }
+                      },
+                    );
+                  },
+                  child: const Text("Approve Joining"),
+                ),
 
-                /// 🔹 CASE 2: If PDF already generated → Show View + E-Sign
-                if (item.internshipPdfPath != null &&
-                    item.internshipPdfPath!.isNotEmpty) ...[
 
-                  OutlinedButton(
-                    onPressed: () =>
-                        provider.downloadAndOpenPdf(
-                          item.internshipPdfPath ?? "",
-                        ),
-                    child: const Text("View Joining Letter"),
-                  ),
 
-                  const SizedBox(width: 8),
-
-                  OutlinedButton(
-                    onPressed: () =>
-                        provider.onESign(context, item),
-                    child: const Text("E-Sign"),
-                  ),
-                ],
               ],
             ),
 
@@ -221,6 +212,7 @@ class _DeptJoinPendingListScreenState
       ),
     );
   }
+
 
 
 // Widget _filterSection(

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rajemployment/role/job_seeker/grievance/module/grievance_modal.dart';
@@ -20,55 +19,68 @@ class RegisteredEventListProvider extends ChangeNotifier {
 
   List<RegisteredEventsData> registeredEventListList = [];
 
+  String? fromDateApi;
+  String? toDateApi;
 
-
-  Future<RegisteredEventsModal?> allJobMatchingListApi(BuildContext context) async {
+  Future<RegisteredEventsModal?> allJobMatchingListApi(
+      BuildContext context, {
+        String? fromDate,
+        String? endDate,
+      }) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        Map<String, dynamic> bodyy =
-        {
+        Map<String, dynamic> bodyy = {
           "ActionName": "RegisteredEvents",
           "UserId": UserData().model.value.userId.toString(),
           "RoleId": UserData().model.value.roleId.toString(),
-          "FromDate": "string",
-          "EndDate": "string",
+          "FromDate": fromDate ?? "",
+          "EndDate": endDate ?? "",
           "FinancialYearID": 0,
         };
+
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.post("Dashboard/GetAllJobFairEventsList",bodyy);
+
+        ApiResponse apiResponse =
+        await commonRepo.post("Dashboard/GetAllJobFairEventsList", bodyy);
+
         ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
+
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
+
           final sm = RegisteredEventsModal.fromJson(responseData);
+
           registeredEventListList.clear();
+
           if (sm.state == 200) {
             registeredEventListList.addAll(sm.data!);
             notifyListeners();
             return sm;
           } else {
-            final smmm = RegisteredEventsModal(state: 0, message: sm.message.toString());
             notifyListeners();
-            //showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
-            return smmm;
+            return RegisteredEventsModal(
+                state: 0, message: sm.message.toString());
           }
-
         } else {
-          return RegisteredEventsModal(state: 0, message: 'Something went wrong',
-          );
+          return RegisteredEventsModal(
+              state: 0, message: 'Something went wrong');
         }
-      } on Exception catch (err) {
+      } catch (err) {
         ProgressDialog.closeLoadingDialog(context);
-        final sm = RegisteredEventsModal(state: 0, message: err.toString());
-        showAlertError(sm.message.toString(), context);
-        return sm;
+        showAlertError(err.toString(), context);
+        return RegisteredEventsModal(state: 0, message: err.toString());
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
+    return null;
   }
 
 

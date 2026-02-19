@@ -297,7 +297,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
       /// 🔹 Call GET API
       ApiResponse apiResponse = await commonRepo.get(
-        "Common/GenerateInternshipCertificatePdf/$internshipId",
+        "Common/GetOrGenerateInternshipCertificatePdf/$internshipId",
       );
 
       ProgressDialog.closeLoadingDialog(context);
@@ -358,13 +358,76 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     // open PDF / WebView
   }
 
-  void onESign(BuildContext context, DeptJoinPendingItem item) {
-    debugPrint(
-      "E-Sign clicked for ${item.nameEng}",
-    );
+  void approveJoining(BuildContext context, DeptJoinPendingItem item) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
 
-    // 🔜 Future:
-    // redirect to e-sign flow
+    String? deviceId = await UtilityClass.getDeviceId();
+
+    try {
+      Map<String, dynamic> data = {
+        "JobSeekerUserId": item.jobSeekerUserId,
+        "PrivateDepartmentID": 1,
+        "DeviceId": deviceId,
+        "ApprovedByUserId": 1234,
+        "InternshipPdfPath": "",
+      };
+
+      /// ✅ PRINT FULL REQUEST DATA
+      print("========== approve joining API PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("=========================================");
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/ApproveMYSYInternship",
+        data,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        /// ✅ Directly read JSON
+        if (responseData["State"] == 200) {
+          successDialog(
+            context,
+            responseData["Message"] ?? "Success",
+                (value) {
+              if (value.toString() == "success") {
+                Navigator.pop(context, true); // return true to previous page
+              }
+            },
+          );
+        } else {
+          showAlertError(
+            responseData["Message"] ?? "Something went wrong",
+            context,
+          );
+        }
+      } else {
+        showAlertError("Something went wrong", context);
+      }
+
+
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
   }
 
   void clearData() {

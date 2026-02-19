@@ -31,10 +31,6 @@ class _DeptJoinAttendanceListScreenState
 
       provider.clearData();
       provider.getDeptJoinAttendanceListApi(context);
-      //provider.initPageApis(context);
-      // provider.getLevelApi(context);
-      // provider.getFinancialYearApi(context);
-      // provider.getDistrictApi(context, 1); // default stateId
     });
   }
 
@@ -45,7 +41,8 @@ class _DeptJoinAttendanceListScreenState
       backgroundColor: kWhite,
       appBar: AppBar(
         title: const Text(
-          "Attendance List for Department Joining",
+          //"Attendance List for Department Joining",
+          "Pending Attendance list for Approval",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -123,19 +120,9 @@ class _DeptJoinAttendanceListScreenState
             _row("Name", item.nameEng),
             _row("Mobile No", item.mobileNo),
             _row("Department Name", item.departmentNameEn),
-            _row("Officer Name", item.officerName),
-            _row("Office Address", item.officerName),
-            _row("Joinig date", item.officerName),
-            // _row("Area", item.areaType),
-            // _row("SSO ID", item.ssoid),
-            // _row("Designation", item.designation),
-            // _row("District Name", item.districtName),
-            // _row("City Name", item.cityName),
-            // _row("Ward Name", item.wardName),
-            // _row("Block Name", item.blockName),
-            // _row("GP Name", item.gpName),
-            // _row("Village Name", item.villageName),
-
+            _row("Joining Date", item.internJoiningDate),
+            _row("Year", item.workingYear?.toString()),
+            _row("Month", item.attendanceMonthName),
 
             const Divider(height: 20),
 
@@ -155,17 +142,38 @@ class _DeptJoinAttendanceListScreenState
                 //   ),
                 // ),
 
-                OutlinedButton(
-                  onPressed: () =>
-                      provider.viewAttendance(context, item),
-                  child: const Text("View Attendance"),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
 
-                OutlinedButton(
-                  onPressed: () =>
-                      provider.openAttendancePopup(context, item),
-                  child: const Text("Mark Attendance"),
-                ),
+                    /// 🔹 IF NOT MARKED
+                    if (item.attendanceMarkStatus == 0)
+                      OutlinedButton(
+                        onPressed: () =>
+                            provider.openAttendancePopup(context, item),
+                        child: const Text("Mark Attendance"),
+                      ),
+
+                    /// 🔹 IF MARKED
+                    if (item.attendanceMarkStatus == 1) ...[
+                      OutlinedButton(
+                        onPressed: () {
+                          provider.viewCertificate(context, item);
+                        },
+                        child: const Text("View Certificate"),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          provider.approveAttendance(context, item);
+                        },
+                        child: const Text("Approve"),
+                      ),
+                    ],
+                  ],
+                )
+
+
 
               ],
             )
@@ -177,7 +185,12 @@ class _DeptJoinAttendanceListScreenState
   }
 
   Widget _row(String label, String? value) {
-    final bool isNameField = label.toLowerCase() == "name";
+    final String lowerLabel = label.toLowerCase();
+
+    final bool isBoldValue =
+        lowerLabel == "name" ||
+            lowerLabel == "year" ||
+            lowerLabel == "month";
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
@@ -192,7 +205,7 @@ class _DeptJoinAttendanceListScreenState
                 size: 14,
                 color: kBlackColor,
               ).copyWith(
-                fontWeight: FontWeight.bold, // 🔹 All labels bold
+                fontWeight: FontWeight.bold, // Labels bold
               ),
             ),
           ),
@@ -203,9 +216,8 @@ class _DeptJoinAttendanceListScreenState
                 size: 14,
                 color: Colors.black87,
               ).copyWith(
-                fontWeight: isNameField
-                    ? FontWeight.bold // 🔹 Name value bold
-                    : FontWeight.normal,
+                fontWeight:
+                isBoldValue ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ),
@@ -213,6 +225,7 @@ class _DeptJoinAttendanceListScreenState
       ),
     );
   }
+
 
 
 // Widget _iconBtn({

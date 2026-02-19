@@ -366,34 +366,36 @@ class RegisterFormProvider extends ChangeNotifier {
       );
     }
 
+    String? deviceId = await UtilityClass.getDeviceId();
+
     try {
       Map<String, dynamic> data = {
-        "ActionName": "AllotCenter",
-        "AreaType": areaType,
-        "PrivateCityCode": areaType == "Urban" && selectedCity?.code != null
+        "SSOID": ssoIdController.text.trim(),
+        "MobileNo": mobileController.text.trim(),
+        "DepartmentId": 0,
+        "UserType": "Govt",
+        "DistrictCode": selectedDistrict?.code != null
+            ? selectedDistrict!.code
+            : "0",
+        "AreaType": areaType == "Urban" ? 2 : 1,
+        "CityCode": areaType == "Urban" && selectedCity?.code != null
             ? selectedCity!.code
             : "0",
-        "PrivateBlockCode": areaType == "Rural" && selectedBlock?.code != null
-            ? selectedBlock!.code
-            : "0",
-        "PrivateGPCode": areaType == "Rural" && selectedGp?.code != null
-            ? selectedGp!.code
-            : "0",
-        "PrivateWardCode": areaType == "Urban" && selectedWard?.code != null
+        "WardCode": areaType == "Urban" && selectedWard?.code != null
             ? selectedWard!.code
             : "0",
-        "PrivateVillageCode": areaType == "Rural" && selectedVillage?.code != null
+        "BlockCode": areaType == "Rural" && selectedBlock?.code != null
+            ? selectedBlock!.code
+            : "0",
+        "GPCode": areaType == "Rural" && selectedGp?.code != null
+            ? selectedGp!.code
+            : "0",
+        "VillageCode": areaType == "Rural" && selectedVillage?.code != null
             ? selectedVillage!.code
             : "0",
-        "PrivateDepartmentID": departmentIdController.text.isNotEmpty
-            ? departmentIdController.text
-            : "0",
-        "SSOID": ssoIdController.text.trim(),
-        "OfficerName": officeNameController.text.trim(),
-        "MobileNo": mobileController.text.trim(),
-        "Designation": designationController.text.trim(),
-        "JobSeekerUserId": 8253,
-        "DEOUserId": 1820
+        "OfficeName": officeNameController.text.trim(),
+        "DesignationName": designationController.text.trim(),
+        "DeviceId": deviceId
       };
 
       /// ✅ PRINT FULL REQUEST DATA
@@ -404,7 +406,7 @@ class RegisterFormProvider extends ChangeNotifier {
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
-        "Common/Allotcenter",
+        "Common/CreateDepartmentUser",
         data,
       );
 
@@ -426,11 +428,12 @@ class RegisterFormProvider extends ChangeNotifier {
             sm.message ?? "Success",
                 (value) {
               if (value.toString() == "success") {
-                if (sm.data != null &&
-                    sm.data!.isNotEmpty &&
-                    sm.data![0].userId != null) {
+                // if (sm.data != null &&
+                //     sm.data!.isNotEmpty &&
+                //     sm.data![0].userId != null) {
+                  Navigator.pop(context);
 
-                }
+                // }
               }
             },
           );

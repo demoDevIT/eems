@@ -51,7 +51,7 @@ class DeptJoinPendingItem {
     String? privateVillageCode;
     int? privateDepartmentID;
     String? ssoid;
-    String? officerName;
+    String? allottedDeptName;
     String? mobileNo;
     String? designation;
     String? nameEng;
@@ -75,7 +75,7 @@ class DeptJoinPendingItem {
     this.privateVillageCode,
     this.privateDepartmentID,
     this.ssoid,
-    this.officerName,
+    this.allottedDeptName,
     this.mobileNo,
     this.designation,
     this.nameEng,
@@ -101,7 +101,7 @@ class DeptJoinPendingItem {
       privateVillageCode: json['PrivateVillageCode'],
       privateDepartmentID: json['PrivateDepartmentID'],
       ssoid: json['SSOID'],
-      officerName: json['OfficerName'], // shown as Exchange Name
+      allottedDeptName: json['AllottedDeptName'], // shown as Exchange Name
       mobileNo: json['MobileNo'], // shown as Exchange Name
       designation: json['Designation'], // shown as Exchange Name
       nameEng: json['NAME_ENG'], // shown as Exchange Name
