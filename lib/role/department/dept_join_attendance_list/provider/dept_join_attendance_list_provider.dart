@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
@@ -407,12 +410,97 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     );
   }
 
-  void viewCertificate(
+  Future<void> viewCertificate(
       BuildContext context,
       DeptJoinAttendanceItem item,
-      ) {
-    debugPrint("View certificate for ${item.nameEng}");
-    // TODO: open certificate screen or API call
+      ) async {
+
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+
+      Map<String, dynamic> body = {
+        "JobSeekerID": item.jobseekerUserId,
+        "JoiningID": item.joiningID,
+        "AttendanceMonthID": item.attendanceMonthId,
+        "WorkingYear": item.workingYear,
+      };
+
+      /// 🔍 PRINT REQUEST
+      print("======= GET ATTENDANCE CERTIFICATE REQUEST =======");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+      print("==================================================");
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/GetAttendanceCertificatePath",
+        body,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"].isNotEmpty) {
+
+          final String? fileUrl =
+          responseData["Data"][0]["CertificatePath"];
+
+          print("Certificate URL => $fileUrl");
+
+          if (fileUrl != null && fileUrl.isNotEmpty) {
+            await downloadAndOpenPdf(fileUrl);
+          } else {
+            showAlertError("Certificate not found", context);
+          }
+        } else {
+          showAlertError(
+            responseData["Message"] ?? "Certificate not available",
+            context,
+          );
+        }
+      } else {
+        showAlertError("Something went wrong", context);
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
+  }
+
+  Future<void> downloadAndOpenPdf(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final dir = await getApplicationDocumentsDirectory();
+
+        final filePath =
+            "${dir.path}/${DateTime.now().millisecondsSinceEpoch}.pdf";
+
+        final file = File(filePath);
+
+        await file.writeAsBytes(response.bodyBytes);
+
+        await OpenFile.open(filePath);
+      }
+    } catch (e) {
+      debugPrint("PDF download error: $e");
+    }
   }
 
   Future<void> approveAttendance(
@@ -420,17 +508,67 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       DeptJoinAttendanceItem item,
       ) async {
 
-    debugPrint("Approve attendance for ${item.nameEng}");
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
 
-    // TODO: call approve API here
+    try {
+      ProgressDialog.showLoadingDialog(context);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Attendance Approved Successfully"),
-      ),
-    );
+      Map<String, dynamic> body = {
+        "JobSeekerID": item.jobseekerUserId,
+        "JoiningID": item.joiningID,
+        "AttendanceMonthID": item.attendanceMonthId,
+        "WorkingYear": item.workingYear,
+      };
 
-    getDeptJoinAttendanceListApi(context);
+      /// 🔍 PRINT REQUEST
+      print("======= APPROVE ATTENDANCE REQUEST =======");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+      print("==========================================");
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/ApproveAttendanceCertificate",
+        body,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        /// ✅ Show API Message (Success or Fail)
+        String message = responseData["Message"] ?? "Something went wrong";
+
+        if (responseData["State"] == 200) {
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message)),
+          );
+
+          /// 🔄 Refresh List After Approval
+          await getDeptJoinAttendanceListApi(context);
+
+        } else {
+          showAlertError(message, context);
+        }
+
+      } else {
+        showAlertError("Something went wrong", context);
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
   }
 
 

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
+import 'assessment_test.dart';
+import 'modal/self_assessment_modal.dart';
+import 'provider/self_assessment_provider.dart';
 
 class SelfAssessmentScreen extends StatefulWidget {
   const SelfAssessmentScreen({super.key});
@@ -14,6 +18,18 @@ class _SelfAssessmentScreenState
     extends State<SelfAssessmentScreen> {
 
   bool showCategorySelection = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      context
+          .read<SelfAssessmentProvider>()
+          .getAssessmentListApi(context, 2234); // pass dynamic jobSeekerId
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,22 +174,23 @@ class _SelfAssessmentScreenState
   /// ===================================================
   /// SECOND CARD (CATEGORY SELECTION)
   /// ===================================================
-  Set<String> selectedCategories = {};
+  Set<AssessmentData> selectedCategories = {};
 
-  final List<String> selfAssessmentList = [
-    "General Awareness",
-    "Logical Reasoning",
-    "Verbal Ability",
-    "Numerical Reasoning",
-    "Communication Skills",
-    "Behavioral / Situational Judgement",
-  ];
-
-  final List<String> psychometricList = [
-    "Psychometric Questions"
-  ];
+  // final List<String> selfAssessmentList = [
+  //   "General Awareness",
+  //   "Logical Reasoning",
+  //   "Verbal Ability",
+  //   "Numerical Reasoning",
+  //   "Communication Skills",
+  //   "Behavioral / Situational Judgement",
+  // ];
+  //
+  // final List<String> psychometricList = [
+  //   "Psychometric Questions"
+  // ];
 
   Widget _buildCategoryCard() {
+    final provider = Provider.of<SelfAssessmentProvider>(context, listen: false);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -190,10 +207,11 @@ class _SelfAssessmentScreenState
         Wrap(
           spacing: 16,
           runSpacing: 16,
-          children: selfAssessmentList
+          children: provider.selfAssessmentList
               .map((item) => _selectableChip(item))
               .toList(),
         ),
+
 
         const SizedBox(height: 30),
 
@@ -203,10 +221,12 @@ class _SelfAssessmentScreenState
 
         Wrap(
           spacing: 16,
-          children: psychometricList
+          runSpacing: 16,
+          children: provider.psychometricList
               .map((item) => _selectableChip(item))
               .toList(),
         ),
+
 
         const Spacer(),
 
@@ -237,16 +257,16 @@ class _SelfAssessmentScreenState
     );
   }
 
-  Widget _selectableChip(String title) {
-    final bool isSelected = selectedCategories.contains(title);
+  Widget _selectableChip(AssessmentData item) {
+    final bool isSelected = selectedCategories.contains(item);
 
     return GestureDetector(
       onTap: () {
         setState(() {
           if (isSelected) {
-            selectedCategories.remove(title);
+            selectedCategories.remove(item);
           } else {
-            selectedCategories.add(title);
+            selectedCategories.add(item);
           }
         });
       },
@@ -257,7 +277,7 @@ class _SelfAssessmentScreenState
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
-          title,
+          item.name ?? "",
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
           ),
@@ -266,12 +286,23 @@ class _SelfAssessmentScreenState
     );
   }
 
-  void _showInstructionPopup() {
-    bool hasSelfAssessment = selectedCategories
-        .any((item) => selfAssessmentList.contains(item));
 
-    bool hasPsychometric = selectedCategories
-        .any((item) => psychometricList.contains(item));
+  void _showInstructionPopup() {
+    final provider = Provider.of<SelfAssessmentProvider>(context, listen: false);
+
+    bool hasSelfAssessment =
+    selectedCategories.any((item) => item.assessmentTypeId == 1);
+
+    bool hasPsychometric =
+    selectedCategories.any((item) => item.assessmentTypeId == 2);
+
+    // ✅ Dynamic total questions
+    int totalQuestions = selectedCategories.fold(
+        0, (sum, item) => sum + (item.minQuestions ?? 0));
+
+    // ✅ Dynamic total duration
+    int totalDuration = selectedCategories.fold(
+        0, (sum, item) => sum + (item.durationMinutes ?? 0));
 
     showDialog(
       context: context,
@@ -304,8 +335,8 @@ class _SelfAssessmentScreenState
                   const SizedBox(height: 10),
 
                   _bullet("Selected Categories: ${selectedCategories.length}"),
-                  _bullet("Total Questions: 80"),
-                  _bullet("Total Duration: 50 minutes"),
+                  _bullet("Total Questions: $totalQuestions"),
+                  _bullet("Total Duration: $totalDuration minutes"),
                   _bullet("Do not refresh the page during the test."),
                   _bullet("Each question must be answered before proceeding."),
                   _bullet("Once submitted, answers cannot be changed."),
@@ -351,6 +382,8 @@ class _SelfAssessmentScreenState
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          _startCountdown(totalDuration);
+
                           // TODO: Navigate to test page
                         },
                         child: const Text("Start Test"),
@@ -365,6 +398,20 @@ class _SelfAssessmentScreenState
       },
     );
   }
+
+  void _startCountdown(int totalDuration) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => _CountdownOverlay(
+        selectedCategories: selectedCategories.toList(),
+        totalDuration: totalDuration,
+      ),
+
+    );
+  }
+
+
 
   Widget _bullet(String text) {
     return Padding(
@@ -424,6 +471,68 @@ class CategoryChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(title),
+    );
+  }
+}
+
+class _CountdownOverlay extends StatefulWidget {
+  final List<AssessmentData> selectedCategories;
+  final int totalDuration;
+
+  const _CountdownOverlay({
+    required this.selectedCategories,
+    required this.totalDuration,
+  });
+
+  @override
+  State<_CountdownOverlay> createState() =>
+      _CountdownOverlayState();
+}
+
+
+class _CountdownOverlayState extends State<_CountdownOverlay> {
+  int count = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    _start();
+  }
+
+  void _start() async {
+    for (int i = 3; i > 0; i--) {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      setState(() => count = i - 1);
+    }
+
+    if (!mounted) return;
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => AssessmentTestScreen(
+          selectedCategories: widget.selectedCategories,
+          totalDuration: widget.totalDuration,
+        ),
+      ),
+    );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.8),
+      body: Center(
+        child: Text(
+          count == 0 ? "Go!" : "$count",
+          style: const TextStyle(
+            fontSize: 80,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

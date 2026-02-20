@@ -64,6 +64,7 @@ import 'package:rajemployment/role/job_seeker/qr_scanner/provider/qr_scanner_scr
 import 'package:rajemployment/role/job_seeker/registration_card/provider/registration_card_provider.dart';
 import 'package:rajemployment/role/job_seeker/roleselectionscreen/provider/role_selection_provider.dart';
 import 'package:rajemployment/role/job_seeker/select_company/provider/select_company_page_provider.dart';
+import 'package:rajemployment/role/job_seeker/self_assessment/provider/assessment_test_provider.dart';
 import 'package:rajemployment/role/job_seeker/self_assessment/provider/self_assessment_provider.dart';
 import 'package:rajemployment/role/job_seeker/share_feedback/provider/share_feedback_details_provider.dart';
 import 'package:rajemployment/role/job_seeker/splachscreen/splash_screen.dart';
@@ -169,6 +170,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<AppliedJobsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<MysyListProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<SelfAssessmentProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<AssessmentTestProvider>()),
        ],
         child:MyApp(),
       ),

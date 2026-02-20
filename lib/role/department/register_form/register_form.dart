@@ -15,7 +15,12 @@ import 'modal/district_modal.dart';
 import 'modal/city_modal.dart';
 
 class RegisterFormScreen extends StatefulWidget {
-  const RegisterFormScreen({super.key});
+  final String ssoId;
+
+  const RegisterFormScreen({
+    super.key,
+    required this.ssoId,
+  });
 
   @override
   State<RegisterFormScreen> createState() => _RegisterFormScreenState();
@@ -25,13 +30,11 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<RegisterFormProvider>(context, listen: false)
-        .init("SSO123456"); // 🔴 dynamic later
+    final provider =
+    Provider.of<RegisterFormProvider>(context, listen: false);
 
+    provider.init(widget.ssoId);   // ✅ dynamic
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final provider =
-          Provider.of<RegisterFormProvider>(context, listen: false);
-      //provider.clearData();
       provider.getDistrictApi(context, 6);
       provider.getDepartmentApi(context);
     });

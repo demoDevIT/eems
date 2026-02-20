@@ -42,18 +42,18 @@ class DepartmentDashboardPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  _dashboardButton(
-                    title: "Register yourself for MYSY",
-                   // icon: Icons.app_registration_rounded,
-                    onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterFormScreen()
-                        ),
-                      ),
-                    },
-                  ),
+                  // _dashboardButton(
+                  //   title: "Register yourself for MYSY",
+                  //  // icon: Icons.app_registration_rounded,
+                  //   onTap: () => {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (_) => const RegisterFormScreen()
+                  //       ),
+                  //     ),
+                  //   },
+                  // ),
 
                   const SizedBox(height: 16),
 

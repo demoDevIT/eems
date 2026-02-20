@@ -1,13 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:rajemployment/role/department/dept_dashboard/dept_dashboard.dart';
 import 'package:rajemployment/role/department/register_form/modal/reg_form_modal.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/app_shared_prefrence.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/utility_class.dart';
+import '../../dept_dashboard/modal/dept_info_modal.dart';
 import '../modal/block_modal.dart';
 import '../modal/department_modal.dart';
 import '../modal/district_modal.dart';
@@ -15,6 +19,7 @@ import '../modal/city_modal.dart';
 import '../modal/gp_modal.dart';
 import '../modal/village_modal.dart';
 import '../modal/ward_modal.dart';
+import '../../../../utils/user_new.dart';
 
 
 class RegisterFormProvider extends ChangeNotifier {
@@ -428,12 +433,17 @@ class RegisterFormProvider extends ChangeNotifier {
             sm.message ?? "Success",
                 (value) {
               if (value.toString() == "success") {
-                // if (sm.data != null &&
-                //     sm.data!.isNotEmpty &&
-                //     sm.data![0].userId != null) {
-                  Navigator.pop(context);
+                if (sm.data != null &&
+                    sm.data!.isNotEmpty &&
+                    sm.data![0].userId != null) {
+                  getDeptBasicDetails(
+                    context,
+                    sm.data![0].userId.toString(),
+                    sm.data![0].roleId,
+                    ssoIdController.text.trim()
+                  );
 
-                // }
+                }
               }
             },
           );
@@ -460,6 +470,84 @@ class RegisterFormProvider extends ChangeNotifier {
         state: 0,
         message: e.toString(),
       );
+    }
+  }
+
+  Future<DeptInfoModal?> getDeptBasicDetails(
+      BuildContext context, String userId, int? roleId, String ssoID) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        Map<String, dynamic> body = {
+          "UserID": userId,
+          "SSOID": ssoID,
+          "RoleID": roleId
+        };
+        ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse =
+        await commonRepo.post("Common/GetInternshipDepartmentUserProfile", body);
+        ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          String? authToken =
+              apiResponse.response?.headers?['x-authtoken']?.first;
+          print(authToken);
+          final sm = DeptInfoModal.fromJson(responseData);
+          if (sm.state == 200) {
+            final pref = AppSharedPref();
+            UserData().model.value.userId = sm.data![0].userID;
+            UserData().model.value.roleId = roleId;
+            UserData().model.value.name = sm.data![0].name;
+            UserData().model.value.mobileNo = sm.data![0].mobileNo;
+            UserData().model.value.userType = sm.data![0].userType;
+            UserData().model.value.office = sm.data![0].office;
+            UserData().model.value.designation = sm.data![0].designation;
+            UserData().model.value.territoryType = sm.data![0].territoryType;
+            UserData().model.value.village = sm.data![0].village;
+            UserData().model.value.gp = sm.data![0].gp;
+            UserData().model.value.block = sm.data![0].block;
+            UserData().model.value.city = sm.data![0].city;
+
+            pref.save('UserData', UserData().model.value);
+
+            Navigator.of(context).push(
+              RightToLeftRoute(
+                page: const DepartmentDashboardPage(),
+                duration: const Duration(milliseconds: 500),
+                startOffset: const Offset(-1.0, 0.0),
+              ),
+            );
+            return sm;
+          } else {
+            final smmm = DeptInfoModal(
+                state: 0, message: sm.message.toString());
+
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return DeptInfoModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        ProgressDialog.closeLoadingDialog(context);
+        final sm = DeptInfoModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 

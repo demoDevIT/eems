@@ -132,6 +132,22 @@ class LoginData {
   dynamic emipSector;
   dynamic industryType;
 
+  //dept
+  // dynamic userID; already exist
+  dynamic name;
+  dynamic mobileNo;
+  dynamic userType;
+  dynamic office;
+  dynamic designation;
+  dynamic role;
+  dynamic territoryType;
+  dynamic village;
+  dynamic gp;
+  dynamic block;
+  // dynamic ward; already exist
+  dynamic city;
+  // dynamic district; already exist
+
   LoginData({
     this.userId,
     this.roleId,
@@ -228,6 +244,23 @@ class LoginData {
     this.actEstablishment,
     this.emipSector,
     this.industryType,
+
+    //dept
+
+    // this.userID, already exist
+    this.name,
+    this.mobileNo,
+    this.userType,
+    this.office,
+    this.designation,
+    this.role,
+    this.territoryType,
+    this.village,
+    this.gp,
+    this.block,
+    // this.ward, already exist
+    this.city,
+    // this.district, already exist
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -326,6 +359,22 @@ class LoginData {
     actEstablishment = json['ActEstablishment'];
     emipSector = json['EMIP_Sector'];
     industryType = json['IndustryType'];
+
+    // dept
+    // userID = json['UserID'];
+    name = json['Name'];
+    mobileNo = json['MobileNo'];
+    userType = json['UserType'];
+    office = json['Office'];
+    designation = json['Designation'];
+    role = json['Role'];
+    territoryType = json['TerritoryType'];
+    village = json['Village'];
+    gp = json['GP'];
+    block = json['Block'];
+    // ward = json['Ward'];
+    city = json['City'];
+    // district = json['District'];
   }
 
   Map<String, dynamic> toJson() {
@@ -425,6 +474,23 @@ class LoginData {
     data['ActEstablishment'] = this.actEstablishment;
     data['EMIP_Sector'] = this.emipSector;
     data['IndustryType'] = this.industryType;
+
+    // dept
+
+    // data['UserID'] = this.userID;
+    data['Name'] = this.name;
+    data['MobileNo'] = this.mobileNo;
+    data['UserType'] = this.userType;
+    data['Office'] = this.office;
+    data['Designation'] = this.designation;
+    data['Role'] = this.role;
+    data['TerritoryType'] = this.territoryType;
+    data['Village'] = this.village;
+    data['GP'] = this.gp;
+    data['Block'] = this.block;
+    // data['Ward'] = this.ward;
+    data['City'] = this.city;
+    // data['District'] = this.district;
 
     return data;
   }
