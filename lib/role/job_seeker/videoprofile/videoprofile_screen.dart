@@ -160,7 +160,7 @@ var videoProvider;
 
               /// Second Image with Overlay Text Button
 
-              if(provider.VideoPath.length > 1)
+              if (provider.VideoPath.isNotEmpty)
               SizedBox(child: LiveVideoPlayer(url: provider.VideoPath[0].videoPath ?? "")),
               const SizedBox(height: 20),
               ClipRRect(

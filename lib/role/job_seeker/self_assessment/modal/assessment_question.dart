@@ -5,6 +5,10 @@ class AssessmentQuestion {
   List<int> optionIds = [];
   int? correct;
 
+  /// ✅ ADD THESE
+  int? sectionId;
+  int? assessmentTypeId;
+
   AssessmentQuestion.fromJson(Map<String, dynamic> json) {
     id = json['Id'];
     question = json['questions'];

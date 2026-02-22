@@ -38,6 +38,7 @@ Future<void> getVideo(BuildContext context) async {
     VideoProfileResponse responseData = VideoProfileResponse.fromJson(response.data);
     if (responseData.status) {
         VideoPath=responseData.data;
+        print("Exact VideoPath: ${responseData.data[0].videoPath}");
     }
     notifyListeners();
   } catch (e, s) {

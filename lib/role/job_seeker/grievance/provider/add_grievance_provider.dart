@@ -177,25 +177,25 @@ class AddGrievanceProvider extends ChangeNotifier {
 
         Map<String, dynamic> bodyy =
         {
-          "AttachmentFileName": certificateController.text,
+          "DisAttachmentFileName": "",
           "CategoryID": categoryIdController.text,
           "CategoryType":categoryTypeIdController.text,
-          "CreatedBy": UserData().model.value.userId.toString(),
-          "DepartmentID": 1,
-          "DisAttachmentFileName": "",
-          "FileAttachment": certificateController.text.toString().isNotEmpty ? true :false,
-          "IPAddress": IpAddress,
-          "IsActive": true,
-          "IsDeleted": false,
           "ModuleID": moduleIdController.text,
-          "Remark": remarkController.text,
-          "RequestStatus": 3,
-          "RoleID": UserData().model.value.roleId.toString(),
-          "StatusID": 3,
           "SubModuleID": subModuleIdController.text,
           "Subject": complaintController.text,
+          "Remark": remarkController.text,
+          "StatusID": 3,
+          "RequestStatus": 3,
+          "IsActive": true,
+          "IsDeleted": false,
           "UpdatedBy": UserData().model.value.userId.toString(),
+          "CreatedBy": UserData().model.value.userId.toString(),
+          "IPAddress": IpAddress,
+          "DepartmentID": 1,
+          "RoleID": UserData().model.value.roleId.toString(),
           "UserID": UserData().model.value.userId.toString(),
+          "FileAttachment": certificateController.text.toString().isNotEmpty ? true :false,
+          "AttachmentFileName": certificateController.text,
         };
 
         String url = "MobileProfile/SaveGrievance";

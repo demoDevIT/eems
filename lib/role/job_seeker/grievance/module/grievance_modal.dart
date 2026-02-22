@@ -1,11 +1,17 @@
 class GrievanceModal {
-  dynamic state;
+  int? state;
   bool? status;
-  dynamic message;
+  String? message;
   dynamic errorMessage;
   List<GrievanceModalData>? data;
 
-  GrievanceModal({this.state, this.status, this.message, this.errorMessage, this.data});
+  GrievanceModal({
+    this.state,
+    this.status,
+    this.message,
+    this.errorMessage,
+    this.data,
+  });
 
   GrievanceModal.fromJson(Map<String, dynamic> json) {
     state = json['State'];
