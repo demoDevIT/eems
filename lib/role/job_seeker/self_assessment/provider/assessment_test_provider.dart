@@ -69,7 +69,7 @@ class AssessmentTestProvider extends ChangeNotifier {
   /// Store API result sections
   List<dynamic> resultData = [];
 
-  Future<void> loadQuestions(int categoryId) async {
+  Future<void> loadQuestions(int categoryId, int assessmentTypeId) async {
     try {
       selectedCategoryId = categoryId;
       currentQuestionIndex = 0;
@@ -101,11 +101,8 @@ class AssessmentTestProvider extends ChangeNotifier {
             AssessmentQuestion question =
             AssessmentQuestion.fromJson(e);
 
-            question.sectionId = categoryId; // ✅ SectionId
-            question.assessmentTypeId =
-            questionsByCategory.containsKey(categoryId)
-                ? questionsByCategory[categoryId]!.first.assessmentTypeId
-                : null;
+            question.sectionId = categoryId;
+            question.assessmentTypeId = assessmentTypeId;  // ✅ FIXED
 
             loadedQuestions.add(question);
           }
@@ -279,6 +276,47 @@ class AssessmentTestProvider extends ChangeNotifier {
   //   }
   // }
 
+  Future<int?> insertUserAttemptApi(BuildContext context) async {
+    try {
+      String userId = UserData().model.value.userId.toString();
+
+      String url = "Assessment/InsertUserAttempt/$userId";
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(url, {});
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"].isNotEmpty) {
+
+          int attemptId = responseData["Data"][0]["AttemptId"];
+
+          this.attemptId = attemptId;   // ✅ SAVE ATTEMPT ID
+
+          notifyListeners();
+
+          return attemptId;
+        }
+      }
+
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
+
+    return null;
+  }
+
   Future<CorrectSaveAnswersModal?> correctSaveAnswersApi(
       BuildContext context,
       List<Map<String, dynamic>> answers) async {
@@ -373,6 +411,40 @@ class AssessmentTestProvider extends ChangeNotifier {
               .internet_connection,
           context);
     }
+  }
+
+  Future<List<dynamic>?> getAssessmentScoreApi(BuildContext context) async {
+    try {
+      String userId = UserData().model.value.userId.toString();
+
+      String url = "Assessment/GetAssessmentScore/$userId";
+
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.get(url);
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null) {
+
+          return responseData["Data"];
+        }
+      }
+
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
+
+    return null;
   }
 
   void clearData() {

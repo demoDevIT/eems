@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -375,7 +376,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         "JobSeekerUserId": item.jobSeekerUserId,
         "PrivateDepartmentID": 1,
         "DeviceId": deviceId,
-        "ApprovedByUserId": 1234,
+        "ApprovedByUserId": UserData().model.value.userId, //1234,
         "InternshipPdfPath": "",
       };
 

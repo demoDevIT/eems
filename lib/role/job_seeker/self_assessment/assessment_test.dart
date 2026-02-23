@@ -35,11 +35,22 @@ class _AssessmentTestScreenState
       provider.clearData();
       // Load first category automatically
       provider.loadQuestions(
-          widget.selectedCategories.first.id!);
+        widget.selectedCategories.first.id!,
+        widget.selectedCategories.first.assessmentTypeId!,
+      );
 
       // Start timer
       provider.startTimer(widget.totalDuration, () {
-        _showTimeOverPopup(context, provider);
+
+        // ✅ If user attempted at least one question
+        if (provider.attemptedCount > 0) {
+          _showTimeOverPopup(context, provider);
+        }
+        // ❌ If no question attempted → go back directly
+        else {
+          Navigator.pop(context);
+        }
+
       });
     });
   }
@@ -61,7 +72,7 @@ class _AssessmentTestScreenState
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          "Self Assessment",
+          "Assessment Test",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -218,8 +229,13 @@ class _AssessmentTestScreenState
             icon: const Icon(Icons.chevron_left),
             onPressed: currentIndex > 0
                 ? () {
+              var prevCategory =
+              widget.selectedCategories[currentIndex - 1];
+
               provider.loadQuestions(
-                  widget.selectedCategories[currentIndex - 1].id!);
+                prevCategory.id!,
+                prevCategory.assessmentTypeId!,
+              );
             }
                 : null,
           ),
@@ -253,8 +269,13 @@ class _AssessmentTestScreenState
             onPressed: currentIndex <
                 widget.selectedCategories.length - 1
                 ? () {
+              var nextCategory =
+              widget.selectedCategories[currentIndex + 1];
+
               provider.loadQuestions(
-                  widget.selectedCategories[currentIndex + 1].id!);
+                nextCategory.id!,
+                nextCategory.assessmentTypeId!,
+              );
             }
                 : null,
           ),
@@ -555,8 +576,14 @@ class _AssessmentTestScreenState
                     ElevatedButton(
                       onPressed: () async {
                         Navigator.pop(context);
-                        await _submitAssessment(
-                            context, provider);
+
+                        // 1️⃣ Call InsertUserAttempt API first
+                        int? attemptId = await provider.insertUserAttemptApi(context);
+
+                        if (attemptId != null) {
+                          // 2️⃣ Then submit answers
+                          await _submitAssessment(context, provider);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
@@ -616,129 +643,250 @@ class _AssessmentTestScreenState
     await provider.correctSaveAnswersApi(
         context, answers);
 
-    if (response != null &&
-        response.state == 200) {
+    if (response != null && response.state == 200) {
 
-      _showResultPopup(context, provider);
+      var scoreData = await provider.getAssessmentScoreApi(context);
+
+      if (scoreData != null) {
+        _showScorePopup(context, scoreData);
+      }
     }
   }
 
-  void _showResultPopup(
+  void _showScorePopup(
       BuildContext context,
-      AssessmentTestProvider provider) {
+      List<dynamic> data) {
+
+    List selfAssessment =
+    data.where((e) => e["AssessmentTypeId"] == 1).toList();
+
+    List psychometric =
+    data.where((e) => e["AssessmentTypeId"] == 2).toList();
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (_) {
         return Dialog(
-          insetPadding:
-          const EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(
-              borderRadius:
-              BorderRadius.circular(20)),
-          child: Padding(
-            padding:
-            const EdgeInsets.all(24),
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(20),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: const Color(0xffF9FAFB),
+              borderRadius: BorderRadius.circular(25),
+            ),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const Text(
-                    "Assessment Result",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight:
-                        FontWeight.bold),
-                  ),
+                  /// =========================
+                  /// SELF ASSESSMENT SECTION
+                  /// =========================
+                  if (selfAssessment.isNotEmpty) ...[
+                    const Text(
+                      "Self Assessment Result",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
 
-                  const SizedBox(height: 20),
+                    ...selfAssessment.map((item) {
+                      int total = item["TotalQuestions"] ?? 0;
+                      int score = item["Score"] ?? 0;
 
-                  ...provider.resultData
-                      .map<Widget>((section) {
+                      double progress =
+                      total > 0 ? score / total : 0;
 
-                    return Container(
-                      margin:
-                      const EdgeInsets.only(
-                          bottom: 20),
-                      padding:
-                      const EdgeInsets.all(
-                          16),
-                      decoration: BoxDecoration(
-                        color:
-                        Colors.deepPurple
-                            .shade50,
-                        borderRadius:
-                        BorderRadius.circular(
-                            16),
+                      return Container(
+                        margin:
+                        const EdgeInsets.only(bottom: 20),
+                        padding:
+                        const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withOpacity(0.05),
+                              blurRadius: 10,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+
+                            Text(
+                              item["AssessmentName"] ?? "",
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight:
+                                  FontWeight.w600),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 8,
+                              borderRadius:
+                              BorderRadius.circular(8),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Text(
+                                    "Attempted - $total"),
+                                Text(
+                                  "Score - $score",
+                                  style: const TextStyle(
+                                      fontWeight:
+                                      FontWeight.bold,
+                                      color:
+                                      Colors.green),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+
+                  const SizedBox(height: 10),
+
+                  /// =========================
+                  /// PSYCHOMETRIC SECTION
+                  /// =========================
+                  if (psychometric.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+
+                    const Text(
+                      "Psychometric Assessment Test",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    ...psychometric.map((item) {
+
+                      int total =
+                          item["TotalQuestions"] ?? 0;
+
+                      int score =
+                          item["Score"] ?? 0;
+
+                      double progress =
+                          score / 100;
+
+                      return Container(
+                        margin:
+                        const EdgeInsets.only(bottom: 20),
+                        padding:
+                        const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withOpacity(0.05),
+                              blurRadius: 10,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+
+                            Text(
+                              item["AssessmentName"] ?? "",
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight:
+                                  FontWeight.w600),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 8,
+                              borderRadius:
+                              BorderRadius.circular(8),
+                              color: Colors.deepPurple,
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                Text(
+                                    "Attempted - $total"),
+                                Text(
+                                  "Score - $score%",
+                                  style: const TextStyle(
+                                      fontWeight:
+                                      FontWeight.bold,
+                                      color:
+                                      Colors.deepPurple),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+
+                  const SizedBox(height: 10),
+
+                  /// CLOSE BUTTON
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                        const Color(0xff1E3A8A),
+                        shape:
+                        RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(30),
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment
-                            .start,
-                        children: [
-
-                          Text(
-                            section["sectionName"],
-                            style: const TextStyle(
-                                fontWeight:
-                                FontWeight
-                                    .bold),
-                          ),
-
-                          const SizedBox(
-                              height: 10),
-
-                          LinearProgressIndicator(
-                            value: section[
-                            "accuracy"] /
-                                100,
-                          ),
-
-                          const SizedBox(
-                              height: 10),
-
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
-                            children: [
-                              Text(
-                                  "Questions: ${section["total"]}"),
-                              Text(
-                                  "Correct: ${section["correct"]}"),
-                              Text(
-                                  "Incorrect: ${section["incorrect"]}"),
-                            ],
-                          )
-                        ],
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10),
+                        child: Text(
+                          "Close",
+                          style: TextStyle(
+                              color: Colors.white),
+                        ),
                       ),
-                    );
-                  }).toList(),
-
-                  const SizedBox(height: 20),
-
-                  Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () =>
-                            Navigator.pop(
-                                context),
-                        child:
-                        const Text("Close"),
-                      ),
-                      const SizedBox(width: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        child:
-                        const Text("Submit"),
-                      )
-                    ],
+                    ),
                   )
                 ],
               ),

@@ -41,6 +41,21 @@ class AddGrievanceProvider extends ChangeNotifier {
   String fileName = "";
   XFile? attachments;
 
+  // Master list (DO NOT bind this directly to dropdown)
+  final List<Map<String, dynamic>> _allCategoryTypes = [
+    // Mobile (categoryId = 1)
+    {"id": 1, "categoryId": 1, "name": "Information Required"},
+    {"id": 2, "categoryId": 1, "name": "Issue"},
+    {"id": 3, "categoryId": 1, "name": "Suggestion"},
+    {"id": 4, "categoryId": 1, "name": "Other"},
+
+    // Web (categoryId = 2)
+    {"id": 5, "categoryId": 2, "name": "Information Required"},
+    {"id": 6, "categoryId": 2, "name": "Issue"},
+    {"id": 7, "categoryId": 2, "name": "Suggestion"},
+    {"id": 8, "categoryId": 2, "name": "Other"},
+  ];
+
   AddGrievanceProvider({required this.commonRepo});
 
 
@@ -49,7 +64,7 @@ class AddGrievanceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
          ProgressDialog.showLoadingDialog(context);
-         ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/Module/0/0");
+         ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/ModuleList_Grievance/0/4"); //4 - jobseeker
            ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -88,7 +103,7 @@ class AddGrievanceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/SubModule/0/$moduleId");
+        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/SubModuleList_Grievance/0/4");
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -98,22 +113,33 @@ class AddGrievanceProvider extends ChangeNotifier {
           final sm = SubModuleModal.fromJson(responseData);
           if (sm.state == 200) {
             subModuleList.clear();
-            subModuleList.addAll(sm.data!);
-            final seenNames = <String>{};
-            subModuleList = subModuleList.where((item) {
-              return seenNames.add(item.name ?? "");
-            }).toList();
+            int selectedModuleId = int.tryParse(moduleId) ?? 0;
+
+            // ✅ Filter based on selected ModuleId (1 or 3)
+            subModuleList = sm.data!
+                .where((item) => item.moduleId == selectedModuleId)
+                .toList();
 
             notifyListeners();
+
             return sm;
           } else {
-            final smmm = SubModuleModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+            SubModuleModal(state: 0, message: sm.message.toString());
+
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Something went wrong",
+                context);
+
             return smmm;
           }
 
         } else {
-          return SubModuleModal(state: 0, message: 'Something went wrong',
+          return SubModuleModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -264,12 +290,38 @@ class AddGrievanceProvider extends ChangeNotifier {
      categoryList.add(CategoryModel(dropID: 2, name: "Web"));
 
      categoryTypesList.clear();
-     categoryTypesList.add(CategoryModel(dropID: 5, name: 'Information Required'));
-     categoryTypesList.add(CategoryModel(dropID: 6, name: 'Issue'));
-     categoryTypesList.add(CategoryModel(dropID: 7, name: 'Suggestion'));
-     categoryTypesList.add(CategoryModel(dropID: 8, name: 'Other'));
+     notifyListeners();
+     // categoryTypesList.add(CategoryModel(dropID: 5, name: 'Information Required'));
+     // categoryTypesList.add(CategoryModel(dropID: 6, name: 'Issue'));
+     // categoryTypesList.add(CategoryModel(dropID: 7, name: 'Suggestion'));
+     // categoryTypesList.add(CategoryModel(dropID: 8, name: 'Other'));
+
    }
 
+  void updateCategoryTypes(String categoryId) {
+    categoryTypesList.clear();
+
+    int selectedId = int.tryParse(categoryId) ?? 0;
+
+    var filteredList = _allCategoryTypes
+        .where((item) => item["categoryId"] == selectedId)
+        .toList();
+
+    for (var item in filteredList) {
+      categoryTypesList.add(
+        CategoryModel(
+          dropID: item["id"],
+          name: item["name"],
+        ),
+      );
+    }
+
+    // Clear previous selection
+    categoryTypeIdController.clear();
+    categoryTypeNameController.clear();
+
+    notifyListeners();
+  }
 
    clearData(){
       filePath = "";

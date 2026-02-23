@@ -12,9 +12,9 @@ class CorrectSaveAnswersModal {
   factory CorrectSaveAnswersModal.fromJson(
       Map<String, dynamic> json) {
     return CorrectSaveAnswersModal(
-      state: json['state'],
-      message: json['message'],
-      data: json['data'],
+      state: json['State'],
+      message: json['Message'],
+      data: json['Data'],
     );
   }
 }

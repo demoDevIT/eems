@@ -20,6 +20,46 @@ class GrievanceListProvider extends ChangeNotifier {
 
   List<GrievanceModalData>  grievanceDataList = [];
 
+  final Map<int, String> statusMap = {
+    3: "FormSubmission",
+    11: "Forward",
+    10: "Dispose",
+    12: "MoreInfo",
+    13: "Reopen",
+  };
+
+  String getStatusName(int? statusId) {
+    if (statusId == null) return "";
+    return statusMap[statusId] ?? "Unknown";
+  }
+
+  /// Category Mapping
+  final Map<int, String> categoryMap = {
+    1: "Mobile",
+    2: "Web",
+  };
+
+  String getCategoryName(int? categoryId) {
+    if (categoryId == null) return "";
+    return categoryMap[categoryId] ?? "Unknown";
+  }
+
+  /// Category Type Mapping
+  final Map<int, String> categoryTypeMap = {
+    1: "Information Required",
+    2: "Issue",
+    3: "Suggestion",
+    4: "Other",
+    5: "Information Required",
+    6: "Issue",
+    7: "Suggestion",
+    8: "Other",
+  };
+
+  String getCategoryTypeName(int? categoryTypeId) {
+    if (categoryTypeId == null) return "";
+    return categoryTypeMap[categoryTypeId] ?? "Unknown";
+  }
 
 
   Future<GrievanceModal?> getAllGrievanceApi(BuildContext context) async {

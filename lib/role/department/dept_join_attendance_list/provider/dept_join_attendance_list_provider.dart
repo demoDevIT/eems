@@ -91,7 +91,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "Action": "PendingAttendanceByDistrict",
         "PrivateDistrictCode": 108,
         "PrivateDepartmentId": 1,
-        "SSOID": "Devit"
+        "SSOID": "mohdfaizzafar04"
       };
 
       isAttendanceLoading = true;

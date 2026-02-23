@@ -329,7 +329,9 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                       children: [
                                         TextSpan(
                                           text:
-                                          provider.grievanceDataList[index].categoryID.toString(),
+                                          provider.getCategoryName(
+                                            provider.grievanceDataList[index].categoryID,
+                                          ),
                                           style: Styles
                                               .regularTextStyle(
                                               size: 12,
@@ -420,7 +422,9 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                       children: [
                                         TextSpan(
                                           text:
-                                          provider.grievanceDataList[index].categoryType.toString(),
+                                          provider.getCategoryTypeName(
+                                            provider.grievanceDataList[index].categoryType,
+                                          ),
                                           style: Styles
                                               .regularTextStyle(
                                               size: 12,
@@ -590,7 +594,9 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                       children: [
                                         TextSpan(
                                           text:
-                                          provider.grievanceDataList[index].statusID.toString(),
+                                          provider.getStatusName(
+                                            provider.grievanceDataList[index].statusID,
+                                          ),
                                           style: Styles
                                               .regularTextStyle(
                                               size: 12,

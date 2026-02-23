@@ -18,8 +18,10 @@ var videoProvider;
   @override
   void initState() {
     super.initState();
-    videoProvider = Provider.of<VideoprofileProvider>(context, listen: false);
-    buildContext(context,videoProvider);
+    Future.microtask(() {
+      Provider.of<VideoprofileProvider>(context, listen: false)
+          .getVideo(context);
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -161,7 +163,13 @@ var videoProvider;
               /// Second Image with Overlay Text Button
 
               if (provider.VideoPath.isNotEmpty)
-              SizedBox(child: LiveVideoPlayer(url: provider.VideoPath[0].videoPath ?? "")),
+               // SizedBox(
+               //    child:
+                  LiveVideoPlayer(
+                    key: ValueKey(provider.VideoPath[0].videoPath),
+                    url: provider.VideoPath[0].videoPath ?? "",
+                  ),
+                //),
               const SizedBox(height: 20),
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -216,8 +224,8 @@ var videoProvider;
     );
   }
 
-  void buildContext(BuildContext context, videoProvider) {
-    videoProvider.getVideo(context);
-  }
+  // void buildContext(BuildContext context, videoProvider) {
+  //   videoProvider.getVideo(context);
+  // }
 
 }

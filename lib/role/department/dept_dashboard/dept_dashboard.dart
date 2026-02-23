@@ -6,6 +6,9 @@ import 'package:rajemployment/role/department/register_form/register_form.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../api_service/datasource/remote/dio/dio_client.dart';
 import '../../../repo/common_repo.dart';
+import '../../../utils/app_shared_prefrence.dart';
+import '../../../utils/global.dart';
+import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../dept_join_pending_list/dept_join_pending_list.dart';
 import 'provider/dept_dashboard_provider.dart';
@@ -24,6 +27,7 @@ class DepartmentDashboardPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: kWhite,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
@@ -35,6 +39,34 @@ class DepartmentDashboardPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.black),
+              onPressed: () {
+                showLogoutDialog(
+                  context,
+                  "Logout",
+                  "Are you sure want to Logout ?",
+                  "Thank you and see you again!",
+                      (value) {
+                    if (value.toString() == "success") {
+                      final pref = AppSharedPref();
+                      pref.save('UserData', '');
+                      pref.remove('UserData');
+
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                          const LoginScreen(),
+                        ),
+                            (route) => false, // Clears all previous routes
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: Consumer<DepartmentDashboardProvider>(
           builder: (context, provider, _) {

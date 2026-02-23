@@ -77,7 +77,10 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
-
+                          print("Selected Category:");
+                          print("ID: ${provider.categoryIdController.text}");
+                          print("Name: ${provider.categoryNameController.text}");
+                          provider.updateCategoryTypes(provider.categoryIdController.text);
                         },
                       ),
                     ),
@@ -98,7 +101,9 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
-
+                          print("Selected Category Type:");
+                          print("ID: ${provider.categoryTypeIdController.text}");
+                          print("Name: ${provider.categoryTypeNameController.text}");
                         },
                       ),
                     ),
@@ -119,7 +124,12 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
-                          provider.subModuleApi(context,provider.moduleIdController.text);
+                          provider.subModuleIdController.clear();
+                          provider.subModuleNameController.clear();
+                          provider.subModuleList.clear();
+                          provider.notifyListeners();
+
+                          provider.subModuleApi(context, provider.moduleIdController.text);
                         },
                       ),
                     ),
