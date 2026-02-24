@@ -2,10 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../repo/common_repo.dart';
+import '../../../utils/user_new.dart';
+import 'modal/all_job_sector_list_modal.dart';
 import 'provider/preferred_jobs_provider.dart';
 
-class PreferredJobsScreen extends StatelessWidget {
-  const PreferredJobsScreen({super.key});
+class PreferredJobsScreen extends StatefulWidget {
+  const PreferredJobsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PreferredJobsScreen> createState() => _PreferredJobsScreenState();
+}
+
+class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
+  //const PreferredJobsScreen({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() async {
+      final provider =
+      Provider.of<PreferredJobsProvider>(context, listen: false);
+
+      await provider.getAllSectorListApi(context);
+
+      /// Call search API on page load
+      await provider.searchJobs(
+        context
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +88,15 @@ class PreferredJobsScreen extends StatelessWidget {
                           const SizedBox(height: 12),
 
                           /// Sector Dropdown
-                          DropdownButtonFormField<String>(
+                          DropdownButtonFormField<JobSectorData>(
                             value: provider.selectedSector,
                             decoration: _inputDecoration(),
                             hint: const Text("Select Sector"),
-                            items: provider.sectorList
+                            items: provider.jobSectorList
                                 .map(
                                   (e) => DropdownMenuItem(
                                 value: e,
-                                child: Text(e),
+                                child: Text(e.sectorName ?? ""),
                               ),
                             )
                                 .toList(),
@@ -86,7 +113,9 @@ class PreferredJobsScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: provider.searchJobs,
+                                  onPressed: () {
+                                    provider.searchJobs(context); // pass logged in user id
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kPrimaryColor,
                                     foregroundColor: Colors.white, // 👈 This makes text white
@@ -143,15 +172,21 @@ class PreferredJobsScreen extends StatelessWidget {
                           const SizedBox(height: 16),
 
                           ListView.builder(
-                            itemCount: provider.filteredJobs.length,
+                            itemCount: provider.jobList.length,
                             shrinkWrap: true,
                             physics:
                             const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final job =
-                              provider.filteredJobs[index];
+                              final job = provider.jobList[index];
 
-                              return Container(
+                              return InkWell(
+                                  onTap: () async {
+                                    await provider.getJobDetailsByPostId(
+                                      context,
+                                      job.jobPostId ?? 0,
+                                    );
+                                  },
+                                  child: Container(
                                 margin:
                                 const EdgeInsets.only(bottom: 12),
                                 padding:
@@ -193,7 +228,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                         children: [
 
                                           Text(
-                                            job["title"],
+                                      job.jobTitle ?? "",
                                             style:
                                             const TextStyle(
                                                 fontSize: 15,
@@ -217,7 +252,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                                   .circular(6),
                                             ),
                                             child: Text(
-                                              job["type"],
+                                              job.employementType ?? "",
                                               style: const TextStyle(
                                                   fontSize: 12,
                                                   color:
@@ -228,7 +263,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                           const SizedBox(height: 6),
 
                                           Text(
-                                            "Salary: ${job["salary"]}",
+                                            "Salary: ${"₹${job.salary ?? 0}"}",
                                             style:
                                             const TextStyle(
                                                 fontSize: 13),
@@ -237,7 +272,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                           const SizedBox(height: 6),
 
                                           Text(
-                                            job["name"],
+                                            job.companyName ?? "",
                                             style:
                                             const TextStyle(
                                                 fontSize: 13),
@@ -255,7 +290,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                               const SizedBox(
                                                   width: 4),
                                               Text(
-                                                job["district"],
+                                                job.locations ?? "",
                                                 style: const TextStyle(
                                                     fontSize: 12),
                                               )
@@ -266,7 +301,7 @@ class PreferredJobsScreen extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                              );
+                              ));
                             },
                           )
                         ],
@@ -317,4 +352,5 @@ class PreferredJobsScreen extends StatelessWidget {
       ),
     );
   }
+
 }

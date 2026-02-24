@@ -8,6 +8,7 @@ import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 import '../../../utils/button.dart';
 import '../../../utils/textstyles.dart';
+import '../../../utils/user_new.dart';
 import '../loginscreen/provider/locale_provider.dart';
 import 'modal/running_event_modal.dart';
 
@@ -51,7 +52,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         style: Styles.semiBoldTextStyle(size: 10,color: fontGrayColor)
                     ),
                     hSpace(5),
-                    Text(runningEventData.distDivisionName.toString(),
+                    Text(runningEventData.eventDescription.toString(),
                         style: Styles.semiBoldTextStyle(size: 18,color: kBlackColor)
                     ),
                     hSpace(10),
@@ -107,7 +108,8 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         ),
                         onPressed: () {
                           jobSeekerRegistrationDialog(
-                            context, (value) {
+                            context,
+                            runningEventData, (value) {
                             print(value);
                             if (value.toString() == "success") {
                               //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
@@ -150,7 +152,8 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
 
   }
 
-  Future<void> jobSeekerRegistrationDialog(BuildContext context, Function fun) {
+  Future<void> jobSeekerRegistrationDialog(BuildContext context, RunningEventData eventData, Function fun) {
+    final user = UserData().model;
     return showGeneralDialog(
       barrierDismissible: false,
       barrierLabel: '',
@@ -176,12 +179,12 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Job Seeker Registration",
+                        eventData.eventNameENG ?? "",
                         style: Styles.semiBoldTextStyle(size: 18, color: kBlackColor),
                       ),
                       hSpace(10),
                       Text(
-                        "Confirm Details",
+                        "Job Seeker Registration",
                         style: Styles.regularTextStyle(size: 14, color: fontGrayColor),
                       ),
                       hSpace(10),
@@ -247,7 +250,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "Mrs. Garima Mathur",
+                                          text: "${user?.value.nAMEENG ?? ""}",
                                           style: Styles.regularTextStyle(
                                               size: 12,
                                               color:
@@ -313,7 +316,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "+91 8755979227",
+                                          text: "+91 ${user?.value.mOBILENO ?? ""}",
                                           style: Styles.regularTextStyle(
                                               size: 12,
                                               color:
@@ -327,72 +330,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                               ],
                             ),
                             hSpace(10),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.semiBoldTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Email",
-                                          // Normal text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                        TextSpan(
-                                          text: ' :-', // Asterisk text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .start, // Align text to the start
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.regularTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "garima.mathur@gmail.com",
-                                          style: Styles.regularTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.end, // Align text to the start
-                                  ),
-                                ),
-                              ],
-                            ),
-                            hSpace(10),
+
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment:
@@ -445,7 +383,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "State Level Job Fair",
+                                          text: eventData.eventNameENG ?? "",
                                           style: Styles.regularTextStyle(
                                               size: 12,
                                               color:
@@ -511,7 +449,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "#1234FA/2025",
+                                          text: eventData.eventId?.toString() ?? "",
                                           style: Styles.regularTextStyle(
                                               size: 12,
                                               color:
@@ -546,15 +484,15 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                               borderColor:purpal455CDCColor ),
 
                           customButton(() async {
-                            Navigator.of(context).pop();
-                            annualDistrictDialog(
-                              context, (value) {
-                              print(value);
-                              if (value.toString() == "success") {
-                                //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
-                              }
-                            },
-                            );
+                            Navigator.of(context).pop(); // close first dialog
+
+                            final provider =
+                            Provider.of<JobFairEventDetailsProvider>(
+                                context,
+                                listen: false);
+
+                            confirmRegistrationDialog(context, provider);
+
                           }, "Confirm",
                               '',
                               context,
@@ -652,7 +590,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         children: [
                           customButton2(() async {
                             Navigator.of(context).pop();
-                          }, "Print",
+                          }, "OK",
                               '',
                               context,
                               width:MediaQuery.of(context).size.width * 0.85 / 2,
@@ -662,23 +600,23 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                               txtColor: purpal455CDCColor,
                               borderColor:purpal455CDCColor ),
 
-                          customButton(() async {
-                            Navigator.of(context).pop();
-                            successDialog(
-                              context, "Event closed pls provide your feedback", (value) {
-                              if (value.toString() == "success") {
-                                //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
-                              }
-                            },
-                            ); //
-                          }, "Download",
-                              '',
-                              context,
-                              width:MediaQuery.of(context).size.width * 0.85 / 2,
-                              height: 50,
-                              radius: 50,
-                              color: purpal455CDCColor,
-                              txtColor: kWhite),
+                          // customButton(() async {
+                          //   Navigator.of(context).pop();
+                          //   successDialog(
+                          //     context, "Event closed pls provide your feedback", (value) {
+                          //     if (value.toString() == "success") {
+                          //       //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
+                          //     }
+                          //   },
+                          //   ); //
+                          // }, "Download",
+                          //     '',
+                          //     context,
+                          //     width:MediaQuery.of(context).size.width * 0.85 / 2,
+                          //     height: 50,
+                          //     radius: 50,
+                          //     color: purpal455CDCColor,
+                          //     txtColor: kWhite),
                         ],
                       ),
 
@@ -709,6 +647,68 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
     );
   }
 
+  Future<void> confirmRegistrationDialog(
+      BuildContext context,
+      JobFairEventDetailsProvider provider) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            "Confirmation",
+            style: Styles.semiBoldTextStyle(size: 16, color: kBlackColor),
+          ),
+          content: Text(
+            "Are you sure you want to register for this Job Fair Event?",
+            style: Styles.regularTextStyle(size: 14, color: kBlackColor),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(context); // close confirmation dialog
+
+                final provider =
+                Provider.of<JobFairEventDetailsProvider>(
+                    context,
+                    listen: false);
+
+                int eventId =
+                    int.tryParse(
+                        runningEventData.jobEventDetailId.toString()) ?? 0;
+
+                bool success =
+                await provider.registerJobFairEvent(
+                    context,
+                    eventId);
+
+                if (success) {
+                  annualDistrictDialog(context, (value) {});
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(
+                            provider.apiMessage.isNotEmpty
+                                ? provider.apiMessage
+                                : "Registration Failed")),
+                  );
+                }
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 }
 

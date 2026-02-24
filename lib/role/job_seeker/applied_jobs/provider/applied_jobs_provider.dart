@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:rajemployment/utils/user_new.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
 import '../modal/applied_job_modal.dart';
@@ -18,7 +19,7 @@ class AppliedJobsProvider extends ChangeNotifier {
       Map<String, dynamic> body = {
         "ActionName": "",
         "Id": 0,
-        "UserId": 6995,
+        "UserId": UserData().model.value.userId, //6995,
         "JobSectorId": 0,
         "Location": "",
         "Title": ""

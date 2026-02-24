@@ -77,151 +77,9 @@ class LoginProvider with ChangeNotifier {
     return null;
   }
 
-//   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
-//
-// //         Navigator.of(context).push(
-// //       RightToLeftRoute(
-// //         page: ChangeNotifierProvider(
-// //           create: (_) => DepartmentDashboardProvider(),
-// //           child: const DepartmentDashboardPage(), // ✅ UI widget
-// //         ),
-// //         duration: const Duration(milliseconds: 500),
-// //         startOffset: const Offset(-1.0, 0.0),
-// //       ),
-// //     );
-// // return null;
-//
-//     var isInternet = await UtilityClass.checkInternetConnectivity();
-//     if (isInternet) {
-//       try {
-//      //EncryptionHelper helper = EncryptionHelper();
-//      //String encryptedSSOid = helper.encryptData(SSOIDController.text);
-//      //String encryptedPassword = helper.encryptData(passwordController.text);
-//      // String randomNumber = helper.encryptData(generateRandomNumber());
-//      //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
-//      //  String finalEncryptedPassword = helper.encryptData(newPassword);
-//      // String pass = "$finalEncryptedPassword#@\$$randomNumber";
-//
-//         String ssoId = SSOIDController.text;
-//         String pass = passwordController.text;
-//         String? deviceId = await UtilityClass.getDeviceId();
-//         Map<String, dynamic> body = {
-//           "SSOID": ssoId,
-//           "Password": pass,
-//           "DeviceID": deviceId
-//         };
-//         ProgressDialog.showLoadingDialog(context);
-//         ApiResponse apiResponse = await commonRepo.post("Login/MobileLogin",body);
-//         ProgressDialog.closeLoadingDialog(context);
-//         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
-//           var responseData = apiResponse.response?.data;
-//           if (responseData is String) {
-//             responseData = jsonDecode(responseData);
-//           }
-//           // String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
-//           // print(authToken);
-//           final sm = TempLoginModal.fromJson(responseData);
-//           if (sm.state == 200) {
-//             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
-//               if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0) { //&& sm.data!.roleID > 0
-//                 //callbasicdetail API for department getDeptBasicDetails
-//                 getDeptBasicDetails(context,sm.data!.userID.toString(),sm.data!.roleID, ssoId);
-//               }else{
-//                 Navigator.of(context).push(
-//                   RightToLeftRoute(
-//                     page: ChangeNotifierProvider(
-//                       create: (_) => RegisterFormProvider(
-//                         commonRepo: commonRepo,
-//                       ),
-//                       child: RegisterFormScreen(
-//                         ssoId: sm.data!.sSOID ?? SSOIDController.text,  // ✅ pass SSO
-//                       ),
-//                     ),
-//                     duration: const Duration(milliseconds: 500),
-//                     startOffset: const Offset(-1.0, 0.0),
-//                   ),
-//                 );
-//               }
-//               return sm;
-//             }
-//
-//             else{
-//               if(sm.data!.userType.trim().toLowerCase() == 'citizen'){
-//                 if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
-//                   if (sm.data!.roleID == 24) { //earlier it was role 6
-//                     print("Redirecting to CandidateAttendanceScreen");
-//                     Navigator.of(context).push(
-//                       RightToLeftRoute(
-//                         page: ChangeNotifierProvider(
-//                           create: (_) => CandidateAttendanceProvider(
-//                             commonRepo: commonRepo, // ✅ FIX
-//                           ),
-//                           child: const CandidateAttendanceScreen(),
-//                         ),
-//                         duration: const Duration(milliseconds: 500),
-//                         startOffset: const Offset(-1.0, 0.0),
-//                       ),
-//                     );
-//
-//                   } else if (sm.data!.roleID == 4){ //jobseeker
-//                     getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-//                   } else if (sm.data!.roleID == 7){ //employer
-//                     getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-//                   } else{
-//                     Navigator.of(context).push(
-//                       RightToLeftRoute(
-//                         page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
-//                         duration: const Duration(milliseconds: 500),
-//                         startOffset: const Offset(-1.0, 0.0),
-//                       ),
-//                     );
-//                   }
-//                 }
-//                 else{
-//                   Navigator.of(context).push(
-//                     RightToLeftRoute(
-//                       page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
-//                       duration: const Duration(milliseconds: 500),
-//                       startOffset: const Offset(-1.0, 0.0),
-//                     ),
-//                   );
-//                 }
-//                 return sm;
-//               }
-//             }
-//           }  else{
-//             final smmm = TempLoginModal(state: 0, message: sm.message.toString());
-//             Navigator.of(context).push(
-//               RightToLeftRoute(
-//                 page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
-//                 duration: const Duration(milliseconds: 500),
-//                 startOffset: const Offset(-1.0, 0.0),
-//               ),
-//             );
-//             // showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
-//             return smmm;
-//           }
-//         } else {
-//           return TempLoginModal(state: 0, message: 'Something went wrong',
-//           );
-//         }
-//       } on Exception catch (err) {
-//         print(err.toString());
-//         ProgressDialog.closeLoadingDialog(context);
-//         final sm = TempLoginModal(state: 0, message: err.toString());
-//         showAlertError(sm.message.toString(), context);
-//         return sm;
-//       }
-//     } else {
-//       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
-//     }
-//   }
-
-
-
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
 
-//     Navigator.of(context).push(
+//         Navigator.of(context).push(
 //       RightToLeftRoute(
 //         page: ChangeNotifierProvider(
 //           create: (_) => DepartmentDashboardProvider(),
@@ -235,83 +93,103 @@ class LoginProvider with ChangeNotifier {
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
-
       try {
-        //EncryptionHelper helper = EncryptionHelper();
-        //String encryptedSSOid = helper.encryptData(SSOIDController.text);
-        //String encryptedPassword = helper.encryptData(passwordController.text);
-        // String randomNumber = helper.encryptData(generateRandomNumber());
-        //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
-        //  String finalEncryptedPassword = helper.encryptData(newPassword);
-        // String pass = "$finalEncryptedPassword#@\$$randomNumber";
-
+     //EncryptionHelper helper = EncryptionHelper();
+     //String encryptedSSOid = helper.encryptData(SSOIDController.text);
+     //String encryptedPassword = helper.encryptData(passwordController.text);
+     // String randomNumber = helper.encryptData(generateRandomNumber());
+     //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
+     //  String finalEncryptedPassword = helper.encryptData(newPassword);
+     // String pass = "$finalEncryptedPassword#@\$$randomNumber";
 
         String ssoId = SSOIDController.text;
         String pass = passwordController.text;
-        String url = "https://eems.devitsandbox.com/mobileapi/Authentication/Login/$ssoId/$pass";
-        //String url = "https://rajemployment.rajasthan.gov.in/mobileapi/Authentication/Login/$ssoId/$pass";
+        String? deviceId = await UtilityClass.getDeviceId();
+        Map<String, dynamic> body = {
+          "SSOID": ssoId,
+          "Password": pass,
+          "DeviceID": deviceId
+        };
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        ApiResponse apiResponse = await commonRepo.post("Login/MobileLogin",body);
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
-          /*String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
-          print(authToken);*/
+          // String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
+          // print(authToken);
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {
-//print("---->"+sm.message.toString());
-            if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 ) {
-              print("11");
-              // if (sm.data!.sSOID.toLowerCase() == 'eemsdevitjaipur') { &&  sm.data!.roleID == 6
-              if (sm.data!.roleID == 6) {
-                print("Redirecting to CandidateAttendanceScreen");
-
-
+            if (sm.data!.userType.trim().toLowerCase() == 'govt') {
+              if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
+                //callbasicdetail API for department getDeptBasicDetails
+                getDeptBasicDetails(context,sm.data!.userID.toString(),sm.data!.roleID, ssoId);
+              }else{
                 Navigator.of(context).push(
                   RightToLeftRoute(
                     page: ChangeNotifierProvider(
-                      create: (_) => CandidateAttendanceProvider(
-                        commonRepo: commonRepo, // ✅ FIX
+                      create: (_) => RegisterFormProvider(
+                        commonRepo: commonRepo,
                       ),
-                      child: const CandidateAttendanceScreen(),
+                      child: RegisterFormScreen(
+                        ssoId: sm.data!.sSOID ?? SSOIDController.text,  // ✅ pass SSO
+                      ),
                     ),
                     duration: const Duration(milliseconds: 500),
                     startOffset: const Offset(-1.0, 0.0),
                   ),
                 );
+              }
+              return sm;
+            }
 
-              } else if (sm.data!.roleID == 4){
-                 // print("22");
-                  getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+            else{
+              if(sm.data!.userType.trim().toLowerCase() == 'citizen'){
+                if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
+                  if (sm.data!.roleID == 24) { //earlier it was role 6
+                    print("Redirecting to CandidateAttendanceScreen");
+                    Navigator.of(context).push(
+                      RightToLeftRoute(
+                        page: ChangeNotifierProvider(
+                          create: (_) => CandidateAttendanceProvider(
+                            commonRepo: commonRepo, // ✅ FIX
+                          ),
+                          child: const CandidateAttendanceScreen(),
+                        ),
+                        duration: const Duration(milliseconds: 500),
+                        startOffset: const Offset(-1.0, 0.0),
+                      ),
+                    );
 
-              } else if (sm.data!.roleID == 7){
-
-                getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-
-                // Navigator.of(context).push(
-                //   RightToLeftRoute(
-                //     page:  EmployerDashboard(),
-                //     duration: const Duration(milliseconds: 500),
-                //     startOffset: const Offset(-1.0, 0.0),
-                //   ),
-                // );
+                  } else if (sm.data!.roleID == 4){ //jobseeker
+                    getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+                  } else if (sm.data!.roleID == 7){ //employer
+                    getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+                  } else{
+                    Navigator.of(context).push(
+                      RightToLeftRoute(
+                        page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+                        duration: const Duration(milliseconds: 500),
+                        startOffset: const Offset(-1.0, 0.0),
+                      ),
+                    );
+                  }
+                }
+                else{
+                  Navigator.of(context).push(
+                    RightToLeftRoute(
+                      page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+                      duration: const Duration(milliseconds: 500),
+                      startOffset: const Offset(-1.0, 0.0),
+                    ),
+                  );
+                }
+                return sm;
               }
             }
-            else{
-              print("33");
-              Navigator.of(context).push(
-                RightToLeftRoute(
-                  page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
-                  duration: const Duration(milliseconds: 500),
-                  startOffset: const Offset(-1.0, 0.0),
-                ),
-              );
-            }
-            return sm;
-          } else {
+          }  else{
             final smmm = TempLoginModal(state: 0, message: sm.message.toString());
             Navigator.of(context).push(
               RightToLeftRoute(
@@ -338,6 +216,128 @@ class LoginProvider with ChangeNotifier {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
     }
   }
+
+
+
+//   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
+//
+// //     Navigator.of(context).push(
+// //       RightToLeftRoute(
+// //         page: ChangeNotifierProvider(
+// //           create: (_) => DepartmentDashboardProvider(),
+// //           child: const DepartmentDashboardPage(), // ✅ UI widget
+// //         ),
+// //         duration: const Duration(milliseconds: 500),
+// //         startOffset: const Offset(-1.0, 0.0),
+// //       ),
+// //     );
+// // return null;
+//
+//     var isInternet = await UtilityClass.checkInternetConnectivity();
+//     if (isInternet) {
+//
+//       try {
+//         //EncryptionHelper helper = EncryptionHelper();
+//         //String encryptedSSOid = helper.encryptData(SSOIDController.text);
+//         //String encryptedPassword = helper.encryptData(passwordController.text);
+//         // String randomNumber = helper.encryptData(generateRandomNumber());
+//         //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
+//         //  String finalEncryptedPassword = helper.encryptData(newPassword);
+//         // String pass = "$finalEncryptedPassword#@\$$randomNumber";
+//
+//
+//         String ssoId = SSOIDController.text;
+//         String pass = passwordController.text;
+//         String url = "https://eems.devitsandbox.com/mobileapi/Authentication/Login/$ssoId/$pass";
+//         //String url = "https://rajemployment.rajasthan.gov.in/mobileapi/Authentication/Login/$ssoId/$pass";
+//         ProgressDialog.showLoadingDialog(context);
+//         ApiResponse apiResponse = await commonRepo.get(url);
+//         ProgressDialog.closeLoadingDialog(context);
+//         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+//           var responseData = apiResponse.response?.data;
+//           if (responseData is String) {
+//             responseData = jsonDecode(responseData);
+//           }
+//           /*String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
+//           print(authToken);*/
+//           final sm = TempLoginModal.fromJson(responseData);
+//           if (sm.state == 200) {
+// //print("---->"+sm.message.toString());
+//             if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 ) {
+//               print("11");
+//               // if (sm.data!.sSOID.toLowerCase() == 'eemsdevitjaipur') { &&  sm.data!.roleID == 6
+//               if (sm.data!.roleID == 6) {
+//                 print("Redirecting to CandidateAttendanceScreen");
+//
+//
+//                 Navigator.of(context).push(
+//                   RightToLeftRoute(
+//                     page: ChangeNotifierProvider(
+//                       create: (_) => CandidateAttendanceProvider(
+//                         commonRepo: commonRepo, // ✅ FIX
+//                       ),
+//                       child: const CandidateAttendanceScreen(),
+//                     ),
+//                     duration: const Duration(milliseconds: 500),
+//                     startOffset: const Offset(-1.0, 0.0),
+//                   ),
+//                 );
+//
+//               } else if (sm.data!.roleID == 4){
+//                  // print("22");
+//                   getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+//
+//               } else if (sm.data!.roleID == 7){
+//
+//                 getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
+//
+//                 // Navigator.of(context).push(
+//                 //   RightToLeftRoute(
+//                 //     page:  EmployerDashboard(),
+//                 //     duration: const Duration(milliseconds: 500),
+//                 //     startOffset: const Offset(-1.0, 0.0),
+//                 //   ),
+//                 // );
+//               }
+//             }
+//             else{
+//               print("33");
+//               Navigator.of(context).push(
+//                 RightToLeftRoute(
+//                   page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+//                   duration: const Duration(milliseconds: 500),
+//                   startOffset: const Offset(-1.0, 0.0),
+//                 ),
+//               );
+//             }
+//             return sm;
+//           } else {
+//             final smmm = TempLoginModal(state: 0, message: sm.message.toString());
+//             Navigator.of(context).push(
+//               RightToLeftRoute(
+//                 page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+//                 duration: const Duration(milliseconds: 500),
+//                 startOffset: const Offset(-1.0, 0.0),
+//               ),
+//             );
+//             // showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+//             return smmm;
+//           }
+//         } else {
+//           return TempLoginModal(state: 0, message: 'Something went wrong',
+//           );
+//         }
+//       } on Exception catch (err) {
+//         print(err.toString());
+//         ProgressDialog.closeLoadingDialog(context);
+//         final sm = TempLoginModal(state: 0, message: err.toString());
+//         showAlertError(sm.message.toString(), context);
+//         return sm;
+//       }
+//     } else {
+//       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+//     }
+//   }
 
   Future<DeptInfoModal?> getDeptBasicDetails(
       BuildContext context, String userId, int? roleId, String ssoID) async {

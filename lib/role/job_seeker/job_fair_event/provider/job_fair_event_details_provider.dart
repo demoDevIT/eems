@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
+import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
 
 class JobFairEventDetailsProvider extends ChangeNotifier {
@@ -10,24 +13,65 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
 
   JobFairEventDetailsProvider({required this.commonRepo});
 
-  final List<Map<String, String>> educationList = [
-    {
-      "degree": "Telecom",
-      "university": "Rajasthan University",
-      "ncoCode": "123123",
-      "salary": "50k",
+  bool isLoading = false;
 
-    },
+  String apiMessage = "";
 
-  ];
+  Future<bool> registerJobFairEvent(
+      BuildContext context,
+      int eventId,
+      ) async {
+
+    apiMessage = "";
+    isLoading = true;
+    notifyListeners();
+
+    try {
+
+      /// ✅ Get dynamic userId
+      String userId =
+      UserData().model.value.userId.toString();
+      String roleId =
+      UserData().model.value.roleId.toString();
 
 
+      /// ✅ Dynamic URL
+      String url =
+          "JobFairEvent/JobFairEventRegistration/"
+          "$userId/$roleId/$eventId";
 
+      ApiResponse apiResponse =
+      await commonRepo.post(url, {});
 
-  @override
-  void dispose() {
-    super.dispose();
+      if (apiResponse.response?.statusCode == 200) {
+
+        var responseData =
+            apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        apiMessage =
+            responseData["Message"] ??
+                "Registration Successful";
+
+        isLoading = false;
+        notifyListeners();
+        return true;
+
+      } else {
+        apiMessage =
+        "Something went wrong. Please try again.";
+      }
+
+    } catch (e) {
+      apiMessage = e.toString();
+    }
+
+    isLoading = false;
+    notifyListeners();
+    return false;
   }
-
 
 }
