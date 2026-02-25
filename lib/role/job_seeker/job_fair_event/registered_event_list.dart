@@ -84,27 +84,17 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: TextField(
+                              child: _buildDateField(
+                                title: "From Date",
                                 controller: fromDateController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  labelText: "From Date",
-                                  border: OutlineInputBorder(),
-                                  suffixIcon: Icon(Icons.calendar_today),
-                                ),
                                 onTap: () => _selectDate(context, true),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 12),
                             Expanded(
-                              child: TextField(
+                              child: _buildDateField(
+                                title: "End Date",
                                 controller: toDateController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  labelText: "End Date",
-                                  border: OutlineInputBorder(),
-                                  suffixIcon: Icon(Icons.calendar_today),
-                                ),
                                 onTap: () => _selectDate(context, false),
                               ),
                             ),
@@ -173,21 +163,64 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                       final data = provider.registeredEventListList[index];
 
                       return Container(
-                        margin: EdgeInsets.only(bottom: 12),
-                        padding: EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(bottom: 14),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Event ID: ${data.eventId}"),
-                            Text("Event Name: ${data.eventNameENG}"),
-                            Text("Start Date: ${data.startDate}"),
-                            Text("End Date: ${data.endDate}"),
-                            Text("Venue: ${data.venue}"),
+                          borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.white,
+                              Colors.blue.shade50,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            )
                           ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              /// 🔹 Header
+                              Row(
+                                children: [
+                                  Icon(Icons.event, color: Colors.blue),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      data.eventNameENG ?? "",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Divider(height: 20, thickness: 1),
+
+                              _buildRow("Event ID", data.eventId.toString(), Icons.badge),
+                              //_buildRow("Event Description", data.eventDescription.toString(), Icons.badge),
+                              _buildRow("Start Date",
+                                  getFormattedDate(data.startDate.toString()),
+                                  Icons.calendar_today),
+                              _buildRow("End Date",
+                                  getFormattedDate(data.endDate.toString()),
+                                  Icons.calendar_today_outlined),
+                              _buildRow("Level", data.levelNameEnglish.toString(), Icons.badge),
+                              _buildRow("Venue", data.venue ?? "", Icons.location_on),
+
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -902,6 +935,110 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
     //pending//62664
 
 
+  }
+
+  Widget _buildDateField({
+    required String title,
+    required TextEditingController controller,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.grey.shade100,
+          border: Border.all(color: Colors.blue.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade100,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.calendar_today,
+                size: 16,
+                color: Colors.blue.shade700,
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    controller.text.isEmpty
+                        ? "Select Date"
+                        : controller.text,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: controller.text.isEmpty
+                          ? Colors.grey
+                          : Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRow(String label, String value, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 18, color: Colors.blueGrey),
+          SizedBox(width: 8),
+          Expanded(
+            flex: 4,
+            child: Text(
+              "$label :",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {

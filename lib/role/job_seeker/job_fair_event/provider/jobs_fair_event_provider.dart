@@ -124,7 +124,8 @@ class JobsFairEventProvider extends ChangeNotifier {
 
       ProgressDialog.showLoadingDialog(context);
 
-      ApiResponse apiResponse = await commonRepo.get(url); // <-- use GET
+     // ApiResponse apiResponse = await commonRepo.get(url); // <-- use GET
+      ApiResponse apiResponse = await commonRepo.post(url,{});
 
       ProgressDialog.closeLoadingDialog(context);
 

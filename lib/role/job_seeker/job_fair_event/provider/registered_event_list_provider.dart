@@ -30,19 +30,36 @@ class RegisteredEventListProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        Map<String, dynamic> bodyy = {
-          "ActionName": "RegisteredEvents",
-          "UserId": UserData().model.value.userId.toString(),
-          "RoleId": UserData().model.value.roleId.toString(),
-          "FromDate": fromDate ?? "",
-          "EndDate": endDate ?? "",
-          "FinancialYearID": 0,
-        };
+        // Map<String, dynamic> bodyy = {
+        //   "ActionName": "RegisteredEvents",
+        //   "UserId": UserData().model.value.userId.toString(),
+        //   "RoleId": UserData().model.value.roleId.toString(),
+        //   "FromDate": fromDate ?? "",
+        //   "EndDate": endDate ?? "",
+        //   "FinancialYearID": 0,
+        // };
+        //
+        // ProgressDialog.showLoadingDialog(context);
+        //
+        // ApiResponse apiResponse =
+        // await commonRepo.post("Dashboard/GetAllJobFairEventsList", bodyy);
+
+      //  https://eems.devitsandbox.com/mobileapi/api/JobFairEvent/GetAllJobFairEventsList/?_actionName=GetRegisteredEventsByDate&UserId=2261605&Roleid=4&FromDate=&EndDate=
+
+        String userId = UserData().model.value.userId.toString();
+        String roleId = UserData().model.value.roleId.toString();
+
+        String url =
+            "https://eems.devitsandbox.com/mobileapi/api/JobFairEvent/GetAllJobFairEventsList/"
+            "?_actionName=GetRegisteredEventsByDate"
+            "&UserId=$userId"
+            "&Roleid=$roleId"
+            "&FromDate=$fromDate"
+            "&EndDate=$endDate";
 
         ProgressDialog.showLoadingDialog(context);
 
-        ApiResponse apiResponse =
-        await commonRepo.post("Dashboard/GetAllJobFairEventsList", bodyy);
+        ApiResponse apiResponse = await commonRepo.post(url,{});
 
         ProgressDialog.closeLoadingDialog(context);
 

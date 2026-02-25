@@ -7,6 +7,7 @@ import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/utility_class.dart';
 
 class JobFairEventDetailsProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -33,12 +34,12 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
       UserData().model.value.userId.toString();
       String roleId =
       UserData().model.value.roleId.toString();
-
+      String? deviceId = await UtilityClass.getDeviceId();
 
       /// ✅ Dynamic URL
       String url =
           "JobFairEvent/JobFairEventRegistration/"
-          "$userId/$roleId/$eventId";
+          "$userId/$roleId/$eventId/$deviceId";
 
       ApiResponse apiResponse =
       await commonRepo.post(url, {});
@@ -60,7 +61,7 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
         notifyListeners();
         return true;
 
-      } else {
+      } else { // if response is -2 than msg will be 'already registered'
         apiMessage =
         "Something went wrong. Please try again.";
       }

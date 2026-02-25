@@ -31,6 +31,7 @@ class JobMatchingData {
 
 class JobData {
   int? jobPostId;
+  int? employerUserId;
   String? jobTitle;
   double? salary;
   String? companyName;
@@ -39,6 +40,7 @@ class JobData {
 
   JobData.fromJson(Map<String, dynamic> json) {
     jobPostId = json['JobPostId'];
+    employerUserId = json['EmployerUserId'];
     jobTitle = json['JobTitle'];
     salary = (json['Salary'] as num?)?.toDouble();
     companyName = json['CompanyName'];

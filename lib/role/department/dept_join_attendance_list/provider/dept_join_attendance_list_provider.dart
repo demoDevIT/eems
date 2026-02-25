@@ -24,6 +24,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   bool isPageLoading = false;
 
+  bool isWholeMonthAbsent = false;
+
   /// LEVEL
   // bool isLevelLoading = false;
   // List<LevelData> levelList = [];
@@ -143,6 +145,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       DeptJoinAttendanceItem item,
       ) {
 
+    isWholeMonthAbsent = false;
+
     // Reset values
     final now = DateTime.now();
 
@@ -239,10 +243,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       const SizedBox(height: 10),
 
                       /// MONTH PICKER
-                      const Text(
-                        "Select Month",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
+                      // const Text(
+                      //   "Select Month",
+                      //   style: TextStyle(fontWeight: FontWeight.w600),
+                      // ),
 
                       const SizedBox(height: 8),
 
@@ -325,6 +329,41 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
                       const SizedBox(height: 20),
 
+                      /// WHOLE MONTH ABSENT CHECKBOX
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: isWholeMonthAbsent,
+                            activeColor: Colors.red,          // ✔ Fill color when checked
+                            checkColor: Colors.white,         // ✔ Tick color
+                            side: const BorderSide(
+                              color: Colors.red,              // ✔ Border color when unchecked
+                              width: 2,
+                            ),
+                            onChanged: (value) {
+                              isWholeMonthAbsent = value ?? false;
+
+                              if (isWholeMonthAbsent) {
+                                absentDays = totalDays;
+                                absentController.text = totalDays.toString();
+                              } else {
+                                absentDays = 0;
+                                absentController.clear();
+                              }
+
+                              _calculatePresentDays();
+                              setStateDialog(() {});
+                            },
+                          ),
+                          const Text(
+                            "Whole Month Absent",
+                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 12),
+
                       /// ABSENT FIELD
                       const Text(
                         "No. of Absent Days",
@@ -335,6 +374,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
                       TextField(
                         controller: absentController,
+                        enabled: !isWholeMonthAbsent,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Enter absent days",

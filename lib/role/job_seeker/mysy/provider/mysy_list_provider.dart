@@ -1,36 +1,43 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../repo/common_repo.dart';
+import '../modal/mysy_list_model.dart';
 
 class MysyListProvider extends ChangeNotifier {
 
   final CommonRepo commonRepo;
   MysyListProvider({required this.commonRepo});
 
-  List<Map<String, dynamic>> mysyList = [
-    {
-      "srNo": 1,
-      "applicationNo": "APP2024001",
-      "fatherName": "Ramesh Kumar",
-      "schemeName": "Mukhyamantri Yuva Sambal Yojana",
-      "aadharNo": "XXXX-XXXX-1234",
-      "gender": "Male",
-      "category": "OBC",
-      "dob": "12-05-2001",
-      "status": "Pending",
-      "receivingDate": "01-01-2024"
-    },
-    {
-      "srNo": 2,
-      "applicationNo": "APP2024002",
-      "fatherName": "Mahesh Sharma",
-      "schemeName": "Mukhyamantri Yuva Sambal Yojana",
-      "aadharNo": "XXXX-XXXX-5678",
-      "gender": "Female",
-      "category": "SC",
-      "dob": "18-08-2000",
-      "status": "Approved",
-      "receivingDate": "05-01-2024"
+  List<MysyData> mysyList = [];
+  bool isLoading = false;
+
+  Future<void> getMysyListApi(BuildContext context) async {
+    isLoading = true;
+    mysyList.clear();
+    notifyListeners();
+    final userId = "6995"; // UserData().model.value.userId;
+
+    final apiResponse = await commonRepo.get(
+        "Common/FetchPendingApplicationsListNew/FetchSambalApplicatoinListByJobSeelerId/$userId/0/0");
+
+    if (apiResponse.response?.statusCode == 200) {
+      dynamic data = apiResponse.response!.data;
+
+      if (data is String) {
+        data = jsonDecode(data);
+      }
+
+      MysyListModel model = MysyListModel.fromJson(data);
+
+      if (model.data != null) {
+        mysyList = model.data!;
+      }
     }
-  ];
+
+    isLoading = false;
+    notifyListeners();
+  }
 }

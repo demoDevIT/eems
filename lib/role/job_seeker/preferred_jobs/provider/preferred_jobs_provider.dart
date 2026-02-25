@@ -35,6 +35,7 @@ class PreferredJobsProvider extends ChangeNotifier {
   /// =========================
 
   List<JobData> jobList = [];
+  List<JobData> selectedJobs = [];
   bool isLoading = false;
 
   /// ==========================================================
@@ -75,6 +76,42 @@ class PreferredJobsProvider extends ChangeNotifier {
 
   List<Map<String, dynamic>> filteredJobs = [];
 
+  void toggleJobSelection(JobData job) {
+    if (selectedJobs.contains(job)) {
+      selectedJobs.remove(job);
+    } else {
+      selectedJobs.add(job);
+    }
+    notifyListeners();
+  }
+
+
+  Future<void> showMultipleApplyConfirmation(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (confirmContext) {
+        return AlertDialog(
+          title: const Text("Confirm"),
+          content: Text(
+              "Are you sure you want to apply for ${selectedJobs.length} job(s)?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(confirmContext),
+              child: const Text("No"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(confirmContext);
+                await applyMultipleJobs(context);
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// ==========================================================
   /// 2️⃣ SEARCH JOB API (POST)
   /// ==========================================================
@@ -114,6 +151,7 @@ class PreferredJobsProvider extends ChangeNotifier {
         final sm = JobMatchingListModal.fromJson(responseData);
 
         jobList.clear();
+        selectedJobs.clear();
 
         if (sm.state == 200 && sm.data?.table != null) {
           jobList.addAll(sm.data!.table!);
@@ -130,6 +168,19 @@ class PreferredJobsProvider extends ChangeNotifier {
       notifyListeners();
       showAlertError(e.toString(), context);
     }
+  }
+
+  /// ==============================
+  /// SELECT / UNSELECT JOB
+  /// ==============================
+
+  void toggleSelection(JobData job) {
+    if (selectedJobs.contains(job)) {
+      selectedJobs.remove(job);
+    } else {
+      selectedJobs.add(job);
+    }
+    notifyListeners();
   }
 
   bool isJobDetailsLoading = false;
@@ -218,7 +269,7 @@ class PreferredJobsProvider extends ChangeNotifier {
 
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -311,7 +362,7 @@ class PreferredJobsProvider extends ChangeNotifier {
                       onPressed: () async {
 
                         await showApplyConfirmationDialog(
-                          context,
+                          dialogContext,
                           job["JobPostId"] ?? 0,
                           job["EmployerUserId"] ?? 0,
                         );
@@ -372,6 +423,132 @@ class PreferredJobsProvider extends ChangeNotifier {
     );
   }
 
+  /// ==============================
+  /// APPLY SINGLE JOB (FROM DETAIL)
+  /// ==============================
+
+  Future<void> applySingleJob(
+      BuildContext context,
+      int jobPostId,
+      int employerUserId,
+      ) async {
+    await _applyApi(context, [
+      {
+        "Id": 0,
+        "JobPostId": jobPostId,
+        "EmployerUserId": employerUserId,
+      }
+    ]);
+  }
+
+  /// ==============================
+  /// APPLY MULTIPLE JOBS
+  /// ==============================
+
+  Future<void> applyMultipleJobs(BuildContext context) async {
+    try {
+      List<Map<String, dynamic>> jobApplyList = selectedJobs.map((job) {
+        return {
+          "Id": 0,
+          "JobPostId": job.jobPostId,
+          "EmployerUserId": job.employerUserId,
+        };
+      }).toList();
+
+      Map<String, dynamic> body = {
+        "CreatedBy": UserData().model.value.userId,
+        "JobApplyList": jobApplyList
+      };
+
+      ApiResponse apiResponse =
+      await commonRepo.post("JobPost/ApplyForJob", body);
+
+      dynamic responseData = apiResponse.response!.data;
+
+      if (responseData is String) {
+        responseData = jsonDecode(responseData);
+      }
+
+      selectedJobs.clear();
+
+      successDialog(
+        context,
+        responseData["Message"] ?? "Success",
+            (value) async {
+          if (value.toString() == "success") {
+            await searchJobs(context);
+          }
+        },
+      );
+    } catch (e) {
+      showAlertError(e.toString(), context);
+    }
+  }
+
+  /// ==============================
+  /// COMMON APPLY API
+  /// ==============================
+
+  Future<void> _applyApi(
+      BuildContext context,
+      List<Map<String, dynamic>> jobApplyList,
+      ) async {
+    try {
+      Map<String, dynamic> body = {
+        "CreatedBy": UserData().model.value.userId,
+        "JobApplyList": jobApplyList
+      };
+
+      ApiResponse apiResponse =
+      await commonRepo.post("JobPost/ApplyForJob", body);
+
+      if (apiResponse.response?.statusCode == 200) {
+        selectedJobs.clear();
+
+        /// CLOSE ALL DIALOGS
+        Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
+
+        await searchJobs(context);
+      }
+    } catch (e) {}
+  }
+
+
+  /// ==============================
+  /// CONFIRM DIALOG
+  /// ==============================
+
+  void showConfirmDialog(
+      BuildContext context,
+      VoidCallback onYes,
+      ) {
+    showDialog(
+      context: context,
+      builder: (confirmContext) {
+        return AlertDialog(
+          title: const Text("Confirm"),
+          content: const Text("Are you sure you want to apply?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(confirmContext),
+              child: const Text("No"),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kPrimaryColor,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(confirmContext);
+                onYes();
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> applyForJob(
       BuildContext context,
@@ -426,8 +603,7 @@ class PreferredJobsProvider extends ChangeNotifier {
 
             if (value.toString() == "success") {
 
-              /// Close dialog popup
-              Navigator.of(context).pop();
+              Navigator.of(context, rootNavigator: true).pop();
 
               /// Refresh job list
               await searchJobs(context);
@@ -449,15 +625,15 @@ class PreferredJobsProvider extends ChangeNotifier {
   }
 
   Future<void> showApplyConfirmationDialog(
-      BuildContext context,
+      BuildContext dialogContext,
       int jobPostId,
       int employerUserId,
       ) async {
 
     showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
+      context: dialogContext,
+     // barrierDismissible: false,
+      builder: (confirmContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -474,7 +650,7 @@ class PreferredJobsProvider extends ChangeNotifier {
             /// Cancel
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(confirmContext);
               },
               child: const Text("No"),
             ),
@@ -487,10 +663,10 @@ class PreferredJobsProvider extends ChangeNotifier {
               ),
               onPressed: () async {
 
-                Navigator.pop(context); // close confirm dialog
+                Navigator.pop(confirmContext); // close confirm dialog
 
                 await applyForJob(
-                  context,
+                  dialogContext,
                   jobPostId,
                   employerUserId,
                 );

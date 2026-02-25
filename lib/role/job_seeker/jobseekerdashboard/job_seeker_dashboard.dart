@@ -400,19 +400,19 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                 },
               ),
 
-              // 3️⃣ Job Apply
-              ListTile(
-                title: Text("Job Apply",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                   Navigator.push(
-                     context,
-                     // MaterialPageRoute(builder: (context) => JobApplyListScreen()),
-                     MaterialPageRoute(builder: (context) => SelectCompanyPage()),
-          
-                   );
-                },
-              ),
+              // 3️⃣ Job Apply // hide as of now as discussed with pankaj sir
+              // ListTile(
+              //   title: Text("Job Apply",style: Styles.mediumTextStyle(size: 14),),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //      Navigator.push(
+              //        context,
+              //        // MaterialPageRoute(builder: (context) => JobApplyListScreen()),
+              //        MaterialPageRoute(builder: (context) => SelectCompanyPage()),
+              //
+              //      );
+              //   },
+              // ),
             ],
           ),
           Container(

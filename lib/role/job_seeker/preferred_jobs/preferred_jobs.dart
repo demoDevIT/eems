@@ -171,139 +171,149 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
 
                           const SizedBox(height: 16),
 
+                          /// JOB LIST
+
                           ListView.builder(
                             itemCount: provider.jobList.length,
                             shrinkWrap: true,
-                            physics:
-                            const NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               final job = provider.jobList[index];
 
                               return InkWell(
-                                  onTap: () async {
-                                    await provider.getJobDetailsByPostId(
-                                      context,
-                                      job.jobPostId ?? 0,
-                                    );
-                                  },
-                                  child: Container(
-                                margin:
-                                const EdgeInsets.only(bottom: 12),
-                                padding:
-                                const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                  BorderRadius.circular(12),
-                                  border: Border.all(
-                                      color: Colors.grey.shade300),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
+                                onTap: () async {
+                                  await provider.getJobDetailsByPostId(
+                                    context,
+                                    job.jobPostId ?? 0,
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(color: Colors.grey.shade300),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
 
-                                    /// Image Placeholder
-                                    Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade200,
-                                        borderRadius:
-                                        BorderRadius.circular(8),
+                                      /// ✅ CHECKBOX
+                                      Checkbox(
+                                        value: provider.selectedJobs.contains(job),
+                                        onChanged: (value) {
+                                          provider.toggleJobSelection(job);
+                                        },
                                       ),
-                                      child: const Icon(
-                                        Icons.person,
-                                        color: Colors.grey,
+
+                                      const SizedBox(width: 8),
+
+                                      /// Image
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(Icons.person, color: Colors.grey),
                                       ),
-                                    ),
 
-                                    const SizedBox(width: 12),
+                                      const SizedBox(width: 12),
 
-                                    /// Job Info
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
+                                      /// Job Info (OLD UI RESTORED)
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
 
-                                          Text(
-                                      job.jobTitle ?? "",
-                                            style:
-                                            const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight:
-                                                FontWeight.bold),
-                                          ),
-
-                                          const SizedBox(height: 4),
-
-                                          Container(
-                                            padding:
-                                            const EdgeInsets
-                                                .symmetric(
-                                                horizontal: 8,
-                                                vertical: 2),
-                                            decoration: BoxDecoration(
-                                              color: Colors.green
-                                                  .shade100,
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(6),
-                                            ),
-                                            child: Text(
-                                              job.employementType ?? "",
+                                            Text(
+                                              job.jobTitle ?? "",
                                               style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color:
-                                                  Colors.green),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          ),
 
-                                          const SizedBox(height: 6),
+                                            const SizedBox(height: 4),
 
-                                          Text(
-                                            "Salary: ${"₹${job.salary ?? 0}"}",
-                                            style:
-                                            const TextStyle(
-                                                fontSize: 13),
-                                          ),
-
-                                          const SizedBox(height: 6),
-
-                                          Text(
-                                            job.companyName ?? "",
-                                            style:
-                                            const TextStyle(
-                                                fontSize: 13),
-                                          ),
-
-                                          const SizedBox(height: 4),
-
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                  Icons.location_on,
-                                                  size: 14,
-                                                  color:
-                                                  Colors.grey),
-                                              const SizedBox(
-                                                  width: 4),
-                                              Text(
-                                                job.locations ?? "",
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8, vertical: 2),
+                                              decoration: BoxDecoration(
+                                                color: Colors.green.shade100,
+                                                borderRadius: BorderRadius.circular(6),
+                                              ),
+                                              child: Text(
+                                                job.employementType ?? "",
                                                 style: const TextStyle(
-                                                    fontSize: 12),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                                    fontSize: 12,
+                                                    color: Colors.green),
+                                              ),
+                                            ),
+
+                                            const SizedBox(height: 6),
+
+                                            Text(
+                                              "Salary: ₹${job.salary ?? 0}",
+                                              style: const TextStyle(fontSize: 13),
+                                            ),
+
+                                            const SizedBox(height: 6),
+
+                                            Text(
+                                              job.companyName ?? "",
+                                              style: const TextStyle(fontSize: 13),
+                                            ),
+
+                                            const SizedBox(height: 4),
+
+                                            Row(
+                                              children: [
+                                                const Icon(Icons.location_on,
+                                                    size: 14,
+                                                    color: Colors.grey),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  job.locations ?? "",
+                                                  style: const TextStyle(fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ));
+                              );
                             },
-                          )
+                          ),
+
+                          if (provider.selectedJobs.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    provider.showMultipleApplyConfirmation(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kPrimaryColor,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Apply (${provider.selectedJobs.length})",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          const SizedBox(height: 60),
+
                         ],
                       ),
                     ),
