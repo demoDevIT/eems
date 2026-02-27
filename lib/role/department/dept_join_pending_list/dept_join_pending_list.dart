@@ -119,56 +119,83 @@ class _DeptJoinPendingListScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _row("Name", item.nameEng),
-            _row("Mobile No", item.mobileNo),
+            /// 🔹 TOP SECTION (Photo + Basic Info)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                /// Candidate Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: item.photo != null && item.photo!.isNotEmpty
+                      ? Image.network(
+                    item.photo!,
+                    height: 90,
+                    width: 90,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _placeholderImage();
+                    },
+                  )
+                      : _placeholderImage(),
+                ),
+
+                const SizedBox(width: 14),
+
+                /// Name + Reg No + Mobile
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.nameEng ?? "-",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text("Reg No: ${item.regNo ?? "-"}"),
+                      Text("Mobile: ${item.mobileNo ?? "-"}"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            _row("Father Name", item.fNameEng),
             _row("Designation", item.designation),
             _row("Department", item.departmentNameEn),
+            _row("Reg No.", item.regNo),
+            _row("Approval Date", _formatDate(item.lastActionDate)),
 
             const Divider(height: 20),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                /// 🔹 CASE 2: If PDF already generated → Show View + E-Sign
-                // if (item.internshipPdfPath != null &&
-                //     item.internshipPdfPath!.isNotEmpty) ...[
-
-                OutlinedButton(
-                  onPressed: () =>
-                      provider.generateAndOpenInternshipPdf(
-                        context,
-                        item.jobSeekerUserId ?? 0,
-                      ),
-                  child: const Text("View Joining Letter"),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () =>
+                        provider.generateAndOpenInternshipPdf(
+                          context,
+                          item.jobSeekerUserId ?? 0,
+                        ),
+                    child: const Text("View Joining Letter"),
+                  ),
                 ),
-
-                //],
-
-                /// 🔹 CASE 1: If PDF NOT generated → Show Approve Button
-                // if (item.internshipPdfPath == null ||
-                //     item.internshipPdfPath!.isEmpty)
-                OutlinedButton(
-                  onPressed: () {
-                    confirmAlertDialog(
-                      context,
-                      "Confirm Approval",
-                      "Are you sure you want to approve this joining?",
-                          (value) {
-                        if (value.toString() == "success") {
-                          provider.approveJoining(context, item);
-                        }
-                      },
-                    );
-                  },
-                  child: const Text("Approve Joining"),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      provider.openApproveJoiningPopup(context, item);
+                    },
+                    child: const Text("Approve Joining"),
+                  ),
                 ),
-
-
-
               ],
             ),
-
-
           ],
         ),
       ),
@@ -213,7 +240,31 @@ class _DeptJoinPendingListScreenState
     );
   }
 
+  String _formatDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return "-";
 
+    try {
+      final dateTime = DateTime.parse(dateString);
+      return "${dateTime.year.toString().padLeft(4, '0')}-"
+          "${dateTime.month.toString().padLeft(2, '0')}-"
+          "${dateTime.day.toString().padLeft(2, '0')}";
+    } catch (e) {
+      return "-";
+    }
+  }
+
+  Widget _placeholderImage() {
+    return Container(
+      height: 90,
+      width: 90,
+      color: Colors.grey.shade300,
+      child: const Icon(
+        Icons.person,
+        size: 40,
+        color: Colors.grey,
+      ),
+    );
+  }
 
 // Widget _filterSection(
   //     BuildContext context,

@@ -68,8 +68,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   List<DeptJoinAttendanceItem> attendanceList = [];
 
   Future<DeptJoinAttendanceModal?> getDeptJoinAttendanceListApi(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -91,7 +91,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
       Map<String, dynamic> body = {
         "Action": "PendingAttendanceByDistrict",
-        "PrivateDistrictCode": 108,
+        "PrivateDistrictCode": 108, //UserData().model.value.district, //108,
         "PrivateDepartmentId": 1,
         "SSOID": "mohdfaizzafar04"
       };
@@ -99,7 +99,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       isAttendanceLoading = true;
       notifyListeners();
 
-    //  ProgressDialog.showLoadingDialog(context);
+      //  ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
         // "Common/GetRSLDCTrainingApplicationsList",
@@ -107,7 +107,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         body,
       );
 
-     // ProgressDialog.closeLoadingDialog(context);
+      // ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -141,10 +141,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   void openAttendancePopup(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) {
-
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) {
     isWholeMonthAbsent = false;
 
     // Reset values
@@ -161,7 +160,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       selectedMonthNumber ?? DateTime.now().month,
     );
 
-
     // yearList = [
     //   now.year - 1,
     //   now.year,
@@ -169,7 +167,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     // ];
 
     yearList = [item.workingYear ?? DateTime.now().year];
-
 
     absentDays = 0;
     absentController.clear();
@@ -196,9 +193,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       return months[month - 1];
     }
 
-
     _calculateTotalDays();
-    _calculatePresentDays();
+    // _calculatePresentDays();
 
     showDialog(
       context: context,
@@ -211,12 +207,12 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       /// HEADER
                       const Center(
                         child: Text(
@@ -264,20 +260,19 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 14),
                         ),
                         items: yearList
                             .map(
                               (year) => DropdownMenuItem(
-                            value: year,
-                            child: Text(year.toString()),
-                          ),
-                        )
+                                value: year,
+                                child: Text(year.toString()),
+                              ),
+                            )
                             .toList(),
                         onChanged: null, // 🔥 DISABLED
                       ),
-
 
                       const SizedBox(height: 20),
 
@@ -295,20 +290,19 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 14),
                         ),
                         hint: const Text("Select Month"),
                         items: monthList
                             .map(
                               (month) => DropdownMenuItem(
-                            value: month,
-                            child: Text(_getMonthName(month)),
-                          ),
-                        )
+                                value: month,
+                                child: Text(_getMonthName(month)),
+                              ),
+                            )
                             .toList(),
                         onChanged: null, // 🔥 DISABLED
-
                       ),
 
                       const SizedBox(height: 20),
@@ -322,8 +316,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         ),
                         child: Text(
                           "Total No. of Days - $totalDays days",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
 
@@ -334,93 +327,95 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         children: [
                           Checkbox(
                             value: isWholeMonthAbsent,
-                            activeColor: Colors.red,          // ✔ Fill color when checked
-                            checkColor: Colors.white,         // ✔ Tick color
+                            activeColor: Colors.red,
+                            // ✔ Fill color when checked
+                            checkColor: Colors.white,
+                            // ✔ Tick color
                             side: const BorderSide(
-                              color: Colors.red,              // ✔ Border color when unchecked
+                              color: Colors.red,
+                              // ✔ Border color when unchecked
                               width: 2,
                             ),
                             onChanged: (value) {
                               isWholeMonthAbsent = value ?? false;
 
                               if (isWholeMonthAbsent) {
-                                absentDays = totalDays;
-                                absentController.text = totalDays.toString();
-                              } else {
                                 absentDays = 0;
+                                presentDays = 0;
                                 absentController.clear();
                               }
 
-                              _calculatePresentDays();
+                              // _calculatePresentDays();
                               setStateDialog(() {});
                             },
                           ),
                           const Text(
                             "Whole Month Absent",
-                            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, color: Colors.red),
                           ),
                         ],
                       ),
 
                       const SizedBox(height: 12),
 
-                      /// ABSENT FIELD
-                      const Text(
-                        "No. of Absent Days",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
+                      if (!isWholeMonthAbsent) ...[
+                        /// ABSENT FIELD
+                        const Text(
+                          "No. of Absent Days",
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
 
-                      const SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
-                      TextField(
-                        controller: absentController,
-                        enabled: !isWholeMonthAbsent,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "Enter absent days",
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 14),
-                          border: OutlineInputBorder(
+                        TextField(
+                          controller: absentController,
+                          // enabled: !isWholeMonthAbsent,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: "Enter absent days",
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 14),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            absentDays = int.tryParse(value) ?? 0;
+
+                            if (absentDays > totalDays) {
+                              absentDays = totalDays;
+                              absentController.text = totalDays.toString();
+                              absentController.selection =
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset: absentController.text.length));
+                            }
+
+                            _calculatePresentDays();
+                            setStateDialog(() {});
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// PRESENT DAYS BOX
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                        onChanged: (value) {
-                          absentDays = int.tryParse(value) ?? 0;
-
-                          if (absentDays > totalDays) {
-                            absentDays = totalDays;
-                            absentController.text =
-                                totalDays.toString();
-                            absentController.selection =
-                                TextSelection.fromPosition(
-                                    TextPosition(
-                                        offset: absentController.text.length));
-                          }
-
-                          _calculatePresentDays();
-                          setStateDialog(() {});
-                        },
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      /// PRESENT DAYS BOX
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Total No. of Present Days - $presentDays",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.green,
+                          child: Text(
+                            "Total No. of Present Days - $presentDays",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.green,
+                            ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 26),
+                        const SizedBox(height: 26),
+                      ],
 
                       /// SUBMIT BUTTON
                       SizedBox(
@@ -443,7 +438,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                 ),
               ),
             );
-
           },
         );
       },
@@ -451,10 +445,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> viewCertificate(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) async {
-
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -496,9 +489,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         if (responseData["State"] == 200 &&
             responseData["Data"] != null &&
             responseData["Data"].isNotEmpty) {
-
-          final String? fileUrl =
-          responseData["Data"][0]["CertificatePath"];
+          final String? fileUrl = responseData["Data"][0]["CertificatePath"];
 
           print("Certificate URL => $fileUrl");
 
@@ -544,10 +535,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> approveAttendance(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) async {
-
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -590,18 +580,15 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         String message = responseData["Message"] ?? "Something went wrong";
 
         if (responseData["State"] == 200) {
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message)),
           );
 
           /// 🔄 Refresh List After Approval
           await getDeptJoinAttendanceListApi(context);
-
         } else {
           showAlertError(message, context);
         }
-
       } else {
         showAlertError("Something went wrong", context);
       }
@@ -611,19 +598,17 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
   }
 
-
   void viewAttendance(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) {
-
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) {
     // Reset values
     selectedMonth = DateTime.now();
     absentDays = 0;
     absentController.clear();
 
     _calculateTotalDays();
-    _calculatePresentDays();
+    //  _calculatePresentDays();
 
     showDialog(
       context: context,
@@ -636,12 +621,12 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       /// HEADER
                       const Center(
                         child: Text(
@@ -659,7 +644,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                 ),
               ),
             );
-
           },
         );
       },
@@ -667,11 +651,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   void _calculateTotalDays() {
-    final firstDay =
-    DateTime(selectedMonth.year, selectedMonth.month, 1);
+    final firstDay = DateTime(selectedMonth.year, selectedMonth.month, 1);
 
-    final lastDay =
-    DateTime(selectedMonth.year, selectedMonth.month + 1, 0);
+    final lastDay = DateTime(selectedMonth.year, selectedMonth.month + 1, 0);
 
     totalDays = lastDay.day;
   }
@@ -689,8 +671,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           children: [
             TextSpan(
                 text: "$label: ",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontWeight: FontWeight.bold)),
             TextSpan(text: value ?? "-"),
           ],
         ),
@@ -699,16 +680,26 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> _submitAttendance(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) async {
-    if (absentController.text.isEmpty) {
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) async {
+    // ✅ Validate only when NOT whole month absent
+    if (!isWholeMonthAbsent && absentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter absent days"),
         ),
       );
       return;
+    }
+
+    // If whole month absent → set values properly
+    if (isWholeMonthAbsent) {
+      absentDays = totalDays;
+      presentDays = 0;
+    } else {
+      absentDays = int.tryParse(absentController.text) ?? 0;
+      presentDays = totalDays - absentDays;
     }
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -737,7 +728,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "Tehsil": "",
         "Assembly": item.assembly,
         "DistrictName": item.districtEn,
-        "AttendanceLetter": ""
+        "AttendanceLetter": "",
+        "IsWholeMonthAbsent": isWholeMonthAbsent ? 1 : 0, //whole month 1
       };
 
       /// ✅ PRINT FULL REQUEST DATA
@@ -745,6 +737,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       print(const JsonEncoder.withIndent('  ').convert(data));
       print("===============================================");
 
+      // return;
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
@@ -756,7 +749,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
       if (apiResponse.response != null &&
           apiResponse.response?.statusCode == 200) {
-
         var responseData = apiResponse.response?.data;
         if (responseData is String) {
           responseData = jsonDecode(responseData);
@@ -790,17 +782,15 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
   }
 
-
-
   void markAttendance(DeptJoinAttendanceItem item) {
     debugPrint("Mark attendance for: ${item.nameEng}");
     // TODO: API call for marking attendance
   }
 
   Future<void> pickAttendanceDate(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) async {
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -819,5 +809,4 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     attendanceList.clear();
     notifyListeners();
   }
-
 }

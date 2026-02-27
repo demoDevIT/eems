@@ -55,6 +55,9 @@ class DeptJoinPendingItem {
     String? mobileNo;
     String? designation;
     String? nameEng;
+    String? fNameEng;
+    String? regNo;
+    String? photo;
     String? districtName;
     String? cityName;
     String? wardName;
@@ -63,6 +66,7 @@ class DeptJoinPendingItem {
     String? villageName;
     String? departmentNameEn;
     String? internshipPdfPath;
+    String? lastActionDate;
 
   DeptJoinPendingItem({
     this.jobSeekerUserId,
@@ -79,6 +83,9 @@ class DeptJoinPendingItem {
     this.mobileNo,
     this.designation,
     this.nameEng,
+    this.fNameEng,
+    this.regNo,
+    this.photo,
     this.districtName,
     this.cityName,
     this.wardName,
@@ -87,6 +94,7 @@ class DeptJoinPendingItem {
     this.villageName,
     this.departmentNameEn,
     this.internshipPdfPath,
+    this.lastActionDate
   });
 
   factory DeptJoinPendingItem.fromJson(Map<String, dynamic> json) {
@@ -105,6 +113,9 @@ class DeptJoinPendingItem {
       mobileNo: json['MobileNo'], // shown as Exchange Name
       designation: json['Designation'], // shown as Exchange Name
       nameEng: json['NAME_ENG'], // shown as Exchange Name
+      fNameEng: json['FATHER_NAME_ENG'], // shown as Exchange Name
+      regNo: json['RegistrationNumber'],
+      photo: json['LatestPhoto'],
       districtName: json['DistrictName'], // shown as Exchange Name
       cityName: json['CityName'], // shown as Exchange Name
       wardName: json['WardName'], // shown as Exchange Name
@@ -113,6 +124,7 @@ class DeptJoinPendingItem {
       villageName: json['VillageName'], // shown as Exchange Name
       departmentNameEn: json['DepartmentNameEn'], // shown as Exchange Name
       internshipPdfPath: json['InternshipPdfPath'], // shown as Exchange Name
+      lastActionDate: json['LastActionDate'], // shown as Exchange Name
     );
   }
 }

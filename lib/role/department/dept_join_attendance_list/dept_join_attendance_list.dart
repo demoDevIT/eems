@@ -117,10 +117,54 @@ class _DeptJoinAttendanceListScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _row("Name", item.nameEng),
-            _row("Mobile No", item.mobileNo),
-            _row("Department Name", item.departmentNameEn),
-            _row("Joining Date", item.internJoiningDate),
+            /// 🔹 TOP SECTION (Photo + Basic Info)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                /// Candidate Image (Future Ready)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: (item.photo != null && item.photo!.isNotEmpty)
+                      ? Image.network(
+                    item.photo!, // 🔥 Change key later if needed
+                    height: 90,
+                    width: 90,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _placeholderImage();
+                    },
+                  )
+                      : _placeholderImage(),
+                ),
+
+                const SizedBox(width: 14),
+
+                /// Name + Mobile
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.nameEng ?? "-",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text("Mobile: ${item.mobileNo ?? "-"}"),
+                      Text("Department: ${item.departmentNameEn ?? "-"}"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            _row("Father Name", item.fatherNameEng),
+            _row("Joining Date", _formatDate(item.internJoiningDate)),
             _row("Year", item.workingYear?.toString()),
             _row("Month", item.attendanceMonthName),
 
@@ -129,59 +173,63 @@ class _DeptJoinAttendanceListScreenState
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // ElevatedButton.icon(
-                //   onPressed: () =>
-                //       provider.pickAttendanceDate(context, item),
-                //   icon: const Icon(Icons.calendar_month),
-                //   label: const Text("Mark Attendance"),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.green,
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(8),
-                //     ),
-                //   ),
-                // ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
+                /// 🔹 IF NOT MARKED
+                if (item.attendanceMarkStatus == 0)
+                  OutlinedButton(
+                    onPressed: () =>
+                        provider.openAttendancePopup(context, item),
+                    child: const Text("Mark Attendance"),
+                  ),
 
-                    /// 🔹 IF NOT MARKED
-                    if (item.attendanceMarkStatus == 0)
-                      OutlinedButton(
-                        onPressed: () =>
-                            provider.openAttendancePopup(context, item),
-                        child: const Text("Mark Attendance"),
-                      ),
-
-                    /// 🔹 IF MARKED
-                    if (item.attendanceMarkStatus == 1) ...[
-                      OutlinedButton(
-                        onPressed: () {
-                          provider.viewCertificate(context, item);
-                        },
-                        child: const Text("View Certificate"),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          provider.approveAttendance(context, item);
-                        },
-                        child: const Text("Approve"),
-                      ),
-                    ],
-                  ],
-                )
-
-
-
+                /// 🔹 IF MARKED
+                if (item.attendanceMarkStatus == 1) ...[
+                  OutlinedButton(
+                    onPressed: () {
+                      provider.viewCertificate(context, item);
+                    },
+                    child: const Text("View Certificate"),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      provider.approveAttendance(context, item);
+                    },
+                    child: const Text("Approve"),
+                  ),
+                ],
               ],
-            )
-
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _placeholderImage() {
+    return Container(
+      height: 90,
+      width: 90,
+      color: Colors.grey.shade300,
+      child: const Icon(
+        Icons.person,
+        size: 40,
+        color: Colors.grey,
+      ),
+    );
+  }
+
+  String _formatDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return "-";
+
+    try {
+      final dateTime = DateTime.parse(dateString);
+      return "${dateTime.year.toString().padLeft(4, '0')}-"
+          "${dateTime.month.toString().padLeft(2, '0')}-"
+          "${dateTime.day.toString().padLeft(2, '0')}";
+    } catch (e) {
+      return dateString.split("T").first; // fallback safe
+    }
   }
 
   Widget _row(String label, String? value) {

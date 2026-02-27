@@ -49,6 +49,7 @@ class DeptJoinAttendanceItem {
     String? districtEn;
     String? assembly;
     int? attendanceMarkStatus;
+    String? photo;
 
   DeptJoinAttendanceItem({
     this.jobseekerUserId,
@@ -70,7 +71,8 @@ class DeptJoinAttendanceItem {
     this.address,
     this.districtEn,
     this.assembly,
-    this.attendanceMarkStatus
+    this.attendanceMarkStatus,
+    this.photo
   });
 
   factory DeptJoinAttendanceItem.fromJson(Map<String, dynamic> json) {
@@ -95,6 +97,7 @@ class DeptJoinAttendanceItem {
       districtEn: json['DistrictEn'],
       assembly: json['Assembly'],
       attendanceMarkStatus: json['AttendanceMarkStatus'],
+      photo: json['photo'],
     );
   }
 }

@@ -213,26 +213,15 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     }
 
     try {
-      // Map<String, dynamic> body = {
-      //   "ActionName": "RSLDCTrainingApprovedApplications",
-      //   "DDLLevelID": selectedLevel?.levelID ?? 0,
-      //   "UserID": 1820, //UserData().model.value.userId,
-      //   "RoleId": 6, //UserData().model.value.roleId,
-      //   "DistrictCode": 108, //districtIdController.text, //108
-      //   "FinancialYearName": selectedFinancialYear?.financialYearName ?? "",
-      //   "FromDate": fromDateController.text,
-      //   "EndDate": endDateController.text,
-      // };
-
       Map<String, dynamic> body = {
         "ActionName": "PendingList",
         "DepartmentID": "1",
       };
 
-     // isPendingListLoading = true;
+      isPendingListLoading = true;
       notifyListeners();
 
-      ProgressDialog.showLoadingDialog(context);
+     // ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(
         // "Common/GetRSLDCTrainingApplicationsList",
@@ -240,7 +229,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         body,
       );
 
-      ProgressDialog.closeLoadingDialog(context);
+     // ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -265,7 +254,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
             state: 0, message: "Something went wrong");
       }
     } catch (e) {
-      ProgressDialog.closeLoadingDialog(context);
+      // ProgressDialog.closeLoadingDialog(context);
       isPendingListLoading = false;
       notifyListeners();
       showAlertError(e.toString(), context);
@@ -359,7 +348,11 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     // open PDF / WebView
   }
 
-  void approveJoining(BuildContext context, DeptJoinPendingItem item) async {
+  void approveJoining(
+      BuildContext context,
+      DeptJoinPendingItem item,
+      DateTime joiningDate,
+      ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -378,6 +371,11 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         "DeviceId": deviceId,
         "ApprovedByUserId": UserData().model.value.userId, //1234,
         "InternshipPdfPath": "",
+        "JoiningDate": DateTime(
+          joiningDate.year,
+          joiningDate.month,
+          joiningDate.day,
+        ).toIso8601String(),
       };
 
       /// ✅ PRINT FULL REQUEST DATA
@@ -405,15 +403,16 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
         /// ✅ Directly read JSON
         if (responseData["State"] == 200) {
-          successDialog(
-            context,
-            responseData["Message"] ?? "Success",
-                (value) {
-              if (value.toString() == "success") {
-                Navigator.pop(context, true); // return true to previous page
-              }
-            },
+          Navigator.pop(context); // close popup
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData["Message"] ?? "Success"),
+            ),
           );
+
+          // 🔄 Refresh Pending List
+          await getDeptJoinPendingListApi(context);
         } else {
           showAlertError(
             responseData["Message"] ?? "Something went wrong",
@@ -429,6 +428,160 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
       ProgressDialog.closeLoadingDialog(context);
       showAlertError(e.toString(), context);
     }
+  }
+
+  void openApproveJoiningPopup(
+      BuildContext context,
+      DeptJoinPendingItem item,
+      ) {
+    DateTime? selectedDate;
+    TextEditingController dateController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    const Center(
+                      child: Text(
+                        "Select Joining Date",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    TextField(
+                      controller: dateController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        hintText: "Select Date",
+                        suffixIcon: const Icon(Icons.calendar_month),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      // onTap: () async {
+                      //   final pickedDate = await showDatePicker(
+                      //     context: context,
+                      //     initialDate: DateTime.now().add(const Duration(days: 1)),
+                      //     firstDate: DateTime.now().add(const Duration(days: 1)), // 🔥 FUTURE ONLY
+                      //     lastDate: DateTime(2100),
+                      //   );
+                      //
+                      //   if (pickedDate != null) {
+                      //     selectedDate = pickedDate;
+                      //     dateController.text =
+                      //     "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                      //     setStateDialog(() {});
+                      //   }
+                      // },
+                      onTap: () async {
+                        DateTime now = DateTime.now();
+
+                        /// 🔹 Parse LastActionDate from API
+                        DateTime? lastActionDate;
+
+                        if (item.lastActionDate != null &&
+                            item.lastActionDate!.isNotEmpty) {
+                          lastActionDate = DateTime.parse(item.lastActionDate!);
+                        }
+
+                        /// 🔹 If null fallback (safety)
+                        lastActionDate ??= DateTime(now.year - 1);
+
+                        /// 🔹 Yesterday (today disabled)
+                        // DateTime yesterday =
+                        // DateTime(now.year, now.month, now.day)
+                        //     .subtract(const Duration(days: 1));
+
+                        /// 🔹 Today (now allowed)
+                        DateTime today = DateTime(
+                          now.year,
+                          now.month,
+                          now.day,
+                        );
+
+                        /// 🔥 If LastActionDate is after yesterday, prevent picker crash
+                        // if (lastActionDate.isAfter(yesterday)) {
+                        if (lastActionDate.isAfter(today)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("No valid joining dates available"),
+                            ),
+                          );
+                          return;
+                        }
+
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: today,
+                          firstDate: DateTime(
+                            lastActionDate.year,
+                            lastActionDate.month,
+                            lastActionDate.day,
+                          ),
+                          lastDate: today,
+                        );
+
+                        if (pickedDate != null) {
+                          selectedDate = pickedDate;
+
+                          dateController.text =
+                          "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                          setStateDialog(() {});
+                        }
+                      },
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 45,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (selectedDate == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please select joining date"),
+                              ),
+                            );
+                            return;
+                          }
+
+                          approveJoining(
+                            context,
+                            item,
+                            selectedDate!,
+                          );
+                        },
+                        child: const Text("Submit"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void clearData() {
