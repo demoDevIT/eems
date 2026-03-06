@@ -121,35 +121,35 @@ class _OtpScreenState extends State<OtpScreen> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Center(
-                                child: PinCodeTextField(
-                                  controller: provider.otpController,
-                                  autoDisposeControllers: false,
-                                  cursorColor: borderColor,
-                                  appContext: context,
-                                  length: 4,
-                                  hintCharacter: '-',
-                                  hintStyle: Styles.regularTextStyle(size: 20),
-                                  textStyle: Styles.regularTextStyle(size: 20),
-                                  keyboardType: TextInputType.number,
-                                  pinTheme: PinTheme(
-                                    shape: PinCodeFieldShape.box,
-                                    inactiveColor:
-                                    borderColor,
-                                    activeColor:
-                                    borderColor,
-                                    selectedColor:
-                                    borderColor,
-                                    selectedFillColor:
-                                    borderColor,
-                                    fieldHeight: 50,
-                                    fieldWidth: 50,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10)),
-                                  ),
-                                  onChanged: (value) {
-                                    debugPrint(value);
-                                  },
-                                ),
+                                // child: PinCodeTextField(
+                                //   controller: provider.otpController,
+                                //   autoDisposeControllers: false,
+                                //   cursorColor: borderColor,
+                                //   appContext: context,
+                                //   length: 4,
+                                //   hintCharacter: '-',
+                                //   hintStyle: Styles.regularTextStyle(size: 20),
+                                //   textStyle: Styles.regularTextStyle(size: 20),
+                                //   keyboardType: TextInputType.number,
+                                //   pinTheme: PinTheme(
+                                //     shape: PinCodeFieldShape.box,
+                                //     inactiveColor:
+                                //     borderColor,
+                                //     activeColor:
+                                //     borderColor,
+                                //     selectedColor:
+                                //     borderColor,
+                                //     selectedFillColor:
+                                //     borderColor,
+                                //     fieldHeight: 50,
+                                //     fieldWidth: 50,
+                                //     borderRadius: const BorderRadius.all(
+                                //         Radius.circular(10)),
+                                //   ),
+                                //   onChanged: (value) {
+                                //     debugPrint(value);
+                                //   },
+                                // ),
                               ),
                             ),
                           ),

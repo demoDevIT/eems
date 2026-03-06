@@ -8,23 +8,26 @@ import '../../../api_service/datasource/remote/dio/dio_client.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
+import '../../../utils/right_to_left_route.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
+import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../dept_join_pending_list/dept_join_pending_list.dart';
 import 'provider/dept_dashboard_provider.dart';
 
-class DepartmentDashboardPage extends StatelessWidget {
+class DepartmentDashboardPage extends StatefulWidget {
   const DepartmentDashboardPage({super.key});
 
   @override
+  State<DepartmentDashboardPage> createState() => _DepartmentDashboardPageState();
+}
+
+class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
+  //const DepartmentDashboardPage({super.key});
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DepartmentDashboardProvider(
-        // commonRepo: CommonRepo(
-        //   dioClient: DioClient("", "", Dio()), // ✅ REQUIRED
-        // ), // ✅ PASS REQUIRED ARGUMENT
-      ),
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: kWhite,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -74,6 +77,66 @@ class DepartmentDashboardPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  /// Search Buttons
+                  Row(
+                    children: [
+
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            provider.openRegSearch();
+                          },
+                          child: const Text("Search with Reg No."),
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              RightToLeftRoute(
+                                page: const DeptQRScanPage(), // your new page
+                                duration: const Duration(milliseconds: 500),
+                                startOffset: const Offset(-1.0, 0.0),
+                              ),
+                            );
+                          },
+                          child: const Text("Search with QR Code"),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  /// Reg No Search Field
+                  if (provider.showRegSearch) ...[
+                    TextField(
+                      controller: provider.regNoController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Registration Number",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        provider.searchByRegistration(context);
+                      },
+                      child: const Text("Submit"),
+                    ),
+                  ],
+
+                  const SizedBox(height: 20),
+
+                  /// Result Card (Static)
+                  if (provider.showResult) _resultCard(),
+
+                  const SizedBox(height: 20),
                   // _dashboardButton(
                   //   title: "Register yourself for MYSY",
                   //  // icon: Icons.app_registration_rounded,
@@ -122,6 +185,78 @@ class DepartmentDashboardPage extends StatelessWidget {
             );
           },
         ),
+      );
+  }
+
+  Widget _resultCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Row(
+            children: [
+              Container(
+                height: 50,
+                width: 50,
+                color: Colors.grey.shade300,
+                child: const Icon(Icons.person),
+              ),
+
+              const SizedBox(width: 10),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "SHRAWAN KUMAR",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text("Reg No: 22122174752"),
+                  Text("Mobile: -"),
+                ],
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 10),
+
+          const Text("Father Name: JEEYA RAM"),
+          const Text("Designation: -"),
+          const Text("Department: Revenue Department"),
+          const Text("Reg No.: 22122174752"),
+          const Text("Approval Date: 2025-09-19"),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  child: const Text("View Joining Letter"),
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text("Approve Joining"),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

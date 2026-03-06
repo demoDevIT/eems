@@ -6,6 +6,7 @@ import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_j
 import 'package:rajemployment/role/counselor/home/provider/counselor_provider.dart';
 import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
+import 'package:rajemployment/role/department/dept_QR_scan/provider/dept_QR_scan_provider.dart';
 import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import 'package:rajemployment/role/department/dept_join_attendance_list/provider/dept_join_attendance_list_provider.dart';
 import 'package:rajemployment/role/department/dept_join_pending_list/provider/dept_join_pending_list_provider.dart';
@@ -139,7 +140,7 @@ Future<void> init() async {
   sl.registerFactory(() => ExchangeNameProvider(commonRepo: sl()));
   sl.registerFactory(() => ExchangeMarketInfoProvider(commonRepo: sl()));
   sl.registerFactory(() => UploadedDocumentsProvider(commonRepo: sl()));
-  //sl.registerFactory(() => DepartmentDashboardProvider(commonRepo: sl()));
+  sl.registerFactory(() => DepartmentDashboardProvider(commonRepo: sl()));
   sl.registerFactory(() => RegisterFormProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptJoinAttendanceListProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptJoinPendingListProvider(commonRepo: sl()));
@@ -148,4 +149,5 @@ Future<void> init() async {
   sl.registerFactory(() => MysyListProvider(commonRepo: sl()));
   sl.registerFactory(() => SelfAssessmentProvider(commonRepo: sl()));
   sl.registerFactory(() => AssessmentTestProvider(commonRepo: sl()));
+  sl.registerFactory(() => DeptQRScanProvider(commonRepo: sl()));
 }

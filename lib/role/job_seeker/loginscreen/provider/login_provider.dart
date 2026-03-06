@@ -380,21 +380,37 @@ class LoginProvider with ChangeNotifier {
           print(authToken);
           final sm = DeptInfoModal.fromJson(responseData);
           if (sm.state == 200) {
-            final pref = AppSharedPref();
-            UserData().model.value.userId = sm.data![0].userID;
-            UserData().model.value.roleId = roleId;
-            UserData().model.value.name = sm.data![0].name;
-            UserData().model.value.mobileNo = sm.data![0].mobileNo;
-            UserData().model.value.userType = sm.data![0].userType;
-            UserData().model.value.office = sm.data![0].office;
-            UserData().model.value.designation = sm.data![0].designation;
-            UserData().model.value.territoryType = sm.data![0].territoryType;
-            UserData().model.value.village = sm.data![0].village;
-            UserData().model.value.gp = sm.data![0].gp;
-            UserData().model.value.block = sm.data![0].block;
-            UserData().model.value.city = sm.data![0].city;
-
-            pref.save('UserData', UserData().model.value);
+            if(isChecked){
+              final pref = AppSharedPref();
+              UserData().model.value.userId = sm.data![0].userID;
+              UserData().model.value.roleId = roleId;
+              UserData().model.value.name = sm.data![0].name;
+              UserData().model.value.mobileNo = sm.data![0].mobileNo;
+              UserData().model.value.userType = sm.data![0].userType;
+              UserData().model.value.office = sm.data![0].office;
+              UserData().model.value.designation = sm.data![0].designation;
+              UserData().model.value.territoryType = sm.data![0].territoryType;
+              UserData().model.value.village = sm.data![0].village;
+              UserData().model.value.gp = sm.data![0].gp;
+              UserData().model.value.block = sm.data![0].block;
+              UserData().model.value.city = sm.data![0].city;
+              pref.save('UserData', UserData().model.value);
+            }else{
+              final pref = AppSharedPref();
+              UserData().model.value.userId = sm.data![0].userID;
+              UserData().model.value.roleId = roleId;
+              UserData().model.value.name = sm.data![0].name;
+              UserData().model.value.mobileNo = sm.data![0].mobileNo;
+              UserData().model.value.userType = sm.data![0].userType;
+              UserData().model.value.office = sm.data![0].office;
+              UserData().model.value.designation = sm.data![0].designation;
+              UserData().model.value.territoryType = sm.data![0].territoryType;
+              UserData().model.value.village = sm.data![0].village;
+              UserData().model.value.gp = sm.data![0].gp;
+              UserData().model.value.block = sm.data![0].block;
+              UserData().model.value.city = sm.data![0].city;
+              pref.save('UserData', UserData().model.value);
+            }
 
             Navigator.of(context).push(
               RightToLeftRoute(

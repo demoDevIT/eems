@@ -10,6 +10,8 @@ import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
 import 'package:rajemployment/role/counselor/otp/screen/otp_screen.dart';
 import 'package:rajemployment/role/counselor/registration/provider/registration_provider.dart';
 import 'package:rajemployment/role/counselor/registration/screen/registration_screen.dart';
+import 'package:rajemployment/role/department/dept_QR_scan/provider/dept_QR_scan_provider.dart';
+import 'package:rajemployment/role/department/dept_dashboard/dept_dashboard.dart';
 import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import 'package:rajemployment/role/department/dept_join_attendance_list/provider/dept_join_attendance_list_provider.dart';
 import 'package:rajemployment/role/department/dept_join_pending_list/provider/dept_join_pending_list_provider.dart';
@@ -162,7 +164,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<ExchangeNameProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ExchangeMarketInfoProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<UploadedDocumentsProvider>()),
-         // ChangeNotifierProvider(create: (context) => di.sl<DepartmentDashboardProvider>())
+          ChangeNotifierProvider(create: (context) => di.sl<DepartmentDashboardProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<RegisterFormProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<DeptJoinAttendanceListProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<DeptJoinPendingListProvider>()),
@@ -171,6 +173,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<MysyListProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<SelfAssessmentProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<AssessmentTestProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<DeptQRScanProvider>()),
        ],
         child:MyApp(),
       ),
@@ -296,6 +299,12 @@ class _MyHomePageState extends State<MyHomePage>
 
         Navigator.pushAndRemoveUntil<dynamic>(context,
             MaterialPageRoute<dynamic>(builder: (BuildContext context) => const EmployerDashboard()),
+                (route) => false);
+
+      } else if(UserData().model.value.roleId == 22){
+
+        Navigator.pushAndRemoveUntil<dynamic>(context,
+            MaterialPageRoute<dynamic>(builder: (BuildContext context) => const DepartmentDashboardPage()),
                 (route) => false);
 
       }
