@@ -58,8 +58,8 @@ class DeptQRScanProvider extends ChangeNotifier {
 
       Map<String, dynamic> body = {
         "RegistrationNumber": null,
-        "JobSeekerID": 11309400, //int.parse(jobseekerId),
-        "UserID": 265610 //int.parse(userId),
+        "JobSeekerID": jobseekerId, //11309400
+        "UserID": userId, //265610
       };
 
       print("API Request Body: $body");
@@ -98,14 +98,21 @@ class DeptQRScanProvider extends ChangeNotifier {
         /// ===== Navigation based on status =====
 
         if (status == "Get Pending Attendance List") {
+
           ProgressDialog.closeLoadingDialog(context);
+
+          await Future.delayed(const Duration(milliseconds: 200));
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const DeptJoinAttendanceListScreen(),
+              builder: (_) => DeptJoinAttendanceListScreen(
+                registrationNumber: null,
+                jobSeekerId: jobseekerId,
+                userId: userId,
+              ),
             ),
           );
-
         } else if (status == "Pending for Approval") {
 
           ProgressDialog.closeLoadingDialog(context);
@@ -113,7 +120,12 @@ class DeptQRScanProvider extends ChangeNotifier {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const DeptJoinPendingListScreen(),
+              //builder: (_) => const DeptJoinPendingListScreen(),
+              builder: (_) => DeptJoinPendingListScreen(
+                registrationNumber: null,
+                jobSeekerId: jobseekerId, // 11309400
+                userId: userId, //265610
+              ),
             ),
           );
 

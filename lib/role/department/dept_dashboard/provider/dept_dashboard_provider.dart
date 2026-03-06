@@ -76,7 +76,11 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            Navigator.push(
              context,
              MaterialPageRoute(
-               builder: (_) => const DeptJoinAttendanceListScreen(),
+               builder: (_) => DeptJoinAttendanceListScreen(
+                 registrationNumber: regNoController.text,
+                 jobSeekerId: null,
+                 userId: null,
+               ),
              ),
            );
 
@@ -85,7 +89,11 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            Navigator.push(
              context,
              MaterialPageRoute(
-               builder: (_) => const DeptJoinPendingListScreen(),
+               builder: (_) => DeptJoinPendingListScreen(
+                 registrationNumber: regNoController.text,
+                 jobSeekerId: null,
+                 userId: null,
+               ),
              ),
            );
 

@@ -146,6 +146,7 @@ class LoginData {
   dynamic block;
   // dynamic ward; already exist
   dynamic city;
+  dynamic sso;
   // dynamic district; already exist
 
   LoginData({
@@ -260,6 +261,7 @@ class LoginData {
     this.block,
     // this.ward, already exist
     this.city,
+    this.sso
     // this.district, already exist
   });
 
@@ -374,6 +376,7 @@ class LoginData {
     block = json['Block'];
     // ward = json['Ward'];
     city = json['City'];
+    sso = json['SSOID'];
     // district = json['District'];
   }
 
@@ -490,6 +493,7 @@ class LoginData {
     data['Block'] = this.block;
     // data['Ward'] = this.ward;
     data['City'] = this.city;
+    data['SSOID'] = this.sso;
     // data['District'] = this.district;
 
     return data;

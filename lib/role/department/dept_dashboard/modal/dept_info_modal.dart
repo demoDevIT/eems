@@ -48,6 +48,7 @@ class DeptInfoData {
   dynamic block;
   dynamic ward;
   dynamic city;
+  dynamic sso;
   dynamic district;
 
   DeptInfoData(
@@ -81,6 +82,7 @@ class DeptInfoData {
     block = json['Block'];
     ward = json['Ward'];
     city = json['City'];
+    sso = json['SSOID'];
     district = json['District'];
   }
 
@@ -99,6 +101,7 @@ class DeptInfoData {
     data['Block'] = this.block;
     data['Ward'] = this.ward;
     data['City'] = this.city;
+    data['SSOID'] = this.sso;
     data['District'] = this.district;
     return data;
   }

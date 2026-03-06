@@ -26,6 +26,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   bool isWholeMonthAbsent = false;
 
+  String? registrationNumber;
+  String? jobSeekerId;
+  String? userId;
+
   /// LEVEL
   // bool isLevelLoading = false;
   // List<LevelData> levelList = [];
@@ -68,8 +72,17 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   List<DeptJoinAttendanceItem> attendanceList = [];
 
   Future<DeptJoinAttendanceModal?> getDeptJoinAttendanceListApi(
-    BuildContext context,
-  ) async {
+      BuildContext context, {
+        String? registrationNumber,
+        String? jobSeekerId,
+        String? userId,
+      }) async {
+
+    /// Save parameters for future refresh
+    this.registrationNumber = registrationNumber ?? this.registrationNumber;
+    this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
+    this.userId = userId ?? this.userId;
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -93,7 +106,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "Action": "PendingAttendanceByDistrict",
         "PrivateDistrictCode": 108, //UserData().model.value.district, //108,
         "PrivateDepartmentId": 1,
-        "SSOID": "mohdfaizzafar04"
+        "SSOID": UserData().model.value.sso,
+        "RegistrationNumber": this.registrationNumber,
+        "JobSeekerID": this.jobSeekerId,
+        "UserId": this.userId,
       };
 
       isAttendanceLoading = true;
@@ -585,7 +601,18 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           );
 
           /// 🔄 Refresh List After Approval
-          await getDeptJoinAttendanceListApi(context);
+          /// 🔥 Reset filters after approval
+          registrationNumber = null;
+          jobSeekerId = null;
+          userId = null;
+
+          /// 🔄 Refresh list
+          await getDeptJoinAttendanceListApi(
+            context,
+            registrationNumber: null,
+            jobSeekerId: null,
+            userId: null,
+          );
         } else {
           showAlertError(message, context);
         }

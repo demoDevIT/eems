@@ -10,7 +10,16 @@ import '../register_form/modal/district_modal.dart';
 
 
 class DeptJoinAttendanceListScreen extends StatefulWidget {
-  const DeptJoinAttendanceListScreen({super.key});
+  final String? registrationNumber;
+  final String? jobSeekerId;
+  final String? userId;
+
+  const DeptJoinAttendanceListScreen({
+    super.key,
+    this.registrationNumber,
+    this.jobSeekerId,
+    this.userId,
+  });
 
   @override
   State<DeptJoinAttendanceListScreen> createState() =>
@@ -30,7 +39,12 @@ class _DeptJoinAttendanceListScreenState
       Provider.of<DeptJoinAttendanceListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.getDeptJoinAttendanceListApi(context);
+      provider.getDeptJoinAttendanceListApi(
+        context,
+        registrationNumber: widget.registrationNumber,
+        jobSeekerId: widget.jobSeekerId,
+        userId: widget.userId,
+      );
     });
   }
 

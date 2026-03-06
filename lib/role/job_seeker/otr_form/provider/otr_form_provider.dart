@@ -156,6 +156,8 @@ class OtrFormProvider extends ChangeNotifier {
   List<StreamTypeData> streamTypeList = [];
   List<GradeTypeData> gradeTypeList = [];
 
+  List<GraduationTypeData> graduationStreamTypeList = [];
+
   final TextEditingController educationLevelIdController =
       TextEditingController();
   final TextEditingController educationLevelNameController =
@@ -199,6 +201,12 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController otherEducationUniversity =
       TextEditingController();
   final TextEditingController otpController = TextEditingController();
+
+  final TextEditingController graduationStreamTypeNameController =
+  TextEditingController();
+  final TextEditingController graduationStreamTypeIdController =
+  TextEditingController();
+
 
   //work experience
 

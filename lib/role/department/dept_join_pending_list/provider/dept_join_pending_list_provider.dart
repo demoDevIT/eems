@@ -25,6 +25,10 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
   bool isPageLoading = false;
 
+  String? registrationNumber;
+  String? jobSeekerId;
+  String? userId;
+
   /// LEVEL
   // bool isLevelLoading = false;
   // List<LevelData> levelList = [];
@@ -203,8 +207,17 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
   List<DeptJoinPendingItem> pendingList = [];
 
   Future<DeptJoinPendingModal?> getDeptJoinPendingListApi(
-      BuildContext context,
-      ) async {
+      BuildContext context, {
+        String? registrationNumber,
+        String? jobSeekerId,
+        String? userId,
+      }) async {
+
+    /// Save parameters for future refresh
+    this.registrationNumber = registrationNumber ?? this.registrationNumber;
+    this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
+    this.userId = userId ?? this.userId;
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -215,7 +228,10 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {
         "ActionName": "PendingList",
-        "DepartmentID": "1",
+        "DepartmentID": 1,
+        "RegistrationNumber": this.registrationNumber,
+        "JobSeekerID": this.jobSeekerId,
+        "UserId": this.userId,
       };
 
       isPendingListLoading = true;
@@ -411,8 +427,18 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
             ),
           );
 
-          // 🔄 Refresh Pending List
-          await getDeptJoinPendingListApi(context);
+          /// 🔥 Reset search parameters after approval
+          registrationNumber = null;
+          jobSeekerId = null;
+          userId = null;
+
+          /// 🔄 Refresh list with normal dashboard data
+          await getDeptJoinPendingListApi(
+            context,
+            registrationNumber: null,
+            jobSeekerId: null,
+            userId: null,
+          );
         } else {
           showAlertError(
             responseData["Message"] ?? "Something went wrong",

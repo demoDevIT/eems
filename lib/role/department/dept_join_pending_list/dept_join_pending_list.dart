@@ -10,7 +10,16 @@ import '../../../../utils/textstyles.dart';
 import '../register_form/modal/district_modal.dart';
 
 class DeptJoinPendingListScreen extends StatefulWidget {
-  const DeptJoinPendingListScreen({super.key});
+  final String? registrationNumber;
+  final String? jobSeekerId;
+  final String? userId;
+
+  const DeptJoinPendingListScreen({
+    super.key,
+    this.registrationNumber,
+    this.jobSeekerId,
+    this.userId,
+  });
 
   @override
   State<DeptJoinPendingListScreen> createState() =>
@@ -30,7 +39,12 @@ class _DeptJoinPendingListScreenState
       Provider.of<DeptJoinPendingListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.getDeptJoinPendingListApi(context);
+      provider.getDeptJoinPendingListApi(
+        context,
+        registrationNumber: widget.registrationNumber,
+        jobSeekerId: widget.jobSeekerId,
+        userId: widget.userId,
+      );
       //provider.initPageApis(context);
       // provider.getLevelApi(context);
       // provider.getFinancialYearApi(context);

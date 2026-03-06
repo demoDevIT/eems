@@ -2226,6 +2226,51 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 )
                               : SizedBox(),
 
+                        // stream Type for under graduate/graduate/post graduation
+                          provider.educationLevelIdController.text == "5" ||
+                              provider.educationLevelIdController.text ==
+                                  "6" ||
+                              provider.educationLevelIdController.text ==
+                                  "8"
+                              ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: labelWithStar('Stream Type',
+                                required: true),
+                          )
+                              : SizedBox(),
+
+                          Visibility(
+                            visible: provider.educationLevelIdController.text ==
+                                "5" ||
+                                provider.educationLevelIdController.text ==
+                                    "6" ||
+                                provider.educationLevelIdController.text ==
+                                    "8"
+                                ? true
+                                : false,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildDropdownWithBorderField(
+                                items: provider.graduationStreamTypeList,
+                                controller:
+                                provider.graduationStreamTypeNameController,
+                                idController:
+                                provider.graduationStreamTypeIdController,
+                                hintText: "--Select Option--",
+                                height: 50,
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                                onChanged: (value) {
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ),
+                          // stream Type for under graduate/graduate/post graduation
+
+
                           provider.educationLevelIdController.text == "5" ||
                                   provider.educationLevelIdController.text ==
                                       "6" ||

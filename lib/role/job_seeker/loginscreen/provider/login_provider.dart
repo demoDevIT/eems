@@ -394,6 +394,8 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.gp = sm.data![0].gp;
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
+              UserData().model.value.sso = ssoID;
+              UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }else{
               final pref = AppSharedPref();
@@ -409,6 +411,8 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.gp = sm.data![0].gp;
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
+              UserData().model.value.sso = ssoID;
+              UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }
 
