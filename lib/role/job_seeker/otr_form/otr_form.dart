@@ -75,6 +75,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
       provider.proficiencyTypeApi(context);
       provider.languageTypeModaltApi(context);
       provider.religionApi(context);
+      provider.disabilityTypeApi(context);
       provider.uidTypeApi(context);
       provider.setJanAadhaarControllers(
           context, feachJanAadhaarDataList[0], ssoId);
@@ -708,6 +709,49 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ),
                               const SizedBox(width: 12),
                             ],
+                          ),
+
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: labelWithStar('Disability Type & Percentage', required: true),
+                          ),
+                          IgnorePointer(
+                            ignoring: false,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildDropdownWithBorderField(
+                                items: provider.disabilityTypeList,
+                                controller: provider.disabilityNameController,
+                                idController: provider.disabilityIdController,
+                                hintText: "--Select Option--",
+                                height: 50,
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                                onChanged: (value) {
+                                  print(provider.disabilityIdController.text
+                                      .toString());
+                                  print(provider.disabilityNameController.text
+                                      .toString());
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: buildTextWithBorderField(
+                              provider.disabilityPercentageController,
+                              "Percentage",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.number,
+                            ),
                           ),
 
                           Padding(
@@ -2172,7 +2216,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
-                                  setState(() {});
+                                  setState(() {
+                                    // reset stream type dropdown
+                                    provider.graduationStreamTypeNameController.clear();
+                                    provider.graduationStreamTypeIdController.clear();
+                                    provider.graduationStreamTypeList.clear();
+
+                                      String id = provider.graduationTypeIdController.text;
+                                      provider.graduationStreamTypeApi(context, id);
+                                  });
                                 },
                               ),
                             ),

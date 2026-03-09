@@ -40,8 +40,10 @@ import '../../addworkexperience/modal/employment_type_modal.dart';
 import '../../educationdetail/modal/profile_qualication_info_list_modal.dart';
 import '../../loginscreen/modal/jobseeker_basicInfo_modal.dart';
 import '../../loginscreen/screen/login_screen.dart';
+import '../modal/disability_type_modal.dart';
 import '../modal/education_level_modal.dart';
 import '../modal/fetch_jan_adhar_modal.dart';
+import '../modal/graduation_stream_type_modal.dart';
 import '../modal/graduation_type_modal.dart';
 import '../modal/language_list_modal.dart';
 import '../modal/medium_type_modal.dart';
@@ -77,6 +79,10 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController religionIdController = TextEditingController();
   final TextEditingController differentlyAbledController =
       TextEditingController();
+
+  final TextEditingController disabilityNameController = TextEditingController();
+  final TextEditingController disabilityIdController = TextEditingController();
+
   final TextEditingController genderController = TextEditingController();
   final TextEditingController familyIncomeController = TextEditingController();
   final TextEditingController uidTypeIdController = TextEditingController();
@@ -86,10 +92,13 @@ class OtrFormProvider extends ChangeNotifier {
   List<ReligionData> religionList = [];
   List<UIDTypeData> uidTypeList = [];
   String? selectedUIDTypeData;
+  final TextEditingController disabilityPercentageController = TextEditingController();
 
   String filePath = "";
   String fileName = "";
   XFile? profileFile;
+
+  List<DisabilityTypeData> disabilityTypeList = [];
 
   //address
 
@@ -156,7 +165,11 @@ class OtrFormProvider extends ChangeNotifier {
   List<StreamTypeData> streamTypeList = [];
   List<GradeTypeData> gradeTypeList = [];
 
-  List<GraduationTypeData> graduationStreamTypeList = [];
+  List<GraduationStreamTypeData> graduationStreamTypeList = [];
+  final TextEditingController graduationStreamTypeNameController =
+  TextEditingController();
+  final TextEditingController graduationStreamTypeIdController =
+  TextEditingController();
 
   final TextEditingController educationLevelIdController =
       TextEditingController();
@@ -201,12 +214,6 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController otherEducationUniversity =
       TextEditingController();
   final TextEditingController otpController = TextEditingController();
-
-  final TextEditingController graduationStreamTypeNameController =
-  TextEditingController();
-  final TextEditingController graduationStreamTypeIdController =
-  TextEditingController();
-
 
   //work experience
 
@@ -293,6 +300,55 @@ class OtrFormProvider extends ChangeNotifier {
       } on Exception catch (err) {
         // ProgressDialog.closeLoadingDialog(context);
         final sm = ReligionModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<DisabilityTypeModal?> disabilityTypeApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        String url = "Common/CommonMasterDataByCode/DisabilityType/0/0";
+        // ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse = await commonRepo.get(url);
+        //ProgressDialog.closeLoadingDialog(context);
+        print("disabilityTypeList ${apiResponse.response}");
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = DisabilityTypeModal.fromJson(responseData);
+          if (sm.state == 200) {
+            disabilityTypeList.clear();
+            disabilityTypeList.addAll(sm.data!);
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm =
+            DisabilityTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return DisabilityTypeModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = DisabilityTypeModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
@@ -896,6 +952,58 @@ class OtrFormProvider extends ChangeNotifier {
       } on Exception catch (err) {
         //ProgressDialog.closeLoadingDialog(context);
         final sm = GraduationTypeModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<GraduationStreamTypeModal?> graduationStreamTypeApi(
+      BuildContext context, String id) async {
+    print("ID======> $id");
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //  ProgressDialog.showLoadingDialog(context);
+        String url = "Common/DDl_StreamType/$id";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        //  ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = GraduationStreamTypeModal.fromJson(responseData);
+
+          if (sm.state == 200) {
+              graduationStreamTypeList.clear();
+              graduationStreamTypeList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm =
+            GraduationStreamTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return GraduationStreamTypeModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        //ProgressDialog.closeLoadingDialog(context);
+        final sm = GraduationStreamTypeModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
@@ -1765,8 +1873,8 @@ class OtrFormProvider extends ChangeNotifier {
           "isStateGovtEmp": "",
           "Isdisable": differentlyAbledController.text == "Yes" ? "1" : "2",
 
-          "DisabilityPercentage": "",
-          "DisabilityType": "",
+          "DisabilityPercentage": disabilityPercentageController.text,
+          "DisabilityType": disabilityIdController.text,
 
           "UIDNCOCode": uidTypeIdController.text,
           "UIDNumber": uidNOController.text,
@@ -2315,6 +2423,10 @@ class OtrFormProvider extends ChangeNotifier {
     streamNameController.clear();
     graduationTypeIdController.clear();
     graduationTypeNameController.clear();
+
+    graduationStreamTypeIdController.clear();
+    graduationStreamTypeNameController.clear();
+
     universityIdController.clear();
     universityNameController.clear();
     collageIdController.clear();
@@ -2328,6 +2440,7 @@ class OtrFormProvider extends ChangeNotifier {
     educationLevelsList.clear();
     ncoCodeList.clear();
     graduationTypeList.clear();
+    graduationStreamTypeList.clear();
     boardList.clear();
     universityList.clear();
     courseNatureList.clear();
