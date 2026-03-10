@@ -17,6 +17,7 @@ import '../modal/department_modal.dart';
 import '../modal/district_modal.dart';
 import '../modal/city_modal.dart';
 import '../modal/gp_modal.dart';
+import '../modal/office_modal.dart';
 import '../modal/village_modal.dart';
 import '../modal/ward_modal.dart';
 import '../../../../utils/user_new.dart';
@@ -127,6 +128,16 @@ class RegisterFormProvider extends ChangeNotifier {
   final TextEditingController departmentIdController =
   TextEditingController();
 
+  /// Office Dropdown
+  bool isOfficeLoading = false;
+
+  List<OfficeData> officeList = [];
+  OfficeData? selectedOffice;
+
+  final TextEditingController officeIdController =
+  TextEditingController();
+  final TextEditingController officeNameController = TextEditingController();
+
 
   /// ======================
   /// FORM CONTROLLERS
@@ -134,7 +145,7 @@ class RegisterFormProvider extends ChangeNotifier {
   final TextEditingController gramPanchayatController = TextEditingController();
   final TextEditingController villageController = TextEditingController();
   //final TextEditingController departmentNameController = TextEditingController();
-  final TextEditingController officeNameController = TextEditingController();
+
   final TextEditingController ssoIdController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController designationController = TextEditingController();
@@ -357,6 +368,40 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getOfficeApi(BuildContext context) async {
+    isOfficeLoading = true;
+
+    selectedOffice = null;
+    officeNameController.clear();
+    officeIdController.clear();
+    officeList.clear();
+
+    notifyListeners();
+
+    try {
+      final apiResponse = await commonRepo.get(
+        "Common/GetIntershipDeptListbyDeptTypeID/1",
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData['Data'] != null) {
+          for (var e in responseData['Data']) {
+            officeList.add(OfficeData.fromJson(e));
+          }
+        }
+      }
+    } catch (_) {
+      officeList.clear();
+    }
+
+    isOfficeLoading = false;
+    notifyListeners();
+  }
 
   Future<RegFormModal> submitForm(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -399,6 +444,9 @@ class RegisterFormProvider extends ChangeNotifier {
             ? selectedVillage!.code
             : "0",
         "OfficeName": officeNameController.text.trim(),
+        "AllotmentDeptId": officeIdController.text,
+        "OtherOfficeAllotedDept": "", //other key exist but don't send value as discussed with pankaj sir (don't create input box for other case)
+
         "DesignationName": designationController.text.trim(),
         "DeviceId": deviceId
       };

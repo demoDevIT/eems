@@ -66,6 +66,17 @@ class DepartmentDashboardProvider extends ChangeNotifier {
 
          print("API Response: $responseData");
 
+         /// ✅ CHECK API STATE FIRST
+         if (responseData['State'] != 200 || responseData['Data'] == null) {
+
+           String errorMsg = responseData['ErrorMessage'] ??
+               responseData['Message'] ??
+               "Something went wrong";
+
+           showAlertError(errorMsg, context);
+           return;
+         }
+
          String status = responseData['Data'][0]['Status'];
 
          print("Status: $status");

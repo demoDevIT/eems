@@ -164,6 +164,9 @@ class LoginProvider with ChangeNotifier {
             else{
               if(sm.data!.userType.trim().toLowerCase() == 'citizen'){
                 if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
+
+                  getEmpBasicDetailsApi(context,"2261606",7);
+                  return null;
                   if (sm.data!.roleID == 24) { //earlier it was role 6
                     print("Redirecting to CandidateAttendanceScreen");
                     Navigator.of(context).push(

@@ -7,6 +7,7 @@ import '../../../utils/textfeild.dart';
 import 'modal/block_modal.dart';
 import 'modal/department_modal.dart';
 import 'modal/gp_modal.dart';
+import 'modal/office_modal.dart';
 import 'modal/village_modal.dart';
 import 'modal/ward_modal.dart';
 import 'provider/register_form_provider.dart';
@@ -37,6 +38,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       provider.getDistrictApi(context, 6);
       provider.getDepartmentApi(context);
+      provider.getOfficeApi(context);
     });
   }
 
@@ -281,9 +283,31 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         },
                       ),
 
-                /// ===== OFFICE NAME =====
+                /// ===== Office NAME =====
                 _label("Office Name"),
-                _field(provider.officeNameController, "Enter office name"),
+                provider.isOfficeLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : buildDropdownWithBorderFieldOnlyThisPage<OfficeData>(
+                  items: provider.officeList,
+                  controller: provider.officeNameController,
+                  idController: provider.officeIdController,
+                  hintText: "--Select Office--",
+                  height: 50,
+                  selectedValue: provider.selectedOffice,
+                  getLabel: (e) => e.nameEng ?? "",
+                  onChanged: (value) {
+                    provider.selectedOffice = value;
+                    provider.officeNameController.text =
+                        value?.nameEng ?? "";
+                    provider.officeIdController.text =
+                        value?.iD?.toString() ?? "";
+                    provider.notifyListeners();
+                  },
+                ),
+
+                // /// ===== OFFICE NAME =====
+                // _label("Office Name"),
+                // _field(provider.officeNameController, "Enter office name"),
 
                 /// ===== SSO ID (DISABLED) =====
                 _label("SSO ID"),
@@ -476,12 +500,12 @@ bool validateBasicDetails(
   }
 
   if (provider.departmentNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Department Name", context);
+    showAlertError("Please select Department Name", context);
     return false;
   }
 
   if (provider.officeNameController.text.trim().isEmpty) {
-    showAlertError("Please enter office name", context);
+    showAlertError("Please select office name", context);
     return false;
   }
 

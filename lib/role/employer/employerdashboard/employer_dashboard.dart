@@ -7,8 +7,10 @@ import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
+import '../../job_seeker/grievance/grievance_list.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../emp_profile/profile_screen.dart';
+import '../job_fair/job_fair.dart';
 
 class EmployerDashboard extends StatefulWidget {
   const EmployerDashboard({super.key});
@@ -26,7 +28,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       drawer: _buildSideDrawer(),
       appBar: AppBar(
         title: const Text(
-          "Dashboard",
+          "Employee Dashboard",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -65,33 +67,53 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
             },
           ),
 
-          _dashboardTile(
-            title: "Search Job\nSeekers Near Me",
-            color: const Color(0xFF4A76C9),
-          ),
+          // _dashboardTile(
+          //   title: "Search Job\nSeekers Near Me",
+          //   color: const Color(0xFF4A76C9),
+          // ),
           _dashboardTile(
             title: "Post Job",
             color: const Color(0xFF4A76C9),
           ),
-          _dashboardTile(
-            title: "Search Job\nSeeker By Skills",
-            color: const Color(0xFF4A76C9),
-          ),
-          _dashboardTile(
-            title: "Search Job\nSeeker By Qualification",
-            color: const Color(0xFF4A76C9),
-          ),
-          _dashboardTile(
-            title: "Search Job\nSeeker By Experience",
-            color: const Color(0xFF4A76C9),
-          ),
+          // _dashboardTile(
+          //   title: "Search Job\nSeeker By Skills",
+          //   color: const Color(0xFF4A76C9),
+          // ),
+          // _dashboardTile(
+          //   title: "Search Job\nSeeker By Qualification",
+          //   color: const Color(0xFF4A76C9),
+          // ),
+          // _dashboardTile(
+          //   title: "Search Job\nSeeker By Experience",
+          //   color: const Color(0xFF4A76C9),
+          // ),
           _dashboardTile(
             title: "Apply for\nJob Fair",
             color: const Color(0xFF4A76C9),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const JobFairScreen(),
+                ),
+              );
+            },
           ),
           _dashboardTile(
-            title: "Feedback/\nRating",
+            title: "Grievances",
             color: const Color(0xFF4A76C9),
+            onTap: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GrievanceScreen(),
+                ),
+              );
+
+              if (result != null) {
+                // handle result if needed
+              }
+            },
           ),
         ],
       ),

@@ -1783,8 +1783,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                           hSpace(4),
 
-                          /// Constituency
-                          Padding(
+                          /// Constituency // hide this constituency part as discussed with pankaj sir
+                         /* Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: labelWithStar('Select Constituency',
@@ -1811,16 +1811,6 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     children: [
                                       labelWithStar('Assembly Constituency',
                                           required: true),
-                                      /*Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text( "Assembly Constituency",
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14)),
-                              ),
-                            ),*/
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 0, vertical: 5),
@@ -1913,7 +1903,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 ),
                               ],
                             ),
-                          ),
+                          ), */
 
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -2315,12 +2305,34 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
-                                  setState(() {});
+                                  setState(() {
+                                    provider.otherStreamController.clear();
+                                  });
                                 },
                               ),
                             ),
                           ),
                           // stream Type for under graduate/graduate/post graduation
+
+                          provider.graduationStreamTypeIdController.text == "-1"
+                              ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: labelWithStar('Other Stream', required: true),
+                          )
+                              : SizedBox(),
+
+                          provider.graduationStreamTypeIdController.text == "-1"
+                              ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: buildTextWithBorderField(
+                              provider.otherStreamController,
+                              "Enter Other Stream",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text,
+                            ),
+                          )
+                              : SizedBox(),
 
 
                           provider.educationLevelIdController.text == "5" ||
@@ -3553,6 +3565,28 @@ bool validateBasicDetails(BuildContext context, provider) {
     return false;
   }
 
+  // Disability Validation
+  if (provider.disabilityIdController.text.isNotEmpty) {
+
+    if (provider.disabilityPercentageController.text.trim().isEmpty) {
+      showAlertError("Please enter Disability Percentage", context);
+      return false;
+    }
+
+    final percent = double.tryParse(
+        provider.disabilityPercentageController.text.trim());
+
+    if (percent == null) {
+      showAlertError("Please enter valid Disability Percentage", context);
+      return false;
+    }
+
+    if (percent < 0 || percent > 100) {
+      showAlertError("Disability Percentage must be between 0 and 100", context);
+      return false;
+    }
+  }
+
   // Gender (Male / Female / Transgender)
   if (provider.genderController.text.isEmpty) {
     showAlertError("Please select Gender", context);
@@ -3684,15 +3718,15 @@ bool validateBasicDetails(BuildContext context, provider) {
     showAlertError("Pin Code must be 6 digits", context);
     return false;
   }
-  if (provider.assemblyNameController.text.isEmpty) {
-    showAlertError("Please select assembly", context);
-    return false;
-  }
-
-  if (provider.constituencyNameController.text.isEmpty) {
-    showAlertError("Please select parliament", context);
-    return false;
-  }
+  // if (provider.assemblyNameController.text.isEmpty) {
+  //   showAlertError("Please select assembly", context);
+  //   return false;
+  // }
+  //
+  // if (provider.constituencyNameController.text.isEmpty) {
+  //   showAlertError("Please select parliament", context);
+  //   return false;
+  // }
   if (provider.exchangeDistrictNameController.text.isEmpty) {
     showAlertError("Please select exchange district", context);
     return false;
@@ -3780,6 +3814,18 @@ bool validateBasicDetails(BuildContext context, provider) {
     return false;
   }
 
+  if ((level == "5" || level == "6" || level == "8") &&
+      provider.graduationStreamTypeIdController.text.isEmpty) {
+    showAlertError("Please select Stream Type", context);
+    return false;
+  }
+
+  if (provider.graduationStreamTypeIdController.text == "-1" &&
+      provider.otherStreamController.text.isEmpty) {
+    showAlertError("Please enter Other Stream", context);
+    return false;
+  }
+
   // 1️⃣2️⃣ Other Medium Required when id=70
   if (provider.mediumEducationIdController.text == "70" &&
       provider.otherMediumEducationController.text.isEmpty) {
@@ -3828,7 +3874,7 @@ bool validateBasicDetails(BuildContext context, provider) {
   // }
 
   // Percentage Validation
-  if (provider.resultType == "Percentage") {
+  if (level != "1" && provider.resultType == "Percentage") {
     final value = provider.gradeTypeNameController.text.trim();
 
     if (value.isEmpty) {
@@ -3855,7 +3901,7 @@ bool validateBasicDetails(BuildContext context, provider) {
   }
 
 // CGPA Validation
-  if (provider.resultType == "CGPA") {
+  if (level != "1" && provider.resultType == "CGPA") {
     final value = provider.gradeTypeNameController.text.trim();
 
     if (value.isEmpty) {

@@ -80,7 +80,7 @@ class EmpOTRFormProvider with ChangeNotifier {
   final TextEditingController hoLocalityController = TextEditingController();
   final TextEditingController hoPincodeController = TextEditingController();
 
-
+  String? telNoError;
   bool districtPrefilled = false;
   bool pinCodePrefilled = false;
   bool emailPrefilled = false;

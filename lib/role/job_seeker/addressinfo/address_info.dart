@@ -766,7 +766,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
 
                 hSpace(4),
                 /// Constituency
-                labelWithStar('Select Constituency',required: false),
+              /*  labelWithStar('Select Constituency',required: false),
 
                 hSpace(16),
 
@@ -895,7 +895,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   ],
                 ),
 
-                hSpace(4),
+                hSpace(4), */
 
                 /// Save button
                 SizedBox(

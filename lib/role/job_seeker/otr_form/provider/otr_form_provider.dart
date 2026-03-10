@@ -171,6 +171,9 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController graduationStreamTypeIdController =
   TextEditingController();
 
+  final TextEditingController otherStreamController =
+  TextEditingController();
+
   final TextEditingController educationLevelIdController =
       TextEditingController();
   final TextEditingController educationLevelNameController =
@@ -1875,6 +1878,12 @@ class OtrFormProvider extends ChangeNotifier {
 
           "DisabilityPercentage": disabilityPercentageController.text,
           "DisabilityType": disabilityIdController.text,
+
+          "DisabilityPercent": disabilityPercentageController.text,
+          "Disability": disabilityIdController.text,
+
+          "StreamType": graduationStreamTypeIdController.text,
+          "OtherStream": otherStreamController.text,
 
           "UIDNCOCode": uidTypeIdController.text,
           "UIDNumber": uidNOController.text,

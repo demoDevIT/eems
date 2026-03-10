@@ -535,7 +535,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
-                                textLenght: 15,
+                                textLenght: 10,
                                 //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
@@ -543,7 +543,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   LengthLimitingTextInputFormatter(15),
                                 ],
                                 fun: (value) {
-                                  if (value.length != 15) {
+                                  if (value.length != 10) {
                                     provider.telError =
                                         "Telephone number must be 15 digits";
                                   } else {
@@ -822,15 +822,24 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
-                                isEnabled: provider
-                                    .isEditable(provider.hoTelNoController),
-                                textLenght: 15,
+                                // isEnabled: provider
+                                //     .isEditable(provider.hoTelNoController),
+                                textLenght: 10,
                                 //  isEnabled: false,
                                 boxColor: fafafaColor,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
                                   LengthLimitingTextInputFormatter(15),
                                 ],
+                                fun: (value) {
+                                  if (value.length != 10) {
+                                    provider.telNoError =
+                                    "Telephone number must be 10 digits";
+                                  } else {
+                                    provider.telNoError = null;
+                                  }
+                                  provider.notifyListeners();
+                                },
                               ),
                             ),
                             Padding(

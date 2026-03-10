@@ -994,6 +994,7 @@ Future<void> showLogoutDialog(
                         ),
                       ],
                     ),
+                    hSpace(15),
                   ],
                 ),
               ),

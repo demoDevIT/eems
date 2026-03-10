@@ -49,17 +49,29 @@ class RegisteredEventListProvider extends ChangeNotifier {
         String userId = UserData().model.value.userId.toString();
         String roleId = UserData().model.value.roleId.toString();
 
-        String url =
-            "https://eems.devitsandbox.com/mobileapi/api/JobFairEvent/GetAllJobFairEventsList/"
-            "?_actionName=GetRegisteredEventsByDate"
-            "&UserId=$userId"
-            "&Roleid=$roleId"
-            "&FromDate=$fromDate"
-            "&EndDate=$endDate";
+        // String url =
+        //     "https://eems.devitsandbox.com/mobileapi/api/JobFairEvent/GetAllJobFairEventsList/"
+        //     "?_actionName=GetRegisteredEventsByDate"
+        //     "&UserId=$userId"
+        //     "&Roleid=$roleId"
+        //     "&FromDate=$fromDate"
+        //     "&EndDate=$endDate";
+
+        Map<String, dynamic> body =
+        {
+
+          "ActionName": "RegisteredEvents", //Upcoming_Events
+          "UserId": userId,
+          "RoleId": roleId,
+          "FromDate": fromDate,
+          "EndDate": endDate,
+          "FinancialYearID": 0
+        };
+        String url = "JobFairEvent/GetAllJobFairEventsList";
 
         ProgressDialog.showLoadingDialog(context);
 
-        ApiResponse apiResponse = await commonRepo.post(url,{});
+        ApiResponse apiResponse = await commonRepo.post(url,body);
 
         ProgressDialog.closeLoadingDialog(context);
 
