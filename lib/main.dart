@@ -26,6 +26,7 @@ import 'package:rajemployment/role/employer/emp_profile/provider/head_office_det
 import 'package:rajemployment/role/employer/emp_profile/provider/uploaded_documents_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
+import 'package:rajemployment/role/employer/job_post/provider/job_post_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
 import 'package:rajemployment/role/job_seeker/addeducationaldetail/provider/add_educational_detail_provider.dart';
@@ -174,6 +175,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<SelfAssessmentProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<AssessmentTestProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<DeptQRScanProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<JobPostProvider>()),
        ],
         child:MyApp(),
       ),

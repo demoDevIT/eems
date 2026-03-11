@@ -11,6 +11,7 @@ import '../../job_seeker/grievance/grievance_list.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../emp_profile/profile_screen.dart';
 import '../job_fair/job_fair.dart';
+import '../job_post/job_post.dart';
 
 class EmployerDashboard extends StatefulWidget {
   const EmployerDashboard({super.key});
@@ -72,8 +73,16 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
           //   color: const Color(0xFF4A76C9),
           // ),
           _dashboardTile(
-            title: "Post Job",
+            title: "Job Fair\nPost Job",
             color: const Color(0xFF4A76C9),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const JobPostScreen(),
+                ),
+              );
+            },
           ),
           // _dashboardTile(
           //   title: "Search Job\nSeeker By Skills",

@@ -1380,7 +1380,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                         provider.locationList.clear();
 
                                         provider.getCityApi(
-                                            context, value!.iD!.toString());
+                                            context, value!.code!.toString());
                                         provider.notifyListeners();
                                       },
                                     ),
@@ -1417,7 +1417,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Website', required: true),
+                              child: labelWithStar('Website'),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1507,7 +1507,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('PAN No', required: true),
+                              child: labelWithStar('PAN No'),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1746,7 +1746,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                         provider.coLocationList.clear();
 
                                         provider.getCityApi(
-                                            context, value!.iD!.toString());
+                                            context, value!.code!.toString());
                                         provider.notifyListeners();
                                       },
                                     ),
@@ -2751,10 +2751,10 @@ bool validateEmpOTRBasicAndOfficeDetails(
     return false;
   }
 
-  if (provider.websiteController.text.trim().isEmpty) {
-    showAlertError("Please enter Website", context);
-    return false;
-  }
+  // if (provider.websiteController.text.trim().isEmpty) {
+  //   showAlertError("Please enter Website", context);
+  //   return false;
+  // }
 
   if (provider.applicantAddressController.text.trim().isEmpty) {
     showAlertError("Please enter Applicant Address", context);
@@ -2769,10 +2769,10 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// =========================
   /// 5️⃣ CONTACT PERSON DETAILS
   /// =========================
-  if (provider.contactPanController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact PAN No", context);
-    return false;
-  }
+  // if (provider.contactPanController.text.trim().isEmpty) {
+  //   showAlertError("Please enter Contact PAN No", context);
+  //   return false;
+  // }
 
   if (provider.contactPanError != null) {
     showAlertError(provider.contactPanError!, context);
@@ -2794,10 +2794,10 @@ bool validateEmpOTRBasicAndOfficeDetails(
     return false;
   }
 
-  if (provider.contactAltMobileController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Alternate Mobile", context);
-    return false;
-  }
+  // if (provider.contactAltMobileController.text.trim().isEmpty) {
+  //   showAlertError("Please enter Contact Alternate Mobile", context);
+  //   return false;
+  // }
 
   if (provider.contactAlterMobileError != null) {
     showAlertError(provider.contactAlterMobileError!, context);
