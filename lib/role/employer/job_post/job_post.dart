@@ -7,6 +7,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 
 import '../../../utils/dropdown.dart';
+import 'add_job.dart';
 import 'provider/job_post_provider.dart';
 import '../../../utils/textfeild.dart';
 
@@ -47,6 +48,32 @@ class _JobPostScreenState extends State<JobPostScreen> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    const Text(
+                      "Job Posts",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.add),
+                      label: const Text("Add Job"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AddJobScreen(),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
 
                 /// FILTER CARD
                 Card(
