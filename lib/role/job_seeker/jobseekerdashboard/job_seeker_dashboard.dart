@@ -9,6 +9,7 @@ import 'package:rajemployment/role/job_seeker/grievance/add_grievance_screen.dar
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:rajemployment/role/job_seeker/mysy/mysy_list.dart';
 import 'package:rajemployment/role/job_seeker/self_assessment/self_assessment.dart';
+import 'package:rajemployment/role/job_seeker/settings/job_settings_screen.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_shared_prefrence.dart';
@@ -47,8 +48,8 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
     HomeScreen(),
     JobsListScreen(),
     NotificationListScreen(),
-    Center(child: Text("Settings Page")),
-    ProfileScreen(isAppBarHide: false,),
+    JobSettingsScreen(),
+
   ];
 
   @override
@@ -89,7 +90,6 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
         BottomNavigationBarItem(icon: Icon(Icons.work), label: AppLocalizations.of(context)!.jobs),
         BottomNavigationBarItem(icon: Icon(Icons.notifications), label: AppLocalizations.of(context)!.notifications),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: AppLocalizations.of(context)!.settings),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: AppLocalizations.of(context)!.profile),
       ],
     );
   }

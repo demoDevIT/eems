@@ -133,4 +133,16 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get internet_connection => 'No Internet Connection';
+
+  @override
+  String get faqs => 'अक्सर पूछे जाने वाले प्रश्न';
+
+  @override
+  String get faqWelcomeQuestion => 'आरआरपी बॉट में आपका स्वागत है';
+
+  @override
+  String get faqWelcomeAnswer => 'आरआरपी बॉट में आपका स्वागत है। मैं आपकी सहायता के लिए यहाँ हूँ। कृपया वह विकल्प चुनें जो आपके प्रश्न का सबसे अच्छा वर्णन करता हो ताकि मैं आपकी बेहतर सहायता कर सकूँ।';
+
+  @override
+  String get quickServices => 'त्वरित सेवाएं';
 }

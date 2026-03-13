@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../../utils/dropdown.dart';
+import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import 'modal/location_modal.dart';
 import 'provider/add_job_provider.dart';
 
 class AddJobScreen extends StatefulWidget {
@@ -16,6 +20,8 @@ class AddJobScreen extends StatefulWidget {
 class _AddJobScreenState extends State<AddJobScreen> {
  // const AddJobScreen({super.key});
 
+  final _formKey = GlobalKey<FormState>();
+
   String? selectedEvent;
   String? selectedSector;
   String? selectedjobTitle;
@@ -25,6 +31,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   String? selectedEmpType;
   String? selectedNatureJob;
   String? selectedSalaryRange;
+  String? selectedworkExp;
 
   @override
   void initState() {
@@ -42,6 +49,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
       provider.natureJobListApi(context);
       provider.salaryRangeListApi(context);
       provider.getCategoryTypeDetailsApi(context);
+      provider.getEducationTypeApi(context);
     });
   }
 
@@ -57,7 +65,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
             return SingleChildScrollView(
               padding: const EdgeInsets.all(12),
-              child: Column(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                 children: [
 
                   /// JOB DETAILS CARD
@@ -216,21 +226,22 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// JOB DESCRIPTION FILE
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
+                          labelWithStar('Job Description', required: false),
+                          const SizedBox(height: 6),
+                          Consumer<AddJobProvider>(
+                            builder: (context, provider, _) {
 
-                              labelWithStar('Job Description', required: false),
-
-                              OutlinedButton.icon(
-                                icon: const Icon(Icons.attach_file),
-                                label: const Text("Attach File"),
-                                onPressed: () {
-                                  //provider.pickJobDescriptionFile();
+                              return buildImageUploadBox(
+                                title: "Upload Document (PDF)",
+                                imageFile: provider.selectedDocumentFile,
+                                onTap: () {
+                                  provider.pickAndUploadSingleDocument(
+                                    context: context,
+                                  );
                                 },
-                              )
-                            ],
+                              );
+
+                            },
                           ),
 
                           const SizedBox(height: 10),
@@ -257,20 +268,90 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           /// JOB LOCATION
                           labelWithStar('Job Location', required: false),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
-                              items: provider.locationList,
-                              controller: provider.locationController,
-                              idController: provider.locationIdController,
-                              hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {
-                                selectedLocation = provider.locationIdController.text;
-                                provider.notifyListeners();
-                              },
-                            ),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(vertical: 5),
+                          //   child: buildDropdownWithBorderField(
+                          //     items: provider.locationList,
+                          //     controller: provider.locationController,
+                          //     idController: provider.locationIdController,
+                          //     hintText: "--Select Option--",
+                          //     height: 50,
+                          //     borderRadius: BorderRadius.circular(8),
+                          //     onChanged: (value) {
+                          //       selectedLocation = provider.locationIdController.text;
+                          //       provider.notifyListeners();
+                          //     },
+                          //   ),
+                          // ),
+
+                          DropdownButtonFormField<String>(
+                            hint: const Text("--Select Option--"),
+                            value: provider.locationController.text.isEmpty
+                                ? null
+                                : provider.locationController.text,
+
+                            items: [
+
+                              ...provider.locationList.asMap().entries.expand((entry) {
+
+                                int index = entry.key;
+                                LocationData item = entry.value;
+
+                                List<DropdownMenuItem<String>> list = [];
+
+                                /// Insert label before cities
+                                if (index == 2) {
+                                  list.add(
+                                    const DropdownMenuItem<String>(
+                                      enabled: false,
+                                      child: Text(
+                                        "Rajasthan -> Cities",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                list.add(
+                                  DropdownMenuItem<String>(
+                                    value: item.name,
+                                    enabled: true,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: index >= 2 ? 12 : 0),
+                                      child: Text(
+                                        item.name ?? "",
+                                        style: TextStyle(
+                                          fontWeight:
+                                          (item.cityId == -100 || item.cityId == -99)
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+
+                                return list;
+                              }),
+
+                            ],
+
+                            onChanged: (value) {
+
+                              provider.locationController.text = value ?? "";
+
+                              /// Find selected object
+                              final selected = provider.locationList
+                                  .firstWhere((e) => e.name == value);
+
+                              provider.locationIdController.text =
+                                  selected.cityId.toString();
+
+                              provider.notifyListeners();
+                            },
                           ),
 
                           const SizedBox(height: 10),
@@ -316,19 +397,23 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// WORK EXPERIENCE
-                          const Text("Work Experience",
-                              style: TextStyle(fontWeight: FontWeight.w500)),
-                          const SizedBox(height: 5),
-                          DropdownButtonFormField(
-                            hint: const Text("Work Experience"),
-                            items: provider.experiences
-                                .map((e) => DropdownMenuItem(
-                                value: e, child: Text(e)))
-                                .toList(),
-                            onChanged: (v) {
-                              provider.workExperience = v.toString();
+                          labelWithStar('Work Experience', required: false),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: buildDropdownWithBorderField(
+                            items: provider.workExpList,
+                            controller: provider.workExpController,
+                            idController: provider.workExpIdController,
+                            hintText: "--Select Option--",
+                            height: 50,
+                            borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {
+                              setState(() {
+                                provider.workExpIdController.text = provider.workExpIdController.text;
+                              });
                             },
                           ),
+                        ),
 
                           const SizedBox(height: 15),
 
@@ -500,7 +585,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           ),
 
                           const SizedBox(height: 12),
-
+                          labelWithStar('Skill Category', required: false),
                           /// CATEGORY DROPDOWN
                           buildDropdownWithBorderField(
                             items: provider.categoryList,
@@ -511,6 +596,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(8),
                             onChanged: (value) {
+                              provider.selectedSkillCategory =
+                                  provider.categoryNameController.text;
+
                               provider.getSubCategoryTypeDetailsApi(
                                 context,
                                 provider.categoryIdController.text,
@@ -521,6 +609,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           /// SUBCATEGORY + ADD BUTTON
 
+                          labelWithStar('Skill Subcategory', required: false),
+                          const SizedBox(height: 5),
                           Row(
                             children: [
                               Expanded(
@@ -532,7 +622,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   height: 50,
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(8),
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    provider.selectedSkillSubCategory =
+                                        provider.subCategoryNameController.text;
+                                  },
                                 ),
                               ),
 
@@ -600,33 +693,44 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           ),
 
                           const SizedBox(height: 12),
+                          labelWithStar('Education Type', required: false),
+                          buildDropdownWithBorderField(
+                            items: provider.educationTypeList,
+                            controller: provider.educationNameController,
+                            idController: provider.educationIdController,
+                            hintText: "--Select Option--",
+                            height: 50,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {
+                              provider.selectedEducationType =
+                                  provider.educationNameController.text;
 
-                          DropdownButtonFormField(
-                            hint: const Text("Education"),
-                            items: provider.educationTypes
-                                .map((e) => DropdownMenuItem(
-                                value: e, child: Text(e)))
-                                .toList(),
-                            value: provider.selectedEducationType,
-                            onChanged: (v) {
-                              provider.selectedEducationType = v.toString();
+                              provider.getCourseApi(
+                                context,
+                                provider.educationIdController.text,
+                              );
                             },
                           ),
+
                           const SizedBox(height: 10),
 
-
+                          labelWithStar('Course', required: false),
+                          const SizedBox(height: 5),
                           Row(
                             children: [
                               Expanded(
-                                child: DropdownButtonFormField(
-                                  hint: const Text("Course"),
-                                  items: provider.courses
-                                      .map((e) => DropdownMenuItem(
-                                      value: e, child: Text(e)))
-                                      .toList(),
-                                  value: provider.selectedCourse,
-                                  onChanged: (v) {
-                                    provider.selectedCourse = v.toString();
+                                child: buildDropdownWithBorderField(
+                                  items: provider.courseList,
+                                  controller: provider.courseNameController,
+                                  idController: provider.courseIdController,
+                                  hintText: "--Select Option--",
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(8),
+                                  onChanged: (value) {
+                                    provider.selectedCourse =
+                                        provider.courseNameController.text;
                                   },
                                 ),
                               ),
@@ -708,7 +812,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            //provider.submitJob(context);
+                            if (validateAddJobForm(context, provider)) {
+                              confirmAlertDialog(
+                                context,
+                                "Alert",
+                                "Are you sure want to submit ?",
+                                    (value) {
+                                  if (value.toString() == "success") {
+                                    provider.saveJobDetailApi(context);
+                                  }
+                                },
+                              );
+                            }
                           },
                           child: const Text("Post"),
                         ),
@@ -719,10 +834,185 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   const SizedBox(height: 30)
                 ],
               ),
+                )
             );
           },
         ),
       );
 
   }
+
+  Widget buildImageUploadBox({
+    required String title,
+    required File? imageFile,
+    VoidCallback? onTap,
+  }) {
+    final bool isPdf =
+        imageFile != null && imageFile.path.toLowerCase().endsWith('.pdf');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+          GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: imageFile == null
+                  ? const Center(
+                child: Icon(Icons.cloud_upload, size: 30),
+              )
+
+              // ✅ PDF UI
+                  : isPdf
+                  ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.picture_as_pdf,
+                    color: Colors.red,
+                    size: 36,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      imageFile.path.split('/').last,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ),
+                ],
+              )
+
+              // ✅ IMAGE UI
+                  : ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  imageFile,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+bool validateAddJobForm(BuildContext context, provider) {
+  // ---------- EVENT ----------
+  if (provider.eventIdController.text.trim().isEmpty) {
+    showAlertError("Please select Event", context);
+    return false;
+  }
+
+  // ---------- JOB SECTOR ----------
+  if (provider.sectorIdController.text.trim().isEmpty) {
+    showAlertError("Please select Sector", context);
+    return false;
+  }
+
+  // ---------- JOB TTILE ----------
+  if (provider.jobTitleIdController.text.trim().isEmpty) {
+    showAlertError("Please select Title", context);
+    return false;
+  }
+
+  // ---------- NCO ----------
+  if (provider.ncoCodeIdController.text.trim().isEmpty) {
+    showAlertError("Please select NCO Code", context);
+    return false;
+  }
+
+  // ---------- Document ----------
+  if (provider.uploadedDocumentPath == null ||
+      provider.uploadedDocumentPath!.isEmpty) {
+    showAlertError("Please Upload Document", context);
+    return false;
+  }
+
+  // ---------- GENDER ----------
+  if (provider.genderIdController.text.trim().isEmpty) {
+    showAlertError("Please select Gender", context);
+    return false;
+  }
+
+  // ---------- LOCATION ----------
+  if (provider.locationIdController.text.trim().isEmpty) {
+    showAlertError("Please select Location", context);
+    return false;
+  }
+
+  // ---------- EMPLOYMENT TYPE ----------
+  if (provider.empTypeIdController.text.trim().isEmpty) {
+    showAlertError("Please select Employment Type", context);
+    return false;
+  }
+
+  // ---------- NATURE OF JOB ----------
+  if (provider.natureJobIdController.text.trim().isEmpty) {
+    showAlertError("Please select Nature of Job", context);
+    return false;
+  }
+
+  // ---------- WORK EXPERIENCE ----------
+  if (provider.workExpIdController.text.trim().isEmpty) {
+    showAlertError("Please select Work Experience", context);
+    return false;
+  }
+
+  // ---------- SALARY RANGE ----------
+  if (provider.salaryRangeIdController.text.trim().isEmpty) {
+    showAlertError("Please select Salary Range", context);
+    return false;
+  }
+
+  // ---------- SALARY ----------
+  if (provider.salaryController.text.trim().isEmpty) {
+    showAlertError("Please enter Salary", context);
+    return false;
+  }
+
+  // ---------- CATEGORY ----------
+  if (provider.categoryIdController.text.trim().isEmpty) {
+    showAlertError("Please select Category", context);
+    return false;
+  }
+
+  // ---------- SUBCATEGORY ----------
+  if (provider.subCategoryIdController.text.trim().isEmpty) {
+    showAlertError("Please select Subcategory", context);
+    return false;
+  }
+
+  // ---------- EDUCATION TYPE ----------
+  if (provider.educationIdController.text.trim().isEmpty) {
+    showAlertError("Please select Education Type", context);
+    return false;
+  }
+
+  // ---------- COURSE ----------
+  if (provider.courseIdController.text.trim().isEmpty) {
+    showAlertError("Please select Course", context);
+    return false;
+  }
+
+  // ---------- Description ----------
+  if (provider.descriptionController.text.trim().isEmpty) {
+    showAlertError("Please enter Description", context);
+    return false;
+  }
+
+  return true;
 }

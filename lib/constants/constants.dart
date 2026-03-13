@@ -7,7 +7,11 @@ abstract class Constants {
 
     // static const loginUrl = "Authentication/Login";
      static const UploadVideo = "${baseurl}Login/UploadVideo";
+
      static const GetBasicDetails = "${baseurl}Login/GetBasicDetails";
+     //farid code
+     static const getFAQAssistanceQuestions = "${baseurl}Common/GetFAQAssistanceQuestions";
+     static const getFAQAssistanceDetail = "${baseurl}Common/GetFAQAssistanceDetail";
 
      static const namespace = "http://tempuri.org/";
 

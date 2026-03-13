@@ -41,6 +41,9 @@ import 'package:rajemployment/role/job_seeker/camera/provider/comera_provider.da
 import 'package:rajemployment/role/job_seeker/cv_builder/provider/cv_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/departmental_schemes/provider/mysy_pending_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/educationdetail/provider/education_details_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/action_services/bottom_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/chat_screen/chat_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/faqs_provider.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/add_grievance_provider.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/grievance_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/homescreen/provider/home_screen_provider.dart';
@@ -178,6 +181,10 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<DeptQRScanProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<JobPostProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<AddJobProvider>()),
+          //farid code
+          ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<BottomProvider>()),
        ],
         child:MyApp(),
       ),

@@ -35,6 +35,9 @@ import 'package:rajemployment/role/job_seeker/camera/provider/comera_provider.da
 import 'package:rajemployment/role/job_seeker/cv_builder/provider/cv_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/departmental_schemes/provider/mysy_pending_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/educationdetail/provider/education_details_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/action_services/bottom_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/chat_screen/chat_provider.dart';
+import 'package:rajemployment/role/job_seeker/faqs_screen/faqs_provider.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/add_grievance_provider.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/grievance_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/homescreen/provider/home_screen_provider.dart';
@@ -154,4 +157,8 @@ Future<void> init() async {
   sl.registerFactory(() => DeptQRScanProvider(commonRepo: sl()));
   sl.registerFactory(() => JobPostProvider(commonRepo: sl()));
   sl.registerFactory(() => AddJobProvider(commonRepo: sl()));
+//farid code
+  sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
+  sl.registerFactory(() => ChatProvider(commonRepo: sl()));
+  sl.registerFactory(() => BottomProvider(commonRepo: sl()));
 }

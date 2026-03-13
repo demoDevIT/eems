@@ -346,6 +346,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Internet Connection'**
   String get internet_connection;
+
+  /// No description provided for @faqs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get faqs;
+
+  /// No description provided for @faqWelcomeQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to the RRP Bot'**
+  String get faqWelcomeQuestion;
+
+  /// No description provided for @faqWelcomeAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to the RRP Bot and I am here to help you. Please choose the option which best describes your query for me to help you better.'**
+  String get faqWelcomeAnswer;
+
+  /// No description provided for @quickServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Services'**
+  String get quickServices;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

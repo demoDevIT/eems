@@ -1,17 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/global.dart';
+import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
 import '../../../job_seeker/add_language_skills/modal/category_type_details_modal.dart';
 import '../../../job_seeker/add_language_skills/modal/get_sub_category_type_details_modal.dart';
+import '../../../job_seeker/add_language_skills/modal/upload_document_modal.dart';
 import '../../../job_seeker/addjobpreference/modal/sector_modal.dart';
 import '../../../job_seeker/job_fair_event/modal/event_name_modal.dart';
+import '../modal/course_modal.dart';
+import '../modal/education_type_modal.dart';
 import '../modal/emp_type_modal.dart';
 import '../modal/gender_modal.dart';
 import '../modal/job_title_modal.dart';
@@ -19,6 +25,10 @@ import '../modal/location_modal.dart';
 import '../modal/nature_job_modal.dart';
 import '../modal/noc_code_modal.dart';
 import '../modal/salary_range_modal.dart';
+
+import 'package:http_parser/http_parser.dart';
+
+import '../modal/save_job_post_modal.dart';
 
 class SkillModel {
   String category;
@@ -68,6 +78,10 @@ class AddJobProvider extends ChangeNotifier {
   final TextEditingController  ncoCodeIdController = TextEditingController();
   final TextEditingController  ncoCodeController = TextEditingController();
 
+  File? selectedDocumentFile;
+  String? uploadedDocumentPath;
+  int? selectedDocumentMasterId;
+
   //gender
   List<GenderData> genderList = [];
   final TextEditingController  genderIdController = TextEditingController();
@@ -88,6 +102,15 @@ class AddJobProvider extends ChangeNotifier {
   final TextEditingController  natureJobIdController = TextEditingController();
   final TextEditingController  natureJobController = TextEditingController();
 
+  //Work Experience
+  List<DropdownItem> workExpList = [
+    DropdownItem(dropID: "0", name: "Any"),
+    DropdownItem(dropID: "1", name: "Fresher"),
+    DropdownItem(dropID: "2", name: "Experienced"),
+  ];
+  final TextEditingController  workExpIdController = TextEditingController();
+  final TextEditingController  workExpController = TextEditingController();
+
   //Salary Range
   List<SalaryRangeData> salaryRangeList = [];
   final TextEditingController  salaryRangeIdController = TextEditingController();
@@ -101,25 +124,13 @@ class AddJobProvider extends ChangeNotifier {
   final TextEditingController subCategoryIdController = TextEditingController();
   final TextEditingController subCategoryNameController = TextEditingController();
 
-  List<SkillModel> selectedSkills = [];
+  List<GetEducationTypeData> educationTypeList = [];
+  List<GetCourseData> courseList = [];
 
-  final TextEditingController skillCategoryController = TextEditingController();
-  final TextEditingController skillCategoryIdController = TextEditingController();
-
-  final TextEditingController skillSubCategoryController = TextEditingController();
-  final TextEditingController skillSubCategoryIdController = TextEditingController();
-
-  /// Dropdown values
-  String? eventList;
-  String? sector;
-  String? jobTitle;
-  String? ncoCode;
-  String? gender;
-  String? jobLocation;
-  String? employmentType;
-  String? natureOfJob;
-  String? workExperience;
-  String? salaryRange;
+  final TextEditingController educationIdController = TextEditingController();
+  final TextEditingController educationNameController = TextEditingController();
+  final TextEditingController courseIdController = TextEditingController();
+  final TextEditingController courseNameController = TextEditingController();
 
   /// Radio values
   String exServiceman = "No";
@@ -327,6 +338,98 @@ class AddJobProvider extends ChangeNotifier {
       }
     } else {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<void> pickAndUploadSingleDocument({
+    required BuildContext context,
+  }) async {
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result == null) return;
+
+    final file = File(result.files.single.path!);
+
+    /// File Size Validation
+    final sizeInKB = (await file.length()) / 1024;
+
+    if (sizeInKB > 300) {
+      showAlertError("File size must be less than 300 KB", context);
+      return;
+    }
+
+    /// Preview
+    selectedDocumentFile = file;
+    notifyListeners();
+
+    String timestamp =
+        "${DateTime.now().millisecondsSinceEpoch}.pdf";
+
+    FormData param = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: timestamp,
+        contentType: MediaType("application", "pdf"),
+      ),
+      "FileExtension": "application/pdf",
+      "FolderName": "Employer/UploadedJobPostDocument",
+      "MaxFileSize": "307200",
+      "MinFileSize": "0",
+      "Password": "",
+    });
+
+    final res = await uploadDocumentApi(context, param);
+
+    if (res != null && res.data != null && res.data!.isNotEmpty) {
+
+      uploadedDocumentPath = res.data![0].fileName;
+
+      debugPrint("Uploaded File: $uploadedDocumentPath");
+
+      notifyListeners();
+    }
+  }
+
+  Future<UploadDocumentModal?> uploadDocumentApi(
+      BuildContext context, FormData inputText) async {
+
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+      return null;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.uploadDocumentRepo(
+        "Common/UploadDocument",
+        inputText,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        return UploadDocumentModal.fromJson(responseData);
+      } else {
+        showAlertError("Something went wrong", context);
+        return null;
+      }
+    } catch (e) {
+      showAlertError(e.toString(), context);
+      return null;
     }
   }
 
@@ -652,6 +755,235 @@ class AddJobProvider extends ChangeNotifier {
     }
   }
 
+  Future<GetEducationTypeModal?> getEducationTypeApi(
+      BuildContext context,
+      ) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        // ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse =
+        await commonRepo.get("Common/GetQualificationList");
+        //   ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = GetEducationTypeModal.fromJson(responseData);
+
+          if (sm.state == 200) {
+            educationTypeList.clear();
+            educationTypeList.addAll(sm.data!);
+
+            //notifyListeners();
+            return sm;
+          } else {
+            final smmm = GetEducationTypeModal(
+                state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return GetEducationTypeModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        //  ProgressDialog.closeLoadingDialog(context);
+        final sm =
+        GetEducationTypeModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<GetCourseModal?> getCourseApi(
+      BuildContext context, String id) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        // ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse =
+        await commonRepo.get("Common/GetGraduationType/$id");
+        //   ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = GetCourseModal.fromJson(responseData);
+
+          if (sm.state == 200) {
+            courseList.clear();
+            courseList.addAll(sm.data!);
+            notifyListeners();
+
+            //
+            return sm;
+          } else {
+            final smmm = GetCourseModal(
+                state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return GetCourseModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        //  ProgressDialog.closeLoadingDialog(context);
+        final sm =
+        GetCourseModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<SaveJobPostModal?> saveJobDetailApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        String ? IpAddress =  await UtilityClass.getIpAddress();
+
+        Map<String, dynamic> bodyy =
+        {
+          "ActionName": "string",
+          "UserId": 0,
+          "RoleId": 0,
+          "AgeGroupLimit": [
+            minAge.round(),
+            maxAge.round()
+          ],
+          "CloseDate": "string",
+          "CreationDate": "string",
+          "Description": descriptionController.text,
+          "Event": int.tryParse(eventIdController.text) ?? 0,
+          "GraduationTypes": [
+            0
+          ],
+          "JobPositionTitle": "string",
+          "JobSector": int.tryParse(sectorIdController.text) ?? 0,
+          "JobTitle": int.tryParse(jobTitleIdController.text) ?? 0,
+          "NCOCode": ncoCodeIdController.text,
+          "NoofVacancyFeMale": 0,
+          "NoofVacancyMale": 0,
+          "NoofVacancyOther": 0,
+          "SkillCatId": "string",
+          "SkillSubCatId": [
+            0
+          ],
+          "qualificationId": 0,
+          "JobPostPKID": 0,
+          "SalaryLimit": [
+            0
+          ],
+          "JodDescriptionDocument": uploadedDocumentPath ?? "",
+          "DocumentmasterID": 0,
+          "PreLocation": locationIdController.text,
+          "Employmenttype": int.tryParse(empTypeIdController.text) ?? 0,
+          "NatureOfJob": int.tryParse(natureJobIdController.text) ?? 0,
+          "WorkExperience": workExpIdController.text,
+          "TotalWorkExperience": 0,
+
+          "_AddedSkilList": skills.map((e) => {
+            "SkillName": e.category,
+            "SkillID": int.tryParse(e.category) ?? 0,
+            "SkillsubcateName": e.subCategory,
+            "SubcateID": int.tryParse(e.subCategory) ?? 0
+          }).toList(),
+
+          "_AddedEducationDetailList": qualifications.map((e) => {
+            "EducationType": e.educationType,
+            "EducationTypeID": int.tryParse(e.educationType) ?? 0,
+            "GraducationType": e.course,
+            "GraducationTypeID": int.tryParse(e.course) ?? 0
+          }).toList(),
+
+          "TotalVacancy": 0,
+          "ExperienceLimit": [
+            0
+          ],
+          "ExServiceman": exServiceman == "Yes",
+          "NightShift": nightShift == "Yes",
+          "GenderId": genderIdController.text,
+          "SalaryRangeId": int.tryParse(salaryRangeIdController.text) ?? 0,
+          "Salary": int.tryParse(salaryController.text) ?? 0,
+          "PostDateforAd": "2026-03-12T12:51:37.388Z",
+          "IsPwd": pwdJob == "Yes",
+          "JobPostedForId": 0,
+          "InternshipDuration": "string",
+          "OfferStipend": true,
+          "StipendAmount": 0
+        };
+
+        //I/flutter ( 9978): {"ActionName":"string","UserId":0,"RoleId":0,"AgeGroupLimit":[18,60],"CloseDate":"string","CreationDate":"string","Description":"qq","Event":73,"GraduationTypes":[0],"JobPositionTitle":"string","JobSector":63,"JobTitle":431,"NCOCode":"8159.8","NoofVacancyFeMale":0,"NoofVacancyMale":0,"NoofVacancyOther":0,"SkillCatId":"string","SkillSubCatId":[0],"qualificationId":0,"JobPostPKID":0,"SalaryLimit":[0],"JodDescriptionDocument":"Mar132026070539052212.pdf","DocumentmasterID":0,"PreLocation":"177","Employmenttype":191,"NatureOfJob":104,"WorkExperience":"0","TotalWorkExperience":0,"_AddedSkilList":[],"_AddedEducationDetailList":[],"TotalVacancy":0,"ExperienceLimit":[0],"ExServiceman":false,"NightShift":false,"GenderId":"92","SalaryRangeId":187,"Salary":1000,"PostDateforAd":"2026-03-12T12:51:37.388Z","IsPwd":false,"JobPostedForId":0,"InternshipDuration":"string","OfferStipend":true,"StipendAmount":0}
+
+        debugPrint(jsonEncode(bodyy));
+        return null;
+        String url = "JobFairEvent/SaveDataCreateJob";
+        ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse = await commonRepo.post(url,bodyy);
+        ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = SaveJobPostModal.fromJson(responseData);
+          if (sm.state == 200) {
+            successDialog(
+              context,sm.message.toString(), (value) {
+              print(value);
+              if (value.toString() == "success") {
+                Navigator.of(context).pop("success");
+                //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
+              }
+            },
+            );
+
+            return sm;
+          } else {
+            final smmm = SaveJobPostModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+        } else {
+          return SaveJobPostModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        ProgressDialog.closeLoadingDialog(context);
+        final sm = SaveJobPostModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
   /// Age update
   void updateAge(RangeValues values) {
     minAge = values.start;
@@ -688,25 +1020,6 @@ class AddJobProvider extends ChangeNotifier {
   String? selectedEducationType;
   String? selectedCourse;
 
-  List<String> salaryRanges = ["10k-15k", "15k-25k", "25k-40k"];
-
-  List<DropdownItem> skillCategories = [
-    DropdownItem(id: "1", name: "IT"),
-    DropdownItem(id: "2", name: "Construction"),
-    DropdownItem(id: "3", name: "Manufacturing"),
-  ];
-  List<DropdownItem> skillSubCategories = [
-    DropdownItem(id: "1", name: "Developer"),
-    DropdownItem(id: "2", name: "Electrician"),
-    DropdownItem(id: "3", name: "Operator"),
-  ];
-
-  List<String> educationTypes = ["10th", "12th", "Graduate"];
-  List<String> courses = ["BA", "BSc", "BCom"];
-
-  List<String> skillCatList = ["IT", "Construction", "Manufacturing"];
-  List<String> skillSubCatList = ["Developer", "Electrician", "Operator"];
-
   /// File picker
   // Future pickJobDescriptionFile() async {
   //
@@ -728,33 +1041,6 @@ class AddJobProvider extends ChangeNotifier {
     );
   }
 
-  // void addSkill() {
-  //
-  //   if (selectedSkillCategory == null || selectedSkillSubCategory == null) {
-  //     return;
-  //   }
-  //
-  //   skills.add(
-  //     SkillModel(
-  //       category: selectedSkillCategory!,
-  //       subCategory: selectedSkillSubCategory!,
-  //     ),
-  //   );
-  //
-  //   selectedSkillCategory = null;
-  //   selectedSkillSubCategory = null;
-  //
-  //   skillCategoryController.clear();
-  //   skillSubCategoryController.clear();
-  //
-  //   notifyListeners();
-  // }
-
-  // void removeSkill(int index) {
-  //   skills.removeAt(index);
-  //   notifyListeners();
-  // }
-
   void addSkill() {
 
     if (selectedSkillCategory == null || selectedSkillSubCategory == null) {
@@ -767,6 +1053,9 @@ class AddJobProvider extends ChangeNotifier {
         subCategory: selectedSkillSubCategory!,
       ),
     );
+
+    categoryNameController.clear();
+    subCategoryNameController.clear();
 
     selectedSkillCategory = null;
     selectedSkillSubCategory = null;
@@ -820,13 +1109,49 @@ class AddJobProvider extends ChangeNotifier {
     ncoCodeController.clear();
     ncoCodeIdController.clear();
 
-    skillCategories.clear();
-    skillCategoryController.clear();
-    skillCategoryIdController.clear();
+    genderList.clear();
+    genderController.clear();
+    genderIdController.clear();
 
-    skillSubCategories.clear();
-    skillSubCategoryController.clear();
-    skillSubCategoryIdController.clear();
+    locationList.clear();
+    locationController.clear();
+    locationIdController.clear();
+
+    empTypeList.clear();
+    empTypeIdController.clear();
+    empTypeController.clear();
+
+    natureJobList.clear();
+    natureJobIdController.clear();
+    natureJobController.clear();
+
+    // workExpList.clear();
+    workExpController.clear();
+    workExpIdController.clear();
+
+    //Salary Range
+    salaryRangeList.clear();
+    salaryRangeIdController.clear();
+    salaryRangeController.clear();
+
+    categoryList.clear();
+    categoryIdController.clear();
+    categoryNameController.clear();
+
+    subCategoryList.clear();
+    subCategoryIdController.clear();
+    subCategoryNameController.clear();
+
+    //Education Type
+    educationTypeList.clear();
+    educationIdController.clear();
+    educationNameController.clear();
+
+    //Course Type
+    courseList.clear();
+    courseIdController.clear();
+    courseNameController.clear();
+
 
     notifyListeners();
   }
@@ -834,8 +1159,8 @@ class AddJobProvider extends ChangeNotifier {
 }
 
 class DropdownItem {
-  String id;
+  String dropID;
   String name;
 
-  DropdownItem({required this.id, required this.name});
+  DropdownItem({required this.dropID, required this.name});
 }

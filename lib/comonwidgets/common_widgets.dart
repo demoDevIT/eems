@@ -26,6 +26,41 @@ class CommonWidgets {
     );
   }
 
+  static PreferredSizeWidget AppBarFaqs({
+    required String title,
+    required VoidCallback callback,
+    List<Widget>? actions,
+  }) {
+    return AppBar(
+      toolbarHeight: 45,
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+
+      leading: InkWell(
+        onTap: callback,
+        child: const Icon(
+          Icons.arrow_back_ios,
+          size: 22,
+          color: kBlackColor,
+        ),
+      ),
+
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: kBlackColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      centerTitle: false,
+
+      actions: actions,
+    );
+  }
+
   static PreferredSizeWidget Appbarnavi(
       {required String title,
       required VoidCallback callback,

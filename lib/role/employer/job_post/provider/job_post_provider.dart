@@ -134,11 +134,11 @@ class JobPostProvider extends ChangeNotifier {
 
       String url = "JobFairEvent/GetAllJobPostList";
 
-      ProgressDialog.showLoadingDialog(context);
+     // ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(url, body);
 
-      ProgressDialog.closeLoadingDialog(context);
+    //  ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -194,7 +194,6 @@ class JobPostProvider extends ChangeNotifier {
 
   Future deleteJobPost(BuildContext context, int jobPostId) async {
     try {
-
       String userId = UserData().model.value.userId.toString();
 
       Map<String, dynamic> body = {
@@ -205,11 +204,11 @@ class JobPostProvider extends ChangeNotifier {
 
       String url = "JobFairEvent/DeleteJobPostDetailbyID";
 
-      ProgressDialog.showLoadingDialog(context);
+      //ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(url, body);
 
-      ProgressDialog.closeLoadingDialog(context);
+     // ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
 
@@ -223,7 +222,7 @@ class JobPostProvider extends ChangeNotifier {
 
           showAlertSuccess("Job post deleted successfully", context);
 
-          /// Refresh List
+          // refresh list
           await getJobPostList(context);
 
         } else {

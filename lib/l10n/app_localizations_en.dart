@@ -133,4 +133,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get internet_connection => 'No Internet Connection';
+
+  @override
+  String get faqs => 'FAQs';
+
+  @override
+  String get faqWelcomeQuestion => 'Welcome to the RRP Bot';
+
+  @override
+  String get faqWelcomeAnswer => 'Welcome to the RRP Bot and I am here to help you. Please choose the option which best describes your query for me to help you better.';
+
+  @override
+  String get quickServices => 'Quick Services';
 }

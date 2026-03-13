@@ -40,5 +40,9 @@
   "langskill": "Language/Skills",
   "physattri": "Physical Attributes",
   "videoprof": "Video Profile",
-  "internet_connection": "No Internet Connection"
+  "internet_connection": "No Internet Connection",
+  "faqs":"FAQs",
+  "faqWelcomeQuestion": "Welcome to the RRP Bot",
+  "faqWelcomeAnswer": "Welcome to the RRP Bot and I am here to help you. Please choose the option which best describes your query for me to help you better.",
+  "quickServices": "Quick Services"
 }
