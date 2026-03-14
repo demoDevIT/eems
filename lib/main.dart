@@ -26,6 +26,7 @@ import 'package:rajemployment/role/employer/emp_profile/provider/head_office_det
 import 'package:rajemployment/role/employer/emp_profile/provider/uploaded_documents_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
+import 'package:rajemployment/role/employer/job_application/provider/job_application_provider.dart';
 import 'package:rajemployment/role/employer/job_post/provider/add_job_provider.dart';
 import 'package:rajemployment/role/employer/job_post/provider/job_post_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
@@ -181,6 +182,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<DeptQRScanProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<JobPostProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<AddJobProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<JobApplicationProvider>()),
           //farid code
           ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),

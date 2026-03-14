@@ -10,6 +10,7 @@ import '../../../utils/user_new.dart';
 import '../../job_seeker/grievance/grievance_list.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../emp_profile/profile_screen.dart';
+import '../job_application/job_application.dart';
 import '../job_fair/job_fair.dart';
 import '../job_post/job_post.dart';
 
@@ -67,11 +68,6 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               );
             },
           ),
-
-          // _dashboardTile(
-          //   title: "Search Job\nSeekers Near Me",
-          //   color: const Color(0xFF4A76C9),
-          // ),
           _dashboardTile(
             title: "Job Fair\nPost Job",
             color: const Color(0xFF4A76C9),
@@ -84,18 +80,6 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               );
             },
           ),
-          // _dashboardTile(
-          //   title: "Search Job\nSeeker By Skills",
-          //   color: const Color(0xFF4A76C9),
-          // ),
-          // _dashboardTile(
-          //   title: "Search Job\nSeeker By Qualification",
-          //   color: const Color(0xFF4A76C9),
-          // ),
-          // _dashboardTile(
-          //   title: "Search Job\nSeeker By Experience",
-          //   color: const Color(0xFF4A76C9),
-          // ),
           _dashboardTile(
             title: "Apply for\nJob Fair",
             color: const Color(0xFF4A76C9),
@@ -124,6 +108,19 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               }
             },
           ),
+          _dashboardTile(
+            title: "Job Fair\nJob Applications",
+            color: const Color(0xFF4A76C9),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const JobApplicationScreen(),
+                ),
+              );
+            },
+          ),
+
         ],
       ),
     );

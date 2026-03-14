@@ -268,21 +268,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           /// JOB LOCATION
                           labelWithStar('Job Location', required: false),
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(vertical: 5),
-                          //   child: buildDropdownWithBorderField(
-                          //     items: provider.locationList,
-                          //     controller: provider.locationController,
-                          //     idController: provider.locationIdController,
-                          //     hintText: "--Select Option--",
-                          //     height: 50,
-                          //     borderRadius: BorderRadius.circular(8),
-                          //     onChanged: (value) {
-                          //       selectedLocation = provider.locationIdController.text;
-                          //       provider.notifyListeners();
-                          //     },
-                          //   ),
-                          // ),
 
                           DropdownButtonFormField<String>(
                             hint: const Text("--Select Option--"),
@@ -411,9 +396,53 @@ class _AddJobScreenState extends State<AddJobScreen> {
                               setState(() {
                                 provider.workExpIdController.text = provider.workExpIdController.text;
                               });
+
+                              if (provider.workExpController.text == "Experienced") {
+                                provider.isExperienced = true;
+                              } else {
+                                provider.isExperienced = false;
+                              }
+
+                              provider.notifyListeners();
+
                             },
                           ),
                         ),
+
+                          Consumer<AddJobProvider>(
+                            builder: (context, provider, _) {
+
+                              if (!provider.isExperienced) return const SizedBox();
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  labelWithStar("Experience Limit", required: false),
+
+                                  RangeSlider(
+                                    min: 1,
+                                    max: 30,
+                                    divisions: 29,
+                                    labels: RangeLabels(
+                                      provider.experienceRange.start.round().toString(),
+                                      provider.experienceRange.end.round().toString(),
+                                    ),
+                                    values: provider.experienceRange,
+                                    onChanged: (values) {
+                                      provider.experienceRange = values;
+                                      provider.notifyListeners();
+                                    },
+                                  ),
+
+                                  Text(
+                                    "${provider.experienceRange.start.round()} - ${provider.experienceRange.end.round()} Years",
+                                  ),
+
+                                ],
+                              );
+                            },
+                          ),
 
                           const SizedBox(height: 15),
 

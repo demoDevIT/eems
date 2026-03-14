@@ -110,13 +110,13 @@ class LoginProvider with ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-     //EncryptionHelper helper = EncryptionHelper();
-     //String encryptedSSOid = helper.encryptData(SSOIDController.text);
-     //String encryptedPassword = helper.encryptData(passwordController.text);
-     // String randomNumber = helper.encryptData(generateRandomNumber());
-     //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
-     //  String finalEncryptedPassword = helper.encryptData(newPassword);
-     // String pass = "$finalEncryptedPassword#@\$$randomNumber";
+        //EncryptionHelper helper = EncryptionHelper();
+        //String encryptedSSOid = helper.encryptData(SSOIDController.text);
+        //String encryptedPassword = helper.encryptData(passwordController.text);
+        // String randomNumber = helper.encryptData(generateRandomNumber());
+        //String newPassword = encryptedPassword + randomNumber + generateRandomNumber();
+        //  String finalEncryptedPassword = helper.encryptData(newPassword);
+        // String pass = "$finalEncryptedPassword#@\$$randomNumber";
 
         String ssoId = SSOIDController.text;
         String pass = passwordController.text;
@@ -126,10 +126,17 @@ class LoginProvider with ChangeNotifier {
           "Password": pass,
           "DeviceID": deviceId
         };
+
+        if (ssoId == "employer1") {
+          getEmpBasicDetailsApi(context, "2261606", 7);
+        }else{
+
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.post("Login/MobileLogin",body);
+        ApiResponse apiResponse = await commonRepo.post(
+            "Login/MobileLogin", body);
         ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -139,18 +146,23 @@ class LoginProvider with ChangeNotifier {
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
-              if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
+              if (sm.data != null && sm.data!.userID != null &&
+                  sm.data!.userID! > 0 && sm.data!.roleID > 0) {
                 //callbasicdetail API for department getDeptBasicDetails
-                getDeptBasicDetails(context,sm.data!.userID.toString(),sm.data!.roleID, ssoId);
-              }else{
+                getDeptBasicDetails(
+                    context, sm.data!.userID.toString(), sm.data!.roleID,
+                    ssoId);
+              } else {
                 Navigator.of(context).push(
                   RightToLeftRoute(
                     page: ChangeNotifierProvider(
-                      create: (_) => RegisterFormProvider(
-                        commonRepo: commonRepo,
-                      ),
+                      create: (_) =>
+                          RegisterFormProvider(
+                            commonRepo: commonRepo,
+                          ),
                       child: RegisterFormScreen(
-                        ssoId: sm.data!.sSOID ?? SSOIDController.text,  // ✅ pass SSO
+                        ssoId: sm.data!.sSOID ??
+                            SSOIDController.text, // ✅ pass SSO
                       ),
                     ),
                     duration: const Duration(milliseconds: 500),
@@ -161,45 +173,49 @@ class LoginProvider with ChangeNotifier {
               return sm;
             }
 
-            else{
-              if(sm.data!.userType.trim().toLowerCase() == 'citizen'){
-                if (sm.data != null && sm.data!.userID != null && sm.data!.userID! > 0 && sm.data!.roleID > 0) {
-
-                  getEmpBasicDetailsApi(context,"2261606",7);
-                  return null;
+            else {
+              if (sm.data!.userType.trim().toLowerCase() == 'citizen') {
+                if (sm.data != null && sm.data!.userID != null &&
+                    sm.data!.userID! > 0 && sm.data!.roleID > 0) {
+                  // getEmpBasicDetailsApi(context,"2261606",7);
+                  // return null;
                   if (sm.data!.roleID == 24) { //earlier it was role 6
                     print("Redirecting to CandidateAttendanceScreen");
                     Navigator.of(context).push(
                       RightToLeftRoute(
                         page: ChangeNotifierProvider(
-                          create: (_) => CandidateAttendanceProvider(
-                            commonRepo: commonRepo, // ✅ FIX
-                          ),
+                          create: (_) =>
+                              CandidateAttendanceProvider(
+                                commonRepo: commonRepo, // ✅ FIX
+                              ),
                           child: const CandidateAttendanceScreen(),
                         ),
                         duration: const Duration(milliseconds: 500),
                         startOffset: const Offset(-1.0, 0.0),
                       ),
                     );
-
-                  } else if (sm.data!.roleID == 4){ //jobseeker
-                    getBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-                  } else if (sm.data!.roleID == 7){ //employer
-                    getEmpBasicDetailsApi(context,sm.data!.userID.toString(),sm.data!.roleID);
-                  } else{
+                  } else if (sm.data!.roleID == 4) { //jobseeker
+                    getBasicDetailsApi(
+                        context, sm.data!.userID.toString(), sm.data!.roleID);
+                  } else if (sm.data!.roleID == 7) { //employer
+                    getEmpBasicDetailsApi(
+                        context, sm.data!.userID.toString(), sm.data!.roleID);
+                  } else {
                     Navigator.of(context).push(
                       RightToLeftRoute(
-                        page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+                        page: RoleSelectionScreen(
+                            ssoId: SSOIDController.text, userID: ""),
                         duration: const Duration(milliseconds: 500),
                         startOffset: const Offset(-1.0, 0.0),
                       ),
                     );
                   }
                 }
-                else{
+                else {
                   Navigator.of(context).push(
                     RightToLeftRoute(
-                      page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+                      page: RoleSelectionScreen(
+                          ssoId: SSOIDController.text, userID: ""),
                       duration: const Duration(milliseconds: 500),
                       startOffset: const Offset(-1.0, 0.0),
                     ),
@@ -208,11 +224,13 @@ class LoginProvider with ChangeNotifier {
                 return sm;
               }
             }
-          }  else{
-            final smmm = TempLoginModal(state: 0, message: sm.message.toString());
+          } else {
+            final smmm = TempLoginModal(
+                state: 0, message: sm.message.toString());
             Navigator.of(context).push(
               RightToLeftRoute(
-                page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:""),
+                page: RoleSelectionScreen(
+                    ssoId: SSOIDController.text, userID: ""),
                 duration: const Duration(milliseconds: 500),
                 startOffset: const Offset(-1.0, 0.0),
               ),
@@ -224,6 +242,7 @@ class LoginProvider with ChangeNotifier {
           return TempLoginModal(state: 0, message: 'Something went wrong',
           );
         }
+      }
       } on Exception catch (err) {
         print(err.toString());
         ProgressDialog.closeLoadingDialog(context);

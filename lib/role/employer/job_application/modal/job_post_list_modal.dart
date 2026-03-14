@@ -1,0 +1,54 @@
+class JobPostListModal {
+  int? state;
+  bool? status;
+  String? message;
+  dynamic errorMessage;
+  List<JobPostListData>? data;
+
+  JobPostListModal(
+      {this.state, this.status, this.message, this.errorMessage, this.data});
+
+  JobPostListModal.fromJson(Map<String, dynamic> json) {
+    state = json['State'];
+    status = json['Status'];
+    message = json['Message'];
+    errorMessage = json['ErrorMessage'];
+    if (json['Data'] != null) {
+      data = <JobPostListData>[];
+      json['Data'].forEach((v) {
+        data!.add(new JobPostListData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['State'] = this.state;
+    data['Status'] = this.status;
+    data['Message'] = this.message;
+    data['ErrorMessage'] = this.errorMessage;
+    if (this.data != null) {
+      data['Data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class JobPostListData {
+  int? dropID;
+  String? name;
+
+  JobPostListData({this.dropID, this.name});
+
+  JobPostListData.fromJson(Map<String, dynamic> json) {
+    dropID = json['JobPostId'];
+    name = json['JobpostName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['JobPostId'] = this.dropID;
+    data['JobpostName'] = this.name;
+    return data;
+  }
+}

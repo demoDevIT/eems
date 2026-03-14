@@ -31,23 +31,37 @@ import 'package:http_parser/http_parser.dart';
 import '../modal/save_job_post_modal.dart';
 
 class SkillModel {
+
   String category;
+  String categoryId;
+
   String subCategory;
+  String subCategoryId;
 
   SkillModel({
     required this.category,
+    required this.categoryId,
     required this.subCategory,
+    required this.subCategoryId,
   });
+
 }
 
 class QualificationModel {
+
   String educationType;
+  String educationTypeId;
+
   String course;
+  String courseId;
 
   QualificationModel({
     required this.educationType,
+    required this.educationTypeId,
     required this.course,
+    required this.courseId,
   });
+
 }
 
 class AddJobProvider extends ChangeNotifier {
@@ -110,6 +124,11 @@ class AddJobProvider extends ChangeNotifier {
   ];
   final TextEditingController  workExpIdController = TextEditingController();
   final TextEditingController  workExpController = TextEditingController();
+
+
+  bool isExperienced = false;
+  RangeValues experienceRange = const RangeValues(1, 30);
+
 
   //Salary Range
   List<SalaryRangeData> salaryRangeList = [];
@@ -869,62 +888,68 @@ class AddJobProvider extends ChangeNotifier {
 
         Map<String, dynamic> bodyy =
         {
-          "ActionName": "string",
-          "UserId": 0,
-          "RoleId": 0,
+          "ActionName": "Insert",
+          "UserId": UserData().model.value.userId,
+          "RoleId": UserData().model.value.roleId,
           "AgeGroupLimit": [
             minAge.round(),
             maxAge.round()
           ],
-          "CloseDate": "string",
-          "CreationDate": "string",
+          "CloseDate": "",
+          "CreationDate": "",
           "Description": descriptionController.text,
           "Event": int.tryParse(eventIdController.text) ?? 0,
-          "GraduationTypes": [
-            0
-          ],
-          "JobPositionTitle": "string",
+          "GraduationTypes": qualifications
+              .map((e) => int.tryParse(e.course) ?? 0)
+              .toList(),
+          "JobPositionTitle": jobTitleController.text,
           "JobSector": int.tryParse(sectorIdController.text) ?? 0,
           "JobTitle": int.tryParse(jobTitleIdController.text) ?? 0,
           "NCOCode": ncoCodeIdController.text,
-          "NoofVacancyFeMale": 0,
-          "NoofVacancyMale": 0,
-          "NoofVacancyOther": 0,
-          "SkillCatId": "string",
-          "SkillSubCatId": [
-            0
-          ],
+          "NoofVacancyFeMale": 2,
+          "NoofVacancyMale": 2,
+          "NoofVacancyOther": 2,
+          "SkillCatId": skills
+              .map((e) => e.category)
+              .toSet()
+              .join(","),
+          "SkillSubCatId": skills
+              .map((e) => int.tryParse(e.subCategory) ?? 0)
+              .toList(),
           "qualificationId": 0,
           "JobPostPKID": 0,
           "SalaryLimit": [
-            0
+            10000, 20000
           ],
           "JodDescriptionDocument": uploadedDocumentPath ?? "",
           "DocumentmasterID": 0,
           "PreLocation": locationIdController.text,
           "Employmenttype": int.tryParse(empTypeIdController.text) ?? 0,
           "NatureOfJob": int.tryParse(natureJobIdController.text) ?? 0,
-          "WorkExperience": workExpIdController.text,
+          "WorkExperience": workExpController.text,
           "TotalWorkExperience": 0,
 
           "_AddedSkilList": skills.map((e) => {
             "SkillName": e.category,
-            "SkillID": int.tryParse(e.category) ?? 0,
+            "SkillID": int.tryParse(e.categoryId) ?? 0,
             "SkillsubcateName": e.subCategory,
-            "SubcateID": int.tryParse(e.subCategory) ?? 0
+            "SubcateID": int.tryParse(e.subCategoryId) ?? 0
           }).toList(),
 
           "_AddedEducationDetailList": qualifications.map((e) => {
             "EducationType": e.educationType,
-            "EducationTypeID": int.tryParse(e.educationType) ?? 0,
+            "EducationTypeID": int.tryParse(e.educationTypeId) ?? 0,
             "GraducationType": e.course,
-            "GraducationTypeID": int.tryParse(e.course) ?? 0
+            "GraducationTypeID": int.tryParse(e.courseId) ?? 0
           }).toList(),
 
-          "TotalVacancy": 0,
-          "ExperienceLimit": [
-            0
-          ],
+          "TotalVacancy": 5,
+          "ExperienceLimit": isExperienced
+              ? [
+            experienceRange.start.round(),
+            experienceRange.end.round()
+          ]
+              : [0, 0],
           "ExServiceman": exServiceman == "Yes",
           "NightShift": nightShift == "Yes",
           "GenderId": genderIdController.text,
@@ -934,14 +959,15 @@ class AddJobProvider extends ChangeNotifier {
           "IsPwd": pwdJob == "Yes",
           "JobPostedForId": 0,
           "InternshipDuration": "string",
-          "OfferStipend": true,
+          "OfferStipend": false,
           "StipendAmount": 0
         };
 
-        //I/flutter ( 9978): {"ActionName":"string","UserId":0,"RoleId":0,"AgeGroupLimit":[18,60],"CloseDate":"string","CreationDate":"string","Description":"qq","Event":73,"GraduationTypes":[0],"JobPositionTitle":"string","JobSector":63,"JobTitle":431,"NCOCode":"8159.8","NoofVacancyFeMale":0,"NoofVacancyMale":0,"NoofVacancyOther":0,"SkillCatId":"string","SkillSubCatId":[0],"qualificationId":0,"JobPostPKID":0,"SalaryLimit":[0],"JodDescriptionDocument":"Mar132026070539052212.pdf","DocumentmasterID":0,"PreLocation":"177","Employmenttype":191,"NatureOfJob":104,"WorkExperience":"0","TotalWorkExperience":0,"_AddedSkilList":[],"_AddedEducationDetailList":[],"TotalVacancy":0,"ExperienceLimit":[0],"ExServiceman":false,"NightShift":false,"GenderId":"92","SalaryRangeId":187,"Salary":1000,"PostDateforAd":"2026-03-12T12:51:37.388Z","IsPwd":false,"JobPostedForId":0,"InternshipDuration":"string","OfferStipend":true,"StipendAmount":0}
 
-        debugPrint(jsonEncode(bodyy));
-        return null;
+        print("printFullData -->");
+        printFullJson(bodyy);
+
+
         String url = "JobFairEvent/SaveDataCreateJob";
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(url,bodyy);
@@ -982,6 +1008,12 @@ class AddJobProvider extends ChangeNotifier {
     } else {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
     }
+  }
+
+  void printFullJson(Map<String, dynamic> json) {
+    const encoder = JsonEncoder.withIndent('  ');
+    final prettyString = encoder.convert(json);
+    prettyString.split('\n').forEach((line) => debugPrint(line));
   }
 
   /// Age update
@@ -1049,8 +1081,11 @@ class AddJobProvider extends ChangeNotifier {
 
     skills.add(
       SkillModel(
-        category: selectedSkillCategory!,
-        subCategory: selectedSkillSubCategory!,
+        category: categoryNameController.text,
+        categoryId: categoryIdController.text,
+
+        subCategory: subCategoryNameController.text,
+        subCategoryId: subCategoryIdController.text,
       ),
     );
 
@@ -1070,19 +1105,15 @@ class AddJobProvider extends ChangeNotifier {
 
   void addQualification() {
 
-    if (selectedEducationType == null || selectedCourse == null) {
-      return;
-    }
-
     qualifications.add(
       QualificationModel(
-        educationType: selectedEducationType!,
-        course: selectedCourse!,
+        educationType: educationNameController.text,
+        educationTypeId: educationIdController.text,
+
+        course: courseNameController.text,
+        courseId: courseIdController.text,
       ),
     );
-
-    selectedEducationType = null;
-    selectedCourse = null;
 
     notifyListeners();
   }
@@ -1109,6 +1140,9 @@ class AddJobProvider extends ChangeNotifier {
     ncoCodeController.clear();
     ncoCodeIdController.clear();
 
+    uploadedDocumentPath = "";
+    selectedDocumentFile = null;
+
     genderList.clear();
     genderController.clear();
     genderIdController.clear();
@@ -1129,10 +1163,16 @@ class AddJobProvider extends ChangeNotifier {
     workExpController.clear();
     workExpIdController.clear();
 
+    exServiceman = "No";
+    nightShift = "No";
+    pwdJob = "No";
+
     //Salary Range
     salaryRangeList.clear();
     salaryRangeIdController.clear();
     salaryRangeController.clear();
+
+    salaryController.clear();
 
     categoryList.clear();
     categoryIdController.clear();
@@ -1141,6 +1181,8 @@ class AddJobProvider extends ChangeNotifier {
     subCategoryList.clear();
     subCategoryIdController.clear();
     subCategoryNameController.clear();
+
+    skills.clear();
 
     //Education Type
     educationTypeList.clear();
@@ -1152,6 +1194,9 @@ class AddJobProvider extends ChangeNotifier {
     courseIdController.clear();
     courseNameController.clear();
 
+    qualifications.clear();
+
+    descriptionController.clear();
 
     notifyListeners();
   }
