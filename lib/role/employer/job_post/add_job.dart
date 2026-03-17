@@ -159,13 +159,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                               onChanged: (value) {
                                  selectedjobTitle = provider.jobTitleIdController.text;
 
+                                 if (provider.jobTitleController.text.toLowerCase() == "other") {
+                                   // ✅ CLEAR & ENABLE FIELD
+                                   provider.jobTitleController.clear();
+                                   provider.showJobTitleField = true;
+                                   provider.isCustomJobTitle = true;
+                                 }else{
+                                   provider.jobTitleController.text = provider.jobTitleController.text;
+                                   provider.showJobTitleField = true;
+                                   provider.isCustomJobTitle = false;
+                                 }
 
-                                  provider.jobTitleController.text = provider.jobTitleController.text;
-                                 // provider.jobTitleIdController.text = value;
-
-                                  provider.showJobTitleField = true;
                                   provider.notifyListeners();
-
 
                               },
                             ),
@@ -189,8 +194,11 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                       padding: const EdgeInsets.symmetric(vertical: 5),
                                       child: TextField(
                                         controller: provider.jobTitleController,
-                                        enabled: false, // disabled field
+                                        enabled: provider.isCustomJobTitle, // disabled field
                                         decoration: InputDecoration(
+                                          hintText: provider.isCustomJobTitle
+                                              ? "Enter Job Title"
+                                              : "",
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(8),
                                           ),

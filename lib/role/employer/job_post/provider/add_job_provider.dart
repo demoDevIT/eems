@@ -195,6 +195,8 @@ class AddJobProvider extends ChangeNotifier {
   final TextEditingController salaryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  bool isCustomJobTitle = false;
+
   Future<EventNameModal?> getEventNameListApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
@@ -932,18 +934,28 @@ class AddJobProvider extends ChangeNotifier {
   }
 
   List<int> getSalaryLimit(String range) {
-
     final cleaned = range
         .replaceAll("₹", "")
         .replaceAll(" ", "")
         .toUpperCase();
 
+    // ✅ HANDLE "ABOVE" CASE
+    if (cleaned.contains("ABOVE")) {
+      final value = cleaned.replaceAll("ABOVE", "").replaceAll("K", "");
+
+      int start = int.tryParse(value) ?? 0;
+      start = start * 1000;
+
+      return [start, 999999999]; // max limit
+    }
+
+    // ✅ NORMAL RANGE CASE (e.g. 10K-20K)
     List<String> parts = cleaned.split('-');
 
-    int start = int.parse(parts[0].replaceAll('K', '')) * 1000;
-    int end = int.parse(parts[1].replaceAll('K', '')) * 1000;
+    int start = int.tryParse(parts[0].replaceAll('K', '')) ?? 0;
+    int end = int.tryParse(parts[1].replaceAll('K', '')) ?? 0;
 
-    return [start, end];
+    return [start * 1000, end * 1000];
   }
 
   Future<SaveJobPostModal?> saveJobDetailApi(BuildContext context) async {
