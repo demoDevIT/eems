@@ -2825,12 +2825,61 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               TextInputType.number,
                             ),
                           ),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: 10, vertical: 5),
+                          //   child: labelWithStar('International Jobs',
+                          //       required: true),
+                          // ),
+
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('International Jobs',
-                                required: true),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: labelWithStar(
+                                'Are you interested in private jobs also?',
+                                required: false),
                           ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'Yes',
+                                    groupValue: provider.interestedPrivateJobs.text,
+                                    onChanged: (val) {
+                                      provider.interestedPrivateJobs.text =
+                                          val ?? provider.interestedPrivateJobs.text;
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Yes',
+                                    style: Styles.mediumTextStyle(color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 12),
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'No',
+                                    groupValue: provider.interestedPrivateJobs.text,
+                                    onChanged: (val) {
+                                      provider.interestedPrivateJobs.text =
+                                          val ?? provider.interestedPrivateJobs.text;
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'No',
+                                    style: Styles.mediumTextStyle(color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),

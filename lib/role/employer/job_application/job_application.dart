@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
@@ -212,7 +214,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             onPressed: () {
                               provider.getJobApplicationList(
                                   context,
-                                yearId: provider.selectedFinancialYear.toString(),
+                                yearId: provider.selectedFinancialYear?.financialYearID,
                                 eventId: selectedEvent,
                                 jobPostID: selectedJobPostID,
                                 mobile: provider.mobileController.text,
@@ -288,7 +290,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
 
-
+                                  if ((data.candidateStatus ?? "").toLowerCase() == "pending")
                                   IconButton(
                                     icon: const Icon(Icons.person_add_alt_1, color: Colors.green),
                                     onPressed: () {
@@ -365,6 +367,11 @@ void _openActionDialog(BuildContext context, data) {
   TextEditingController remarksController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
+  /// ✅ ALSO RESET PROVIDER FILE
+  final provider = Provider.of<JobApplicationProvider>(context, listen: false);
+  provider.selectedDocumentFile = null;
+  provider.uploadedDocumentPath = null;
+
   showDialog(
     context: context,
     builder: (context) {
@@ -406,6 +413,10 @@ void _openActionDialog(BuildContext context, data) {
                           onChanged: (v) {
                             setState(() {
                               reachedStall = v!;
+
+                              /// ✅ DEFAULT "NO" SELECTED
+                              candidateShortlisted = 0;
+                              selectionType = -1;
                             });
                           },
                         ),
@@ -417,6 +428,10 @@ void _openActionDialog(BuildContext context, data) {
                           onChanged: (v) {
                             setState(() {
                               reachedStall = v!;
+
+                              /// RESET
+                              candidateShortlisted = -1;
+                              selectionType = -1;
                             });
                           },
                         ),
@@ -442,6 +457,11 @@ void _openActionDialog(BuildContext context, data) {
                             onChanged: (v) {
                               setState(() {
                                 candidateShortlisted = v!;
+
+                                /// ✅ DEFAULT SELECTION TYPE
+                                if (candidateShortlisted == 1) {
+                                  selectionType = 1; // Job Offer Letter Given
+                                }
                               });
                             },
                           ),
@@ -453,6 +473,9 @@ void _openActionDialog(BuildContext context, data) {
                             onChanged: (v) {
                               setState(() {
                                 candidateShortlisted = v!;
+
+                                /// RESET
+                                selectionType = -1;
                               });
                             },
                           ),
@@ -468,29 +491,42 @@ void _openActionDialog(BuildContext context, data) {
 
                       const Text("Selection type"),
 
-                      Row(
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 5,
                         children: [
-                          Radio(
-                            value: 1,
-                            groupValue: selectionType,
-                            onChanged: (v) {
-                              setState(() {
-                                selectionType = v!;
-                              });
-                            },
-                          ),
-                          const Text("Job Offer Letter Given"),
 
-                          Radio(
-                            value: 2,
-                            groupValue: selectionType,
-                            onChanged: (v) {
-                              setState(() {
-                                selectionType = v!;
-                              });
-                            },
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                value: 1,
+                                groupValue: selectionType,
+                                onChanged: (v) {
+                                  setState(() {
+                                    selectionType = v!;
+                                  });
+                                },
+                              ),
+                              const Text("Job Offer Letter Given"),
+                            ],
                           ),
-                          const Text("Preliminary Selected"),
+
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                value: 2,
+                                groupValue: selectionType,
+                                onChanged: (v) {
+                                  setState(() {
+                                    selectionType = v!;
+                                  });
+                                },
+                              ),
+                              const Text("Preliminary Selected"),
+                            ],
+                          ),
                         ],
                       ),
 
@@ -549,21 +585,28 @@ void _openActionDialog(BuildContext context, data) {
                       const SizedBox(height: 10),
 
                       /// Upload Offer Letter
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text("Upload Offer Letter"),
+                          // const Text(
+                          //   "Upload Offer Letter",
+                          //   style: TextStyle(fontWeight: FontWeight.bold),
+                          // ),
+                          //
+                          // const SizedBox(height: 8),
 
-                          ElevatedButton.icon(
-                            icon: const Icon(Icons.upload),
-                            label: const Text("Attach File"),
-                            onPressed: () {
-
-                              /// use image_picker or file_picker here
-
+                          Consumer<JobApplicationProvider>(
+                            builder: (context, provider, _) {
+                              return buildImageUploadBox(
+                                title: "Upload Offer Letter",
+                                imageFile: provider.selectedDocumentFile,
+                                onTap: () {
+                                  provider.pickAndUploadSingleDocument(context: context);
+                                },
+                              );
                             },
-                          )
+                          ),
                         ],
                       ),
 
@@ -585,10 +628,73 @@ void _openActionDialog(BuildContext context, data) {
                     /// Submit
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final provider =
+                          Provider.of<JobApplicationProvider>(context, listen: false);
 
-                          /// call submit API here
+                          /// Validation
+                          if (reachedStall == -1) {
+                            showAlertError("Please select Reached at Stall", context);
+                            return;
+                          }
 
+                          int isReached = reachedStall;
+                          int isShortlisted = candidateShortlisted == -1 ? 0 : candidateShortlisted;
+
+                          String? formattedDate;
+
+                          if (dateController.text.isNotEmpty) {
+                            final parts = dateController.text.split("-");
+                            formattedDate =
+                            "${parts[2]}-${parts[1]}-${parts[0]} 00:00:00";
+                          }
+
+                          String selectionText = "";
+                          if (selectionType == 1) {
+                            selectionText = "Job Offer Letter Given";
+                          } else if (selectionType == 2) {
+                            selectionText = "Preliminary Selected";
+                          }
+
+                          bool success = await provider.saveCandidateStatusApi(
+                            context,
+                            data: data,
+                            isReached: isReached,
+                            isShortlisted: isShortlisted,
+                            selectionTypeId: selectionType == -1 ? 0 : selectionType,
+                            selectionType: selectionText,
+                            salary: salaryController.text,
+                            joiningDate: formattedDate,
+                            joiningPlace: joiningPlaceController.text,
+                            remarks: remarksController.text,
+                          );
+
+                          if (success) {
+
+                            /// 1️⃣ CLOSE MAIN POPUP
+                            Navigator.of(context, rootNavigator: true).pop();
+
+                            /// 2️⃣ SHOW SUCCESS
+                            successDialog(
+                              context,
+                              "Saved Successfully",
+                                  (value) async {
+                                if (value.toString() == "success") {
+
+                                  /// 3️⃣ REFRESH LIST
+                                  await provider.getJobApplicationList(
+                                    context,
+                                    yearId: provider.selectedFinancialYear?.financialYearID,
+                                    eventId: provider.eventIdController.text,
+                                    jobPostID: provider.postIdController.text,
+                                    mobile: provider.mobileController.text,
+                                    registrationNo: provider.registrationController.text,
+                                    applicantName: provider.applicantNameController.text,
+                                  );
+                                }
+                              },
+                            );
+                          }
                         },
                         child: const Text("Submit"),
                       ),
@@ -601,5 +707,71 @@ void _openActionDialog(BuildContext context, data) {
         },
       );
     },
+  );
+}
+Widget buildImageUploadBox({
+  required String title,
+  required File? imageFile,
+  VoidCallback? onTap,
+}) {
+  final bool isPdf =
+      imageFile != null && imageFile.path.toLowerCase().endsWith('.pdf');
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+        const SizedBox(height: 6),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            height: 100,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: imageFile == null
+                ? const Center(
+              child: Icon(Icons.cloud_upload, size: 30),
+            )
+
+            // ✅ PDF UI
+                : isPdf
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.picture_as_pdf,
+                  color: Colors.red,
+                  size: 36,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    imageFile.path.split('/').last,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+              ],
+            )
+
+            // ✅ IMAGE UI
+                : ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.file(
+                imageFile,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }

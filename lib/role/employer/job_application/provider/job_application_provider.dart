@@ -1,16 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';  // for MediaType
 import 'package:image_picker/image_picker.dart';
 import 'package:rajemployment/role/job_seeker/grievance/module/grievance_modal.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
-
+import 'package:file_picker/file_picker.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
 import '../../../department/dept_join_attendance_list/modal/financial_year_modal.dart';
+import '../../../job_seeker/add_language_skills/modal/upload_document_modal.dart';
 import '../../../job_seeker/addjobpreference/modal/sector_modal.dart';
 import '../../../job_seeker/job_fair_event/modal/event_name_modal.dart';
 import '../modal/job_application_modal.dart';
@@ -40,6 +44,11 @@ class JobApplicationProvider extends ChangeNotifier {
   TextEditingController mobileController = TextEditingController();
   TextEditingController registrationController = TextEditingController();
   TextEditingController applicantNameController = TextEditingController();
+
+  File? selectedDocumentFile;
+  String? uploadedDocumentPath;
+  String? uploadedDocumentPathDIS;
+  int? selectedDocumentMasterId;
 
   bool isFilterOpen = false;
 
@@ -162,7 +171,7 @@ class JobApplicationProvider extends ChangeNotifier {
   }
 
   Future getJobApplicationList(BuildContext context,
-      {String? yearId, String? eventId, String? jobPostID, String? mobile, String? registrationNo, String? applicantName}) async {
+      {int? yearId, String? eventId, String? jobPostID, String? mobile, String? registrationNo, String? applicantName}) async {
     try {
       String userId = UserData().model.value.userId.toString();
       String roleId = UserData().model.value.roleId.toString();
@@ -173,7 +182,7 @@ class JobApplicationProvider extends ChangeNotifier {
         "Roleid": roleId,
         "JobFairEventDetailId": eventId ?? 0,
         "Jobpostid": jobPostID ?? 0,
-        "FYID": 16, //yearId ?? 0,
+        "FYID": yearId ?? 0, //16
         "mobileNo": mobile ?? "",
         "candidateName": applicantName ?? "",
         "regNo": registrationNo ?? ""
@@ -217,11 +226,215 @@ class JobApplicationProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> pickAndUploadSingleDocument({
+    required BuildContext context,
+  }) async {
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result == null) return;
+
+    final file = File(result.files.single.path!);
+
+    /// File Size Validation
+    final sizeInKB = (await file.length()) / 1024;
+
+    if (sizeInKB > 300) {
+      showAlertError("File size must be less than 300 KB", context);
+      return;
+    }
+
+    /// Preview
+    selectedDocumentFile = file;
+    notifyListeners();
+
+    String timestamp =
+        "${DateTime.now().millisecondsSinceEpoch}.pdf";
+
+    FormData param = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: timestamp,
+        contentType: MediaType("application", "pdf"),
+      ),
+      "FileExtension": "application/pdf",
+      "FolderName": "Employer/ApplicantOfferLetterPDF",
+      "MaxFileSize": "307200",
+      "MinFileSize": "0",
+      "Password": "",
+    });
+
+    final res = await uploadDocumentApi(context, param);
+
+    if (res != null && res.data != null && res.data!.isNotEmpty) {
+
+      uploadedDocumentPath = res.data![0].fileName;
+      uploadedDocumentPathDIS = res.data![0].disFileName;
+
+      debugPrint("Uploaded File: $uploadedDocumentPath");
+
+      notifyListeners();
+    }
+  }
+
+  Future<UploadDocumentModal?> uploadDocumentApi(
+      BuildContext context, FormData inputText) async {
+
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (!isInternet) {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+      return null;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.uploadDocumentRepo(
+        "Common/UploadDocument",
+        inputText,
+      );
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        return UploadDocumentModal.fromJson(responseData);
+      } else {
+        showAlertError("Something went wrong", context);
+        return null;
+      }
+    } catch (e) {
+      showAlertError(e.toString(), context);
+      return null;
+    }
+  }
+
+  Future saveCandidateStatusApi(
+      BuildContext context, {
+        required dynamic data,
+        required int isReached,
+        int? isShortlisted,
+        int? selectionTypeId,
+        String? selectionType,
+        String? salary,
+        String? joiningDate,
+        String? joiningPlace,
+        String? remarks,
+      }) async {
+    try {
+      int? userId = UserData().model.value.userId;
+      int? roleId = UserData().model.value.roleId;
+
+      Map<String, dynamic> body = {
+        "ActionName": "CandidateStatuseNew",
+        "UserId": userId,
+        "RoleId": roleId,
+        "EventId": data.eventId,
+        "ApplicantID": 0,
+        "JobPostID": data.jobPostId,
+        "JobSeekerId": data.jobSeekerId,
+        "Flag": data.flag,
+
+        /// REQUIRED CASES
+        "IsReached": isReached,
+        "IsCandidateShortListed": isShortlisted ?? 0,
+        "SlectionTypeID": selectionTypeId ?? 0,
+        "SelectionType": selectionType ?? "",
+
+        /// OPTIONAL FIELDS
+        "SalaryOffered": salary ?? "",
+        "Tentativedatejoining": joiningDate,
+        "JoiningPlace": joiningPlace ?? "",
+        "Remarks": remarks ?? "",
+        "UploadedOfferLetterFileName":
+        uploadedDocumentPath != null
+            ? "Employer/ApplicantOfferLetterPDF/$uploadedDocumentPath"
+            : "",
+
+        "UploadedOfferLetterDis_FileName":
+        uploadedDocumentPathDIS != null
+            ? "Employer/ApplicantOfferLetterPDF/$uploadedDocumentPathDIS"
+            : "",
+        "FinyearId": 0,
+        "FromDate": null,
+        "ToDate": null,
+      };
+
+      print("SAVE BODY => $body");
+      printFullJson(body);
+
+      ApiResponse apiResponse =
+      await commonRepo.post("JobFairEvent/SaveApproveCandidateDetail", body);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData["State"] == 200) {
+          // successDialog(
+          //   context,
+          //   responseData["Message"] ?? "Success",
+          //       (value) async {
+          //     if (value.toString() == "success") {
+          //
+          //       /// ✅ CLOSE DIALOG
+          //     //  Navigator.of(context).pop("success");
+          //
+          //       /// ✅ REFRESH LIST API
+          //       await getJobApplicationList(
+          //         context,
+          //         yearId: selectedFinancialYear?.financialYearID,
+          //         eventId: eventIdController.text,
+          //         jobPostID: postIdController.text,
+          //         mobile: mobileController.text,
+          //         registrationNo: registrationController.text,
+          //         applicantName: applicantNameController.text,
+          //       );
+          //     }
+          //   },
+          // );
+
+          return true;
+        } else {
+          showAlertError(responseData["Message"], context);
+          return false;
+        }
+      } else {
+        showAlertError("Something went wrong", context);
+        return false;
+      }
+    } catch (e) {
+      showAlertError(e.toString(), context);
+      return false;
+    }
+  }
+
+  void printFullJson(Map<String, dynamic> json) {
+    const encoder = JsonEncoder.withIndent('  ');
+    final prettyString = encoder.convert(json);
+    prettyString.split('\n').forEach((line) => debugPrint(line));
+  }
+
   void clearData() {
     jobApplicationList.clear();
     eventNameList.clear();
     eventNameController.clear();
     eventIdController.clear();
+
+    selectedDocumentFile= null;
 
     mobileController.clear();
     registrationController.clear();

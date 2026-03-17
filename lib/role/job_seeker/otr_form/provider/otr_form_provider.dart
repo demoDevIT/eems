@@ -228,6 +228,9 @@ class OtrFormProvider extends ChangeNotifier {
       TextEditingController();
   final TextEditingController currentEmploymentStatusNameController =
       TextEditingController();
+
+  final TextEditingController interestedPrivateJobs = TextEditingController();
+
   final TextEditingController areYouInterestedInternational =
       TextEditingController(text: "No");
   final TextEditingController expYearController = TextEditingController();
@@ -1950,6 +1953,9 @@ class OtrFormProvider extends ChangeNotifier {
           "SkilledYN": areYouSkilledController.text == "Yes" ? 1 : 2,
           "RSLDCTranning": 15,
 
+          "interestedinPrivate":
+          interestedPrivateJobs.text == "Yes" ? 1 : 2,
+
           "InternationalJobYN":
               areYouInterestedInternational.text == "Yes" ? 1 : 2,
           "InternationalRegion": int.tryParse(regionIdController.text) ?? 0,
@@ -1996,7 +2002,7 @@ class OtrFormProvider extends ChangeNotifier {
         print("printFullData -->");
         printFullJson(data);
 
-
+// return null;
         print("WardName => ${wardNameController.text}");
         print("WardId => ${wardIdController.text}");
 

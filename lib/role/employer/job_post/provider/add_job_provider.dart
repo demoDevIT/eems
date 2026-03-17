@@ -101,6 +101,14 @@ class AddJobProvider extends ChangeNotifier {
   final TextEditingController  genderIdController = TextEditingController();
   final TextEditingController  genderController = TextEditingController();
 
+  List<String> selectedGenders = [];
+
+  /// Vacancy Controllers
+  TextEditingController maleVacancyController = TextEditingController();
+  TextEditingController femaleVacancyController = TextEditingController();
+  TextEditingController transVacancyController = TextEditingController();
+  TextEditingController totalVacancyController = TextEditingController();
+
   //Location
   List<LocationData> locationList = [];
   final TextEditingController  locationIdController = TextEditingController();
@@ -292,6 +300,14 @@ class AddJobProvider extends ChangeNotifier {
           genderList.clear();
           if (sm.state == 200) {
 
+            genderList.clear();
+            genderList.add(
+              GenderData(
+                dropID: -1,
+                name: "Any",
+              ),
+            );
+
             genderList.addAll(sm.data ?? []);
             notifyListeners();
             return sm;
@@ -314,6 +330,41 @@ class AddJobProvider extends ChangeNotifier {
     } else {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
     }
+  }
+
+  void toggleGender(String gender) {
+
+    /// If ANY selected
+    if (gender == "Any") {
+
+      selectedGenders.clear();
+      selectedGenders.add("Any");
+
+    } else {
+
+      /// Remove ANY if selecting individual gender
+      selectedGenders.remove("Any");
+
+      /// Toggle
+      if (selectedGenders.contains(gender)) {
+        selectedGenders.remove(gender);
+      } else {
+        selectedGenders.add(gender);
+      }
+
+      /// If all 3 selected → convert to ANY
+      bool male = selectedGenders.contains("Male");
+      bool female = selectedGenders.contains("Female");
+      bool trans = selectedGenders.contains("TransGender");
+
+      if (male && female && trans) {
+
+        selectedGenders.clear();
+        selectedGenders.add("Any");
+      }
+    }
+
+    notifyListeners();
   }
 
   Future<NcoCodeModal?> ncoCodeListApi(BuildContext context) async {
@@ -880,11 +931,47 @@ class AddJobProvider extends ChangeNotifier {
     }
   }
 
+  List<int> getSalaryLimit(String range) {
+
+    final cleaned = range
+        .replaceAll("₹", "")
+        .replaceAll(" ", "")
+        .toUpperCase();
+
+    List<String> parts = cleaned.split('-');
+
+    int start = int.parse(parts[0].replaceAll('K', '')) * 1000;
+    int end = int.parse(parts[1].replaceAll('K', '')) * 1000;
+
+    return [start, end];
+  }
+
   Future<SaveJobPostModal?> saveJobDetailApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
+
       try {
         String ? IpAddress =  await UtilityClass.getIpAddress();
+        int male = 0;
+        int female = 0;
+        int trans = 0;
+        int total = 0;
+
+        if (selectedGenders.contains("Any")) {
+
+          total = int.tryParse(totalVacancyController.text) ?? 0;
+
+        } else {
+
+          male = int.tryParse(maleVacancyController.text) ?? 0;
+          female = int.tryParse(femaleVacancyController.text) ?? 0;
+          trans = int.tryParse(transVacancyController.text) ?? 0;
+
+          total = male + female + trans;
+        }
+
+        List<int> salaryLimit =
+        getSalaryLimit(salaryRangeController.text);
 
         Map<String, dynamic> bodyy =
         {
@@ -906,9 +993,10 @@ class AddJobProvider extends ChangeNotifier {
           "JobSector": int.tryParse(sectorIdController.text) ?? 0,
           "JobTitle": int.tryParse(jobTitleIdController.text) ?? 0,
           "NCOCode": ncoCodeIdController.text,
-          "NoofVacancyFeMale": 2,
-          "NoofVacancyMale": 2,
-          "NoofVacancyOther": 2,
+          "NoofVacancyFeMale": female,
+          "NoofVacancyMale": male,
+          "NoofVacancyOther": trans,
+          "TotalVacancy": total,
           "SkillCatId": skills
               .map((e) => e.category)
               .toSet()
@@ -918,9 +1006,7 @@ class AddJobProvider extends ChangeNotifier {
               .toList(),
           "qualificationId": 0,
           "JobPostPKID": 0,
-          "SalaryLimit": [
-            10000, 20000
-          ],
+          "SalaryLimit": salaryLimit,
           "JodDescriptionDocument": uploadedDocumentPath ?? "",
           "DocumentmasterID": 0,
           "PreLocation": locationIdController.text,
@@ -942,8 +1028,6 @@ class AddJobProvider extends ChangeNotifier {
             "GraducationType": e.course,
             "GraducationTypeID": int.tryParse(e.courseId) ?? 0
           }).toList(),
-
-          "TotalVacancy": 5,
           "ExperienceLimit": isExperienced
               ? [
             experienceRange.start.round(),
@@ -966,7 +1050,7 @@ class AddJobProvider extends ChangeNotifier {
 
         print("printFullData -->");
         printFullJson(bodyy);
-
+// return null;
 
         String url = "JobFairEvent/SaveDataCreateJob";
         ProgressDialog.showLoadingDialog(context);
@@ -1146,6 +1230,15 @@ class AddJobProvider extends ChangeNotifier {
     genderList.clear();
     genderController.clear();
     genderIdController.clear();
+
+    /// Reset gender selection
+    selectedGenders.clear();
+
+    /// Clear vacancy fields
+    maleVacancyController.clear();
+    femaleVacancyController.clear();
+    transVacancyController.clear();
+    totalVacancyController.clear();
 
     locationList.clear();
     locationController.clear();

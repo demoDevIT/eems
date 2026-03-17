@@ -246,22 +246,69 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           const SizedBox(height: 10),
 
+                          // labelWithStar('Gender', required: false),
+                          //
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(vertical: 5),
+                          //   child: buildDropdownWithBorderField(
+                          //     items: provider.genderList,
+                          //     controller: provider.genderController,
+                          //     idController: provider.genderIdController,
+                          //     hintText: "--Select Option--",
+                          //     height: 50,
+                          //     borderRadius: BorderRadius.circular(8),
+                          //     onChanged: (value) {
+                          //       selectedgender = provider.genderIdController.text;
+                          //       provider.notifyListeners();
+                          //     },
+                          //   ),
+                          // ),
+
                           labelWithStar('Gender', required: false),
 
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
-                              items: provider.genderList,
-                              controller: provider.genderController,
-                              idController: provider.genderIdController,
-                              hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {
-                                selectedgender = provider.genderIdController.text;
-                                provider.notifyListeners();
-                              },
-                            ),
+                          Consumer<AddJobProvider>(
+                            builder: (context, provider, _) {
+
+                              return genderMultiSelectDropdown(provider);
+
+                            },
+                          ),
+
+                          Consumer<AddJobProvider>(
+                            builder: (context, provider, _) {
+
+                              /// ANY selected
+                              if (provider.selectedGenders.contains("Any")) {
+
+                                return buildTextField(
+                                  controller: provider.totalVacancyController,
+                                  label: "No of vacancy (Total)",
+                                );
+                              }
+
+                              return Column(
+                                children: [
+
+                                  if (provider.selectedGenders.contains("Male"))
+                                    buildTextField(
+                                      controller: provider.maleVacancyController,
+                                      label: "No of vacancy (Male)",
+                                    ),
+
+                                  if (provider.selectedGenders.contains("Female"))
+                                    buildTextField(
+                                      controller: provider.femaleVacancyController,
+                                      label: "No of vacancy (Female)",
+                                    ),
+
+                                  if (provider.selectedGenders.contains("TransGender"))
+                                    buildTextField(
+                                      controller: provider.transVacancyController,
+                                      label: "No of vacancy (TransGender)",
+                                    ),
+                                ],
+                              );
+                            },
                           ),
 
                           const SizedBox(height: 10),
@@ -937,6 +984,92 @@ class _AddJobScreenState extends State<AddJobScreen> {
       ),
     );
   }
+
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+  }) {
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget genderMultiSelectDropdown(AddJobProvider provider) {
+
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (context, setStateDialog) {
+
+                return AlertDialog(
+                  title: const Text("Select Gender"),
+                  content: SizedBox(
+                    width: double.maxFinite,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: provider.genderList.map((gender) {
+
+                        final name = gender.name ?? "";
+
+                        return CheckboxListTile(
+                          value: provider.selectedGenders.contains(name),
+                          title: Text(name),
+                          onChanged: (value) {
+
+                            provider.toggleGender(name);
+
+                            /// refresh dialog UI
+                            setStateDialog(() {});
+                          },
+                        );
+
+                      }).toList(),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Done"),
+                    )
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
+
+      child: InputDecorator(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: Text(
+          provider.selectedGenders.isEmpty
+              ? "--Select Option--"
+              : provider.selectedGenders.join(", "),
+        ),
+      ),
+    );
+  }
+
 }
 
 bool validateAddJobForm(BuildContext context, provider) {
@@ -972,9 +1105,42 @@ bool validateAddJobForm(BuildContext context, provider) {
   }
 
   // ---------- GENDER ----------
-  if (provider.genderIdController.text.trim().isEmpty) {
+  // if (provider.genderIdController.text.trim().isEmpty) {
+  //   showAlertError("Please select Gender", context);
+  //   return false;
+  // }
+
+  if (provider.selectedGenders.isEmpty) {
     showAlertError("Please select Gender", context);
     return false;
+  }
+
+  if (provider.selectedGenders.contains("Any")) {
+
+    if (provider.totalVacancyController.text.isEmpty) {
+      showAlertError("Please enter total vacancy", context);
+      return false;
+    }
+
+  } else {
+
+    if (provider.selectedGenders.contains("Male") &&
+        provider.maleVacancyController.text.isEmpty) {
+      showAlertError("Please enter male vacancy", context);
+      return false;
+    }
+
+    if (provider.selectedGenders.contains("Female") &&
+        provider.femaleVacancyController.text.isEmpty) {
+      showAlertError("Please enter female vacancy", context);
+      return false;
+    }
+
+    if (provider.selectedGenders.contains("TransGender") &&
+        provider.transVacancyController.text.isEmpty) {
+      showAlertError("Please enter transgender vacancy", context);
+      return false;
+    }
   }
 
   // ---------- LOCATION ----------
