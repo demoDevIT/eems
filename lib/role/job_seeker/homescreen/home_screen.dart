@@ -67,72 +67,72 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
 
                           /// Attendance Button
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const AttendanceScreen(),
-                                //   ),
-                                // );
-                              },
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: kPrimaryColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: kPrimaryColor),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Icon(
-                                      Icons.add_circle,
-                                      size: 18,
-                                      color: kPrimaryColor,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "Mark Attendance",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: kPrimaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: InkWell(
+                          //     onTap: () {
+                          //       // Navigator.push(
+                          //       //   context,
+                          //       //   MaterialPageRoute(
+                          //       //     builder: (context) => const AttendanceScreen(),
+                          //       //   ),
+                          //       // );
+                          //     },
+                          //     borderRadius: BorderRadius.circular(20),
+                          //     child: Container(
+                          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          //       decoration: BoxDecoration(
+                          //         color: kPrimaryColor.withOpacity(0.1),
+                          //         borderRadius: BorderRadius.circular(20),
+                          //         border: Border.all(color: kPrimaryColor),
+                          //       ),
+                          //       child: Row(
+                          //         mainAxisSize: MainAxisSize.min,
+                          //         children: const [
+                          //           Icon(
+                          //             Icons.add_circle,
+                          //             size: 18,
+                          //             color: kPrimaryColor,
+                          //           ),
+                          //           SizedBox(width: 6),
+                          //           Text(
+                          //             "Mark Attendance",
+                          //             style: TextStyle(
+                          //               fontSize: 12,
+                          //               fontWeight: FontWeight.w600,
+                          //               color: kPrimaryColor,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
 
                           const SizedBox(height: 8),
 
                           /// Schemes Heading
-                          sectionHeader(
-                            AppLocalizations.of(context)!.schemes,
-                            context,
-                            showViewAll: false,
-                          ),
-
-                          SizedBox(height: SizeConfig.defaultSize! * 1),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: schemeCard(
-                                    "मुख्यमंत्री युवा रोजगार प्रोत्साहन योजना 2025",
-                                    context,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // sectionHeader(
+                          //   AppLocalizations.of(context)!.schemes,
+                          //   context,
+                          //   showViewAll: false,
+                          // ),
+                          //
+                          // SizedBox(height: SizeConfig.defaultSize! * 1),
+                          //
+                          // Row(
+                          //   children: [
+                          //     Expanded(
+                          //       child: Padding(
+                          //         padding: const EdgeInsets.only(right: 8.0),
+                          //         child: schemeCard(
+                          //           "मुख्यमंत्री युवा रोजगार प्रोत्साहन योजना 2025",
+                          //           context,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
