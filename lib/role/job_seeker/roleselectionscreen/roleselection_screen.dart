@@ -103,14 +103,14 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                             );
                           },
                         ),
-                        SizedBox(height: SizeConfig.screenHeight! * 0.01),
-                        roleCard(
-                          title: "Counselor",
-                          description:
-                          "A counselor helps job seekers by guiding them in their career paths.",
-                          imagePath: "assets/images/counselor.png",
-                          onTap: () {},
-                        ),
+                        SizedBox(height: SizeConfig.screenHeight! * 0.40),
+                        // roleCard(
+                        //   title: "Counselor",
+                        //   description:
+                        //   "A counselor helps job seekers by guiding them in their career paths.",
+                        //   imagePath: "assets/images/counselor.png",
+                        //   onTap: () {},
+                        // ),
                       ],
                     ),
                   ),

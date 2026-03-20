@@ -135,6 +135,13 @@ class DepartmentDashboardProvider extends ChangeNotifier {
     }
   }
 
+   void reset() {
+     showRegSearch = false;
+     showResult = false;
+     regNoController.clear();
+     notifyListeners();
+   }
+
   void onRegisterMYSY(BuildContext context) {
     debugPrint("Register yourself for MYSY clicked");
     // TODO: Navigate to MYSY registration page

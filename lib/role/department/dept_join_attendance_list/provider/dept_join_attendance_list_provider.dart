@@ -243,16 +243,16 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       const SizedBox(height: 20),
 
                       /// USER DETAILS
-                      _labelValue("Name", item.nameEng),
-                      _labelValue("Mobile No.", item.mobileNo),
-                      _labelValue("Department Name", item.departmentNameEn),
-                      _labelValue("Joining Date", item.internJoiningDate),
-                      _labelValue("Year", item.workingYear?.toString()),
-                      _labelValue("Month", item.attendanceMonthName),
-
-                      const SizedBox(height: 10),
-                      const Divider(),
-                      const SizedBox(height: 10),
+                      // _labelValue("Name", item.nameEng),
+                      // _labelValue("Mobile No.", item.mobileNo),
+                      // _labelValue("Department Name", item.departmentNameEn),
+                      // _labelValue("Joining Date", item.internJoiningDate),
+                      // _labelValue("Year", item.workingYear?.toString()),
+                      // _labelValue("Month", item.attendanceMonthName),
+                      //
+                      // const SizedBox(height: 10),
+                      // const Divider(),
+                      // const SizedBox(height: 10),
 
                       /// MONTH PICKER
                       // const Text(
@@ -321,22 +321,22 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         onChanged: null, // 🔥 DISABLED
                       ),
 
-                      const SizedBox(height: 20),
-
-                      /// TOTAL DAYS BOX
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          "Total No. of Days - $totalDays days",
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
+                      // const SizedBox(height: 20),
+                      //
+                      // /// TOTAL DAYS BOX
+                      // Container(
+                      //   padding: const EdgeInsets.all(12),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.grey.shade100,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Text(
+                      //     "Total No. of Days - $totalDays days",
+                      //     style: const TextStyle(fontWeight: FontWeight.w600),
+                      //   ),
+                      // ),
+                      //
+                      // const SizedBox(height: 20),
 
                       /// WHOLE MONTH ABSENT CHECKBOX
                       Row(
@@ -412,23 +412,23 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                           },
                         ),
 
-                        const SizedBox(height: 20),
-
-                        /// PRESENT DAYS BOX
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade50,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            "Total No. of Present Days - $presentDays",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
+                        // const SizedBox(height: 20),
+                        //
+                        // /// PRESENT DAYS BOX
+                        // Container(
+                        //   padding: const EdgeInsets.all(12),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.green.shade50,
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   child: Text(
+                        //     "Total No. of Present Days - $presentDays",
+                        //     style: const TextStyle(
+                        //       fontWeight: FontWeight.w600,
+                        //       color: Colors.green,
+                        //     ),
+                        //   ),
+                        // ),
 
                         const SizedBox(height: 26),
                       ],

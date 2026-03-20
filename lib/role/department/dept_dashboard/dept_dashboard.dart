@@ -53,6 +53,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   "Thank you and see you again!",
                       (value) {
                     if (value.toString() == "success") {
+                      Provider.of<DepartmentDashboardProvider>(context, listen: false).reset();
+
                       final pref = AppSharedPref();
                       pref.save('UserData', '');
                       pref.remove('UserData');
@@ -80,30 +82,31 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   /// Search Buttons
                   Row(
                     children: [
-
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: _actionButton(
+                          title: "Search with Reg No.",
+                          icon: Icons.search,
+                          onTap: () {
                             provider.openRegSearch();
                           },
-                          child: const Text("Search with Reg No."),
                         ),
                       ),
 
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
 
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: _actionButton(
+                          title: "Scan QR Code",
+                          icon: Icons.qr_code_scanner,
+                          onTap: () {
                             Navigator.of(context).push(
                               RightToLeftRoute(
-                                page: const DeptQRScanPage(), // your new page
+                                page: const DeptQRScanPage(),
                                 duration: const Duration(milliseconds: 500),
                                 startOffset: const Offset(-1.0, 0.0),
                               ),
                             );
                           },
-                          child: const Text("Search with QR Code"),
                         ),
                       ),
                     ],
@@ -113,22 +116,84 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                   /// Reg No Search Field
                   if (provider.showRegSearch) ...[
-                    TextField(
-                      controller: provider.regNoController,
-                      decoration: const InputDecoration(
-                        hintText: "Enter Registration Number",
-                        border: OutlineInputBorder(),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: provider.regNoController,
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(fontSize: 14),
+                        decoration: InputDecoration(
+                          hintText: "Enter Registration Number",
+                          prefixIcon: const Icon(Icons.badge_outlined),
+                          filled: true,
+                          fillColor: Colors.white,
+
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 12,
+                          ),
+
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide.none,
+                          ),
+
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(
+                              color: Colors.grey.shade300,
+                              width: 1,
+                            ),
+                          ),
+
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(
+                              color: Colors.blue.shade600,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
 
                     const SizedBox(height: 10),
 
-                    ElevatedButton(
-                      onPressed: () {
-                        provider.searchByRegistration(context);
-                      },
-                      child: const Text("Submit"),
-                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          provider.searchByRegistration(context);
+                        },
+                        icon: const Icon(Icons.send, size: 18),
+                        label: const Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade600,
+                          foregroundColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
 
                   const SizedBox(height: 20),
@@ -186,6 +251,54 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           },
         ),
       );
+  }
+
+  Widget _actionButton({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        height: 55,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade500,
+              Colors.blue.shade700,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.25),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _resultCard() {

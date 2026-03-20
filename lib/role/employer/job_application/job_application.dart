@@ -9,7 +9,9 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/textfeild.dart';
+import '../../department/dept_QR_scan/dept_QR_scan.dart';
 import '../../department/dept_join_attendance_list/modal/financial_year_modal.dart';
+// import '../../job_seeker/qr_scanner/qr_scanner_screen.dart';
 import 'provider/job_application_provider.dart';
 
 class JobApplicationScreen extends StatefulWidget {
@@ -46,111 +48,96 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
         builder: (context, provider, child) {
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: Column(
+            child: ListView(
               children: [
-                /// FILTER CARD
+
+                /// 🔹 SCAN QR BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      _openQRScanner(context);
+                    },
+                    icon: const Icon(Icons.qr_code_scanner),
+                    label: const Text("Scan QR"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                /// 🔹 FILTER CARD
                 Card(
                   elevation: 3,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: ExpansionTile(
-                      initiallyExpanded: false,
-                      title: const Text(
-                        "Filters",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      leading: const Icon(Icons.filter_list),
-                      children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                      // Financial Year
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    title: const Text(
+                      "Filters",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    leading: const Icon(Icons.filter_list),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
                           children: [
 
+                            /// Financial Year
                             labelWithStar('Financial Year', required: false),
 
-                                    DropdownButtonFormField<FinancialYearData>(
-                                      value: provider.selectedFinancialYear,
-                                      decoration: _inputDecoration("--Select Financial Year--"),
-                                      items: provider.financialYearList
-                                          .map(
-                                            (e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e.financialYearName ?? ""),
-                                        ),
-                                      )
-                                          .toList(),
-                                      onChanged: (value) {
-                                        provider.selectedFinancialYear = value;
-                                        provider.notifyListeners();
-                                      },
-                                    ),
-                            const SizedBox(height: 10),
-                            // IgnorePointer(
-                            //   ignoring: false,
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                            //     child: buildDropdownWithBorderField(
-                            //       items: provider.financialYearList,
-                            //       controller: provider.financialYearName,
-                            //       idController: provider.selectedFinancialYear,
-                            //       hintText: "--Select Option--",
-                            //       height: 50,
-                            //       color: Colors.transparent,
-                            //       borderRadius: BorderRadius.circular(8),
-                            //       onChanged: (value) {
-                            //         setState(() {
-                            //           //selectedEvent = provider.selectedFinancialYear.text;
-                            //         });
-                            //       },
-                            //     ),
-                            //   ),
-                            // ),
-
-                            labelWithStar('Event Name', required: false),
-
-                            IgnorePointer(
-                              ignoring: false,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                child: buildDropdownWithBorderField(
-                                  items: provider.eventNameList,
-                                  controller: provider.eventNameController,
-                                  idController: provider.eventIdController,
-                                  hintText: "--Select Option--",
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedEvent = provider.eventIdController.text;
-
-                                      provider.jobPostListApi(
-                                        context,
-                                        eventId: selectedEvent
-                                      );
-                                    });
-                                  },
-                                ),
-                              ),
+                            DropdownButtonFormField<FinancialYearData>(
+                              value: provider.selectedFinancialYear,
+                              decoration: _inputDecoration("--Select Financial Year--"),
+                              items: provider.financialYearList
+                                  .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e.financialYearName ?? ""),
+                              ))
+                                  .toList(),
+                              onChanged: (value) {
+                                provider.selectedFinancialYear = value;
+                                provider.notifyListeners();
+                              },
                             ),
 
-                          ],
-                        ),
+                            const SizedBox(height: 10),
 
+                            /// Event Name
+                            labelWithStar('Event Name', required: false),
 
-                        const SizedBox(height: 10),
+                            buildDropdownWithBorderField(
+                              items: provider.eventNameList,
+                              controller: provider.eventNameController,
+                              idController: provider.eventIdController,
+                              hintText: "--Select Option--",
+                              height: 50,
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedEvent = provider.eventIdController.text;
 
-                        labelWithStar('Job Post', required: false),
+                                  provider.jobPostListApi(
+                                      context,
+                                      eventId: selectedEvent
+                                  );
+                                });
+                              },
+                            ),
 
-                        IgnorePointer(
-                          ignoring: false,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            const SizedBox(height: 10),
+
+                            /// Job Post
+                            labelWithStar('Job Post', required: false),
+
+                            buildDropdownWithBorderField(
                               items: provider.postList,
                               controller: provider.postNameController,
                               idController: provider.postIdController,
@@ -164,148 +151,133 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                 });
                               },
                             ),
-                          ),
+
+                            const SizedBox(height: 10),
+
+                            /// Mobile
+                            labelWithStar('Mobile Number', required: false),
+
+                            TextFormField(
+                              controller: provider.mobileController,
+                              keyboardType: TextInputType.phone,
+                              decoration: _inputDecoration("Enter Mobile Number"),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            /// Registration
+                            labelWithStar('Event Registration Number', required: false),
+
+                            TextFormField(
+                              controller: provider.registrationController,
+                              decoration: _inputDecoration("Enter Registration Number"),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            /// Applicant Name
+                            labelWithStar('Name of Applicant', required: false),
+
+                            TextFormField(
+                              controller: provider.applicantNameController,
+                              decoration: _inputDecoration("Enter Applicant Name"),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            /// SEARCH
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  provider.getJobApplicationList(
+                                    context,
+                                    yearId: provider.selectedFinancialYear?.financialYearID,
+                                    eventId: provider.eventIdController.text,
+                                    jobPostID: selectedJobPostID,
+                                    mobile: provider.mobileController.text,
+                                    registrationNo: provider.registrationController.text,
+                                    applicantName: provider.applicantNameController.text,
+                                  );
+                                },
+                                child: const Text("Search"),
+                              ),
+                            ),
+                          ],
                         ),
-
-                        const SizedBox(height: 10),
-
-                        labelWithStar('Mobile Number', required: false),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TextFormField(
-                            controller: provider.mobileController,
-                            keyboardType: TextInputType.phone,
-                            decoration: _inputDecoration("Enter Mobile Number"),
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        labelWithStar('Event Registration Number', required: false),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TextFormField(
-                            controller: provider.registrationController,
-                            decoration: _inputDecoration("Enter Registration Number"),
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// Applicant Name
-                        labelWithStar('Name of Applicant', required: false),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: TextFormField(
-                            controller: provider.applicantNameController,
-                            decoration: _inputDecoration("Enter Applicant Name"),
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// SEARCH BUTTON
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              provider.getJobApplicationList(
-                                  context,
-                                yearId: provider.selectedFinancialYear?.financialYearID,
-                                eventId: selectedEvent,
-                                jobPostID: selectedJobPostID,
-                                mobile: provider.mobileController.text,
-                                registrationNo: provider.registrationController.text,
-                                applicantName: provider.applicantNameController.text,
-                              );
-                            },
-                            child: const Text("Search"),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-              ],
-                ),
+                      )
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 15),
 
-                /// LIST
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: provider.jobApplicationList.length,
-                    itemBuilder: (context, index) {
+                /// 🔹 LIST
+                ListView.builder(
+                  itemCount: provider.jobApplicationList.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final data = provider.jobApplicationList[index];
 
-                      final data = provider.jobApplicationList[index];
-
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [Colors.white, Colors.blue.shade50],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 14),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        gradient: LinearGradient(
+                          colors: [Colors.white, Colors.blue.shade50],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Row(
                             children: [
-
-                              Row(
-                                children: [
-                                  const Icon(Icons.work, color: Colors.blue),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      data.name, //data.eventName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-
-                              const Divider(),
-
-                              _buildRow("Mobile No.", data.mobileNo),//data.sectorName
-                              _buildRow("Email", data.email),
-                              _buildRow("Job Position", data.jobPositionTitle),
-                              _buildRow("Status", data.candidateStatus),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-
-                                  if ((data.candidateStatus ?? "").toLowerCase() == "pending")
-                                  IconButton(
-                                    icon: const Icon(Icons.person_add_alt_1, color: Colors.green),
-                                    onPressed: () {
-                                      _openActionDialog(context, data);
-                                    },
-                                  )
-                                ],
-                              ),
+                              const Icon(Icons.work, color: Colors.blue),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  data.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                )
+
+                          const Divider(),
+
+                          _buildRow("Mobile No.", data.mobileNo),
+                          _buildRow("Email", data.email),
+                          _buildRow("Job Position", data.jobPositionTitle),
+                          _buildRow("Status", data.candidateStatus),
+
+                          if ((data.candidateStatus ?? "").toLowerCase() == "pending")
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: const Icon(Icons.person_add_alt_1, color: Colors.green),
+                                onPressed: () {
+                                  _openActionDialog(context, data);
+                                },
+                              ),
+                            )
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           );
@@ -333,6 +305,37 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+void _openQRScanner(BuildContext context) async {
+  // TODO: Integrate actual scanner package
+  // Example using mobile_scanner or qr_code_scanner
+
+  String? scannedData = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const DeptQRScanPage(),
+    ),
+  );
+
+  if (scannedData != null && scannedData.isNotEmpty) {
+    final provider =
+    Provider.of<JobApplicationProvider>(context, listen: false);
+
+    /// Example: fill registration number from QR
+    provider.registrationController.text = scannedData;
+
+    /// Optional: auto search
+    provider.getJobApplicationList(
+      context,
+      yearId: provider.selectedFinancialYear?.financialYearID,
+      eventId: provider.eventIdController.text,
+      jobPostID: provider.postIdController.text,
+      mobile: provider.mobileController.text,
+      registrationNo: scannedData,
+      applicantName: provider.applicantNameController.text,
     );
   }
 }
