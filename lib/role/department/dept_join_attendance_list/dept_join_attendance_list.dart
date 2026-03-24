@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rajemployment/role/department/dept_join_attendance_list/modal/year_modal.dart';
 import 'modal/dept_join_attendance_modal.dart';
 import 'modal/financial_year_modal.dart';
 import 'modal/level_name_modal.dart';
+import 'modal/month_modal.dart';
 import 'provider/dept_join_attendance_list_provider.dart';
 import '../../../../constants/colors.dart';
 import '../../../../utils/textstyles.dart';
@@ -20,6 +22,8 @@ class DeptJoinAttendanceListScreen extends StatefulWidget {
     this.jobSeekerId,
     this.userId,
   });
+
+
 
   @override
   State<DeptJoinAttendanceListScreen> createState() =>
@@ -39,12 +43,16 @@ class _DeptJoinAttendanceListScreenState
       Provider.of<DeptJoinAttendanceListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.getDeptJoinAttendanceListApi(
-        context,
-        registrationNumber: widget.registrationNumber,
-        jobSeekerId: widget.jobSeekerId,
-        userId: widget.userId,
-      );
+      provider.getYearApi(context);
+      provider.getMonthApi(context);
+      provider.getDeptJoinAttendanceListApi(context);
+
+      // provider.getDeptJoinAttendanceListApi(
+      //   context,
+      //   registrationNumber: widget.registrationNumber,
+      //   jobSeekerId: widget.jobSeekerId,
+      //   userId: widget.userId,
+      // );
     });
   }
 
@@ -89,6 +97,8 @@ class _DeptJoinAttendanceListScreenState
               // ),
               //
               // const SizedBox(height: 8),
+
+              _filterCard(context, provider),
 
               /// 🔵 THIS IS MANDATORY
               Expanded(
@@ -137,22 +147,22 @@ class _DeptJoinAttendanceListScreenState
               children: [
 
                 /// Candidate Image (Future Ready)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: (item.photo != null && item.photo!.isNotEmpty)
-                      ? Image.network(
-                    item.photo!, // 🔥 Change key later if needed
-                    height: 90,
-                    width: 90,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return _placeholderImage();
-                    },
-                  )
-                      : _placeholderImage(),
-                ),
-
-                const SizedBox(width: 14),
+                // ClipRRect(
+                //   borderRadius: BorderRadius.circular(8),
+                //   child: (item.photo != null && item.photo!.isNotEmpty)
+                //       ? Image.network(
+                //     item.photo!, // 🔥 Change key later if needed
+                //     height: 90,
+                //     width: 90,
+                //     fit: BoxFit.cover,
+                //     errorBuilder: (context, error, stackTrace) {
+                //       return _placeholderImage();
+                //     },
+                //   )
+                //       : _placeholderImage(),
+                // ),
+                //
+                // const SizedBox(width: 14),
 
                 /// Name + Mobile
                 Expanded(
@@ -160,15 +170,38 @@ class _DeptJoinAttendanceListScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.nameEng ?? "-",
+                        item.name ?? "-",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 6),
-                      Text("Mobile: ${item.mobileNo ?? "-"}"),
-                      Text("Department: ${item.departmentNameEn ?? "-"}"),
+                      // RichText(
+                      //   text: TextSpan(
+                      //     style: const TextStyle(color: Colors.black87, fontSize: 16),
+                      //     children: [
+                      //       const TextSpan(
+                      //         text: "Mobile: ",
+                      //         style: TextStyle(fontWeight: FontWeight.bold),
+                      //       ),
+                      //       TextSpan(text: item.mobi ?? "-"),
+                      //     ],
+                      //   ),
+                      // ),
+
+                      // RichText(
+                      //   text: TextSpan(
+                      //     style: const TextStyle(color: Colors.black87, fontSize: 16),
+                      //     children: [
+                      //       const TextSpan(
+                      //         text: "Department: ",
+                      //         style: TextStyle(fontWeight: FontWeight.bold),
+                      //       ),
+                      //       TextSpan(text: item.departmentNameEn ?? "-"),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -177,19 +210,39 @@ class _DeptJoinAttendanceListScreenState
 
             const SizedBox(height: 15),
 
-            _row("Father Name", item.fatherNameEng),
-            _row("Joining Date", _formatDate(item.internJoiningDate)),
-            _row("Year", item.workingYear?.toString()),
-            _row("Month", item.attendanceMonthName),
+            _row("Registration No. ", item.registrationNo),
+            _row("Father Name", item.fName),
+            _row("Gender", item.gender),
+            _row("Category", item.category),
+            _row("DOB", item.dob),
+            _row("Joining Date", _formatDate(item.joinDate)),
+            _fileRow(
+              label: "Joining Letter",
+              fileUrl: item.pdfPath,
+              onTap: () {
+                provider.downloadAndOpenPdf(item.pdfPath!);
+              },
+            ),
+            _row("Attendance Year", item.year?.toString()),
+            _row("Attendance Month", item.monthName),
+            _row("Attendance Uploaded ON", item.attendanceUploadedOn),
+            _row("Attendance Status", item.attendanceStatus),
+            _fileRow(
+              label: "Attendance Letter",
+              fileUrl: item.attendanceLetter,
+              onTap: () {
+                provider.downloadAndOpenPdf(item.attendanceLetter!);
+              },
+            ),
 
-            const Divider(height: 20),
+         //   const Divider(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
 
                 /// 🔹 IF NOT MARKED
-                if (item.attendanceMarkStatus == 0)
+                if (item.enableMarkAttendance == 1)
                   OutlinedButton(
                     onPressed: () =>
                         provider.openAttendancePopup(context, item),
@@ -197,21 +250,21 @@ class _DeptJoinAttendanceListScreenState
                   ),
 
                 /// 🔹 IF MARKED
-                if (item.attendanceMarkStatus == 1) ...[
-                  OutlinedButton(
-                    onPressed: () {
-                      provider.viewCertificate(context, item);
-                    },
-                    child: const Text("View Certificate"),
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      provider.approveAttendance(context, item);
-                    },
-                    child: const Text("Approve"),
-                  ),
-                ],
+                // if (item.attendanceStatus == 1) ...[
+                //   OutlinedButton(
+                //     onPressed: () {
+                //       provider.viewCertificate(context, item);
+                //     },
+                //     child: const Text("View Certificate"),
+                //   ),
+                //   const SizedBox(width: 8),
+                //   ElevatedButton(
+                //     onPressed: () {
+                //       provider.approveAttendance(context, item);
+                //     },
+                //     child: const Text("Approve"),
+                //   ),
+                // ],
               ],
             ),
           ],
@@ -288,6 +341,183 @@ class _DeptJoinAttendanceListScreenState
     );
   }
 
+  Widget _fileRow({
+    required String label,
+    required String? fileUrl,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 130,
+            child: Text(
+              "$label:",
+              style: Styles.mediumTextStyle(
+                size: 14,
+                color: kBlackColor,
+              ).copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          /// 🔹 VIEW BUTTON
+          Expanded(
+            child: fileUrl != null && fileUrl.isNotEmpty
+                ? GestureDetector(
+              onTap: onTap,
+              child: const Text(
+                "View",
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            )
+                : const Text("-"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterCard(
+      BuildContext context,
+      DeptJoinAttendanceListProvider provider,
+      ) {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+
+          /// 🔹 Registration No
+          TextField(
+            controller: provider.regNoController,
+            decoration: InputDecoration(
+              labelText: "Registration No.",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          /// 🔹 Year + Month Row
+          Row(
+            children: [
+
+              /// YEAR
+              Expanded(
+                child: DropdownButtonFormField<YearData>(
+                  value: provider.yearListApi.any(
+                          (e) => e.dropID == provider.selectedYearObj?.dropID)
+                      ? provider.yearListApi.firstWhere(
+                        (e) => e.dropID == provider.selectedYearObj?.dropID,
+                  )
+                      : null,
+                  decoration: InputDecoration(
+                    labelText: "Year",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  items: provider.yearListApi.map((year) {
+                    return DropdownMenuItem(
+                      value: year,
+                      child: Text(year.name.toString()),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    provider.selectedYearObj = value;
+                    provider.filterSelectedYear = value?.dropID;
+                    provider.notifyListeners();
+                  },
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              /// MONTH
+              Expanded(
+                child: DropdownButtonFormField<MonthData>(
+                  value: provider.selectedMonthObj,
+                  decoration: InputDecoration(
+                    labelText: "Month",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  items: provider.monthListApi
+                      .map((m) => DropdownMenuItem(
+                    value: m,
+                    child: Text(m.name ?? ""),
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    provider.selectedMonthObj = value;
+                    provider.filterSelectedMonthNumber = value?.dropID; // 👈 IMPORTANT
+                    provider.notifyListeners();
+                  },
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          /// 🔹 Buttons
+          Row(
+            children: [
+
+              /// SEARCH
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    provider.search(context);
+                  },
+                  child: const Text("Search"),
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              /// CLEAR
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    provider.clearSearch();
+                  },
+                  child: const Text("Clear"),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  String _getMonthName(int month) {
+    const months = [
+      "Jan","Feb","Mar","Apr","May","Jun",
+      "Jul","Aug","Sep","Oct","Nov","Dec"
+    ];
+    return months[month - 1];
+  }
 
 
 // Widget _iconBtn({

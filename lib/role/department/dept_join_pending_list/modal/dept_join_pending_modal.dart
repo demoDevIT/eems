@@ -41,90 +41,123 @@ class DeptJoinPendingItem {
   // String? allotmentDate;
   // String? technicalCourse;
 
+    int? RSLDCTrainingAllotID;
+    String? internJoiningDate;
+    String? applicationApprovalDate;
     int? jobSeekerUserId;
-    String? areaType;
-    String? privateDistrictCode;
-    String? privateCityCode;
-    String? privateBlockCode;
-    String? privateGPCode;
-    String? privateWardCode;
-    String? privateVillageCode;
+    int? jobSeekerID;
     int? privateDepartmentID;
-    String? ssoid;
     String? allottedDeptName;
     String? mobileNo;
-    String? designation;
     String? nameEng;
     String? fNameEng;
+    String? gender;
+    String? dob;
+    String? applyDate;
     String? regNo;
     String? photo;
     String? districtName;
-    String? cityName;
-    String? wardName;
-    String? blockName;
-    String? gpName;
-    String? villageName;
-    String? departmentNameEn;
-    String? internshipPdfPath;
     String? lastActionDate;
+    String? deptAllotmentDate;
+    String? departmentNameEn;
+    String? allotmentDeptName;
+
+    // String? areaType;
+    // String? privateDistrictCode;
+    // String? privateCityCode;
+    // String? privateBlockCode;
+    // String? privateGPCode;
+    // String? privateWardCode;
+    // String? privateVillageCode;
+    // String? ssoid;
+    // String? designation;
+    // String? cityName;
+    // String? wardName;
+    // String? blockName;
+    // String? gpName;
+    // String? villageName;
+    // String? internshipPdfPath;
+
 
   DeptJoinPendingItem({
+    this.RSLDCTrainingAllotID,
+    this.internJoiningDate,
+    this.applicationApprovalDate,
     this.jobSeekerUserId,
-    this.areaType,
-    this.privateDistrictCode,
-    this.privateCityCode,
-    this.privateBlockCode,
-    this.privateGPCode,
-    this.privateWardCode,
-    this.privateVillageCode,
+    this.jobSeekerID,
     this.privateDepartmentID,
-    this.ssoid,
     this.allottedDeptName,
     this.mobileNo,
-    this.designation,
     this.nameEng,
     this.fNameEng,
+    this.gender,
+    this.dob,
+    this.applyDate,
     this.regNo,
     this.photo,
     this.districtName,
-    this.cityName,
-    this.wardName,
-    this.blockName,
-    this.gpName,
-    this.villageName,
+    this.lastActionDate,
+    this.deptAllotmentDate,
     this.departmentNameEn,
-    this.internshipPdfPath,
-    this.lastActionDate
+    this.allotmentDeptName
+
+    // this.areaType,
+    // this.privateDistrictCode,
+    // this.privateCityCode,
+    // this.privateBlockCode,
+    // this.privateGPCode,
+    // this.privateWardCode,
+    // this.privateVillageCode,
+    // this.ssoid,
+    // this.designation,
+    // this.cityName,
+    // this.wardName,
+    // this.blockName,
+    // this.gpName,
+    // this.villageName,
+    // this.departmentNameEn,
+    // this.internshipPdfPath,
   });
 
   factory DeptJoinPendingItem.fromJson(Map<String, dynamic> json) {
     return DeptJoinPendingItem(
+      RSLDCTrainingAllotID: json['RSLDCTrainingAllotID'],
+      internJoiningDate: json['InternJoiningDate'],
+      applicationApprovalDate: json['ApplicationApprovalDate_DDMMYYYY'],
       jobSeekerUserId: json['JobSeekerUserId'],
-      areaType: json['AreaType'],
-      privateDistrictCode: json['PrivateDistrictCode'],
-      privateCityCode: json['PrivateCityCode'],
-      privateBlockCode: json['PrivateBlockCode'],
-      privateGPCode: json['PrivateGPCode'],
-      privateWardCode: json['PrivateWardCode'],
-      privateVillageCode: json['PrivateVillageCode'],
+      jobSeekerID: json['JobSeekerID'],
       privateDepartmentID: json['PrivateDepartmentID'],
-      ssoid: json['SSOID'],
-      allottedDeptName: json['AllottedDeptName'], // shown as Exchange Name
-      mobileNo: json['MobileNo'], // shown as Exchange Name
-      designation: json['Designation'], // shown as Exchange Name
-      nameEng: json['NAME_ENG'], // shown as Exchange Name
-      fNameEng: json['FATHER_NAME_ENG'], // shown as Exchange Name
+      allottedDeptName: json['AllottedDeptName'],
+      mobileNo: json['MOBILE_NO'],
+      nameEng: json['NAME_ENG'],
+      fNameEng: json['FATHER_NAME_ENG'],
+      gender: json['GENDER'],
+      dob: json['DOB_DDMMYYYY'],
+      applyDate: json['ApplyDate_DDMMYYYY'],
       regNo: json['RegistrationNumber'],
       photo: json['LatestPhoto'],
-      districtName: json['DistrictName'], // shown as Exchange Name
-      cityName: json['CityName'], // shown as Exchange Name
-      wardName: json['WardName'], // shown as Exchange Name
-      blockName: json['BlockName'], // shown as Exchange Name
-      gpName: json['GPName'], // shown as Exchange Name
-      villageName: json['VillageName'], // shown as Exchange Name
-      departmentNameEn: json['DepartmentNameEn'], // shown as Exchange Name
-      internshipPdfPath: json['InternshipPdfPath'], // shown as Exchange Name
-      lastActionDate: json['LastActionDate'], // shown as Exchange Name
+      districtName: json['DistrictName'],
+      lastActionDate: json['LastActionDate'],
+      deptAllotmentDate: json['DeptAllotmentDate_DDMMYYYY'],
+      departmentNameEn: json['DepartmentNameEn'],
+      allotmentDeptName: json['AllotmentDeptName'],
+
+      // areaType: json['AreaType'],
+      // privateDistrictCode: json['PrivateDistrictCode'],
+      // privateCityCode: json['PrivateCityCode'],
+      // privateBlockCode: json['PrivateBlockCode'],
+      // privateGPCode: json['PrivateGPCode'],
+      // privateWardCode: json['PrivateWardCode'],
+      // privateVillageCode: json['PrivateVillageCode'],
+      // ssoid: json['SSOID'],
+      // mobileNo: json['MobileNo'],
+      // designation: json['Designation'],
+      // cityName: json['CityName'],
+      // wardName: json['WardName'],
+      // blockName: json['BlockName'],
+      // gpName: json['GPName'],
+      // villageName: json['VillageName'],
+      // internshipPdfPath: json['InternshipPdfPath'],
     );
   }
 }

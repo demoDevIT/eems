@@ -39,12 +39,12 @@ class _DeptJoinPendingListScreenState
       Provider.of<DeptJoinPendingListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.getDeptJoinPendingListApi(
-        context,
-        registrationNumber: widget.registrationNumber,
-        jobSeekerId: widget.jobSeekerId,
-        userId: widget.userId,
-      );
+      // provider.getDeptJoinPendingListApi(
+      //   context,
+      //   registrationNumber: widget.registrationNumber,
+      //   jobSeekerId: widget.jobSeekerId,
+      //   userId: widget.userId,
+      // );
       //provider.initPageApis(context);
       // provider.getLevelApi(context);
       // provider.getFinancialYearApi(context);
@@ -91,6 +91,8 @@ class _DeptJoinPendingListScreenState
               // ),
               //
               // const SizedBox(height: 8),
+
+              _filterCard(context, provider),
 
               /// 🔵 THIS IS MANDATORY
               Expanded(
@@ -180,10 +182,18 @@ class _DeptJoinPendingListScreenState
             const SizedBox(height: 15),
 
             _row("Father Name", item.fNameEng),
-            _row("Designation", item.designation),
             _row("Department", item.departmentNameEn),
             _row("Reg No.", item.regNo),
-            _row("Approval Date", _formatDate(item.lastActionDate)),
+         //   _row("Approval Date", _formatDate(item.lastActionDate)),
+            _row("Gender", item.gender),
+            _row("DOB", item.dob),
+            _row("Application Date", item.applyDate),
+            _row("Approval Date", item.applicationApprovalDate),
+            _row("Department Allocation Date", item.deptAllotmentDate),
+            _row(
+              "Alloted Department",
+              "${item.allottedDeptName ?? "-"} (${item.departmentNameEn ?? "-"})",
+            ),
 
             const Divider(height: 20),
 
@@ -276,6 +286,72 @@ class _DeptJoinPendingListScreenState
         Icons.person,
         size: 40,
         color: Colors.grey,
+      ),
+    );
+  }
+
+  Widget _filterCard(
+      BuildContext context,
+      DeptJoinPendingListProvider provider,
+      ) {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+
+          /// 🔹 Registration No Input
+          TextField(
+            controller: provider.regNoController,
+            decoration: InputDecoration(
+              labelText: "Registration No.",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          /// 🔹 Buttons
+          Row(
+            children: [
+
+              /// 🔍 SEARCH
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    provider.search(context);
+                  },
+                  child: const Text("Search"),
+                ),
+              ),
+
+              const SizedBox(width: 10),
+
+              /// ❌ CLEAR
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    provider.clearSearch();
+                  },
+                  child: const Text("Clear"),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

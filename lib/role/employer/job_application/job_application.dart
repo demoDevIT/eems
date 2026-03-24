@@ -9,6 +9,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/textfeild.dart';
+import '../../../utils/textstyles.dart';
 import '../../department/dept_QR_scan/dept_QR_scan.dart';
 import '../../department/dept_join_attendance_list/modal/financial_year_modal.dart';
 // import '../../job_seeker/qr_scanner/qr_scanner_screen.dart';
@@ -137,7 +138,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             /// Job Post
                             labelWithStar('Job Post', required: false),
 
-                            buildDropdownWithBorderField(
+                            buildDropdownWithBorderFieldOnlyThisPage(
                               items: provider.postList,
                               controller: provider.postNameController,
                               idController: provider.postIdController,
@@ -286,6 +287,76 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
     );
   }
 
+  Widget buildDropdownWithBorderFieldOnlyThisPage<T>({
+    required List<dynamic> items,
+    required TextEditingController controller,
+    required TextEditingController idController,
+    String? hintText,
+    double? width,
+    double? height,
+    String? type,
+    Color? color,
+    Widget? postfixIcon,
+    bool isEnable = true,
+    Function(String?)? onChanged,
+    BorderRadius? borderRadius,
+  }) {
+    String? selectedValue =
+    items.any((item) => item.dropID.toString() == idController.text)
+        ? idController.text
+        : null;
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return  Container(
+          width: width ?? double.infinity,
+          height: height ?? 50.0,
+          decoration: BoxDecoration(
+            color: color ?? kWhite,
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            border: Border.all(color: borderColor, width: 0.5),
+          ),
+          child: Center(
+            child: DropdownButton<String>(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              dropdownColor:kWhite,
+              value: selectedValue,
+              // Ensured valid
+              isExpanded: true,
+              hint: Text(
+                hintText ?? 'Select an option',
+                style: Styles.regularTextStyle(
+                    size: 14, color:fontGrayColor),
+              ),
+              icon: postfixIcon ?? const Icon(Icons.arrow_drop_down, color: fontGrayColor),
+              style: Styles.regularTextStyle(
+                  size: 14, color: kBlackColor),
+              underline: const SizedBox(),
+              // Removes the default underline
+              items: items.map((dynamic item) {
+                return DropdownMenuItem<String>(
+                  value: item.dropID.toString(), // ✅ ID
+                  child: Text(item.name ?? ""),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedValue = newValue;
+                  final selectedItem = items.firstWhere(
+                          (item) => item.dropID.toString() == newValue
+                  );
+                  controller.text = selectedItem.name ?? "";
+                  idController.text = selectedItem.dropID.toString();
+                  if (onChanged != null) {
+                    onChanged(newValue);
+                  }
+                });
+              },
+            ),
+          ) ,
+        ) ;
+      },
+    );
+  }
 
   Widget _buildRow(String label, String? value) {
     return Padding(

@@ -29,6 +29,8 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
   String? jobSeekerId;
   String? userId;
 
+  TextEditingController regNoController = TextEditingController();
+
   /// LEVEL
   // bool isLevelLoading = false;
   // List<LevelData> levelList = [];
@@ -203,6 +205,26 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
   //   }
   // }
 
+  Future<void> search(BuildContext context) async {
+    if (regNoController.text.trim().isEmpty) {
+      showAlertError("Please enter registration number", context);
+      return;
+    }
+
+    await getDeptJoinPendingListApi(
+      context,
+      registrationNumber: regNoController.text.trim(),
+      jobSeekerId: null,
+      userId: null,
+    );
+  }
+
+  void clearSearch() {
+    regNoController.clear();
+    pendingList.clear();
+    notifyListeners();
+  }
+
   bool isPendingListLoading = false;
   List<DeptJoinPendingItem> pendingList = [];
 
@@ -228,10 +250,12 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {
         "ActionName": "PendingList",
-        "DepartmentID": 1,
-        "RegistrationNumber": this.registrationNumber,
+        "DepartmentID": 2,
+        "RegistrationNumber": this.regNoController.text, //"22092120948", //this.registrationNumber,
         "JobSeekerID": this.jobSeekerId,
-        "UserId": this.userId,
+        "UserId": "2261663", //UserData().model.value.userId,
+        "intenjoinned": null,
+        "AllotmentDeptId": null
       };
 
       isPendingListLoading = true;
@@ -625,6 +649,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     // endDateController.clear();
 
     /// clear list
+    regNoController.clear();
     pendingList.clear();
 
     notifyListeners();
