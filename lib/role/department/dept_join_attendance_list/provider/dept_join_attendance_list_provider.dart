@@ -16,6 +16,7 @@ import '../modal/dept_join_attendance_modal.dart';
 import '../modal/financial_year_modal.dart';
 import '../modal/level_name_modal.dart';
 import '../../register_form/modal/district_modal.dart';
+import '../modal/mark_attendance_basic_detail_modal.dart';
 import '../modal/month_modal.dart';
 import '../modal/year_modal.dart';
 
@@ -32,30 +33,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   String? jobSeekerId;
   String? userId;
 
-  /// LEVEL
-  // bool isLevelLoading = false;
-  // List<LevelData> levelList = [];
-  // LevelData? selectedLevel;
-
-  /// DISTRICT
-  // bool isDistrictLoading = false;
-  // List<DistrictData> districtList = [];
-  // DistrictData? selectedDistrict;
-  // TextEditingController districtController = TextEditingController();
-  // TextEditingController districtIdController = TextEditingController();
-
-  /// DATE
-  // String? fromDate;
-  // String? endDate;
-  //
-  // TextEditingController fromDateController = TextEditingController();
-  // TextEditingController endDateController = TextEditingController();
-
-  /// FINANCIAL YEAR
-  // bool isFinancialYearLoading = false;
-  // List<FinancialYearData> financialYearList = [];
-  // FinancialYearData? selectedFinancialYear;
-
+  // *********popup variables**********
   int totalDays = 0;
   int absentDays = 0;
   int presentDays = 0;
@@ -69,22 +47,18 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   List<int> yearList = [];
   List<int> monthList = List.generate(12, (index) => index + 1);
+  // ********popup variables*********
 
   bool isAttendanceLoading = false;
   List<DeptJoinAttendanceItem> attendanceList = [];
 
+  // ******** filter variables *********
   TextEditingController regNoController = TextEditingController();
 
   int? filterSelectedYear;
   int? filterSelectedMonthNumber;
 
-  List<int> filterYearList = [
-    DateTime.now().year - 1,
-    DateTime.now().year,
-    DateTime.now().year + 1,
-  ];
-
-  List<int> FilterMonthList = List.generate(12, (index) => index + 1);
+//  List<int> FilterMonthList = List.generate(12, (index) => index + 1);
 
   bool isMonthLoading = false;
 
@@ -160,16 +134,44 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
             yearListApi.add(YearData.fromJson(e));
           }
         }
-        if (yearListApi.isNotEmpty) {
-          selectedYearObj ??= yearListApi.first;
-          filterSelectedYear ??= selectedYearObj?.dropID;
-        }
       }
     } catch (e) {
       yearListApi.clear();
     }
 
     isYearLoading = false;
+    notifyListeners();
+  }
+
+  void setCurrentYearMonth() {
+    final now = DateTime.now();
+
+    /// SET YEAR
+    try {
+      selectedYearObj = yearListApi.firstWhere(
+            (y) => y.name == now.year.toString(),
+        orElse: () => yearListApi.isNotEmpty ? yearListApi.first : null!,
+      );
+
+      filterSelectedYear = selectedYearObj?.dropID;
+    } catch (e) {
+      selectedYearObj = null;
+      filterSelectedYear = null;
+    }
+
+    /// SET MONTH
+    try {
+      selectedMonthObj = monthListApi.firstWhere(
+            (m) => m.dropID == now.month,
+        orElse: () => monthListApi.isNotEmpty ? monthListApi.first : null!,
+      );
+
+      filterSelectedMonthNumber = selectedMonthObj?.dropID;
+    } catch (e) {
+      selectedMonthObj = null;
+      filterSelectedMonthNumber = null;
+    }
+
     notifyListeners();
   }
 
@@ -222,8 +224,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "OfficeId": 24,
         "StateId": 0,
         "DepartmentID": 1,
-        "FYID": 2026, //filterSelectedYear,
-        "MonthId": 2, //filterSelectedMonthNumber,
+        "FYID": selectedYearObj?.name, //filterSelectedYear, //2026
+        "MonthId": filterSelectedMonthNumber, //2
         "RoleId": UserData().model.value.roleId,
         "FromDate":null,
         "ToDate":null
@@ -274,10 +276,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> search(BuildContext context) async {
-    if (regNoController.text.trim().isEmpty) {
-      showAlertError("Please enter registration number", context);
-      return;
-    }
+    // if (regNoController.text.trim().isEmpty) {
+    //   showAlertError("Please enter registration number", context);
+    //   return;
+    // }
 
     await getDeptJoinAttendanceListApi(
       context,
@@ -289,9 +291,17 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   void clearSearch() {
     regNoController.clear();
+
+    /// RESET DROPDOWNS
+    selectedYearObj = null;
+    selectedMonthObj = null;
+
     filterSelectedYear = null;
     filterSelectedMonthNumber = null;
+
+    /// CLEAR LIST
     attendanceList.clear();
+
     notifyListeners();
   }
 
@@ -861,6 +871,49 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     );
   }
 
+  Future<MarkAttendanceBasicDetails?> getMarkAttendanceBasicDetails(
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
+    try {
+      final month = item.monthId!.toString().padLeft(2, '0');
+      final year = item.year.toString();
+
+      final body = {
+        "ActionName": "MarkAttendanceBasicDeatils",
+        "JobSeekerUserId": item.jobSeekerUserId,
+        "JobSeekerID": item.jobSeekerID,
+        "INPUT_AttendanceMonth": "$year$month", // 🔥 202602
+      };
+
+      print("========== FINAL First API ==========");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+      print("==========================================");
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/GetMarkAttendanceBasicDeatils",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        var data = apiResponse.response!.data;
+
+        if (data is String) {
+          data = jsonDecode(data);
+        }
+
+        if (data["State"] == 200 && data["Data"] != null && data["Data"].isNotEmpty) {
+          return MarkAttendanceBasicDetails.fromJson(data["Data"][0]);
+        }
+      }
+
+      return null;
+    } catch (e) {
+      showAlertError(e.toString(), context);
+      return null;
+    }
+  }
+
   Future<void> _submitAttendance(
     BuildContext context,
     DeptJoinAttendanceItem item,
@@ -894,34 +947,82 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
 
     try {
-      Map<String, dynamic> data = {
-        "JobSeekerID": item.jobSeekerUserId, // 8253
-        //"JoiningID": item.joiningID, // static
-        "WorkingDaysOfMonth": totalDays,
-        "TotalAbsent": absentDays,
-        "TotolWorkingDays": presentDays,
-        "AttendanceMonthID": item.monthId,
-        "WorkingYear": item.year,
-        //"OfficeName": item.officeName,
-        "RegistrationNo": item.registrationNo,
-        "Name": item.name,
-        "FatherName": item.fName,
-        //"Resident": item.address,
-        "Tehsil": "",
-        //"Assembly": item.assembly,
-       // "DistrictName": item.districtEn,
-        "AttendanceLetter": "",
-        "IsWholeMonthAbsent": isWholeMonthAbsent ? 1 : 0, //whole month 1
-      };
-
-      /// ✅ PRINT FULL REQUEST DATA
-      print("========== INSERT ATTENDANCE PAYLOAD ==========");
-      print(const JsonEncoder.withIndent('  ').convert(data));
-      print("===============================================");
-
-      // return;
       ProgressDialog.showLoadingDialog(context);
 
+      /// 🔥 STEP 1: CALL FIRST API
+      final basicData = await getMarkAttendanceBasicDetails(context, item);
+
+      if (basicData == null) {
+        ProgressDialog.closeLoadingDialog(context);
+        showAlertError("Unable to fetch basic details", context);
+        return;
+      }
+
+      /// 🔥 FORMAT MONTH
+      final monthNumber = item.monthId!.toString().padLeft(2, '0');
+      final year = item.year.toString();
+
+      final monthName = selectedMonthObj?.name ?? "";
+
+      /// 🔥 STEP 2: FINAL PAYLOAD
+      Map<String, dynamic> data = {
+        "UserID": UserData().model.value.userId,
+        "RoleID": UserData().model.value.roleId,
+        "JobSeekerID": item.jobSeekerID,
+        "JobSeekerUserId": item.jobSeekerUserId,
+        "JoiningID": basicData.joiningID,
+
+        "totalDays": totalDays,
+        "workingDays": presentDays,
+        "absentDays": absentDays,
+
+        "AttendanceMonthID": item.monthId,
+        "WorkingYear": item.year,
+        "fullAbsent": isWholeMonthAbsent,
+
+        "RegistrationNo": basicData.registrationNo,
+        "applicantName": basicData.applicantName,
+        "fatherName": basicData.fatherName,
+        "joiningDate": basicData.joiningDate,
+        "departmentName": basicData.departmentName,
+        "Address": basicData.address,
+        "Assembly": "",
+        "DistrictName": basicData.districtName,
+
+        "AttendanceLetter": "",
+        "attendanceMonth": "$year-$monthNumber", // 🔥 2026-02
+        "MonthName": monthName,
+        "OtherDocument": "",
+        "AttendanceReasonID": 0,
+        "BaseUrl": "http://localhost:5000/",
+      };
+
+      // Map<String, dynamic> data = {
+      //   "JobSeekerID": item.jobSeekerUserId, // 8253
+      //   //"JoiningID": item.joiningID, // static
+      //   "WorkingDaysOfMonth": totalDays,
+      //   "TotalAbsent": absentDays,
+      //   "TotolWorkingDays": presentDays,
+      //   "AttendanceMonthID": item.monthId,
+      //   "WorkingYear": item.year,
+      //   //"OfficeName": item.officeName,
+      //   "RegistrationNo": item.registrationNo,
+      //   "Name": item.name,
+      //   "FatherName": item.fName,
+      //   //"Resident": item.address,
+      //   "Tehsil": "",
+      //   //"Assembly": item.assembly,
+      //  // "DistrictName": item.districtEn,
+      //   "AttendanceLetter": "",
+      //   "IsWholeMonthAbsent": isWholeMonthAbsent ? 1 : 0, //whole month 1
+      // };
+
+      /// 🔍 DEBUG
+      print("========== FINAL INSERT PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("==========================================");
+
+      /// 🔥 STEP 3: CALL FINAL API
       ApiResponse apiResponse = await commonRepo.post(
         "Common/InsertAttendance",
         data,
@@ -929,9 +1030,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
       ProgressDialog.closeLoadingDialog(context);
 
-      if (apiResponse.response != null &&
-          apiResponse.response?.statusCode == 200) {
-        var responseData = apiResponse.response?.data;
+      if (apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response!.data;
         if (responseData is String) {
           responseData = jsonDecode(responseData);
         }
@@ -940,20 +1040,13 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           Navigator.pop(context);
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                responseData["Message"] ?? "Attendance Submitted Successfully",
-              ),
-            ),
+            SnackBar(content: Text(responseData["Message"])),
           );
 
-          /// 🔄 Refresh list after submit
-          getDeptJoinAttendanceListApi(context);
+          /// 🔄 Refresh list
+          await getDeptJoinAttendanceListApi(context);
         } else {
-          showAlertError(
-            responseData["Message"] ?? "Something went wrong",
-            context,
-          );
+          showAlertError(responseData["Message"], context);
         }
       } else {
         showAlertError("Something went wrong", context);
@@ -964,10 +1057,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
   }
 
-  void markAttendance(DeptJoinAttendanceItem item) {
-    debugPrint("Mark attendance for: ${item.name}");
-    // TODO: API call for marking attendance
-  }
+  // void markAttendance(DeptJoinAttendanceItem item) {
+  //   debugPrint("Mark attendance for: ${item.name}");
+  //   // TODO: API call for marking attendance
+  // }
 
   Future<void> pickAttendanceDate(
     BuildContext context,

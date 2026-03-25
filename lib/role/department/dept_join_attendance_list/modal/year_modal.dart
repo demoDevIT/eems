@@ -5,6 +5,9 @@ class YearModal {
   dynamic errorMessage;
   List<YearData>? data;
 
+  // YearModal(
+  //     {this.state, this.status, this.message, this.errorMessage, this.data});
+
   YearModal.fromJson(Map<String, dynamic> json) {
     state = json['State'];
     status = json['Status'];
@@ -18,15 +21,29 @@ class YearModal {
       });
     }
   }
+
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['State'] = this.state;
+  //   data['Status'] = this.status;
+  //   data['Message'] = this.message;
+  //   data['ErrorMessage'] = this.errorMessage;
+  //   if (this.data != null) {
+  //     data['Data'] = this.data!.map((v) => v.toJson()).toList();
+  //   }
+  //   return data;
+  // }
 }
 
 class YearData {
   int? dropID;
   String? name;
 
+ // YearData({this.dropID, this.name});
+
   YearData.fromJson(Map<String, dynamic> json) {
     dropID = json['ID'];
-    name = json['Year'];
+    name = json['Year']?.toString();
   }
 
   @override
@@ -37,4 +54,11 @@ class YearData {
 
   @override
   int get hashCode => dropID.hashCode;
+
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['ID'] = this.dropID;
+  //   data['Year'] = this.name;
+  //   return data;
+  // }
 }

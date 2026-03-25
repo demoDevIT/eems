@@ -124,7 +124,8 @@ class LoginProvider with ChangeNotifier {
         Map<String, dynamic> body = {
           "SSOID": ssoId,
           "Password": pass,
-          "DeviceID": deviceId
+          "DeviceID": deviceId,
+          // "BypassSSO": false //true for sandbox, false for live
         };
 
         if (ssoId == "employer1") {

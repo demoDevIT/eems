@@ -38,14 +38,17 @@ class _DeptJoinAttendanceListScreenState
     super.initState();
 
     /// 🔹 Call APIs after first frame
-    Future.microtask(() {
+    Future.microtask(() async {
       final provider =
       Provider.of<DeptJoinAttendanceListProvider>(context, listen: false);
 
       provider.clearData();
-      provider.getYearApi(context);
-      provider.getMonthApi(context);
-      provider.getDeptJoinAttendanceListApi(context);
+      await provider.getYearApi(context);
+      await provider.getMonthApi(context);
+
+      provider.setCurrentYearMonth(); // 🔥 NEW
+
+      await provider.getDeptJoinAttendanceListApi(context);
 
       // provider.getDeptJoinAttendanceListApi(
       //   context,
@@ -424,12 +427,7 @@ class _DeptJoinAttendanceListScreenState
               /// YEAR
               Expanded(
                 child: DropdownButtonFormField<YearData>(
-                  value: provider.yearListApi.any(
-                          (e) => e.dropID == provider.selectedYearObj?.dropID)
-                      ? provider.yearListApi.firstWhere(
-                        (e) => e.dropID == provider.selectedYearObj?.dropID,
-                  )
-                      : null,
+                  value: provider.selectedYearObj,
                   decoration: InputDecoration(
                     labelText: "Year",
                     border: OutlineInputBorder(
@@ -439,7 +437,7 @@ class _DeptJoinAttendanceListScreenState
                   items: provider.yearListApi.map((year) {
                     return DropdownMenuItem(
                       value: year,
-                      child: Text(year.name.toString()),
+                      child: Text(year.name?.toString() ?? ""),
                     );
                   }).toList(),
                   onChanged: (value) {
