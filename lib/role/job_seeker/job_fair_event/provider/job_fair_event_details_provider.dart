@@ -53,9 +53,9 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
           responseData = jsonDecode(responseData);
         }
 
-        apiMessage =
-            responseData["Message"] ??
-                "Registration Successful";
+        bool status = responseData["Status"] ?? false;
+
+        apiMessage = responseData["Message"] ?? "";
 
         isLoading = false;
         notifyListeners();

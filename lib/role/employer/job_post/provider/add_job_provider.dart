@@ -985,6 +985,8 @@ class AddJobProvider extends ChangeNotifier {
         List<int> salaryLimit =
         getSalaryLimit(salaryRangeController.text);
 
+        String? deviceId = await UtilityClass.getDeviceId();
+
         Map<String, dynamic> bodyy =
         {
           "ActionName": "Insert",
@@ -1056,7 +1058,8 @@ class AddJobProvider extends ChangeNotifier {
           "JobPostedForId": 0,
           "InternshipDuration": "string",
           "OfferStipend": false,
-          "StipendAmount": 0
+          "StipendAmount": 0,
+          "DeviceID": deviceId
         };
 
 

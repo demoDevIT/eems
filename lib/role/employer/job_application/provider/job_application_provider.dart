@@ -171,13 +171,28 @@ class JobApplicationProvider extends ChangeNotifier {
   }
 
   Future getJobApplicationList(BuildContext context,
-      {int? yearId, String? eventId, String? jobPostID, String? mobile, String? registrationNo, String? applicantName}) async {
+      {
+        int? yearId,
+        String? eventId,
+        String? jobPostID,
+        String? mobile,
+        String? registrationNo,
+        String? applicantName,
+
+        /// ✅ NEW (for scanner)
+        bool isScanner = false,
+        String? jobSeekerUserId,
+        String? jobSeekerRoleId,
+        String? jobSeekerEventId
+      }) async {
     try {
       String userId = UserData().model.value.userId.toString();
       String roleId = UserData().model.value.roleId.toString();
 
       Map<String, dynamic> body = {
-        "ActionName": "Get_NewAllAppliedApplicationList",
+        "ActionName": isScanner
+            ? "Get_NewAllAppliedApplicationListForScanner"
+            : "Get_NewAllAppliedApplicationList",
         "UserId": userId,
         "Roleid": roleId,
         "JobFairEventDetailId": eventId ?? 0,
@@ -185,7 +200,14 @@ class JobApplicationProvider extends ChangeNotifier {
         "FYID": yearId ?? 0, //16
         "mobileNo": mobile ?? "",
         "candidateName": applicantName ?? "",
-        "regNo": registrationNo ?? ""
+        "regNo": registrationNo ?? "",
+        "Flag": isScanner ? "Scanner" : "",
+
+        /// ✅ ONLY FOR SCANNER
+        "JobSeekerUserId": jobSeekerUserId ?? "", // "3200320036003100360030003500"
+        "JobSeekerRoleId": jobSeekerRoleId ?? "", // "3400"
+        "JobSeekerEventId": jobSeekerEventId ?? "", // "37003300"
+
       };
 
       print("body => $body");

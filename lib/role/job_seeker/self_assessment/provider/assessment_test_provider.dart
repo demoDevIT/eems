@@ -330,11 +330,14 @@ class AssessmentTestProvider extends ChangeNotifier {
         String? ipAddress =
         await UtilityClass.getIpAddress();
 
+        String? deviceId = await UtilityClass.getDeviceId();
+
         Map<String, dynamic> body = {
           "userId":
           UserData().model.value.userId,
          // "IPAddress": ipAddress,
           "answers": answers,
+          "DeviceID": deviceId
         };
 
         String url =

@@ -13,6 +13,7 @@ import '../../../utils/textstyles.dart';
 import '../../department/dept_QR_scan/dept_QR_scan.dart';
 import '../../department/dept_join_attendance_list/modal/financial_year_modal.dart';
 // import '../../job_seeker/qr_scanner/qr_scanner_screen.dart';
+import '../emp_QR_scan/emp_QR_scan.dart';
 import 'provider/job_application_provider.dart';
 
 class JobApplicationScreen extends StatefulWidget {
@@ -384,30 +385,30 @@ void _openQRScanner(BuildContext context) async {
   // TODO: Integrate actual scanner package
   // Example using mobile_scanner or qr_code_scanner
 
-  String? scannedData = await Navigator.push(
+  final result = await Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (_) => const DeptQRScanPage(),
+      builder: (_) => const EmpQRScanPage(),
     ),
   );
 
-  if (scannedData != null && scannedData.isNotEmpty) {
-    final provider =
-    Provider.of<JobApplicationProvider>(context, listen: false);
-
-    /// Example: fill registration number from QR
-    provider.registrationController.text = scannedData;
-
-    /// Optional: auto search
-    provider.getJobApplicationList(
-      context,
-      yearId: provider.selectedFinancialYear?.financialYearID,
-      eventId: provider.eventIdController.text,
-      jobPostID: provider.postIdController.text,
-      mobile: provider.mobileController.text,
-      registrationNo: scannedData,
-      applicantName: provider.applicantNameController.text,
-    );
+  if (result == "scanned") {
+    // final provider =
+    // Provider.of<JobApplicationProvider>(context, listen: false);
+    //
+    // /// Example: fill registration number from QR
+    // provider.registrationController.text = result;
+    //
+    // /// Optional: auto search
+    // provider.getJobApplicationList(
+    //   context,
+    //   yearId: provider.selectedFinancialYear?.financialYearID,
+    //   eventId: provider.eventIdController.text,
+    //   jobPostID: provider.postIdController.text,
+    //   mobile: provider.mobileController.text,
+    //   registrationNo: result,
+    //   applicantName: provider.applicantNameController.text,
+    // );
   }
 }
 

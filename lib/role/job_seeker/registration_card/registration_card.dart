@@ -25,6 +25,8 @@ class RegistrationCardScreen extends StatefulWidget {
 }
 
 class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
+  final GlobalKey _pdfKey = GlobalKey();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,9 +60,19 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  jobSeekerCard(cardData!),
-                  const SizedBox(height: 16),
-                  addressCard(cardData!),
+                  RepaintBoundary(
+                    key: _pdfKey,
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          jobSeekerCard(cardData!),
+                          const SizedBox(height: 16),
+                          addressCard(cardData),
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 24),
                   Padding(
                     padding: const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 10),
@@ -68,12 +80,16 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
-                          confirmAlertDialog(context, "Alert","Are you sure want to Download ?", (value) {
-                            if (value.toString() == "success") {
-                              provider.pdfDownloadApi(context);
-                            }
-                          },
+                        onPressed: () async {
+                          confirmAlertDialog(
+                            context,
+                            "Alert",
+                            "Are you sure want to Download ?",
+                                (value) async {
+                              if (value.toString() == "success") {
+                                await provider.generatePdfFromWidget(_pdfKey);
+                              }
+                            },
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -239,9 +255,18 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                     const SizedBox(height: 4),
                     Text("NCO Code",
                         style: TextStyle(fontSize: 10, color: Colors.grey)),
-                    Text(
-                      cardData.NCOCode ?? "",
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: 60, // adjust based on design
+                      child: Text(
+                        cardData.NCOCode ?? "",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
 
                   ],

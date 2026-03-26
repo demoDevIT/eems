@@ -576,10 +576,10 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         "Thank You for  Registration",
                         style: Styles.mediumTextStyle(size: 14, color: kBlackColor),
                       ),
-                      Text(
-                        "Your Registration ID:- #1234FA/2025",
-                        style: Styles.semiBoldTextStyle(size: 14, color: kBlackColor),
-                      ),
+                      // Text(
+                      //   "Your Registration ID:- #1234FA/2025",
+                      //   style: Styles.semiBoldTextStyle(size: 14, color: kBlackColor),
+                      // ),
 
 
 

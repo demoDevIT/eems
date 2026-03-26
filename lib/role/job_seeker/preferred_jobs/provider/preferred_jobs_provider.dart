@@ -455,9 +455,12 @@ class PreferredJobsProvider extends ChangeNotifier {
         };
       }).toList();
 
+      String? deviceId = await UtilityClass.getDeviceId();
+
       Map<String, dynamic> body = {
         "CreatedBy": UserData().model.value.userId,
-        "JobApplyList": jobApplyList
+        "JobApplyList": jobApplyList,
+        "DeviceID": deviceId
       };
 
       ApiResponse apiResponse =
@@ -494,9 +497,13 @@ class PreferredJobsProvider extends ChangeNotifier {
       List<Map<String, dynamic>> jobApplyList,
       ) async {
     try {
+
+      String? deviceId = await UtilityClass.getDeviceId();
+
       Map<String, dynamic> body = {
         "CreatedBy": UserData().model.value.userId,
-        "JobApplyList": jobApplyList
+        "JobApplyList": jobApplyList,
+        "DeviceID": deviceId
       };
 
       ApiResponse apiResponse =
@@ -566,6 +573,8 @@ class PreferredJobsProvider extends ChangeNotifier {
 
     try {
 
+      String? deviceId = await UtilityClass.getDeviceId();
+
       Map<String, dynamic> body = {
         "CreatedBy": UserData().model.value.userId,
         "JobApplyList": [
@@ -574,7 +583,8 @@ class PreferredJobsProvider extends ChangeNotifier {
             "JobPostId": jobPostId,
             "EmployerUserId": employerUserId,
           }
-        ]
+        ],
+        "DeviceID": deviceId
       };
 
       isJobDetailsLoading = true;

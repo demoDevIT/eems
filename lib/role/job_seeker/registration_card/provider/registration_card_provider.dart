@@ -15,6 +15,12 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
 import '../../loginscreen/modal/download_registraction_modal.dart';
 
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+
 class RegistrationCardProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
 
@@ -96,7 +102,39 @@ class RegistrationCardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> generatePdfFromWidget(GlobalKey key) async {
+    try {
+      final boundary =
+      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
+      final image = await boundary.toImage(pixelRatio: 3.0);
+      final byteData =
+      await image.toByteData(format: ui.ImageByteFormat.png);
+
+      final pngBytes = byteData!.buffer.asUint8List();
+
+      final pdf = pw.Document();
+
+      final imageProvider = pw.MemoryImage(pngBytes);
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Image(imageProvider, fit: pw.BoxFit.contain),
+            );
+          },
+        ),
+      );
+
+      await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save(),
+      );
+    } catch (e) {
+      print("PDF Error: $e");
+    }
+  }
 
   Future<DownloadRegistractionModal?>  pdfDownloadApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();

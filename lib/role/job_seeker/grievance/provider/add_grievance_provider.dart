@@ -201,6 +201,8 @@ class AddGrievanceProvider extends ChangeNotifier {
       try {
         String ? IpAddress =  await UtilityClass.getIpAddress();
 
+        String? deviceId = await UtilityClass.getDeviceId();
+
         Map<String, dynamic> bodyy =
         {
           "DisAttachmentFileName": "",
@@ -222,6 +224,7 @@ class AddGrievanceProvider extends ChangeNotifier {
           "UserID": UserData().model.value.userId.toString(),
           "FileAttachment": certificateController.text.toString().isNotEmpty ? true :false,
           "AttachmentFileName": certificateController.text,
+          "DeviceID": deviceId
         };
 
         String url = "MobileProfile/SaveGrievance";
