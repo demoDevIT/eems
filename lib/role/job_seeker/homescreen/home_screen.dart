@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/homescreen/provider/home_screen_provider.dart';
@@ -12,8 +13,23 @@ import 'package:rajemployment/utils/utility_class.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/textstyles.dart';
+import '../../../utils/user_new.dart';
+import '../applied_jobs/applied_jobs.dart';
+import '../cv_builder/cv_list.dart';
+import '../grievance/grievance_list.dart';
+import '../job_fair_event/registered_event_list.dart';
+import '../jobs/jobs_list.dart';
 import '../jobseekerdashboard/job_based_profile.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+
+import '../mysy/mysy_list.dart';
+import '../preferred_jobs/preferred_jobs.dart';
+import '../registration_card/registration_card.dart';
+import '../select_company/select_company_page.dart';
+import '../self_assessment/self_assessment.dart';
+import '../settings/job_settings_screen.dart';
+import '../videoprofile/videoprofile_screen.dart';
+
 
  class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,233 +68,504 @@ class _HomeScreenState extends State<HomeScreen> {
             body: Consumer<HomeScreenProvider>(
                 builder: (context, provider, child) {
 
-                  return   SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Schemes
-                    /// Attendance Icon + Schemes
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 0),
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          /// Attendance Button
-                          // Align(
-                          //   alignment: Alignment.centerRight,
-                          //   child: InkWell(
-                          //     onTap: () {
-                          //       // Navigator.push(
-                          //       //   context,
-                          //       //   MaterialPageRoute(
-                          //       //     builder: (context) => const AttendanceScreen(),
-                          //       //   ),
-                          //       // );
-                          //     },
-                          //     borderRadius: BorderRadius.circular(20),
-                          //     child: Container(
-                          //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          //       decoration: BoxDecoration(
-                          //         color: kPrimaryColor.withOpacity(0.1),
-                          //         borderRadius: BorderRadius.circular(20),
-                          //         border: Border.all(color: kPrimaryColor),
-                          //       ),
-                          //       child: Row(
-                          //         mainAxisSize: MainAxisSize.min,
-                          //         children: const [
-                          //           Icon(
-                          //             Icons.add_circle,
-                          //             size: 18,
-                          //             color: kPrimaryColor,
-                          //           ),
-                          //           SizedBox(width: 6),
-                          //           Text(
-                          //             "Mark Attendance",
-                          //             style: TextStyle(
-                          //               fontSize: 12,
-                          //               fontWeight: FontWeight.w600,
-                          //               color: kPrimaryColor,
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                          /// 🔹 Greeting Card
+                          _buildGreetingCard(),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 16),
 
-                          /// Schemes Heading
-                          // sectionHeader(
-                          //   AppLocalizations.of(context)!.schemes,
-                          //   context,
-                          //   showViewAll: false,
-                          // ),
-                          //
-                          // SizedBox(height: SizeConfig.defaultSize! * 1),
-                          //
-                          // Row(
-                          //   children: [
-                          //     Expanded(
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.only(right: 8.0),
-                          //         child: schemeCard(
-                          //           "मुख्यमंत्री युवा रोजगार प्रोत्साहन योजना 2025",
-                          //           context,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          /// 🔹 Grid Menu
+                          _buildDashboardGrid(),
+
+                          const SizedBox(height: 16),
+
+                          /// 🔹 KEEP YOUR EXISTING SECTIONS BELOW (NO CHANGE)
+                        //  _existingSections(provider),
                         ],
                       ),
                     ),
-
-
-                    provider.jobEventList.isNotEmpty ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          SizedBox(height: SizeConfig.defaultSize! * 1),
-                          _buildSectionHeader(AppLocalizations.of(context)!.jobevents, () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => JobsFairEventScreen()),
-                            );
-                          }, context),
-                          SizedBox(height: SizeConfig.defaultSize! * 0.3),
-                          Wrap(
-                            children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: provider.jobEventList.asMap().entries.map((entry) {
-                                    final index = entry.key;
-                                    final event = entry.value;
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          child: _buildJobEventCard(
-                                            event.eventNameENG,
-                                              event.eventDescription,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 0,
-                                          right: 30,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                            decoration: BoxDecoration(
-                                              color: kJobFlotBackColor,
-                                              borderRadius: BorderRadius.circular(16),
-                                            ),
-                                            child: Text(
-                                              event.levelNameEnglish,
-                                              style: const TextStyle(color: kJobFontColor, fontSize: 12),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ) : SizedBox(),
-                    provider.jobEventList.isNotEmpty ? SizedBox(height: SizeConfig.defaultSize! * 1) : SizedBox(height: 0,),
-                    /// Jobs based on Profile
-                    provider.jobBasedList.isNotEmpty ?  Container(
-                        decoration: BoxDecoration(
-                          color:kJobCardColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(height: SizeConfig.defaultSize! * 1),
-                              sectionHeader(AppLocalizations.of(context)!.jobsbasedprofile, context, showViewAll: true),
-                              //sectionHeader("Jobs based on your profile", context),
-                              SizedBox(height: SizeConfig.defaultSize! * 1),
-                              SizedBox(
-                                height: 170,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: provider.jobBasedList.length,
-                                  itemBuilder: (context, index) {
-                                    final jobsData = provider.jobBasedList[index];
-                                    return SizedBox(
-                                        width: 372,
-                                        child: JobBasedProfile(jobsData:jobsData));
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                    ) : SizedBox(),
-                    provider.jobBasedList.isNotEmpty ? SizedBox(height: SizeConfig.screenHeight! * 0.010) : SizedBox(),
-                    /// Featured Companies
-                    provider.companyList.isNotEmpty ?   Padding(
-                      padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                      child: Column(
-                        children: [
-                          SizedBox(height: SizeConfig.defaultSize! * 1),
-
-                          sectionHeader(AppLocalizations.of(context)!.featurcompany, context, showViewAll: true),
-                          SizedBox(height: SizeConfig.defaultSize! * 0.09),
-
-                          SizedBox(
-                            height: 90,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: provider.companyList.length,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  width: 370,
-                                  child:Stack(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),child: companyCard( provider.companyList[index].comapnyname.toString(), provider.companyList[index].headLocality.toString()),),
-                                      Positioned(
-                                        top: 0,
-                                        right: 20,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                          decoration: BoxDecoration(
-                                            color:kIconsBackColor,
-                                            borderRadius: BorderRadius.circular(12),
-                                          ),
-                                          child: Text("${checkNullValue(provider.companyList[index].totalVacany.toString())} Vacancy",
-                                              style: const TextStyle(
-                                                  color: kIconsColor, fontWeight: FontWeight.bold,fontSize: 8)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-
-                          ),
-                        ],
-                      ),
-                    ) : SizedBox(),
-
-                  ],
-                ),
-              ),
-            );
+                  );
           })));
 
 
   }
+
+   Widget _buildGreetingCard() {
+     return Container(
+       width: double.infinity,
+       padding: const EdgeInsets.all(16),
+       decoration: BoxDecoration(
+         borderRadius: BorderRadius.circular(16),
+         gradient: LinearGradient(
+           colors: [Color(0xFFE8ECFF), Color(0xFFF7F8FF)],
+         ),
+       ),
+       child: Row(
+         children: [
+           CircleAvatar(
+             radius: 28,
+             backgroundImage: NetworkImage(
+               UserData().model.value.latestPhotoPath.toString(),
+             ),
+           ),
+           const SizedBox(width: 12),
+           Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               // Text("Good morning",
+               //     style: TextStyle(color: Colors.grey)),
+               Text(
+                 "${UserData().model.value.nAMEENG}",
+                 style: TextStyle(
+                   fontWeight: FontWeight.bold,
+                   fontSize: 16,
+                 ),
+               ),
+             ],
+           )
+         ],
+       ),
+     );
+   }
+
+   Widget _buildDashboardGrid() {
+     final items = [
+       // _DashboardItem(
+       //   title: "Scheduled Interviews",
+       //   iconPath: "assets/images/scheduleInterview.svg",
+       //   onTap: () {},
+       // ),
+       _DashboardItem(
+         title: "CV Builder",
+         iconPath: "assets/images/cvBuilder.svg",
+         onTap: () {
+           Navigator.push(context,
+               MaterialPageRoute(builder: (_) => CvListScreen()));
+         },
+       ),
+       _DashboardItem(
+         title: "Search Job/Apply",
+         iconPath: "assets/images/searchJobApply.svg",
+         showArrow: true,
+         onTap: () => _showSearchJobPopup(),
+       ),
+       // _DashboardItem(
+       //   title: "Search Counselor",
+       //   iconPath: "assets/images/searchCounsellor.svg",
+       //   onTap: () {},
+       // ),
+       _DashboardItem(
+         title: "Job Fair Events",
+         iconPath: "assets/images/jobFairEvent.svg",
+         showArrow: true,
+         onTap: () => _showJobFairPopup(),
+       ),
+       _DashboardItem(
+         title: "Download Registration Card",
+         iconPath: "assets/images/downloadRegCard.svg",
+         onTap: () {
+           Navigator.push(context,
+               MaterialPageRoute(builder: (_) => RegistrationCardScreen()));
+         },
+       ),
+       _DashboardItem(
+         title: "Departmental Schemes",
+         iconPath: "assets/images/deptScheme.svg",
+         showArrow: true,
+         onTap: () => _showDepartmentSchemePopup(),
+       ),
+       _DashboardItem(
+         title: "Grievance/Feedback",
+         iconPath: "assets/images/grievances.svg",
+         onTap: () {
+           Navigator.push(context,
+               MaterialPageRoute(builder: (_) => GrievanceScreen()));
+         },
+       ),
+       _DashboardItem(
+         title: "Video Profile",
+         iconPath: "assets/images/videoProfile.svg",
+         onTap: () {
+           Navigator.push(context,
+               MaterialPageRoute(builder: (_) => VideoprofileScreen()));
+         },
+       ),
+       _DashboardItem(
+         title: "Self Assessment",
+         iconPath: "assets/images/selfAssessment.svg",
+         onTap: () {
+           Navigator.push(context,
+               MaterialPageRoute(builder: (_) => SelfAssessmentScreen()));
+         },
+       ),
+       // _DashboardItem(
+       //   title: "Settings",
+       //   iconPath: "assets/images/settings.svg",
+       //   onTap: () {
+       //     Navigator.push(
+       //       context,
+       //       MaterialPageRoute(builder: (_) => JobSettingsScreen()),
+       //     );
+       //   },
+       // ),
+       // _DashboardItem(
+       //   title: "Appointment Schedule",
+       //   iconPath: "assets/images/appointmentSchedule.svg",
+       //   onTap: () {},
+       // ),
+     ];
+
+     return Container(
+       color: const Color(0xFFF5F6FA), // 🔹 light background like screenshot
+       padding: const EdgeInsets.all(10), // less outer padding
+       child: GridView.builder(
+         shrinkWrap: true,
+         physics: NeverScrollableScrollPhysics(),
+         itemCount: items.length,
+         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+           crossAxisCount: 2,
+           mainAxisSpacing: 10, // 🔹 reduced spacing
+           crossAxisSpacing: 10,
+           childAspectRatio: 1.40, // 🔹 tighter height
+         ),
+         itemBuilder: (context, index) {
+           final item = items[index];
+
+           return GestureDetector(
+             onTap: item.onTap,
+             child: Container(
+               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8), // 🔹 less padding
+               decoration: BoxDecoration(
+                 color: Colors.white, // 🔹 white cards
+                 borderRadius: BorderRadius.circular(16),
+                 boxShadow: [
+                   BoxShadow(
+                     color: Colors.black.withOpacity(0.05), // lighter shadow
+                     blurRadius: 6,
+                     offset: Offset(0, 2),
+                   )
+                 ],
+               ),
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+
+                   /// 🔹 Bigger Icon Circle
+                   // Container(
+                   //   padding: const EdgeInsets.all(12),
+                   //   decoration: BoxDecoration(
+                   //     shape: BoxShape.circle,
+                   //     color: Color(0xFFEDE7F6),
+                   //   ),
+                   //   child: SvgPicture.asset(
+                   //     item.iconPath,
+                   //     width: 26, // 🔥 bigger icon
+                   //     height: 26,
+                   //   ),
+                   // ),
+
+                  SvgPicture.asset(
+                    item.iconPath,
+                    width: 50, // 🔥 bigger icon
+                    height: 50,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                   /// 🔹 Bigger Text + Arrow
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Flexible(
+                         child: Text(
+                           item.title,
+                           textAlign: TextAlign.center,
+                         //  style: TextStyle(fontSize: 12),
+                           style: const TextStyle(
+                             fontSize: 13.5, // 🔥 slightly bigger
+                             fontWeight: FontWeight.w500,
+                           ),
+                         ),
+                       ),
+                       if (item.showArrow)
+                         Padding(
+                           padding: const EdgeInsets.only(left: 4),
+                           child: Icon(Icons.arrow_forward_ios, size: 12),
+                           // child: SvgPicture.asset(
+                           //   "assets/images/arrow.svg",
+                           //   width: 12,
+                           // ),
+                         )
+                     ],
+                   ),
+                 ],
+               ),
+             ),
+           );
+         },
+       ),
+     );
+   }
+
+   void _showDepartmentSchemePopup() {
+     showDialog(
+       context: context,
+       barrierDismissible: true,
+       builder: (context) {
+         return Dialog(
+           backgroundColor: Colors.transparent,
+           child: _centerPopupContainer(
+             title: "Departmental Scheme",
+             children: [
+
+               _popupRow(
+                 title: "MYSY Status",
+                 iconPath: "assets/images/mysyPendingList.svg", // temp icon
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (_) => MysyListScreen()),
+                   );
+                 },
+               ),
+
+             ],
+           ),
+         );
+       },
+     );
+   }
+
+   // ********* search job apply *********
+   void _showSearchJobPopup() {
+     showDialog(
+       context: context,
+       barrierDismissible: true,
+       builder: (context) {
+         return Dialog(
+           backgroundColor: Colors.transparent,
+           child: _centerPopupContainer(
+             title: "Search Job/Apply",
+             children: [
+
+               _popupRow(
+                 title: "Preferred/Recommended Jobs",
+                 iconPath: "assets/images/prefRecomJob.svg",
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (_) => PreferredJobsScreen()));
+                 },
+               ),
+
+               Divider(
+                 color: Colors.grey.withOpacity(0.2), // lighter
+                 thickness: 0.8,
+                 height: 16,
+               ),
+
+               _popupRow(
+                 title: "Applied Jobs",
+                 iconPath: "assets/images/appliedJobs.svg",
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (_) => AppliedJobsScreen()));
+                 },
+               ),
+             ],
+           ),
+         );
+       },
+     );
+   }
+
+   // ********* search job apply *********
+   Widget _centerPopupContainer({
+     required String title,
+     required List<Widget> children,
+   }) {
+     return Container(
+       padding: const EdgeInsets.all(16),
+       decoration: BoxDecoration(
+         color: Colors.white,
+         borderRadius: BorderRadius.circular(20),
+       ),
+       child: Column(
+         mainAxisSize: MainAxisSize.min,
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+
+           /// Title
+           Text(
+             title,
+             style: TextStyle(
+               fontSize: 16,
+               fontWeight: FontWeight.w600,
+             ),
+           ),
+
+           const SizedBox(height: 10),
+
+           Divider(),
+
+           const SizedBox(height: 6),
+
+           /// Items
+           ...children,
+         ],
+       ),
+     );
+   }
+
+   // ********* search job apply *********
+   Widget _popupRow({
+     required String title,
+     required String iconPath,
+     required VoidCallback onTap,
+   }) {
+     return InkWell(
+       onTap: onTap,
+       child: Padding(
+         padding: const EdgeInsets.symmetric(vertical: 12),
+         child: Row(
+           children: [
+
+             /// Left Icon
+             // Container(
+             //   padding: const EdgeInsets.all(10),
+             //   decoration: BoxDecoration(
+             //     shape: BoxShape.circle,
+             //     color: Color(0xFFEDE7F6),
+             //   ),
+             //   child: SvgPicture.asset(
+             //     iconPath,
+             //     width: 18,
+             //     height: 18,
+             //   ),
+             // ),
+
+             SvgPicture.asset(
+               iconPath,
+               width: 25,
+               height: 25,
+             ),
+             const SizedBox(width: 12),
+
+             /// Title
+             Expanded(
+               child: Text(
+                 title,
+                 style: TextStyle(fontSize: 14),
+               ),
+             ),
+
+             /// Right Arrow Circle
+             Container(
+               padding: const EdgeInsets.all(6),
+               decoration: BoxDecoration(
+                 shape: BoxShape.circle,
+                 border: Border.all(color: Colors.grey.shade300),
+               ),
+               child: Icon(
+                 Icons.arrow_forward_ios,
+                 size: 12,
+               ),
+             ),
+           ],
+         ),
+       ),
+     );
+   }
+
+
+   void _showJobFairPopup() {
+     showDialog(
+       context: context,
+       barrierDismissible: true,
+       builder: (context) {
+         return Dialog(
+           backgroundColor: Colors.transparent,
+           child: _centerPopupContainer(
+             title: "Job Fair Events",
+             children: [
+
+               _popupRow(
+                 title: "Events",
+                 iconPath: "assets/images/events.svg",
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (_) => JobsFairEventScreen()));
+                 },
+               ),
+
+               Divider(
+                 color: Colors.grey.withOpacity(0.2),
+                 thickness: 0.8,
+                 height: 16,
+               ),
+
+               _popupRow(
+                 title: "Registered Event",
+                 iconPath: "assets/images/regEvents.svg",
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (_) => RegisteredEventListScreen()));
+                 },
+               ),
+
+               Divider(
+                 color: Colors.grey.withOpacity(0.2),
+                 thickness: 0.8,
+                 height: 16,
+               ),
+
+               _popupRow(
+                 title: "Job Apply",
+                 iconPath: "assets/images/jobApply.svg",
+                 onTap: () {
+                   Navigator.pop(context);
+                   Navigator.push(context,
+                       MaterialPageRoute(builder: (_) => SelectCompanyPage()));
+                 },
+               ),
+             ],
+           ),
+         );
+       },
+     );
+   }
+
+   Widget _popupContainer({required String title, required List<Widget> children}) {
+     return Padding(
+       padding: const EdgeInsets.all(16),
+       child: Column(
+         mainAxisSize: MainAxisSize.min,
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+           Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+           Divider(),
+           ...children
+         ],
+       ),
+     );
+   }
+
+   Widget _popupItem(String title, VoidCallback onTap) {
+     return ListTile(
+       title: Text(title),
+       trailing: Icon(Icons.arrow_forward_ios, size: 16),
+       onTap: onTap,
+     );
+   }
 
    // Widget _attendanceFab(BuildContext context) {
    //   return FloatingActionButton(
@@ -489,4 +776,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+class _DashboardItem {
+  final String title;
+  final String iconPath;
+  final VoidCallback onTap;
+  final bool showArrow;
+
+  _DashboardItem({
+    required this.title,
+    required this.iconPath,
+    required this.onTap,
+    this.showArrow = false,
+  });
 }

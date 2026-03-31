@@ -708,54 +708,54 @@ commonAppBar(title, mContext, currentLanguage, userId, isBack, type, {Function? 
     ],
 
     // 👇 Bottom section with search bar
-    bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(90), // Adjust height
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-        child: Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [kWhite, kHeaderBackground],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: kWhite,
-                  border: Border.all(color: Colors.grey.shade300, width: 1),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(mContext)!.searchhere,
-                    hintStyle: const TextStyle(color: kDartGrayColor),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                    border: InputBorder.none,
-                    suffixIcon: Container(
-                      width: 80,
-                      margin: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        color: kViewAllColor,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: const Icon(Icons.search, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
+    // bottom: PreferredSize(
+    //   preferredSize: const Size.fromHeight(90), // Adjust height
+    //   child: ClipRRect(
+    //     borderRadius: const BorderRadius.only(
+    //       bottomLeft: Radius.circular(40),
+    //       bottomRight: Radius.circular(40),
+    //     ),
+    //     child: Container(
+    //       width: double.infinity,
+    //       decoration: const BoxDecoration(
+    //         gradient: LinearGradient(
+    //           colors: [kWhite, kHeaderBackground],
+    //           begin: Alignment.topCenter,
+    //           end: Alignment.bottomCenter,
+    //         ),
+    //       ),
+    //       padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
+    //       child: Column(
+    //         children: [
+    //           Container(
+    //             decoration: BoxDecoration(
+    //               color: kWhite,
+    //               border: Border.all(color: Colors.grey.shade300, width: 1),
+    //               borderRadius: BorderRadius.circular(30),
+    //             ),
+    //             child: TextField(
+    //               decoration: InputDecoration(
+    //                 hintText: AppLocalizations.of(mContext)!.searchhere,
+    //                 hintStyle: const TextStyle(color: kDartGrayColor),
+    //                 contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+    //                 border: InputBorder.none,
+    //                 suffixIcon: Container(
+    //                   width: 80,
+    //                   margin: const EdgeInsets.all(0),
+    //                   decoration: BoxDecoration(
+    //                     color: kViewAllColor,
+    //                     borderRadius: BorderRadius.circular(25),
+    //                   ),
+    //                   child: const Icon(Icons.search, color: Colors.white),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // ),
   );
 
 }
