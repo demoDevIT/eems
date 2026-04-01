@@ -147,6 +147,8 @@ class LoginData {
   // dynamic ward; already exist
   dynamic city;
   dynamic sso;
+  dynamic districtCode;
+  dynamic officeID;
   // dynamic district; already exist
 
   LoginData({
@@ -261,8 +263,10 @@ class LoginData {
     this.block,
     // this.ward, already exist
     this.city,
-    this.sso
-    // this.district, already exist
+    this.sso,
+    this.districtCode,
+    this.officeID,
+    // already exist
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -377,7 +381,8 @@ class LoginData {
     // ward = json['Ward'];
     city = json['City'];
     sso = json['SSOID'];
-    // district = json['District'];
+    districtCode = json['DistrictCode'];
+    officeID = json['OfficeID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -494,8 +499,8 @@ class LoginData {
     // data['Ward'] = this.ward;
     data['City'] = this.city;
     data['SSOID'] = this.sso;
-    // data['District'] = this.district;
-
+    data['DistrictCode'] = this.districtCode;
+    data['OfficeID'] = this.officeID;
     return data;
   }
 }

@@ -150,6 +150,8 @@ class LoginProvider with ChangeNotifier {
               if (sm.data != null && sm.data!.userID != null &&
                   sm.data!.userID! > 0 && sm.data!.roleID > 0) {
                 //callbasicdetail API for department getDeptBasicDetails
+                UserData().model.value.officeID = sm.data!.officeID;
+                UserData().model.value.districtCode = sm.data!.districtCode;
                 getDeptBasicDetails(
                     context, sm.data!.userID.toString(), sm.data!.roleID,
                     ssoId);
@@ -386,7 +388,7 @@ class LoginProvider with ChangeNotifier {
         Map<String, dynamic> body = {
           "UserID": userId,
           "SSOID": ssoID,
-          "RoleID": 22, //roleId
+          "RoleID": roleId, //22, //roleId
         };
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse =

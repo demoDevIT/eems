@@ -250,10 +250,11 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {
         "ActionName": "PendingList",
-        "DepartmentID": 2,
-        "RegistrationNumber": this.regNoController.text, //"22092120948", //this.registrationNumber,
+        "DepartmentID": 0,
+        "RegistrationNumber": this.registrationNumber, //this.regNoController.text, //this.regNoController.text, //"22092120948", //this.registrationNumber,
         "JobSeekerID": this.jobSeekerId,
-        "UserId": "2261663", //UserData().model.value.userId,
+        "UserId": UserData().model.value.userId, //"2261663", //UserData().model.value.userId,
+        "RoleId": UserData().model.value.roleId,
         "intenjoinned": null,
         "AllotmentDeptId": null
       };

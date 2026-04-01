@@ -109,7 +109,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            );
 
          } else {
-           showAlertError("Unknown status: $status", context);
+           showAlertError("$status", context);
          }
 
        } else {

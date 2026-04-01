@@ -53,7 +53,9 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
               final cardData = provider.regCardList.isNotEmpty
                   ? provider.regCardList[0]
                   : null;
-          return SingleChildScrollView(
+          return provider.regCardList.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Container(
               color: kWhite,

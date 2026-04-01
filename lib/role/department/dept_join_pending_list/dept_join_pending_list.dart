@@ -39,12 +39,12 @@ class _DeptJoinPendingListScreenState
       Provider.of<DeptJoinPendingListProvider>(context, listen: false);
 
       provider.clearData();
-      // provider.getDeptJoinPendingListApi(
-      //   context,
-      //   registrationNumber: widget.registrationNumber,
-      //   jobSeekerId: widget.jobSeekerId,
-      //   userId: widget.userId,
-      // );
+      provider.getDeptJoinPendingListApi(
+        context,
+        registrationNumber: widget.registrationNumber,
+        jobSeekerId: widget.jobSeekerId,
+        userId: widget.userId,
+      );
       //provider.initPageApis(context);
       // provider.getLevelApi(context);
       // provider.getFinancialYearApi(context);
@@ -172,7 +172,7 @@ class _DeptJoinPendingListScreenState
                       ),
                       const SizedBox(height: 6),
                       Text("Reg No: ${item.regNo ?? "-"}"),
-                      Text("Mobile: ${item.mobileNo ?? "-"}"),
+                     // Text("Mobile: ${item.mobileNo ?? "-"}"),
                     ],
                   ),
                 ),
@@ -182,14 +182,17 @@ class _DeptJoinPendingListScreenState
             const SizedBox(height: 15),
 
             _row("Father Name", item.fNameEng),
-            _row("Department", item.departmentNameEn),
-            _row("Reg No.", item.regNo),
+
+
          //   _row("Approval Date", _formatDate(item.lastActionDate)),
             _row("Gender", item.gender),
             _row("DOB", item.dob),
+            _row("Mobile No.", item.mobileNo),
             _row("Application Date", item.applyDate),
             _row("Approval Date", item.applicationApprovalDate),
-            _row("Department Allocation Date", item.deptAllotmentDate),
+
+            _row("Allocation Date", item.deptAllotmentDate),
+            _row("Department", item.departmentNameEn),
             _row(
               "Alloted Department",
               "${item.allottedDeptName ?? "-"} (${item.departmentNameEn ?? "-"})",

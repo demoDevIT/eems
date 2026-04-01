@@ -82,6 +82,8 @@ class TempLoginData {
   dynamic examScheme;
   dynamic encryptedSSOID;
   dynamic searchRecordID;
+  dynamic officeID;
+  dynamic districtCode;
 
   TempLoginData(
       {this.profileID,
@@ -135,7 +137,10 @@ class TempLoginData {
         this.staffID,
         this.examScheme,
         this.encryptedSSOID,
-        this.searchRecordID});
+        this.searchRecordID,
+        this.officeID,
+        this.districtCode
+      });
 
   TempLoginData.fromJson(Map<String, dynamic> json) {
     profileID = json['ProfileID'];
@@ -190,6 +195,8 @@ class TempLoginData {
     examScheme = json['ExamScheme'];
     encryptedSSOID = json['Encrypted_SSOID'];
     searchRecordID = json['SearchRecordID'];
+    officeID = json['OfficeID'];
+    districtCode = json['DistrictCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -246,6 +253,8 @@ class TempLoginData {
     data['ExamScheme'] = this.examScheme;
     data['Encrypted_SSOID'] = this.encryptedSSOID;
     data['SearchRecordID'] = this.searchRecordID;
+    data['OfficeID'] = this.officeID;
+    data['DistrictCode'] = this.districtCode;
     return data;
   }
 }

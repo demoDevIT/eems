@@ -50,12 +50,12 @@ class _DeptJoinAttendanceListScreenState
 
       await provider.getDeptJoinAttendanceListApi(context);
 
-      // provider.getDeptJoinAttendanceListApi(
-      //   context,
-      //   registrationNumber: widget.registrationNumber,
-      //   jobSeekerId: widget.jobSeekerId,
-      //   userId: widget.userId,
-      // );
+      provider.getDeptJoinAttendanceListApi(
+        context,
+        registrationNumber: widget.registrationNumber,
+        jobSeekerId: widget.jobSeekerId,
+        userId: widget.userId,
+      );
     });
   }
 

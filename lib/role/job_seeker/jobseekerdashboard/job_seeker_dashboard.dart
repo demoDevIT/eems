@@ -271,62 +271,62 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
           //     Navigator.pop(context);
           //   },
           // ),
-          Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Divider(height: 1,color: E3E5F9Color,)),
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/briefcase.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.cvbuilder,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CvListScreen()),
-              );
-            },
-          ),
-          ExpansionTile(
-            leading: SvgPicture.asset(
-              'assets/icons/calendarNew.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.searchJobApply,style: Styles.mediumTextStyle(size: 14),),
-
-            children: [
-
-              // 1️⃣ Preferred/Recommended Jobs
-              ListTile(
-                title: Text("Preferred/Recommended Jobs",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PreferredJobsScreen()),
-                  );
-                },
-              ),
-
-              // 2️⃣ Applied Jobs
-              ListTile(
-                title: Text("Applied Jobs",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AppliedJobsScreen()),
-                  );
-                },
-              ),
-
-            ],
-          ),
+          // Container(
+          //     margin: EdgeInsets.only(left: 50),
+          //     child: Divider(height: 1,color: E3E5F9Color,)),
+          // ListTile(
+          //   leading: SvgPicture.asset(
+          //     'assets/icons/briefcase.svg',
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.cover,
+          //   ),
+          //   title: Text(AppLocalizations.of(context)!.cvbuilder,style: Styles.mediumTextStyle(size: 14),),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => CvListScreen()),
+          //     );
+          //   },
+          // ),
+          // ExpansionTile(
+          //   leading: SvgPicture.asset(
+          //     'assets/icons/calendarNew.svg',
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.cover,
+          //   ),
+          //   title: Text(AppLocalizations.of(context)!.searchJobApply,style: Styles.mediumTextStyle(size: 14),),
+          //
+          //   children: [
+          //
+          //     // 1️⃣ Preferred/Recommended Jobs
+          //     ListTile(
+          //       title: Text("Preferred/Recommended Jobs",style: Styles.mediumTextStyle(size: 14),),
+          //       onTap: () {
+          //         Navigator.pop(context);
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(builder: (context) => PreferredJobsScreen()),
+          //         );
+          //       },
+          //     ),
+          //
+          //     // 2️⃣ Applied Jobs
+          //     ListTile(
+          //       title: Text("Applied Jobs",style: Styles.mediumTextStyle(size: 14),),
+          //       onTap: () {
+          //         Navigator.pop(context);
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(builder: (context) => AppliedJobsScreen()),
+          //         );
+          //       },
+          //     ),
+          //
+          //   ],
+          // ),
           // Container(
           //     margin: EdgeInsets.only(left: 50),
           //     child: Divider(height: 1,color: E3E5F9Color,)),
@@ -365,117 +365,117 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
     //           );
     //         },
     //       ),
-          ExpansionTile(
-            leading: SvgPicture.asset(
-              'assets/icons/calendarNew.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.jobfairevents,style: Styles.mediumTextStyle(size: 14),),
-
-            children: [
-
-              // 1️⃣ Events
-              ListTile(
-                title: Text("Events",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => JobsFairEventScreen()),
-                  );
-                },
-              ),
-
-              // 2️⃣ Registered Event
-              ListTile(
-                title: Text("Registered Event",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisteredEventListScreen()),
-                  );
-                },
-              ),
-
-           //   3️⃣ Job Apply // hide as of now as discussed with pankaj sir
-              ListTile(
-                title: Text("Job Apply",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                   Navigator.push(
-                     context,
-                     // MaterialPageRoute(builder: (context) => JobApplyListScreen()),
-                     MaterialPageRoute(builder: (context) => SelectCompanyPage()),
-
-                   );
-                },
-              ),
-            ],
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Divider(height: 1,color: E3E5F9Color,)),
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/import.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.downldregiscard,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RegistrationCardScreen()),
-              );
-
-
-            },
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Divider(height: 1,color: E3E5F9Color,)),
-          ExpansionTile(
-            leading: SvgPicture.asset(
-              'assets/icons/calendarNew.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text("Departmental Schemes",style: Styles.mediumTextStyle(size: 14),),
-
-            children: [
-
-
-              // ListTile(
-              //   title: Text("MYRPY",style: Styles.mediumTextStyle(size: 14),),
-              //   onTap: () {
-              //     Navigator.pop(context);
-              //
-              //   },
-              // ),
-
-
-              ListTile(
-                title: Text("MYSY Pending List",style: Styles.mediumTextStyle(size: 14),),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MysyListScreen()),
-                  );
-                },
-              ),
-
-
-
-
-            ],
-          ),
+    //       ExpansionTile(
+    //         leading: SvgPicture.asset(
+    //           'assets/icons/calendarNew.svg',
+    //           width: 20,
+    //           height: 20,
+    //           fit: BoxFit.cover,
+    //         ),
+    //         title: Text(AppLocalizations.of(context)!.jobfairevents,style: Styles.mediumTextStyle(size: 14),),
+    //
+    //         children: [
+    //
+    //           // 1️⃣ Events
+    //           ListTile(
+    //             title: Text("Events",style: Styles.mediumTextStyle(size: 14),),
+    //             onTap: () {
+    //               Navigator.pop(context);
+    //               Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(builder: (context) => JobsFairEventScreen()),
+    //               );
+    //             },
+    //           ),
+    //
+    //           // 2️⃣ Registered Event
+    //           ListTile(
+    //             title: Text("Registered Event",style: Styles.mediumTextStyle(size: 14),),
+    //             onTap: () {
+    //               Navigator.pop(context);
+    //               Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(builder: (context) => RegisteredEventListScreen()),
+    //               );
+    //             },
+    //           ),
+    //
+    //        //   3️⃣ Job Apply // hide as of now as discussed with pankaj sir
+    //           ListTile(
+    //             title: Text("Job Apply",style: Styles.mediumTextStyle(size: 14),),
+    //             onTap: () {
+    //               Navigator.pop(context);
+    //                Navigator.push(
+    //                  context,
+    //                  // MaterialPageRoute(builder: (context) => JobApplyListScreen()),
+    //                  MaterialPageRoute(builder: (context) => SelectCompanyPage()),
+    //
+    //                );
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //       Container(
+    //           margin: EdgeInsets.only(left: 50),
+    //           child: Divider(height: 1,color: E3E5F9Color,)),
+    //       ListTile(
+    //         leading: SvgPicture.asset(
+    //           'assets/icons/import.svg',
+    //           width: 20,
+    //           height: 20,
+    //           fit: BoxFit.cover,
+    //         ),
+    //         title: Text(AppLocalizations.of(context)!.downldregiscard,style: Styles.mediumTextStyle(size: 14),),
+    //         onTap: () {
+    //           Navigator.pop(context);
+    //           Navigator.push(
+    //             context,
+    //             MaterialPageRoute(builder: (context) => RegistrationCardScreen()),
+    //           );
+    //
+    //
+    //         },
+    //       ),
+    //       Container(
+    //           margin: EdgeInsets.only(left: 50),
+    //           child: Divider(height: 1,color: E3E5F9Color,)),
+    //       ExpansionTile(
+    //         leading: SvgPicture.asset(
+    //           'assets/icons/calendarNew.svg',
+    //           width: 20,
+    //           height: 20,
+    //           fit: BoxFit.cover,
+    //         ),
+    //         title: Text("Departmental Schemes",style: Styles.mediumTextStyle(size: 14),),
+    //
+    //         children: [
+    //
+    //
+    //           // ListTile(
+    //           //   title: Text("MYRPY",style: Styles.mediumTextStyle(size: 14),),
+    //           //   onTap: () {
+    //           //     Navigator.pop(context);
+    //           //
+    //           //   },
+    //           // ),
+    //
+    //
+    //           ListTile(
+    //             title: Text("MYSY Pending List",style: Styles.mediumTextStyle(size: 14),),
+    //             onTap: () {
+    //               Navigator.pop(context);
+    //               Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(builder: (context) => MysyListScreen()),
+    //               );
+    //             },
+    //           ),
+    //
+    //
+    //
+    //
+    //         ],
+    //       ),
           Container(
               margin: EdgeInsets.only(left: 50),
               child: Divider(height: 1,color: E3E5F9Color,)),
@@ -501,59 +501,59 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
               Navigator.pop(context);
             },
           ),
-          Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Divider(height: 1,color: E3E5F9Color,)),
-
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/star.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.videoprof,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () async {
-              final result = await  Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>  VideoprofileScreen(),
-                ),
-              );
-              if (result != null) {
-
-              }
-              Navigator.pop(context);
-            },
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Divider(height: 1,color: E3E5F9Color,)),
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/receipt-edit.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.selfassess,style: Styles.mediumTextStyle(size: 14),),
-            // onTap: () {
-            //   setState(() => _currentIndex = 3);
-            //   Navigator.pop(context);
-            // },
-            onTap: () async {
-              final result = await  Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>  SelfAssessmentScreen(),
-                ),
-              );
-              if (result != null) {
-
-              }
-              Navigator.pop(context);
-            },
-          ),
+          // Container(
+          //     margin: EdgeInsets.only(left: 50),
+          //     child: Divider(height: 1,color: E3E5F9Color,)),
+          //
+          // ListTile(
+          //   leading: SvgPicture.asset(
+          //     'assets/icons/star.svg',
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.cover,
+          //   ),
+          //   title: Text(AppLocalizations.of(context)!.videoprof,style: Styles.mediumTextStyle(size: 14),),
+          //   onTap: () async {
+          //     final result = await  Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) =>  VideoprofileScreen(),
+          //       ),
+          //     );
+          //     if (result != null) {
+          //
+          //     }
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // Container(
+          //     margin: EdgeInsets.only(left: 50),
+          //     child: Divider(height: 1,color: E3E5F9Color,)),
+          // ListTile(
+          //   leading: SvgPicture.asset(
+          //     'assets/icons/receipt-edit.svg',
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.cover,
+          //   ),
+          //   title: Text(AppLocalizations.of(context)!.selfassess,style: Styles.mediumTextStyle(size: 14),),
+          //   // onTap: () {
+          //   //   setState(() => _currentIndex = 3);
+          //   //   Navigator.pop(context);
+          //   // },
+          //   onTap: () async {
+          //     final result = await  Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) =>  SelfAssessmentScreen(),
+          //       ),
+          //     );
+          //     if (result != null) {
+          //
+          //     }
+          //     Navigator.pop(context);
+          //   },
+          // ),
           // Container(
           //     margin: EdgeInsets.only(left: 50),
           //     child: Divider(height: 1,color: E3E5F9Color,)),

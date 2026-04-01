@@ -50,6 +50,7 @@ class DeptInfoData {
   dynamic city;
   dynamic sso;
   dynamic district;
+  dynamic districtCode;
 
   DeptInfoData(
       {this.userID,
@@ -66,6 +67,7 @@ class DeptInfoData {
         this.ward,
         this.city,
         this.district,
+        this.districtCode,
       });
 
   DeptInfoData.fromJson(Map<String, dynamic> json) {
@@ -84,6 +86,7 @@ class DeptInfoData {
     city = json['City'];
     sso = json['SSOID'];
     district = json['District'];
+    districtCode = json['DistrictCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +106,7 @@ class DeptInfoData {
     data['City'] = this.city;
     data['SSOID'] = this.sso;
     data['District'] = this.district;
+    data['DistrictCode'] = this.districtCode;
     return data;
   }
 }

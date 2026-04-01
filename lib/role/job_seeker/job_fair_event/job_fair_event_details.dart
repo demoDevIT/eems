@@ -564,9 +564,9 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         style: Styles.semiBoldTextStyle(size: 18, color: kBlackColor),
                       ),
                       hSpace(10),
-                      hSpace(10),
-                      Image(image: AssetImage(Images.qr_code),width: 100,height: 100,),
-                      hSpace(10),
+                      // hSpace(10),
+                      // Image(image: AssetImage(Images.qr_code),width: 100,height: 100,),
+                      // hSpace(10),
                       Text(
                         "Successful",
                         style: Styles.semiBoldTextStyle(size: 18, color: green00C324),

@@ -216,12 +216,14 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       //   "UserId": this.userId,
       // };
 
+      final districtcode = UserData().model.value.districtCode;
+      print("UserData().model.value.districtCode==>$districtcode");
       Map<String, dynamic> body = {
         "ActionName": "PendingAttendanceByDistrict",
-        "DistrictCode": "108", //UserData().model.value.district, //108,
-        "UserID": 2261663, //UserData().model.value.userId,
+        "DistrictCode": UserData().model.value.districtCode, //"108", //UserData().model.value.district, //108,
+        "UserID": UserData().model.value.userId, //2261663, //UserData().model.value.userId,
         "RegistrationNumber": this.registrationNumber,
-        "OfficeId": 24,
+        "OfficeId": UserData().model.value.officeID, //24,
         "StateId": 0,
         "DepartmentID": 1,
         "FYID": selectedYearObj?.name, //filterSelectedYear, //2026
