@@ -149,6 +149,8 @@ class LoginData {
   dynamic sso;
   dynamic districtCode;
   dynamic officeID;
+  dynamic deptID;
+  dynamic internshipDeptTypeID;
   // dynamic district; already exist
 
   LoginData({
@@ -266,6 +268,8 @@ class LoginData {
     this.sso,
     this.districtCode,
     this.officeID,
+    this.deptID,
+    this.internshipDeptTypeID,
     // already exist
   });
 
@@ -383,6 +387,8 @@ class LoginData {
     sso = json['SSOID'];
     districtCode = json['DistrictCode'];
     officeID = json['OfficeID'];
+    deptID = json['DepartmentID'];
+    internshipDeptTypeID = json['InternshipDeptTypeID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -501,6 +507,8 @@ class LoginData {
     data['SSOID'] = this.sso;
     data['DistrictCode'] = this.districtCode;
     data['OfficeID'] = this.officeID;
+    data['DepartmentID'] = this.deptID;
+    data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
     return data;
   }
 }

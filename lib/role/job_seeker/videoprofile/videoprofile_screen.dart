@@ -14,7 +14,7 @@ class VideoprofileScreen extends StatefulWidget {
 }
 
 class _VideoprofileScreenState extends State<VideoprofileScreen> {
-var videoProvider;
+// var videoProvider;
   @override
   void initState() {
     super.initState();
@@ -125,10 +125,14 @@ var videoProvider;
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () async {
-                   String Video = await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()),);
-                   if(Video == "True"){
-                     videoProvider.getVideo(context);
-                   }
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CameraPage()),
+                      );
+
+                      if (result == true) {
+                        provider.getVideo(context);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kViewAllColor,

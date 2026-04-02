@@ -84,6 +84,8 @@ class TempLoginData {
   dynamic searchRecordID;
   dynamic officeID;
   dynamic districtCode;
+  dynamic deptID;
+  dynamic internshipDeptTypeID;
 
   TempLoginData(
       {this.profileID,
@@ -139,7 +141,9 @@ class TempLoginData {
         this.encryptedSSOID,
         this.searchRecordID,
         this.officeID,
-        this.districtCode
+        this.districtCode,
+        this.deptID,
+        this.internshipDeptTypeID,
       });
 
   TempLoginData.fromJson(Map<String, dynamic> json) {
@@ -197,6 +201,8 @@ class TempLoginData {
     searchRecordID = json['SearchRecordID'];
     officeID = json['OfficeID'];
     districtCode = json['DistrictCode'];
+    deptID = json['DepartmentID'];
+    internshipDeptTypeID = json['InternshipDeptTypeID'];
   }
 
   Map<String, dynamic> toJson() {
@@ -255,6 +261,8 @@ class TempLoginData {
     data['SearchRecordID'] = this.searchRecordID;
     data['OfficeID'] = this.officeID;
     data['DistrictCode'] = this.districtCode;
+    data['DepartmentID'] = this.deptID;
+    data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
     return data;
   }
 }

@@ -152,6 +152,8 @@ class LoginProvider with ChangeNotifier {
                 //callbasicdetail API for department getDeptBasicDetails
                 UserData().model.value.officeID = sm.data!.officeID;
                 UserData().model.value.districtCode = sm.data!.districtCode;
+                UserData().model.value.deptID = sm.data!.deptID;
+                UserData().model.value.internshipDeptTypeID = sm.data!.internshipDeptTypeID;
                 getDeptBasicDetails(
                     context, sm.data!.userID.toString(), sm.data!.roleID,
                     ssoId);

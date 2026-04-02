@@ -148,7 +148,7 @@ class _SelfAssessmentScreenState
 
         /// Bottom Buttons
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
               onPressed: () {
@@ -231,7 +231,7 @@ class _SelfAssessmentScreenState
         const Spacer(),
 
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OutlinedButton(
               onPressed: () {

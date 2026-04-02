@@ -50,15 +50,12 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
   Widget _buildDashboardGrid() {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: GridView.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 1.1,
+      child: Column(
         children: [
-          _dashboardTile(
+          _dashboardListTile(
             title: "View Profile",
-            color: const Color(0xFF4A76C9),
+            iconPath: "assets/images/profilee.svg",
+            color: const Color(0xFF6C63FF),
             onTap: () {
               Navigator.push(
                 context,
@@ -68,9 +65,11 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               );
             },
           ),
-          _dashboardTile(
-            title: "Job Fair\nPost Job",
-            color: const Color(0xFF4A76C9),
+
+          _dashboardListTile(
+            title: "Post Job in Job Fair",
+            iconPath: "assets/images/postJob.svg",
+            color: const Color(0xFFFF7A59),
             onTap: () {
               Navigator.push(
                 context,
@@ -80,9 +79,11 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               );
             },
           ),
-          _dashboardTile(
-            title: "Apply for\nJob Fair",
-            color: const Color(0xFF4A76C9),
+
+          _dashboardListTile(
+            title: "Apply for Job Fair",
+            iconPath: "assets/images/aplyjobfair.svg",
+            color: const Color(0xFF2DBE8D),
             onTap: () {
               Navigator.push(
                 context,
@@ -92,25 +93,11 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               );
             },
           ),
-          _dashboardTile(
-            title: "Grievances",
-            color: const Color(0xFF4A76C9),
-            onTap: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GrievanceScreen(),
-                ),
-              );
 
-              if (result != null) {
-                // handle result if needed
-              }
-            },
-          ),
-          _dashboardTile(
-            title: "Job Fair\nJob Applications",
-            color: const Color(0xFF4A76C9),
+          _dashboardListTile(
+            title: "Job Fair Job Applications",
+            iconPath: "assets/images/jobapp.svg",
+            color: const Color(0xFF6C63FF),
             onTap: () {
               Navigator.push(
                 context,
@@ -121,7 +108,83 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
             },
           ),
 
+          _dashboardListTile(
+            title: "Grievances",
+            iconPath: "assets/images/grievances.svg",
+            color: const Color(0xFFFF7A59),
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GrievanceScreen(),
+                ),
+              );
+            },
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _dashboardListTile({
+    required String title,
+    required String iconPath,
+    required Color color,
+    VoidCallback? onTap,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      child: Material(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+            child: Row(
+              children: [
+                // SVG Icon box
+                Container(
+                  height: 45,
+                  width: 45,
+                  // decoration: BoxDecoration(
+                  //   color: color.withOpacity(0.15),
+                  //   borderRadius: BorderRadius.circular(12),
+                  // ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      iconPath,
+                      height: 42,
+                      width: 42,
+                      //color: color, // applies tint to SVG
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 14),
+
+                // Title
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+
+                // Arrow
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

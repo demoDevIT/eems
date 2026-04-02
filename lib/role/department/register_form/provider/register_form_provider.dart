@@ -378,9 +378,10 @@ class RegisterFormProvider extends ChangeNotifier {
 
     notifyListeners();
 
+    final internshipDeptTypeID = UserData().model.value.internshipDeptTypeID;
     try {
       final apiResponse = await commonRepo.get(
-        "Common/GetIntershipDeptListbyDeptTypeID/1",
+        "Common/GetIntershipDeptListbyDeptTypeID/$internshipDeptTypeID",
       );
 
       if (apiResponse.response?.statusCode == 200) {
@@ -422,7 +423,7 @@ class RegisterFormProvider extends ChangeNotifier {
       Map<String, dynamic> data = {
         "SSOID": ssoIdController.text.trim(),
         "MobileNo": mobileController.text.trim(),
-        "DepartmentId": 0,
+        "DepartmentId": UserData().model.value.deptID,
         "UserType": "Govt",
         "DistrictCode": selectedDistrict?.code != null
             ? selectedDistrict!.code

@@ -1139,14 +1139,16 @@ Future<void> confirmAlertDialog(
     context: context,
     pageBuilder: (context, anim1, anim2) {
       return Align(
-        alignment: Alignment.bottomCenter, // 👈 position bottom
+        alignment: Alignment.bottomCenter,
+          // child: SafeArea( // 👈 ADD THIS
+          //   top: false,// 👈 position bottom
         child: StatefulBuilder(
           builder: (context, setState) {
             return Material(
               color: Colors.transparent,
               child: Container(
                 margin: const EdgeInsets.all(0),
-                height: 200,
+                height: 280,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: kWhite,
@@ -1160,9 +1162,9 @@ Future<void> confirmAlertDialog(
                       title,
                       style: Styles.semiBoldTextStyle(size: 18, color: kGreenColor),
                     ),
-                    hSpace(10),
+                    hSpace(4),
                     Divider(height: 2, color: dividerColor),
-                    hSpace(10),
+                    hSpace(5),
                     Text(
                       message,
                       style: Styles.semiBoldTextStyle(size: 16, color: kBlackColor),
@@ -1203,12 +1205,14 @@ Future<void> confirmAlertDialog(
                         ),
                       ],
                     ),
+                    hSpace(70),
                   ],
                 ),
               ),
             );
           },
         ),
+          // ),
       );
     },
     transitionBuilder: (context, anim1, anim2, child) {

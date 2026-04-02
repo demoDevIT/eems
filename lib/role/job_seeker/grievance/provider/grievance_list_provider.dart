@@ -127,28 +127,28 @@ class GrievanceListProvider extends ChangeNotifier {
 
     try {
       Map<String, dynamic> body = {
-        "GrievanceID": 26, //grievance.grievanceID, // ✅ dynamic
-        "ComplainNo": "Gri/2026/00014", //grievance.complainNo ?? "",
-        "Subject": "I have a suggestion in Download registration card", //grievance.subject ?? "",
-        "Remark": "Download Registration card not working properly", //""
-        "StatusID": 3, //grievance.statusID ?? 0,
-        "CreatedDate": "2026-02-21T11:17:15.73", //grievance.createdDate ?? "",
-        "FileAttachment": "1", //""
+        "GrievanceID": grievance.grievanceID, //26, //grievance.grievanceID, // ✅ dynamic
+        "ComplainNo": grievance.complainNo ?? "", //"Gri/2026/00014", //grievance.complainNo ?? "",
+        "Subject": grievance.subject ?? "", //"I have a suggestion in Download registration card", //grievance.subject ?? "",
+        "Remark": grievance.remark, //"Download Registration card not working properly", //""
+        "StatusID": grievance.statusID ?? 0, //3, //grievance.statusID ?? 0,
+        "CreatedDate": grievance.createdDate ?? "", //"2026-02-21T11:17:15.73", //grievance.createdDate ?? "",
+        "FileAttachment": "", //"1", //""
         "DisAttachmentFileName": "",
-        "CategoryID": 2, //grievance.categoryID ?? 0,
-        "CategoryType": 7, //grievance.categoryType ?? 0,
-        "ModuleID": 1, //grievance.moduleID ?? 0,
-        "SubModuleID": 7, //grievance.subModuleID ?? 0,
-        "ModuleNameEn": "Job Seeker", //grievance.moduleNameEn ?? "",
-        "SubModuleNameEn": "Download Registration Card", //grievance.subModuleNameEn ?? "",
-        "CreatedBy": 6995, //UserData().model.value.userId,
-        "RoleID": 4, //UserData().model.value.roleId,
-        "DepartmentID": 1, //grievance.departmentID ?? 0,
-        "GrievanceApplier": "JOB SEEKER", //grievance.grievanceApplier ?? "",
+        "CategoryID": grievance.categoryID ?? 0, //2, //grievance.categoryID ?? 0,
+        "CategoryType": grievance.categoryType ?? 0, //7, //grievance.categoryType ?? 0,
+        "ModuleID": grievance.moduleID ?? 0, //1, //grievance.moduleID ?? 0,
+        "SubModuleID": grievance.subModuleID ?? 0, //7, //grievance.subModuleID ?? 0,
+        "ModuleNameEn": grievance.moduleNameEn ?? "", //"Job Seeker", //grievance.moduleNameEn ?? "",
+        "SubModuleNameEn": grievance.subModuleNameEn ?? "", //"Download Registration Card", //grievance.subModuleNameEn ?? "",
+        "CreatedBy": UserData().model.value.userId, //6995, //UserData().model.value.userId,
+        "RoleID": UserData().model.value.roleId, //4, //UserData().model.value.roleId,
+        "DepartmentID": grievance.departmentID ?? 0, //1, //grievance.departmentID ?? 0,
+        "GrievanceApplier": grievance.grievanceApplier ?? "", //"JOB SEEKER", //grievance.grievanceApplier ?? "",
         "FeedbackDone": 0,
-        "SNo": 3, //0
-        "CategoryName": "Web", //"",
-        "CategoryTypeName": "Suggestion", //""
+        "SNo": 0, //3, //0
+        "CategoryName": "", //""Web", //"",
+        "CategoryTypeName": "", //""Suggestion", //""
       };
 
       ProgressDialog.showLoadingDialog(context);

@@ -225,7 +225,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "RegistrationNumber": this.registrationNumber,
         "OfficeId": UserData().model.value.officeID, //24,
         "StateId": 0,
-        "DepartmentID": 1,
+        "DepartmentID": UserData().model.value.deptID,
         "FYID": selectedYearObj?.name, //filterSelectedYear, //2026
         "MonthId": filterSelectedMonthNumber, //2
         "RoleId": UserData().model.value.roleId,

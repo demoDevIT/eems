@@ -212,16 +212,31 @@ class CameraProvider with ChangeNotifier {
             backgroundColor: kPrimaryColor,
             foregroundColor: kWhite,
           ),
-          onPressed: isActive ? () async {
+            onPressed: isActive
+                ? () async {
+              if (mergedPath == null || mergedPath.toString().isEmpty) {
+                showAlertError("Video not ready. Please record again.", context);
+                return;
+              }
 
-            if(mergedPath != null){
+              File file = File(mergedPath);
+
+              if (!file.existsSync()) {
+                showAlertError("Video file not found.", context);
+                return;
+              }
+
+              final sizeMB = file.lengthSync() / (1024 * 1024);
+              print("Video size: $sizeMB MB");
+
+              if (sizeMB > 10) {
+                showAlertError("Video must be under 10MB", context);
+                return;
+              }
+
               await uploadVideo(context, mergedPath);
             }
-            else{
-              print("fjdfdlkfdlkfl");
-            }
-
-          }: null,
+                : null,
           child: Text(
             "Upload Video",
             style: UtilityClass.poppins(
@@ -286,6 +301,20 @@ class CameraProvider with ChangeNotifier {
     }
 
     try {
+      print("Uploading video: $mergedPath");
+
+      if (mergedPath == null || mergedPath.toString().isEmpty) {
+        showAlertError("Invalid video path", context);
+        return UploadDocumentModal(state: 0, message: "Invalid path");
+      }
+
+      File file = File(mergedPath);
+
+      if (!file.existsSync()) {
+        showAlertError("File does not exist", context);
+        return UploadDocumentModal(state: 0, message: "File missing");
+      }
+
       ProgressDialog.showLoadingDialog(context);
 
       String? ipAddress = await UtilityClass.getIpAddress();
@@ -294,8 +323,10 @@ class CameraProvider with ChangeNotifier {
 
       // 📍 Get location
       final position = await LocationService.getCurrentLocation();
+
       if (position == null) {
-        throw "Unable to get location";
+        showAlertError("Location not available", context);
+        return UploadDocumentModal(state: 0, message: "No location");
       }
 
       final double userLatitude = position.latitude; //26.915486;
@@ -317,8 +348,8 @@ class CameraProvider with ChangeNotifier {
         'Lat': userLatitude, //"37.4219983",
         'Long': userLongitude, //"-122.084",
         "File": await MultipartFile.fromFile(
-          mergedPath,
-          filename: "Video.mp4",
+          file.path,
+          filename: file.path.split('/').last,
         ),
       });
       // Map<String, dynamic> fields = {
@@ -342,7 +373,9 @@ class CameraProvider with ChangeNotifier {
       Response response = await commonRepo.postRequestMultipart(
           Constants.UploadVideo, formData);
 
-      ProgressDialog.closeLoadingDialog(context);
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
       print("videoProfileResss=>$response");
 
       if (response.data["Success"] == true) {
@@ -369,7 +402,9 @@ class CameraProvider with ChangeNotifier {
       // }
 
     } catch (err) {
-      ProgressDialog.closeLoadingDialog(context);
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
       print(err);
       showAlertError(err.toString(), context);
       return UploadDocumentModal(state: 0, message: err.toString());

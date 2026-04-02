@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
            crossAxisCount: 2,
            mainAxisSpacing: 10, // 🔹 reduced spacing
            crossAxisSpacing: 10,
-           childAspectRatio: 1.40, // 🔹 tighter height
+           childAspectRatio: 1.38, // 🔹 tighter height
          ),
          itemBuilder: (context, index) {
            final item = items[index];

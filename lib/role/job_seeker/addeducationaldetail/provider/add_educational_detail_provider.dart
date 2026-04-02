@@ -549,7 +549,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/GradeType/1";
+          String url = "Common/CommonMasterDataByCode/GradeType/1";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
