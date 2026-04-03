@@ -12,13 +12,13 @@ android {
 
     defaultConfig {
         applicationId = "com.rajemployment.eems.rajemployment"
-        minSdk = 26 // ✅ Required for 16 KB page size support
+        minSdk = 26
         targetSdk = 36
         versionCode = 7
         versionName = "1.0.7"
+
         ndk {
-            //   -DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
-            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a","x86_64"))
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
             debugSymbolLevel = "FULL"
         }
     }
@@ -53,18 +53,36 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     packagingOptions {
         jniLibs {
             useLegacyPackaging = true
         }
     }
+
     bundle {
         abi {
-            enableSplit = false // Keep all architectures together for testing
+            enableSplit = false
+        }
+    }
+
+    // ✅ FIX: Force same Media3 version everywhere
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.media3:media3-transformer:1.3.1")
+            force("androidx.media3:media3-exoplayer:1.3.1")
+            force("androidx.media3:media3-common:1.3.1")
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+// ✅ FIX: Add Media3 dependencies explicitly
+dependencies {
+    implementation("androidx.media3:media3-transformer:1.3.1")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-common:1.3.1")
 }

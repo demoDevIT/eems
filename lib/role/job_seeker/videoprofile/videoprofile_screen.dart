@@ -14,7 +14,7 @@ class VideoprofileScreen extends StatefulWidget {
 }
 
 class _VideoprofileScreenState extends State<VideoprofileScreen> {
-// var videoProvider;
+var videoProvider;
   @override
   void initState() {
     super.initState();
@@ -125,14 +125,10 @@ class _VideoprofileScreenState extends State<VideoprofileScreen> {
                   const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CameraPage()),
-                      );
-
-                      if (result == true) {
-                        provider.getVideo(context);
-                      }
+                   String Video = await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()),);
+                   if(Video == "True"){
+                     provider.getVideo(context);
+                   }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kViewAllColor,
@@ -166,61 +162,67 @@ class _VideoprofileScreenState extends State<VideoprofileScreen> {
 
               /// Second Image with Overlay Text Button
 
-              if (provider.VideoPath.isNotEmpty)
-               // SizedBox(
-               //    child:
-                  LiveVideoPlayer(
-                    key: ValueKey(provider.VideoPath[0].videoPath),
-                    url: provider.VideoPath[0].videoPath ?? "",
-                  ),
-                //),
-              const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/videProImgTwo.png",
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
-                    Container(
-                      color: Colors.black45,
-                      width: double.infinity,
-                      height: 180,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "How to Record",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          child: const Text("Click here.."),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              if (provider.isLoading)
+                SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (provider.VideoPath.isNotEmpty)
+                LiveVideoPlayer(
+                  key: ValueKey(provider.VideoPath[0].videoPath),
+                  url: provider.VideoPath[0].videoPath ?? "",
+                )
+              else
+                SizedBox(
+                  height: 200,
+                  child: Center(child: Text("No video available")),
+                )
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(12),
+              //   child: Stack(
+              //     alignment: Alignment.center,
+              //     children: [
+              //       Image.asset(
+              //         "assets/images/videProImgTwo.png",
+              //         width: double.infinity,
+              //         height: 180,
+              //         fit: BoxFit.cover,
+              //       ),
+              //       Container(
+              //         color: Colors.black45,
+              //         width: double.infinity,
+              //         height: 180,
+              //       ),
+              //       Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           const Text(
+              //             "How to Record",
+              //             style: TextStyle(
+              //               color: Colors.white,
+              //               fontSize: 16,
+              //               fontWeight: FontWeight.w600,
+              //             ),
+              //           ),
+              //           const SizedBox(height: 8),
+              //           ElevatedButton(
+              //             onPressed: () {},
+              //             style: ElevatedButton.styleFrom(
+              //               backgroundColor: Colors.white,
+              //               foregroundColor: Colors.black,
+              //               padding: const EdgeInsets.symmetric(
+              //                   horizontal: 18, vertical: 10),
+              //               shape: RoundedRectangleBorder(
+              //                 borderRadius: BorderRadius.circular(30),
+              //               ),
+              //             ),
+              //             child: const Text("Click here.."),
+              //           ),
+              //         ],
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

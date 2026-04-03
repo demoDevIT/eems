@@ -100,7 +100,11 @@ class CameraProvider with ChangeNotifier {
      UtilityClass.showProgressDialogVideo(context,"Loading video...");
     try {
       final editor = VideoEditorBuilder(videoPath: paths[0]).merge(otherVideoPaths: paths.sublist(1));
-      final String outputPath = '${Directory.systemTemp.path}/${DateTime.now().millisecondsSinceEpoch}_merged.mp4';
+      //final String outputPath = '${Directory.systemTemp.path}/${DateTime.now().millisecondsSinceEpoch}_merged.mp4';
+      final dir = await getTemporaryDirectory();
+
+      final String outputPath =
+          '${dir.path}/${DateTime.now().millisecondsSinceEpoch}_merged.mp4';
       debugPrint('Merge output path: $outputPath');
       mergedPath = await editor.export(
         outputPath: outputPath,
@@ -108,6 +112,7 @@ class CameraProvider with ChangeNotifier {
           debugPrint('Merge progress: ${(progress * 100).toStringAsFixed(1)}%');
         },
       );
+      print("mergedPathaa111=>$mergedPath");
       UtilityClass.dismissProgressDialog();
       if (mergedPath != null) {
         videoPlayerController = VideoPlayerController.file(File(mergedPath))
@@ -212,31 +217,16 @@ class CameraProvider with ChangeNotifier {
             backgroundColor: kPrimaryColor,
             foregroundColor: kWhite,
           ),
-            onPressed: isActive
-                ? () async {
-              if (mergedPath == null || mergedPath.toString().isEmpty) {
-                showAlertError("Video not ready. Please record again.", context);
-                return;
-              }
-
-              File file = File(mergedPath);
-
-              if (!file.existsSync()) {
-                showAlertError("Video file not found.", context);
-                return;
-              }
-
-              final sizeMB = file.lengthSync() / (1024 * 1024);
-              print("Video size: $sizeMB MB");
-
-              if (sizeMB > 10) {
-                showAlertError("Video must be under 10MB", context);
-                return;
-              }
-
+          onPressed: isActive ? () async {
+print("mergedddFile=>$mergedPath");
+            if(mergedPath != null){
               await uploadVideo(context, mergedPath);
             }
-                : null,
+            else{
+              print("fjdfdlkfdlkfl");
+            }
+
+          }: null,
           child: Text(
             "Upload Video",
             style: UtilityClass.poppins(
@@ -293,28 +283,14 @@ class CameraProvider with ChangeNotifier {
 
   Future<UploadDocumentModal?> uploadVideo(BuildContext context, var mergedPath) async {
     print("fldfldlfdl");
-    bool isInternet = await UtilityClass.checkInternetConnectivity();
-
-    if (!isInternet) {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
-      return UploadDocumentModal(state: 0, message: "No Internet");
-    }
-
+    // bool isInternet = await UtilityClass.checkInternetConnectivity();
+    //
+    // if (!isInternet) {
+    //   showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    //   return UploadDocumentModal(state: 0, message: "No Internet");
+    // }
+    print('userLatitude2 lat: ');
     try {
-      print("Uploading video: $mergedPath");
-
-      if (mergedPath == null || mergedPath.toString().isEmpty) {
-        showAlertError("Invalid video path", context);
-        return UploadDocumentModal(state: 0, message: "Invalid path");
-      }
-
-      File file = File(mergedPath);
-
-      if (!file.existsSync()) {
-        showAlertError("File does not exist", context);
-        return UploadDocumentModal(state: 0, message: "File missing");
-      }
-
       ProgressDialog.showLoadingDialog(context);
 
       String? ipAddress = await UtilityClass.getIpAddress();
@@ -323,21 +299,29 @@ class CameraProvider with ChangeNotifier {
 
       // 📍 Get location
       final position = await LocationService.getCurrentLocation();
-
       if (position == null) {
-        showAlertError("Location not available", context);
-        return UploadDocumentModal(state: 0, message: "No location");
+        throw "Unable to get location";
       }
 
       final double userLatitude = position.latitude; //26.915486;
       final double userLongitude = position.longitude; //75.819518;
 
       print('userLatitude2 lat: $userLatitude');
-      print('userLongitude2 long: $userLongitude');
+      print('mergedPath long: $mergedPath');
+
+      File file = File(mergedPath);
+
+      if (!await file.exists()) {
+        print("❌ FILE NOT FOUND: $mergedPath");
+        return UploadDocumentModal(state: 0, message: "File not found");
+      }
+
+      print("✅ FILE EXISTS: ${await file.length()} bytes");
+
 
       FormData formData = FormData.fromMap({
         'FolderName': 'VideoProfile',
-        'FileExtension': "mp4",
+        'FileExtention': "mp4",
         'MinFileSize': '1kb',
         'MaxFileSize': '10MB',
         'UserId': UserData().model.value.userId.toString(), //'1781',
@@ -345,13 +329,16 @@ class CameraProvider with ChangeNotifier {
         'Mobile_Mac': deviceId,  // update this
         'DeviceId': deviceId,
         'AppVersion': appVersion,
-        'Lat': userLatitude, //"37.4219983",
-        'Long': userLongitude, //"-122.084",
+        'Lat': "26.915486", //"37.4219983",
+        'Long': "75.819518", //"-122.084",
         "File": await MultipartFile.fromFile(
-          file.path,
-          filename: file.path.split('/').last,
+          mergedPath,
+          filename: "Video.mp4",
         ),
       });
+      for (var field in formData.fields) {
+        print("${field.key} : ${field.value}");
+      }
       // Map<String, dynamic> fields = {
       //   'FolderName': 'VideoProfile',
       //   'FileExtension': "mp4",
@@ -370,12 +357,12 @@ class CameraProvider with ChangeNotifier {
       print("fldfldlf--dl");
      // FormData param = FormData.fromMap(fields);
 
+      // Response response = await commonRepo.postRequestMultipart(
+      //     Constants.UploadVideo, formData);
       Response response = await commonRepo.postRequestMultipart(
-          Constants.UploadVideo, formData);
+          "Login/UploadVideo", formData);
 
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
+      ProgressDialog.closeLoadingDialog(context);
       print("videoProfileResss=>$response");
 
       if (response.data["Success"] == true) {
@@ -402,9 +389,7 @@ class CameraProvider with ChangeNotifier {
       // }
 
     } catch (err) {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
+      ProgressDialog.closeLoadingDialog(context);
       print(err);
       showAlertError(err.toString(), context);
       return UploadDocumentModal(state: 0, message: err.toString());

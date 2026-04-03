@@ -17,13 +17,17 @@ class VideoprofileProvider with ChangeNotifier{
 
     VideoprofileProvider({required this.commonRepo});
 
-
+    bool isLoading = false;
 
     List<VideoData> VideoPath = [];
 
 
 Future<void> getVideo(BuildContext context) async {
     try{
+      isLoading = true;
+      VideoPath = [];
+      notifyListeners();
+
     HttpService http = HttpService(context, Constants.baseurl);
     String ? IpAddress =  await UtilityClass.getIpAddress();
     String ? DeviceId =  await UtilityClass.getDeviceId();
@@ -43,12 +47,16 @@ Future<void> getVideo(BuildContext context) async {
     }
     notifyListeners();
   } catch (e, s) {
+      VideoPath = [];
     UtilityClass.askForInput(
         "Alert",
         'Unable to load data.Check your connection and try again. ',
         "Okay",
         "Okay",
         true);
-  }
+  }finally {
+      isLoading = false;         // ✅ STOP LOADING
+      notifyListeners();
+    }
 }
 }

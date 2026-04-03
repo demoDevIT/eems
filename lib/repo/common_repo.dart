@@ -93,7 +93,13 @@ class CommonRepo {
       final response = await dioClient.post(
         endpoint,
         data: formData,
-        options: Options(headers: {"Content-Type": "multipart/form-data"}),
+        // options: Options(headers: {"Content-Type": "multipart/form-data"}),
+        options: Options().copyWith(
+          headers: {
+            "Accept": "application/json",
+          },
+          contentType: Headers.multipartFormDataContentType,
+        ),
       );
       print("APIIIIIIIIIIIIIIress->$response");
       return response;
