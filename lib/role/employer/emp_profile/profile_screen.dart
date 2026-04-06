@@ -198,4 +198,90 @@ class EmployerProfileScreen extends StatelessWidget {
     );
   }
 
+  // for UI change of this page *********** same UI code same like employee dashboard
+  // Widget _menuTile(BuildContext context, String title, String iconPath, Color color) {
+  //   return Container(
+  //     margin: const EdgeInsets.only(bottom: 14),
+  //     child: Material(
+  //       borderRadius: BorderRadius.circular(16),
+  //       color: Colors.white,
+  //       child: InkWell(
+  //         borderRadius: BorderRadius.circular(16),
+  //         onTap: () {
+  //           _handleNavigation(context, title);
+  //         },
+  //         child: Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+  //           child: Row(
+  //             children: [
+  //               /// Icon (same as dashboard)
+  //               Container(
+  //                 height: 45,
+  //                 width: 45,
+  //                 child: Center(
+  //                   child: Image.asset(
+  //                     iconPath,
+  //                     height: 42,
+  //                     width: 42,
+  //                   ),
+  //                 ),
+  //               ),
+  //
+  //               const SizedBox(width: 14),
+  //
+  //               /// Title
+  //               Expanded(
+  //                 child: Text(
+  //                   title,
+  //                   style: const TextStyle(
+  //                     fontSize: 14,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //               ),
+  //
+  //               /// Rounded Arrow (same as dashboard fix)
+  //               Container(
+  //                 height: 28,
+  //                 width: 28,
+  //                 decoration: BoxDecoration(
+  //                   shape: BoxShape.circle,
+  //                   color: Colors.grey.shade100,
+  //                   border: Border.all(color: Colors.grey.shade200),
+  //                 ),
+  //                 child: const Center(
+  //                   child: Icon(
+  //                     Icons.arrow_forward_ios,
+  //                     size: 14,
+  //                     color: Colors.grey,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+  //
+  // void _handleNavigation(BuildContext context, String title) {
+  //   if (title == "Basic Details") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const EmpBasicDetailScreen()));
+  //   } else if (title == "Branch Office Details") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const BranchOfficeDetailScreen()));
+  //   } else if (title == "Head Office Details") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const HeadOfficeDetailScreen()));
+  //   } else if (title == "Head Office Applicant Details") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const HeadOfficeApplicantDetailScreen()));
+  //   } else if (title == "Contact person Details") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPersonDetail()));
+  //   } else if (title == "Exchange Name / District Employment Office") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const ExchangeNameDetail()));
+  //   } else if (title == "Exchange Market Information Program") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const ExchangeMarketInformationProgram()));
+  //   } else if (title == "Upload Organization/Company Documents") {
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => const UploadOrganizationDocuments()));
+  //   }
+  // }
 }

@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 
@@ -124,6 +125,60 @@ Widget buildDropdownWithBorderField({
           ),
         ) ,
       ) ;
+    },
+  );
+}
+
+
+Widget buildSearchableDropdown<T>({
+  required List<T> items,
+  required String Function(T) getId,
+  required String Function(T) getName,
+  required TextEditingController controller,
+  required TextEditingController idController,
+  required String hintText,
+  required Function(T) onChanged,
+}) {
+  T? selectedItem;
+
+  try {
+    selectedItem = items.firstWhere(
+          (item) => getId(item) == idController.text,
+    );
+  } catch (e) {
+    selectedItem = null;
+  }
+
+  return DropdownSearch<T>(
+    items: (filter, infiniteScrollProps) => items,
+
+    // ✅ FIXED compare
+    compareFn: (item, selectedItem) =>
+    getId(item) == getId(selectedItem),
+
+    selectedItem: selectedItem,
+
+    popupProps: PopupProps.menu(
+      showSearchBox: true,
+    ),
+
+    decoratorProps: DropDownDecoratorProps(
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+
+    itemAsString: (item) => getName(item),
+
+    onChanged: (value) {
+      if (value != null) {
+        controller.text = getName(value);
+        idController.text = getId(value);
+        onChanged(value);
+      }
     },
   );
 }

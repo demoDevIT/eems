@@ -176,10 +176,21 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                 ),
 
                 // Arrow
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Colors.grey,
+                Container(
+                  height: 28,
+                  width: 28,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                    color: Colors.white,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ],
             ),
