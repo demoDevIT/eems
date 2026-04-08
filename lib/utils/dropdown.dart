@@ -162,6 +162,17 @@ Widget buildSearchableDropdown<T>({
       showSearchBox: true,
     ),
 
+    // popupProps: PopupProps.menu(
+    //   showSearchBox: true,
+    //   constraints: BoxConstraints(
+    //     maxHeight: items.isEmpty
+    //         ? 60 // for "No record found"
+    //         : items.length <= 4
+    //         ? items.length * 50.0
+    //         : 250, // max height
+    //   ),
+    // ),
+
     decoratorProps: DropDownDecoratorProps(
       decoration: InputDecoration(
         hintText: hintText,

@@ -92,7 +92,8 @@ class FaqsProvider with ChangeNotifier {
               faqAssistanceEng: item.faqAssistanceEng ?? "Service ${index + 1}",
               enumName: item.enumName.toString(),
               color: getDynamicColor(index),
-              icon: getAutoIcon(index),
+              // icon: getAutoIcon(index),
+              iconPath: getIconPath(item.faqAssistanceEng ?? ""),
               originalData: item,
             );
           }).toList();
@@ -106,6 +107,44 @@ class FaqsProvider with ChangeNotifier {
        await  UtilityClass.askForInput("Alert", 'Unable to load data. Check your connection and try again.', "Okay", "Okay", true,);
       }
     }
+
+  String getIconPath(String title) {
+    print("titleeeee-->$title");
+    final aa = title.toLowerCase();
+    print("titleeeee lowerletter -->$aa");
+
+    switch (title.toLowerCase()) {
+      case "mysy-2021 application status":
+        return "assets/images/FAQmysy.svg";
+
+      case "job fair":
+      case "नौकरी मेला":
+        return "assets/images/FAQJobFair.svg";
+
+      case "registration procedure":
+      case "पंजीकरण प्रक्रिया":
+        return "assets/images/FAQRegPro.svg";
+
+      case "scheme information":
+      case "योजना जानकारी":
+        return "assets/images/FAQSchmInfo.svg";
+
+      case "payment status":
+      case "भुगतान स्थिति":
+        return "assets/images/FAQPaySta.svg";
+
+      case "employment exchange office":
+      case "रोजगार कार्यालय":
+        return "assets/images/FAQEmpExOffice.svg";
+
+      case "feedback & suggestions":
+      case "प्रतिक्रिया सुझाव":
+        return "assets/images/FAQFeedbkSugges.svg";
+
+      default:
+        return "assets/images/FAQmysy.svg"; // fallback
+    }
+  }
 
   void updateSelectedIndex(BuildContext context,int index,QuickServiceModel item) {
     _selectedIndex = index;

@@ -204,7 +204,8 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                               );
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.updateprofile,
+                              // AppLocalizations.of(context)!.updateprofile,
+                              "View profile",
                               style: TextStyle(
                                 fontSize: 14,
                                 //color: Colors.blue,
@@ -597,13 +598,35 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
               fit: BoxFit.cover,
             ),
             title: Text(AppLocalizations.of(context)!.logout,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) {
+              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
                   if (value.toString() == "success") {
+                    // earlier working code, before remember me
+                    // final pref = AppSharedPref();
+                    // pref.save('UserData', '');
+                    // pref.remove('UserData');
+
+                    // changes for remember me
+
                     final pref = AppSharedPref();
-                    pref.save('UserData', '');
-                    pref.remove('UserData');
+
+                  // ✅ Clear SharedPreferences
+                    await pref.remove('UserData');
+
+                  // ✅ Clear in-memory user data
+                    UserData().model.value.isLogin = false;
+                    UserData().model.value.username = "";
+                    UserData().model.value.password = "";
+                    UserData().model.value.userId = null;
+
+                  // ✅ Navigate cleanly (remove all previous screens)
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                          (route) => false,
+                    );
+
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) =>

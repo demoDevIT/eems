@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
@@ -88,18 +89,56 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                           const SizedBox(height: 12),
 
                           /// Sector Dropdown
-                          DropdownButtonFormField<JobSectorData>(
-                            value: provider.selectedSector,
-                            decoration: _inputDecoration(),
-                            hint: const Text("Select Sector"),
-                            items: provider.jobSectorList
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.sectorName ?? ""),
+                          // DropdownButtonFormField<JobSectorData>(
+                          //   value: provider.selectedSector,
+                          //   decoration: _inputDecoration(),
+                          //   hint: const Text("Select Sector"),
+                          //   items: provider.jobSectorList
+                          //       .map(
+                          //         (e) => DropdownMenuItem(
+                          //       value: e,
+                          //       child: Text(e.sectorName ?? ""),
+                          //     ),
+                          //   )
+                          //       .toList(),
+                          //   onChanged: (value) {
+                          //     provider.selectedSector = value;
+                          //     provider.notifyListeners();
+                          //   },
+                          // ),
+
+                          DropdownSearch<JobSectorData>(
+                            items: (filter, infiniteScrollProps) => provider.jobSectorList,
+
+                            selectedItem: provider.selectedSector,
+
+                            itemAsString: (item) => item.sectorName ?? "",
+
+                            compareFn: (item1, item2) =>
+                            item1.id == item2.id, // 👈 IMPORTANT (use your unique field)
+
+                            decoratorProps: DropDownDecoratorProps(
+                              decoration: _inputDecoration(
+                                hintText: "Select Sector",
                               ),
-                            )
-                                .toList(),
+                            ),
+
+                            popupProps: PopupProps.menu(
+                              showSearchBox: true, // 🔥 search inside dropdown
+                              fit: FlexFit.loose,
+                              constraints: const BoxConstraints(maxHeight: 300),
+
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  hintText: "Search Sector",
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+
                             onChanged: (value) {
                               provider.selectedSector = value;
                               provider.notifyListeners();
@@ -130,7 +169,10 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                               const SizedBox(width: 12),
                               Expanded(
                                 child: OutlinedButton(
-                                  onPressed: provider.clearFilters,
+                                  onPressed: () async {
+                                    provider.clearFilters();
+                                    await provider.searchJobs(context); // 🔥 reload data
+                                  },
                                   style: OutlinedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius:
@@ -162,14 +204,47 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text(
-                            "Jobs based on your profile",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              /// 🔹 Heading
+                              const Text(
+                                "Jobs based on your profile",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              /// 🔹 Apply Button (right side)
+                              if (provider.selectedJobs.isNotEmpty)
+                                ElevatedButton(
+                                  onPressed: () {
+                                    provider.showMultipleApplyConfirmation(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kPrimaryColor,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 8,
+                                    ),
+                                    minimumSize: Size.zero,
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Apply (${provider.selectedJobs.length})",
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                            ],
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
 
                           /// JOB LIST
 
@@ -290,28 +365,6 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                             },
                           ),
 
-                          if (provider.selectedJobs.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    provider.showMultipleApplyConfirmation(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: kPrimaryColor,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Apply (${provider.selectedJobs.length})",
-                                  ),
-                                ),
-                              ),
-                            ),
                           const SizedBox(height: 60),
 
                         ],
@@ -363,4 +416,86 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
     );
   }
 
+}
+
+class _SectorSearchSheet extends StatefulWidget {
+  final List<JobSectorData> list;
+  final JobSectorData? selected;
+
+  const _SectorSearchSheet({
+    required this.list,
+    this.selected,
+  });
+
+  @override
+  State<_SectorSearchSheet> createState() => _SectorSearchSheetState();
+}
+
+class _SectorSearchSheetState extends State<_SectorSearchSheet> {
+  TextEditingController searchController = TextEditingController();
+  List<JobSectorData> filteredList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredList = widget.list;
+  }
+
+  void _filter(String query) {
+    setState(() {
+      filteredList = widget.list
+          .where((e) =>
+          (e.sectorName ?? "")
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        height: MediaQuery.of(context).size.height * 0.75,
+        child: Column(
+          children: [
+
+            /// 🔍 Search Field
+            TextField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                hintText: "Search Sector",
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: _filter,
+            ),
+
+            const SizedBox(height: 12),
+
+            /// 📋 List
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredList.length,
+                itemBuilder: (context, index) {
+                  final item = filteredList[index];
+
+                  return ListTile(
+                    title: Text(item.sectorName ?? ""),
+                    trailing: widget.selected == item
+                        ? const Icon(Icons.check, color: Colors.green)
+                        : null,
+                    onTap: () {
+                      Navigator.pop(context, item);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

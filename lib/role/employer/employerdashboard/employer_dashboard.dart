@@ -30,7 +30,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       drawer: _buildSideDrawer(),
       appBar: AppBar(
         title: const Text(
-          "Employee Dashboard",
+          "Employer Dashboard",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,

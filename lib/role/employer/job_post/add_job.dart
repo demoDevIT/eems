@@ -3,11 +3,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:rajemployment/role/employer/job_post/modal/emp_type_modal.dart';
+import 'package:rajemployment/role/employer/job_post/modal/job_title_modal.dart';
+import 'package:rajemployment/role/employer/job_post/modal/nature_job_modal.dart';
 
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import '../../job_seeker/add_language_skills/modal/category_type_details_modal.dart';
+import '../../job_seeker/add_language_skills/modal/get_sub_category_type_details_modal.dart';
+import '../../job_seeker/addjobpreference/modal/sector_modal.dart';
+import '../../job_seeker/job_fair_event/modal/event_name_modal.dart';
+import 'modal/course_modal.dart';
+import 'modal/education_type_modal.dart';
 import 'modal/location_modal.dart';
+import 'modal/noc_code_modal.dart';
+import 'modal/salary_range_modal.dart';
 import 'provider/add_job_provider.dart';
 
 class AddJobScreen extends StatefulWidget {
@@ -93,14 +104,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<EventNameData>(
                               items: provider.eventNameList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.eventNameController,
                               idController: provider.eventIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // color: Colors.transparent,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                 setState(() {
                                   selectedEvent = provider.eventIdController.text;
@@ -116,14 +132,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<SectorData>(
                               items: provider.sectorList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.sectorNameController,
                               idController: provider.sectorIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // color: Colors.transparent,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
 
                                 setState(() {
@@ -149,13 +170,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<JobTitleData>(
                               items: provider.jobTitleList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.jobTitleController,
                               idController: provider.jobTitleIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                  selectedjobTitle = provider.jobTitleIdController.text;
 
@@ -217,13 +243,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<NcoCodeData>(
                               items: provider.ncoCodeList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.ncoCodeController,
                               idController: provider.ncoCodeIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                 selectedNcoCode = provider.ncoCodeIdController.text;
                                 provider.notifyListeners();
@@ -273,7 +304,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           // ),
 
                           labelWithStar('Gender', required: false),
-
+                          const SizedBox(height: 4),
                           Consumer<AddJobProvider>(
                             builder: (context, provider, _) {
 
@@ -400,13 +431,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           labelWithStar('Employment Type', required: false),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<EmpTypeData>(
                               items: provider.empTypeList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.empTypeController,
                               idController: provider.empTypeIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                 selectedEmpType = provider.empTypeIdController.text;
                                 provider.notifyListeners();
@@ -420,13 +456,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           labelWithStar('Nature Of Job', required: false),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<NatureJobData>(
                               items: provider.natureJobList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.natureJobController,
                               idController: provider.natureJobIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                 selectedNatureJob = provider.natureJobIdController.text;
                                 provider.notifyListeners();
@@ -440,13 +481,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           labelWithStar('Work Experience', required: false),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: buildDropdownWithBorderField(
+                          child: buildSearchableDropdown<DropdownItem>(
                             items: provider.workExpList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
                             controller: provider.workExpController,
                             idController: provider.workExpIdController,
                             hintText: "--Select Option--",
-                            height: 50,
-                            borderRadius: BorderRadius.circular(8),
+                            // height: 50,
+                            // borderRadius: BorderRadius.circular(8),
                             onChanged: (value) {
                               setState(() {
                                 provider.workExpIdController.text = provider.workExpIdController.text;
@@ -624,13 +670,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: buildDropdownWithBorderField(
+                            child: buildSearchableDropdown<SalaryRangeData>(
                               items: provider.salaryRangeList,
+
+                              // ✅ MAP YOUR MODEL HERE
+                              getId: (item) => item.dropID.toString(),
+                              getName: (item) => item.name ?? "",
+
                               controller: provider.salaryRangeController,
                               idController: provider.salaryRangeIdController,
                               hintText: "--Select Option--",
-                              height: 50,
-                              borderRadius: BorderRadius.circular(8),
+                              // height: 50,
+                              // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
                                 selectedSalaryRange = provider.salaryRangeIdController.text;
                                 provider.notifyListeners();
@@ -670,15 +721,21 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           const SizedBox(height: 12),
                           labelWithStar('Skill Category', required: false),
+                          const SizedBox(height: 4),
                           /// CATEGORY DROPDOWN
-                          buildDropdownWithBorderField(
+                          buildSearchableDropdown<GetCategoryTypeDetailsData>(
                             items: provider.categoryList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
                             controller: provider.categoryNameController,
                             idController: provider.categoryIdController,
                             hintText: "--Select Option--",
-                            height: 50,
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8),
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
                             onChanged: (value) {
                               provider.selectedSkillCategory =
                                   provider.categoryNameController.text;
@@ -698,14 +755,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           Row(
                             children: [
                               Expanded(
-                                child: buildDropdownWithBorderField(
+                                child: buildSearchableDropdown<GetSubCategoryTypeDetailsData>(
                                   items: provider.subCategoryList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
                                   controller: provider.subCategoryNameController,
                                   idController: provider.subCategoryIdController,
                                   hintText: "--Select Option--",
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  // height: 50,
+                                  // color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(8),
                                   onChanged: (value) {
                                     provider.selectedSkillSubCategory =
                                         provider.subCategoryNameController.text;
@@ -778,14 +840,20 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           const SizedBox(height: 12),
                           labelWithStar('Education Type', required: false),
-                          buildDropdownWithBorderField(
+                          const SizedBox(height: 4),
+                          buildSearchableDropdown<GetEducationTypeData>(
                             items: provider.educationTypeList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
                             controller: provider.educationNameController,
                             idController: provider.educationIdController,
                             hintText: "--Select Option--",
-                            height: 50,
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8),
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
                             onChanged: (value) {
                               provider.selectedEducationType =
                                   provider.educationNameController.text;
@@ -804,14 +872,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           Row(
                             children: [
                               Expanded(
-                                child: buildDropdownWithBorderField(
+                                child: buildSearchableDropdown<GetCourseData>(
                                   items: provider.courseList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
                                   controller: provider.courseNameController,
                                   idController: provider.courseIdController,
                                   hintText: "--Select Option--",
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  // height: 50,
+                                  // color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(8),
                                   onChanged: (value) {
                                     provider.selectedCourse =
                                         provider.courseNameController.text;

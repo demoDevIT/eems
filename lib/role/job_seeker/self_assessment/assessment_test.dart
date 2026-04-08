@@ -501,11 +501,15 @@ class _AssessmentTestScreenState
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
 
                 const Text(
                   "Review Your Test",
@@ -517,11 +521,12 @@ class _AssessmentTestScreenState
                 const SizedBox(height: 20),
 
                 /// CATEGORY LIST
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children:
-                  widget.selectedCategories.map((cat) {
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      children: widget.selectedCategories.map((cat) {
 
                     int attempted =
                     provider.getAttemptedCountForCategory(cat.id!);
@@ -553,6 +558,8 @@ class _AssessmentTestScreenState
                       ),
                     );
                   }).toList(),
+                )
+                  )
                 ),
 
                 const SizedBox(height: 25),
@@ -599,6 +606,7 @@ class _AssessmentTestScreenState
               ],
             ),
           ),
+            ),
         );
       },
     );

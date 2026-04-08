@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/scheduler.dart';
@@ -142,9 +143,19 @@ class _SelectCompanyPageState extends State<SelectCompanyPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: InkWell(
-                        onTap: () => _openSectorBottomSheet(provider),
-                        child: InputDecorator(
+                      child: DropdownSearch<AllJobSectorData>(
+                        items: (filter, infiniteScrollProps) => provider.jobSectorList,
+
+                        selectedItem: selectedJobSectorId == null
+                            ? null
+                            : provider.jobSectorList.firstWhere(
+                                (e) => e.id == selectedJobSectorId),
+
+                        itemAsString: (item) => item.nameEng ?? "",
+
+                        compareFn: (item1, item2) => item1.id == item2.id,
+
+                        decoratorProps: DropDownDecoratorProps(
                           decoration: InputDecoration(
                             labelText: "Job Sector",
                             border: OutlineInputBorder(
@@ -152,24 +163,61 @@ class _SelectCompanyPageState extends State<SelectCompanyPage> {
                             ),
                             contentPadding:
                             const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                            suffixIcon: const Icon(Icons.arrow_drop_down),
-                          ),
-                          child: Text(
-                            selectedJobSectorId == null
-                                ? "Select Job Sector"
-                                : provider.jobSectorList
-                                .firstWhere((e) => e.id == selectedJobSectorId)
-                                .nameEng!,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          fit: FlexFit.loose,
+                          constraints: const BoxConstraints(maxHeight: 300),
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              hintText: "Search Sector",
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        onChanged: (value) {
+                          if (value == null) return;
+
+                          setState(() {
+                            selectedJobSectorId = value.id;
+                            selectedJobTitleId = null;
+                          });
+
+                          provider.jobTitleList.clear();
+                          provider.appliedJobList.clear();
+                          provider.notifyListeners();
+
+                          provider.getAllTitleListApi(context, value.id!);
+
+                          provider.appliedJobMatchingListApi(
+                            context,
+                            jobSectorId: value.id!,
+                            jobTitleId: 0,
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: InkWell(
-                        onTap: () => _openTitleBottomSheet(provider),
-                        child: InputDecorator(
+                      child: DropdownSearch<AllJobTitleData>(
+                        items: (filter, infiniteScrollProps) => provider.jobTitleList,
+
+                        selectedItem: selectedJobTitleId == null
+                            ? null
+                            : provider.jobTitleList.firstWhere(
+                                (e) => e.id == selectedJobTitleId),
+
+                        itemAsString: (item) => item.nameEng ?? "",
+
+                        compareFn: (item1, item2) => item1.id == item2.id,
+
+                        decoratorProps: DropDownDecoratorProps(
                           decoration: InputDecoration(
                             labelText: "Job Title",
                             border: OutlineInputBorder(
@@ -177,17 +225,39 @@ class _SelectCompanyPageState extends State<SelectCompanyPage> {
                             ),
                             contentPadding:
                             const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                            suffixIcon: const Icon(Icons.arrow_drop_down),
-                          ),
-                          child: Text(
-                            selectedJobTitleId == null
-                                ? "Select Job Title"
-                                : provider.jobTitleList
-                                .firstWhere((e) => e.id == selectedJobTitleId)
-                                .nameEng!,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          fit: FlexFit.loose,
+                          constraints: const BoxConstraints(maxHeight: 300),
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              hintText: "Search Title",
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        onChanged: (value) {
+                          if (value == null) return;
+
+                          setState(() {
+                            selectedJobTitleId = value.id;
+                          });
+
+                          if (selectedJobSectorId != null) {
+                            provider.appliedJobMatchingListApi(
+                              context,
+                              jobSectorId: selectedJobSectorId!,
+                              jobTitleId: value.id!,
+                            );
+                          }
+                        },
                       ),
                     ),
 

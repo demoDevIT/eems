@@ -7,6 +7,8 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 
 import '../../../utils/dropdown.dart';
+import '../../job_seeker/addjobpreference/modal/sector_modal.dart';
+import '../../job_seeker/job_fair_event/modal/event_name_modal.dart';
 import 'add_job.dart';
 import 'provider/job_post_provider.dart';
 import '../../../utils/textfeild.dart';
@@ -95,14 +97,19 @@ class _JobPostScreenState extends State<JobPostScreen> {
                               ignoring: false,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                child: buildDropdownWithBorderField(
+                                child: buildSearchableDropdown<EventNameData>(
                                   items: provider.eventNameList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
                                   controller: provider.eventNameController,
                                   idController: provider.eventIdController,
                                   hintText: "--Select Option--",
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  // height: 50,
+                                  // color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(8),
                                   onChanged: (value) {
                                     setState(() {
                                       selectedEvent = provider.eventIdController.text;
@@ -128,14 +135,19 @@ class _JobPostScreenState extends State<JobPostScreen> {
                               ignoring: false,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                child: buildDropdownWithBorderField(
+                                child: buildSearchableDropdown<SectorData>(
                                   items: provider.sectorList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
                                   controller: provider.sectorNameController,
                                   idController: provider.sectorIdController,
                                   hintText: "--Select Option--",
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8),
+                                  // height: 50,
+                                  // color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(8),
                                   onChanged: (value) {
                                     setState(() {
                                       selectedSector = provider.sectorIdController.text;

@@ -11,7 +11,8 @@ class QuickServiceModel {
   String faqAssistanceEng;
   String enumName;
   Color color;
-  IconData icon;
+  // IconData icon;
+  final String iconPath;
   FaqsAssistanceData originalData;
 
   QuickServiceModel({
@@ -21,7 +22,8 @@ class QuickServiceModel {
     required this.faqAssistanceEng,
     required this.enumName,
     required this.color,
-    required this.icon,
+    // required this.icon,
+    required this.iconPath,
     required this.originalData,
   });
 }

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../repo/common_repo.dart';
 import '../../../constants/colors.dart';
+import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
@@ -1306,15 +1307,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<
-                                  StateData>(
+                              child: buildSearchableDropdown<StateData>(
                                 items: provider.stateList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.iD.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.stateController,
                                 idController: provider.stateIdController,
                                 hintText: "--Select State--",
-                                height: 50,
-                                selectedValue: provider.selectedState,
-                                getLabel: (e) => e.name ?? "",
+                                // height: 50,
+                                // selectedValue: provider.selectedState,
+                                // getLabel: (e) => e.name ?? "",
                                 onChanged: (value) {
                                   provider.selectedState = value;
 
@@ -1322,17 +1327,6 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                       value?.name ?? "";
                                   provider.stateIdController.text =
                                       value?.iD.toString() ?? "";
-
-                                  // 🔴 CLEAR DEPENDENTS
-                                  // provider.selectedDistrict = null;
-                                  // provider.districtHoController.clear();
-                                  // provider.districtIdController.clear();
-                                  // provider.districtList.clear();
-                                  //
-                                  // provider.selectedCity = null;
-                                  // provider.cityHoController.clear();
-                                  // provider.cityIdController.clear();
-                                  // provider.locationList.clear();
 
                                   provider.selectedDistrict = null;
                                   provider.districtHoController.clear();
@@ -1355,16 +1349,21 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     child:
-                                        buildDropdownWithBorderFieldOnlyThisPage<
+                                    buildSearchableDropdown<
                                             DistrictData>(
                                       items: provider.districtList,
+
+                                      // ✅ MAP YOUR MODEL HERE
+                                      getId: (item) => item.iD.toString(),
+                                      getName: (item) => item.name ?? "",
+
                                       controller: provider.districtHoController,
                                       idController:
                                           provider.districtIdController,
                                       hintText: "--Select District--",
-                                      height: 50,
-                                      selectedValue: provider.selectedDistrict,
-                                      getLabel: (e) => e.name ?? "",
+                                      // height: 50,
+                                      // selectedValue: provider.selectedDistrict,
+                                      // getLabel: (e) => e.name ?? "",
                                       onChanged: (value) {
                                         provider.selectedDistrict = value;
 
@@ -1393,15 +1392,20 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                              child: buildSearchableDropdown<
                                   CityData>(
                                 items: provider.locationList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.iD.toString(),
+                                getName: (item) => item.nameEng ?? "",
+
                                 controller: provider.cityHoController,
                                 idController: provider.cityIdController,
                                 hintText: "--Select City--",
-                                height: 50,
-                                selectedValue: provider.selectedCity,
-                                getLabel: (e) => e.nameEng ?? "",
+                                // height: 50,
+                                // selectedValue: provider.selectedCity,
+                                // getLabel: (e) => e.nameEng ?? "",
                                 onChanged: (value) {
                                   provider.selectedCity = value;
 
@@ -1682,15 +1686,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<
-                                  StateData>(
+                              child: buildSearchableDropdown<StateData>(
                                 items: provider.coStateList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.iD.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.coStateController,
                                 idController: provider.coStateIdController,
                                 hintText: "--Select State--",
-                                height: 50,
-                                selectedValue: provider.coSelectedState,
-                                getLabel: (e) => e.name ?? "",
+                                // height: 50,
+                                // selectedValue: provider.coSelectedState,
+                                // getLabel: (e) => e.name ?? "",
                                 onChanged: (value) {
                                   provider.coSelectedState = value;
 
@@ -1720,17 +1728,22 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     child:
-                                        buildDropdownWithBorderFieldOnlyThisPage<
+                                    buildSearchableDropdown<
                                             DistrictData>(
                                       items: provider.coDistrictList,
+
+                                      // ✅ MAP YOUR MODEL HERE
+                                      getId: (item) => item.iD.toString(),
+                                      getName: (item) => item.name ?? "",
+
                                       controller: provider.coDistrictController,
                                       idController:
                                           provider.coDistrictIdController,
                                       hintText: "--Select District--",
-                                      height: 50,
-                                      selectedValue:
-                                          provider.coSelectedDistrict,
-                                      getLabel: (e) => e.name ?? "",
+                                      // height: 50,
+                                      // selectedValue:
+                                      //     provider.coSelectedDistrict,
+                                      // getLabel: (e) => e.name ?? "",
                                       onChanged: (value) {
                                         provider.coSelectedDistrict = value;
 
@@ -1759,15 +1772,19 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderFieldOnlyThisPage<
+                              child: buildSearchableDropdown<
                                   CityData>(
                                 items: provider.coLocationList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.iD.toString(),
+                                getName: (item) => item.nameEng ?? "",
                                 controller: provider.coCityController,
                                 idController: provider.coCityIdController,
                                 hintText: "--Select City--",
-                                height: 50,
-                                selectedValue: provider.coSelectedCity,
-                                getLabel: (e) => e.nameEng ?? "",
+                                // height: 50,
+                                // selectedValue: provider.coSelectedCity,
+                                // getLabel: (e) => e.nameEng ?? "",
                                 onChanged: (value) {
                                   provider.coSelectedCity = value;
 
@@ -1953,20 +1970,41 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorder(
-                                hint: "--Select Option--",
-                                value: provider.organisationType,
-                                boxColor: fafafaColor,
-                                onChanged: provider.setOrganisationType,
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: "Private", child: Text("Private")),
-                                  DropdownMenuItem(
-                                      value: "Government",
-                                      child: Text("Government")),
-                                  DropdownMenuItem(
-                                      value: "PSU", child: Text("PSU")),
-                                ],
+                              // child: buildDropdownWithBorder(
+                              //   hint: "--Select Option--",
+                              //   value: provider.organisationType,
+                              //   boxColor: fafafaColor,
+                              //   onChanged: provider.setOrganisationType,
+                              //   items: const [
+                              //     DropdownMenuItem(
+                              //         value: "Private", child: Text("Private")),
+                              //     DropdownMenuItem(
+                              //         value: "Government",
+                              //         child: Text("Government")),
+                              //     DropdownMenuItem(
+                              //         value: "PSU", child: Text("PSU")),
+                              //   ],
+                              // ),
+
+                              child: buildSearchableDropdown<String>(
+                                items: ["Private", "Government", "PSU"],
+
+                                getId: (item) => item,
+                                getName: (item) => item,
+
+                                controller: provider.organisationTypeController,
+                                idController: provider.organisationTypeIdController,
+
+                                hintText: "--Select Option--",
+
+                                onChanged: (value) {
+                                  provider.organisationType = value;
+
+                                  provider.organisationTypeController.text = value ?? "";
+                                  provider.organisationTypeIdController.text = value ?? "";
+
+                                  provider.notifyListeners();
+                                },
                               ),
                             ),
                             if (provider.showGovtBody) ...[
@@ -1979,30 +2017,58 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: buildDropdownWithBorder(
-                                  hint: "--Select Option--",
-                                  value: provider.govtBody,
-                                  boxColor: fafafaColor,
-                                  onChanged: provider.setGovtBody,
-                                  items: const [
-                                    DropdownMenuItem(
-                                        value: "Central",
-                                        child: Text("Central Government")),
-                                    DropdownMenuItem(
-                                        value: "Local Body",
-                                        child: Text("Local Body")),
-                                    DropdownMenuItem(
-                                        value: "State Government",
-                                        child: Text("State Government")),
-                                    DropdownMenuItem(
-                                        value: "State Quasi Government",
-                                        child: Text("State Quasi Government")),
-                                    DropdownMenuItem(
-                                        value: "Central Quasi Government",
-                                        child:
-                                            Text("Central Quasi Government")),
+
+                                child: buildSearchableDropdown<String>(
+                                  items: [
+                                    "Central Government",
+                                    "Local Body",
+                                    "State Government",
+                                    "State Quasi Government",
+                                    "Central Quasi Government",
                                   ],
+
+                                  getId: (item) => item,
+                                  getName: (item) => item,
+
+                                  controller: provider.govtBodyController,
+                                  idController: provider.govtBodyIdController,
+
+                                  hintText: "--Select Option--",
+
+                                  onChanged: (value) {
+                                    provider.govtBody = value;
+
+                                    provider.govtBodyController.text = value ?? "";
+                                    provider.govtBodyIdController.text = value ?? "";
+
+                                    provider.notifyListeners();
+                                  },
                                 ),
+
+                                // child: buildDropdownWithBorder(
+                                //   hint: "--Select Option--",
+                                //   value: provider.govtBody,
+                                //   boxColor: fafafaColor,
+                                //   onChanged: provider.setGovtBody,
+                                //   items: const [
+                                //     DropdownMenuItem(
+                                //         value: "Central",
+                                //         child: Text("Central Government")),
+                                //     DropdownMenuItem(
+                                //         value: "Local Body",
+                                //         child: Text("Local Body")),
+                                //     DropdownMenuItem(
+                                //         value: "State Government",
+                                //         child: Text("State Government")),
+                                //     DropdownMenuItem(
+                                //         value: "State Quasi Government",
+                                //         child: Text("State Quasi Government")),
+                                //     DropdownMenuItem(
+                                //         value: "Central Quasi Government",
+                                //         child:
+                                //             Text("Central Quasi Government")),
+                                //   ],
+                                // ),
                               ),
                             ],
                             Padding(
@@ -2140,21 +2206,45 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorder(
-                                hint: "--Select Option--",
-                                value: provider.industryType,
-                                boxColor: fafafaColor,
-                                onChanged: provider.setIndustryType,
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: "Manufacturing",
-                                      child: Text("Manufacturing")),
-                                  DropdownMenuItem(
-                                      value: "IT", child: Text("IT")),
-                                  DropdownMenuItem(
-                                      value: "Service", child: Text("Service")),
+                              child: buildSearchableDropdown<String>(
+                                items: [
+                                  "Manufacturing",
+                                  "IT",
+                                  "Service",
                                 ],
+
+                                getId: (item) => item,
+                                getName: (item) => item,
+
+                                controller: provider.industryTypeController,
+                                idController: provider.industryTypeIdController,
+
+                                hintText: "--Select Option--",
+
+                                onChanged: (value) {
+                                  provider.industryType = value;
+
+                                  provider.industryTypeController.text = value ?? "";
+                                  provider.industryTypeIdController.text = value ?? "";
+
+                                  provider.notifyListeners();
+                                },
                               ),
+                              // child: buildDropdownWithBorder(
+                              //   hint: "--Select Option--",
+                              //   value: provider.industryType,
+                              //   boxColor: fafafaColor,
+                              //   onChanged: provider.setIndustryType,
+                              //   items: const [
+                              //     DropdownMenuItem(
+                              //         value: "Manufacturing",
+                              //         child: Text("Manufacturing")),
+                              //     DropdownMenuItem(
+                              //         value: "IT", child: Text("IT")),
+                              //     DropdownMenuItem(
+                              //         value: "Service", child: Text("Service")),
+                              //   ],
+                              // ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(

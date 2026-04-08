@@ -289,6 +289,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         labelWithStar('Date of Birth',required: false),
+                        const SizedBox(height: 6),
                         buildTextWithBorderWhiteBgField(
                             provider.dobController,
                             "mm/dd/yy" , // No
@@ -309,6 +310,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         labelWithStar('Mobile Number',required: false),
+                        const SizedBox(height: 6),
                         buildTextWithBorderWhiteBgField(
                           provider.mobileController,
                           "Enter mobile number" , // No

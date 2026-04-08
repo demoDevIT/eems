@@ -133,7 +133,8 @@ class _FaqsScreenState extends State<FaqsScreen> {
                     return StatCard(
                       title: title,
                       accentColor: item.color,
-                      icon: item.icon,
+                      // icon: item.iconPath,
+                      iconPath: item.iconPath,
                       isSelected: provider.selectedIndex == index,
                       onTap: () {
                         provider.updateSelectedIndex(context,index,item);

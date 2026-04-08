@@ -73,16 +73,16 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
                 });
               },
             ),
-            buildSwitchTile(
-              icon: Icons.email_outlined,
-              title: "Email Notifications",
-              value: emailNotification,
-              onChanged: (val) {
-                setState(() {
-                  emailNotification = val;
-                });
-              },
-            ),
+            // buildSwitchTile(
+            //   icon: Icons.email_outlined,
+            //   title: "Email Notifications",
+            //   value: emailNotification,
+            //   onChanged: (val) {
+            //     setState(() {
+            //       emailNotification = val;
+            //     });
+            //   },
+            // ),
             SizedBox(height: SizeConfig.defaultSize! ),
             buildSectionTitle("Privacy"),
             buildSwitchTile(
@@ -95,18 +95,18 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
                 });
               },
             ),
-            SizedBox(height: SizeConfig.defaultSize! ),
-            buildSectionTitle("App Settings"),
-            buildSwitchTile(
-              icon: Icons.dark_mode_outlined,
-              title: "Dark Mode",
-              value: darkMode,
-              onChanged: (val) {
-                setState(() {
-                  darkMode = val;
-                });
-              },
-            ),
+            // SizedBox(height: SizeConfig.defaultSize! ),
+            // buildSectionTitle("App Settings"),
+            // buildSwitchTile(
+            //   icon: Icons.dark_mode_outlined,
+            //   title: "Dark Mode",
+            //   value: darkMode,
+            //   onChanged: (val) {
+            //     setState(() {
+            //       darkMode = val;
+            //     });
+            //   },
+            // ),
             SizedBox(height: SizeConfig.defaultSize! ),
             buildSectionTitle("Support"),
             buildNavigationTile(
@@ -124,11 +124,11 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
               },
             ),
 
-            buildNavigationTile(
-              icon: Icons.privacy_tip_outlined,
-              title: "Privacy Policy",
-              onTap: () {},
-            ),
+            // buildNavigationTile(
+            //   icon: Icons.privacy_tip_outlined,
+            //   title: "Privacy Policy",
+            //   onTap: () {},
+            // ),
 
             buildNavigationTile(
               icon: Icons.info_outline,

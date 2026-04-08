@@ -70,6 +70,21 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
           child: Icon(Icons.add),
         ),
        body: Consumer<GrievanceListProvider>(builder: (context, provider, child) {
+         /// ✅ STEP 1: ADD THIS HERE
+         if (provider.isLoading) {
+           return Center(
+             child: CircularProgressIndicator(
+               color: kButtonColor,
+             ),
+           );
+         }
+
+         /// ✅ STEP 2: Optional (empty state)
+         if (provider.grievanceDataList.isEmpty) {
+           return Center(
+             child: Text("No Data Found"),
+           );
+         }
             return   Padding(
               padding: const EdgeInsets.all(10),
               child:  ListView.builder(

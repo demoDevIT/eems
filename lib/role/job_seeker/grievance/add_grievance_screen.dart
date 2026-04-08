@@ -4,6 +4,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/addphysicalattribute/provider/addphysicalattribute_provider.dart';
+import 'package:rajemployment/role/job_seeker/grievance/module/category_model.dart';
+import 'package:rajemployment/role/job_seeker/grievance/module/module_model.dart';
+import 'package:rajemployment/role/job_seeker/grievance/module/sub_module_modal.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/add_grievance_provider.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
@@ -66,16 +69,22 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                     hSpace(10),
                     // Sector
                     labelWithStar('Category'),
+                    hSpace(6),
                     IgnorePointer(
                       ignoring: false,
-                      child: buildDropdownWithBorderField(
+                      child: buildSearchableDropdown<CategoryModel>(
                         items: provider.categoryList,
+
+                        // ✅ MAP YOUR MODEL HERE
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
                         controller: provider.categoryNameController,
                         idController: provider.categoryIdController,
                         hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        // height: 50,
+                        // color: Colors.transparent,
+                        // borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
                           print("Selected Category:");
                           print("ID: ${provider.categoryIdController.text}");
@@ -90,16 +99,22 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                     hSpace(10),
                     // Preferred Location
                     labelWithStar('Category Type'),
+                    hSpace(6),
                     IgnorePointer(
                       ignoring: false,
-                      child: buildDropdownWithBorderField(
+                      child: buildSearchableDropdown<CategoryModel>(
                         items: provider.categoryTypesList,
+
+                        // ✅ MAP YOUR MODEL HERE
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
                         controller: provider.categoryTypeNameController,
                         idController: provider.categoryTypeIdController,
                         hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        // height: 50,
+                        // color: Colors.transparent,
+                        // borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
                           print("Selected Category Type:");
                           print("ID: ${provider.categoryTypeIdController.text}");
@@ -113,16 +128,22 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                     hSpace(10),
                     // Desired Employment Type
                     labelWithStar('Module'),
+                    hSpace(6),
                     IgnorePointer(
                       ignoring: false,
-                      child: buildDropdownWithBorderField(
+                      child: buildSearchableDropdown<ModuleModalData>(
                         items: provider.moduleList,
+
+                        // ✅ MAP YOUR MODEL HERE
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
                         controller: provider.moduleNameController,
                         idController: provider.moduleIdController,
                         hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        // height: 50,
+                        // color: Colors.transparent,
+                        // borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
                           provider.subModuleIdController.clear();
                           provider.subModuleNameController.clear();
@@ -138,16 +159,22 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                     hSpace(10),
                     labelWithStar('Sub Module'),
+                    hSpace(6),
                     IgnorePointer(
                       ignoring: false,
-                      child: buildDropdownWithBorderField(
+                      child: buildSearchableDropdown<SubModuleData>(
                         items: provider.subModuleList,
+
+                        // ✅ MAP YOUR MODEL HERE
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
                         controller: provider.subModuleNameController,
                         idController: provider.subModuleIdController,
                         hintText: "--Select Option--",
-                        height: 50,
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        // height: 50,
+                        // color: Colors.transparent,
+                        // borderRadius: BorderRadius.circular(8),
                         onChanged: (value) {
 
                         },
@@ -252,11 +279,16 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                           ),
                         ),
                         onPressed: () {
-                          confirmAlertDialog(context, "Alert","Are you sure want to submit ?", (value) {
-                            if (value.toString() == "success") {
-                              provider.saveGrievanceModalApi(context);
-                            }
-                          },
+                          if (!validateForm(context, provider)) return;
+                          confirmAlertDialog(
+                            context,
+                            "Alert",
+                            "Are you sure want to submit ?",
+                                (value) {
+                              if (value.toString() == "success") {
+                                provider.saveGrievanceModalApi(context);
+                              }
+                            },
                           );
 
                         },
@@ -279,6 +311,40 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
   }
 
+
+  bool validateForm(BuildContext context, AddGrievanceProvider provider) {
+    if (provider.categoryIdController.text.isEmpty) {
+      showAlertError("Please select Category", context);
+      return false;
+    }
+
+    if (provider.categoryTypeIdController.text.isEmpty) {
+      showAlertError("Please select Category Type", context);
+      return false;
+    }
+
+    if (provider.moduleIdController.text.isEmpty) {
+      showAlertError("Please select Module", context);
+      return false;
+    }
+
+    if (provider.subModuleIdController.text.isEmpty) {
+      showAlertError("Please select Sub Module", context);
+      return false;
+    }
+
+    if (provider.complaintController.text.trim().isEmpty) {
+      showAlertError("Please enter Subject", context);
+      return false;
+    }
+
+    if (provider.remarkController.text.trim().isEmpty) {
+      showAlertError("Please enter Remark", context);
+      return false;
+    }
+
+    return true;
+  }
 
 
 }

@@ -2517,6 +2517,9 @@ class OtrFormProvider extends ChangeNotifier {
   }
 
   void validateUid(String value) {
+    // final aaa = selectedUIDTypeData?.name;
+    // print("aaa=> $aaa");
+    print("selectedUIDTypeData=> $selectedUIDTypeData");
     uidErrorText = null;
     if (value.isEmpty) {
       notifyListeners();

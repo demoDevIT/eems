@@ -90,7 +90,15 @@ Widget buildTextWithBorderField(
             hintStyle: txtStyle ?? Styles.regularTextStyle(
                 size: 14,
                 color: txtColor ?? fontGrayColor)),
-        style: txtStyle ?? Styles.regularTextStyle(size: 14, color: txtColor ?? kBlackColor)),
+      // style: txtStyle ?? Styles.regularTextStyle(size: 14, color: txtColor ?? kBlackColor)
+      style: txtStyle ??
+          Styles.regularTextStyle(
+            size: 14,
+            color: isEnabled
+                ? (txtColor ?? kBlackColor)
+                : Colors.grey,
+          )
+    ),
   );
 }
 

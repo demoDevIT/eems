@@ -10,9 +10,13 @@ import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
+import '../addeducationaldetail/modal/nco_code_modal.dart';
 import '../languageandskill/modal/profile_language_info_modal.dart';
 import '../languageandskill/modal/profile_skill_info_modal.dart';
 import '../loginscreen/provider/locale_provider.dart';
+import 'modal/acquired_type_modal.dart';
+import 'modal/category_type_details_modal.dart';
+import 'modal/get_sub_category_type_details_modal.dart';
 
 class AddLanguageSkillsScreen extends StatefulWidget {
   bool isUpdateSkill;
@@ -94,7 +98,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
         }),
         bottomNavigationBar: Padding(
           padding:
-              const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 10),
+              const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 55),
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
@@ -205,14 +209,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<GetCategoryTypeDetailsData>(
                           items: provider.categoryList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.categoryNameController,
                           idController: provider.categoryIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {
                             provider.getSubCategoryTypeDetailsApi(
                                 context,
@@ -229,14 +238,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<GetSubCategoryTypeDetailsData>(
                           items: provider.subCategoryList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.subCategoryNameController,
                           idController: provider.subCategoryIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {},
                         ),
                       ),
@@ -246,14 +260,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<AcquiredTypeData>(
                           items: provider.acquiredTypeList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.acquiredThroughNameController,
                           idController: provider.acquiredThroughIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {},
                         ),
                       ),
@@ -295,14 +314,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<NcoCodeData>(
                           items: provider.ncoCodeList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.ncoNameController,
                           idController: provider.ncoIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {},
                         ),
                       ),
@@ -326,34 +350,52 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                           required: false),
                       InkWell(
                         onTap: () {
-                          showImagePicker(context, (pickedImage) async {
-                            if (pickedImage != null) {
-                              // First update the file path (optional)
-                              provider.attachments = pickedImage;
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) {
+                              return SafeArea(
+                                child: Wrap(
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.image),
+                                      title: Text("Upload Image"),
+                                      onTap: () async {
+                                        Navigator.pop(context);
 
-                              // Do async work here
-                              String timestamp =
-                                  "${DateTime.now().millisecondsSinceEpoch}.jpg";
-                              String fileName = timestamp;
+                                        showImagePicker(context, (pickedImage) async {
+                                          if (pickedImage != null) {
+                                            provider.attachments = pickedImage;
 
-                              Map<String, dynamic> fields = {
-                                "file": await MultipartFile.fromFile(
-                                  provider.attachments!.path,
-                                  filename: fileName,
+                                            String fileName =
+                                                "${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+                                            FormData param = FormData.fromMap({
+                                              "file": await MultipartFile.fromFile(
+                                                pickedImage.path,
+                                                filename: fileName,
+                                              ),
+                                            });
+
+                                            await provider.uploadDocumentApi(context, param);
+                                          }
+                                        });
+                                      },
+                                    ),
+
+                                    ListTile(
+                                      leading: Icon(Icons.picture_as_pdf),
+                                      title: Text("Upload PDF"),
+                                      onTap: () async {
+                                        Navigator.pop(context);
+
+                                        await provider.pickAndUploadPdf(context);
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              };
-
-                              FormData param = FormData.fromMap(fields);
-
-                              // Call upload API
-                              await provider.uploadDocumentApi(context, param);
-
-                              // Now update state if needed
-                              setState(() {
-                                // Update UI-related state if needed
-                              });
-                            }
-                          });
+                              );
+                            },
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

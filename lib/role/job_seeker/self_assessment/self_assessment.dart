@@ -150,12 +150,12 @@ class _SelfAssessmentScreenState
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Go To Dashboard"),
-            ),
+            // OutlinedButton(
+            //   onPressed: () {
+            //     Navigator.pop(context);
+            //   },
+            //   child: const Text("Go To Dashboard"),
+            // ),
             const SizedBox(width: 16),
             ElevatedButton(
               onPressed: () {

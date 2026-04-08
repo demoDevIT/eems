@@ -671,11 +671,18 @@ commonAppBar(title, mContext, currentLanguage, userId, isBack, type, {Function? 
                 );
                 // Handle scanned result if needed
               },
-              child: Image.asset(
-                "assets/logos/qrcode.png",
-                height: 24,
-                width: 24,
+              // child: Image.asset(
+              //   "assets/logos/qrCode.svg",
+              //   height: 24,
+              //   width: 24,
+              // ),
+
+              child: SvgPicture.asset(
+                "assets/logos/qrCode.svg",
+                width: 28, // 🔥 bigger icon
+                height: 28,
               ),
+
             ),
             const SizedBox(width: 12),
             // Container(
@@ -931,12 +938,12 @@ Future<void> showLogoutDialog(
               color: Colors.transparent,
               child: Container(
                 margin: const EdgeInsets.all(0),
-                height: 230,
+                height: 280,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: kWhite,
                 ),
-                padding: const EdgeInsets.all(15),
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -995,6 +1002,8 @@ Future<void> showLogoutDialog(
                       ],
                     ),
                     hSpace(15),
+                    SizedBox(height: 20),
+
                   ],
                 ),
               ),

@@ -56,6 +56,8 @@ class GrievanceListProvider extends ChangeNotifier {
     8: "Other",
   };
 
+  bool isLoading = false;
+
   String getCategoryTypeName(int? categoryTypeId) {
     if (categoryTypeId == null) return "";
     return categoryTypeMap[categoryTypeId] ?? "Unknown";
@@ -66,6 +68,9 @@ class GrievanceListProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
+        isLoading = true;
+        notifyListeners(); // 🔥 trigger UI loader
+
         String ? IpAddress =  await UtilityClass.getIpAddress();
 
         Map<String, dynamic> bodyy =
@@ -82,9 +87,9 @@ class GrievanceListProvider extends ChangeNotifier {
         };
 
         String url = "Grievance/GetAllData";
-        ProgressDialog.showLoadingDialog(context);
+       // ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(url,bodyy);
-        ProgressDialog.closeLoadingDialog(context);
+       // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
@@ -98,22 +103,34 @@ class GrievanceListProvider extends ChangeNotifier {
             print("Total records in list: ${grievanceDataList.length}");
 
 
-           notifyListeners();
-            return sm;
+           // notifyListeners();
+           //  return sm;
           } else {
-            final smmm = GrievanceModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
-            return smmm;
+            // final smmm = GrievanceModal(state: 0, message: sm.message.toString());
+            // showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid", context);
+            // return smmm;
+            showAlertError(sm.message ?? "Error", context);
           }
+          isLoading = false;
+          notifyListeners();
+          return sm;
         } else {
+          isLoading = false;
+          notifyListeners();
           return GrievanceModal(state: 0, message: 'Something went wrong',
           );
         }
-      } on Exception catch (err) {
-        ProgressDialog.closeLoadingDialog(context);
-        final sm = GrievanceModal(state: 0, message: err.toString());
-        showAlertError(sm.message.toString(), context);
-        return sm;
+      }
+      // on Exception catch (err) {
+      //   ProgressDialog.closeLoadingDialog(context);
+      //   final sm = GrievanceModal(state: 0, message: err.toString());
+      //   showAlertError(sm.message.toString(), context);
+      //   return sm;
+      // }
+      catch (err) {
+        isLoading = false;
+        notifyListeners();
+        showAlertError(err.toString(), context);
       }
     } else {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);

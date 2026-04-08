@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' hide MultipartFile;
 import 'package:image_picker/image_picker.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
@@ -513,6 +516,53 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> pickAndUploadPdf(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result == null) return;
+
+    final file = File(result.files.single.path!);
+
+    /// Size validation (300 KB)
+    final sizeInKB = (await file.length()) / 1024;
+
+    if (sizeInKB > 300) {
+      showAlertError("File size must be less than 300 KB", context);
+      return;
+    }
+
+    attachments = XFile(file.path);
+
+    String fileName =
+        "${DateTime.now().millisecondsSinceEpoch}.pdf";
+
+    FormData param = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+        contentType: MediaType("application", "pdf"),
+      ),
+      "FileExtension": "application/pdf",
+      "FolderName": "SkillCertificate",
+      "MaxFileSize": "307200",
+      "MinFileSize": "0",
+      "Password": "",
+    });
+
+    final res = await uploadDocumentApi(context, param);
+
+    if (res != null && res.data != null && res.data!.isNotEmpty) {
+      filePath = res.data![0].filePath.toString();
+      fileName = res.data![0].fileName.toString();
+
+      certificateController.text = filePath;
+
+      notifyListeners();
+    }
+  }
 
   autoFillSkillsData(BuildContext context,ProfileSkillInfoData? profileSkillInfoData){
     categoryIdController.text = profileSkillInfoData!.categoryID.toString();

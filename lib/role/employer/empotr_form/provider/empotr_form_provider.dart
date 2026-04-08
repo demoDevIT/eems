@@ -201,13 +201,16 @@ class EmpOTRFormProvider with ChangeNotifier {
 
   /// 7. Exchange Market Information Program
   final TextEditingController organisationTypeController = TextEditingController();
+  final TextEditingController organisationTypeIdController = TextEditingController();
   final TextEditingController govtBodyController = TextEditingController();
+  final TextEditingController govtBodyIdController = TextEditingController();
   final TextEditingController noOfMaleEmpController = TextEditingController();
   final TextEditingController noOfFemaleEmpController = TextEditingController();
   final TextEditingController noOfTransEmpController = TextEditingController();
   final TextEditingController noOfTotalEmpController = TextEditingController();
   final TextEditingController actEstController = TextEditingController();
-  final TextEditingController industryTypetController = TextEditingController();
+  final TextEditingController industryTypeController = TextEditingController();
+  final TextEditingController industryTypeIdController = TextEditingController();
   final TextEditingController sectorController = TextEditingController();
 
   bool get showGovtBody {
@@ -493,9 +496,9 @@ class EmpOTRFormProvider with ChangeNotifier {
 
       // ✅ Size validation (25 KB)
       final fileSizeInKB = (await file.length()) / 1024;
-      if (fileSizeInKB > 50) {
+      if (fileSizeInKB > 100) {
         showAlertError(
-          "File size must be less than 50 KB",
+          "File size must be less than 100 KB",
           context,
         );
         return;
@@ -519,7 +522,7 @@ class EmpOTRFormProvider with ChangeNotifier {
           ),
           "FileExtension": "image/$ext",
           "FolderName": "Employer/OTRDocument",
-          "MaxFileSize": "51200", // 50 KB
+          "MaxFileSize": "102400", // 100 KB // "51200", // 50 KB
           "MinFileSize": "0",
           "Password": "",
         });

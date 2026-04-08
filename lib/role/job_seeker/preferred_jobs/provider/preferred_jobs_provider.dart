@@ -697,7 +697,7 @@ class PreferredJobsProvider extends ChangeNotifier {
     jobTitleController.clear();
     locationController.clear();
     selectedSector = null;
-    jobList.clear();
+   // jobList.clear();
     notifyListeners();
   }
 }

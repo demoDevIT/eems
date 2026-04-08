@@ -16,13 +16,27 @@ import '../../../utils/images.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
+import '../add_language_skills/modal/proficiency_type_modal.dart';
 import '../addeducationaldetail/modal/board_modal.dart';
+import '../addeducationaldetail/modal/course_nature.dart';
 import '../addeducationaldetail/modal/stream_type_modal.dart';
+import '../addeducationaldetail/modal/university_modal.dart';
+import '../addjobpreference/modal/language_type_modal.dart';
+import '../addressinfo/modal/city_modal.dart';
+import '../addressinfo/modal/district_modal.dart';
+import '../addressinfo/modal/ward_modal.dart';
+import '../addworkexperience/modal/employment_type_modal.dart';
 import '../educationdetail/modal/profile_qualication_info_list_modal.dart';
 import '../loginscreen/provider/locale_provider.dart';
+import 'modal/disability_type_modal.dart';
 import 'modal/education_level_modal.dart';
 import 'modal/fetch_jan_adhar_modal.dart';
+import 'modal/graduation_stream_type_modal.dart';
 import 'modal/graduation_type_modal.dart';
+import 'modal/medium_type_modal.dart';
+import 'modal/nco_code_modal.dart';
+import 'modal/religion_modal.dart';
+import 'modal/uid_type_modal.dart';
 
 //748272210000018
 
@@ -627,14 +641,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<ReligionData>(
                                 items: provider.religionList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.religionNameController,
                                 idController: provider.religionIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
                                   print(provider.religionIdController.text
                                       .toString());
@@ -727,14 +746,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<DisabilityTypeData>(
                                 items: provider.disabilityTypeList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.disabilityNameController,
                                 idController: provider.disabilityIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
                                   print(provider.disabilityIdController.text
                                       .toString());
@@ -848,17 +872,22 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<UIDTypeData>(
                                 items: provider.uidTypeList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.uidTypeNameController,
                                 idController: provider.uidTypeIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
                                   print(value);
-                                  provider.selectedUIDTypeData = value;
+                                  provider.selectedUIDTypeData = value.name;
 
                                   // 🔥 RESET UID FIELD WHEN UID TYPE CHANGES
                                   provider.uidNOController.clear();
@@ -1414,22 +1443,27 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                       horizontal: 0,
                                                       vertical: 5),
                                               child:
-                                                  buildDropdownWithBorderField(
+                                              buildSearchableDropdown<DistrictData>(
                                                 items: provider.cDistrictList,
+
+                                                // ✅ MAP YOUR MODEL HERE
+                                                getId: (item) => item.dropID.toString(),
+                                                getName: (item) => item.name ?? "",
+
                                                 controller: provider
                                                     .cDistrictNameController,
                                                 idController: provider
                                                     .cDistrictIdController,
                                                 hintText: "Select District",
-                                                height: 50,
-                                                color: Colors.transparent,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.90 /
-                                                    2,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
+                                                // height: 50,
+                                                // color: Colors.transparent,
+                                                // width: MediaQuery.of(context)
+                                                //         .size
+                                                //         .width *
+                                                //     0.90 /
+                                                //     2,
+                                                // borderRadius:
+                                                //     BorderRadius.circular(8),
                                                 onChanged: (value) {
                                                   final id = provider
                                                       .cDistrictIdController
@@ -1515,22 +1549,27 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                       horizontal: 0,
                                                       vertical: 5),
                                               child:
-                                                  buildDropdownWithBorderField(
+                                              buildSearchableDropdown<CityData>(
                                                 items: provider.cCityList,
+
+                                                // ✅ MAP YOUR MODEL HERE
+                                                getId: (item) => item.dropID.toString(),
+                                                getName: (item) => item.name ?? "",
+
                                                 controller: provider
                                                     .cCityNameController,
                                                 idController:
                                                     provider.cCityIdController,
                                                 hintText: "Select City",
-                                                height: 50,
-                                                color: Colors.transparent,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.90 /
-                                                    2,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
+                                                // height: 50,
+                                                // color: Colors.transparent,
+                                                // width: MediaQuery.of(context)
+                                                //         .size
+                                                //         .width *
+                                                //     0.90 /
+                                                //     2,
+                                                // borderRadius:
+                                                //     BorderRadius.circular(8),
                                                 onChanged: (value) {
                                                   final id = provider
                                                       .cCityIdController.text;
@@ -1618,22 +1657,27 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                       horizontal: 0,
                                                       vertical: 5),
                                               child:
-                                                  buildDropdownWithBorderField(
+                                              buildSearchableDropdown<WardData>(
                                                 items: provider.cWardList,
+
+                                                // ✅ MAP YOUR MODEL HERE
+                                                getId: (item) => item.dropID.toString(),
+                                                getName: (item) => item.name ?? "",
+
                                                 controller: provider
                                                     .cWardNameController,
                                                 idController:
                                                     provider.cWardIdController,
                                                 hintText: "Select Ward",
-                                                height: 50,
-                                                color: Colors.transparent,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.90 /
-                                                    2,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
+                                                // height: 50,
+                                                // color: Colors.transparent,
+                                                // width: MediaQuery.of(context)
+                                                //         .size
+                                                //         .width *
+                                                //     0.90 /
+                                                //     2,
+                                                // borderRadius:
+                                                //     BorderRadius.circular(8),
                                                 onChanged: (value) {},
                                                 // onChanged: (value) {
                                                 //   final id = provider.wardIdController.text;
@@ -2304,16 +2348,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<GraduationStreamTypeData>(
                                 items: provider.graduationStreamTypeList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller:
                                 provider.graduationStreamTypeNameController,
                                 idController:
                                 provider.graduationStreamTypeIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
                                   setState(() {
                                     provider.otherStreamController.clear();
@@ -2370,14 +2419,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<UniversityData>(
                                 items: provider.universityList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.universityNameController,
                                 idController: provider.universityIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
                                   setState(() {});
                                 },
@@ -2456,16 +2510,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: buildDropdownWithBorderField(
+                                    child: buildSearchableDropdown<MediumTypeData>(
                                       items: provider.mediumTypeList,
+
+                                      // ✅ MAP YOUR MODEL HERE
+                                      getId: (item) => item.dropID.toString(),
+                                      getName: (item) => item.name ?? "",
+
                                       controller: provider
                                           .mediumEducationNameController,
                                       idController:
                                           provider.mediumEducationIdController,
                                       hintText: "--Select Option--",
-                                      height: 50,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8),
+                                      // height: 50,
+                                      // color: Colors.transparent,
+                                      // borderRadius: BorderRadius.circular(8),
                                       onChanged: (value) {
                                         setState(() {});
                                       },
@@ -2513,16 +2572,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: buildDropdownWithBorderField(
+                                    child: buildSearchableDropdown<CourseNatureData>(
                                       items: provider.courseNatureList,
+
+                                      // ✅ MAP YOUR MODEL HERE
+                                      getId: (item) => item.dropID.toString(),
+                                      getName: (item) => item.name ?? "",
+
                                       controller:
                                           provider.natureOfCourseNameController,
                                       idController:
                                           provider.natureOfCourseIdController,
                                       hintText: "--Select Option--",
-                                      height: 50,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8),
+                                      // height: 50,
+                                      // color: Colors.transparent,
+                                      // borderRadius: BorderRadius.circular(8),
                                       onChanged: (value) {},
                                     ),
                                   ),
@@ -2586,16 +2650,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: buildDropdownWithBorderField(
+                                    child: buildSearchableDropdown<NcoCodeData>(
                                       items: provider.ncoCodeList,
+
+                                      // ✅ MAP YOUR MODEL HERE
+                                      getId: (item) => item.dropID.toString(),
+                                      getName: (item) => item.name ?? "",
+
                                       controller:
                                           provider.ncoCodeNameController,
                                       idController:
                                           provider.ncoCodeIdController,
                                       hintText: "--Select Option--",
-                                      height: 50,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8),
+                                      // height: 50,
+                                      // color: Colors.transparent,
+                                      // borderRadius: BorderRadius.circular(8),
                                       onChanged: (value) {},
                                     ),
                                   ),
@@ -2787,16 +2856,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<WorkExpEmploymentTypeData>(
                                 items: provider.employmentTypesList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider
                                     .currentEmploymentStatusNameController,
                                 idController: provider
                                     .currentEmploymentStatusIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {},
                               ),
                             ),
@@ -3205,14 +3279,18 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<LanguageTypeData>(
                                 items: provider.languageKnownList,
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.languageNameController,
                                 idController: provider.languageIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {},
                               ),
                             ),
@@ -3227,14 +3305,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildDropdownWithBorderField(
+                              child: buildSearchableDropdown<ProficiencyTypeData>(
                                 items: provider.proficiencyTypeList,
+
+                                // ✅ MAP YOUR MODEL HERE
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+
                                 controller: provider.proficiencyNameController,
                                 idController: provider.proficiencyIdController,
                                 hintText: "--Select Option--",
-                                height: 50,
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
+                                // height: 50,
+                                // color: Colors.transparent,
+                                // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {},
                               ),
                             ),
