@@ -150,10 +150,10 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   final double fileSizeInKB =
                                       fileSizeInBytes / 1024;
 
-                                  // ✅ 25 KB validation
-                                  if (fileSizeInKB > 25) {
+                                  // ✅ 100 KB validation
+                                  if (fileSizeInKB > 100) {
                                     showAlertError(
-                                      "Image size must be less than 25 KB",
+                                      "Image size must be less than 100 KB",
                                       context,
                                     );
                                     return; // ❌ STOP upload

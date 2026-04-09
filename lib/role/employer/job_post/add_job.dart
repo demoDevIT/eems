@@ -355,75 +355,147 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           /// JOB LOCATION
                           labelWithStar('Job Location', required: false),
 
-                          DropdownButtonFormField<String>(
-                            hint: const Text("--Select Option--"),
-                            value: provider.locationController.text.isEmpty
-                                ? null
-                                : provider.locationController.text,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: buildSearchableDropdown<LocationData>(
+                              items: provider.locationList,
 
-                            items: [
+                              getId: (item) => item.cityId.toString(),
+                              getName: (item) => item.name ?? "",
 
-                              ...provider.locationList.asMap().entries.expand((entry) {
+                              controller: provider.locationController,
+                              idController: provider.locationIdController,
 
-                                int index = entry.key;
-                                LocationData item = entry.value;
+                              hintText: "--Select Option--",
 
-                                List<DropdownMenuItem<String>> list = [];
+                              customItemBuilder: (item) {
+                                int index = provider.locationList.indexOf(item);
 
-                                /// Insert label before cities
+                                /// 🔴 Section label
                                 if (index == 2) {
-                                  list.add(
-                                    const DropdownMenuItem<String>(
-                                      enabled: false,
-                                      child: Text(
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
                                         "Rajasthan -> Cities",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black54,
                                         ),
                                       ),
-                                    ),
+                                      const SizedBox(height: 4),
+
+                                      /// Actual item
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          item.name ?? "",
+                                          style: TextStyle(
+                                            fontWeight:
+                                            (item.cityId == -100 || item.cityId == -99)
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 }
 
-                                list.add(
-                                  DropdownMenuItem<String>(
-                                    value: item.name,
-                                    enabled: true,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: index >= 2 ? 12 : 0),
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: TextStyle(
-                                          fontWeight:
-                                          (item.cityId == -100 || item.cityId == -99)
-                                              ? FontWeight.bold
-                                              : FontWeight.normal,
-                                        ),
-                                      ),
+                                /// Normal items
+                                return Padding(
+                                  padding: EdgeInsets.only(left: index >= 2 ? 12 : 0),
+                                  child: Text(
+                                    item.name ?? "",
+                                    style: TextStyle(
+                                      fontWeight:
+                                      (item.cityId == -100 || item.cityId == -99)
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
                                     ),
                                   ),
                                 );
+                              },
 
-                                return list;
-                              }),
+                              onChanged: (value) {
+                                provider.locationController.text = value?.name ?? "";
+                                provider.locationIdController.text =
+                                    value?.cityId.toString() ?? "";
 
-                            ],
-
-                            onChanged: (value) {
-
-                              provider.locationController.text = value ?? "";
-
-                              /// Find selected object
-                              final selected = provider.locationList
-                                  .firstWhere((e) => e.name == value);
-
-                              provider.locationIdController.text =
-                                  selected.cityId.toString();
-
-                              provider.notifyListeners();
-                            },
+                                provider.notifyListeners();
+                              },
+                            ),
                           ),
+
+                          // DropdownButtonFormField<String>(
+                          //   hint: const Text("--Select Option--"),
+                          //   value: provider.locationController.text.isEmpty
+                          //       ? null
+                          //       : provider.locationController.text,
+                          //
+                          //   items: [
+                          //
+                          //     ...provider.locationList.asMap().entries.expand((entry) {
+                          //
+                          //       int index = entry.key;
+                          //       LocationData item = entry.value;
+                          //
+                          //       List<DropdownMenuItem<String>> list = [];
+                          //
+                          //       /// Insert label before cities
+                          //       if (index == 2) {
+                          //         list.add(
+                          //           const DropdownMenuItem<String>(
+                          //             enabled: false,
+                          //             child: Text(
+                          //               "Rajasthan -> Cities",
+                          //               style: TextStyle(
+                          //                 fontWeight: FontWeight.bold,
+                          //                 color: Colors.black54,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       }
+                          //
+                          //       list.add(
+                          //         DropdownMenuItem<String>(
+                          //           value: item.name,
+                          //           enabled: true,
+                          //           child: Padding(
+                          //             padding: EdgeInsets.only(left: index >= 2 ? 12 : 0),
+                          //             child: Text(
+                          //               item.name ?? "",
+                          //               style: TextStyle(
+                          //                 fontWeight:
+                          //                 (item.cityId == -100 || item.cityId == -99)
+                          //                     ? FontWeight.bold
+                          //                     : FontWeight.normal,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       );
+                          //
+                          //       return list;
+                          //     }),
+                          //
+                          //   ],
+                          //
+                          //   onChanged: (value) {
+                          //
+                          //     provider.locationController.text = value ?? "";
+                          //
+                          //     /// Find selected object
+                          //     final selected = provider.locationList
+                          //         .firstWhere((e) => e.name == value);
+                          //
+                          //     provider.locationIdController.text =
+                          //         selected.cityId.toString();
+                          //
+                          //     provider.notifyListeners();
+                          //   },
+                          // ),
 
                           const SizedBox(height: 10),
 

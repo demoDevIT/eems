@@ -494,7 +494,7 @@ class EmpOTRFormProvider with ChangeNotifier {
 
       final file = File(pickedImage.path);
 
-      // ✅ Size validation (25 KB)
+      // ✅ Size validation (100 KB)
       final fileSizeInKB = (await file.length()) / 1024;
       if (fileSizeInKB > 100) {
         showAlertError(

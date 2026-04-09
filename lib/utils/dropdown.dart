@@ -138,6 +138,7 @@ Widget buildSearchableDropdown<T>({
   required TextEditingController idController,
   required String hintText,
   required Function(T) onChanged,
+  Widget Function(T item)? customItemBuilder,
 }) {
   T? selectedItem;
 
