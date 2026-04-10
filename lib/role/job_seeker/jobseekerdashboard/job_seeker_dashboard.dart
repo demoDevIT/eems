@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -11,7 +14,11 @@ import 'package:rajemployment/role/job_seeker/mysy/mysy_list.dart';
 import 'package:rajemployment/role/job_seeker/self_assessment/self_assessment.dart';
 import 'package:rajemployment/role/job_seeker/settings/job_settings_screen.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../api_service/datasource/remote/dio/dio_client.dart';
+import '../../../api_service/model/base/api_response.dart';
+import '../../../constants/constants.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
@@ -43,6 +50,8 @@ class JobSeekerDashboard extends StatefulWidget {
 
 class _JobSeekerDashboard extends State<JobSeekerDashboard> {
   int _currentIndex = 0;
+  double profilePercentage = 0.0;
+
 
   final List<Widget> _pages = [
     HomeScreen(),
@@ -51,6 +60,65 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
     JobSettingsScreen(),
 
   ];
+
+  late CommonRepo commonRepo;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final dio = Dio();
+
+    final dioClient = DioClient(
+      Constants.baseurl, // ✅ your base URL
+      // UserData().model.value.token, // ✅ if token exists, else pass null
+      null,
+      dio,
+    );
+
+    commonRepo = CommonRepo(dioClient: dioClient);
+
+    Future.microtask(() => getProfilePercentageApi(context));
+  }
+
+  Future<void> getProfilePercentageApi(BuildContext context) async {
+    try {
+      String userId = UserData().model.value.userId.toString();
+
+      String url = "Jobseeker/GetProfileStatusPrecentage/$userId";
+
+      // Optional loader (use if you want)
+      // ProgressDialog.showLoadingDialog(context);
+
+      ApiResponse apiResponse = await commonRepo.post(url, {});
+
+      // ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"].isNotEmpty) {
+
+          double percent =
+          (responseData["Data"][0]["CompletionPercentage"] ?? 0).toDouble();
+
+          setState(() {
+            profilePercentage = percent / 100; // IMPORTANT
+          });
+        }
+      }
+
+    } catch (e) {
+      // ProgressDialog.closeLoadingDialog(context);
+      print("Error: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +194,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                               width: 90,
                               height: 90,
                               child: CircularProgressIndicator(
-                                value: 0.7, // 70%
+                                value: profilePercentage,
                                 strokeWidth: 7,
                                 backgroundColor: Colors.grey[300],
                                 valueColor: const AlwaysStoppedAnimation<Color>(kViewAllColor),
@@ -167,8 +235,9 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                                   ),
                                 ],
                               ),
-                              child: const Text(
-                                "70%",
+                              child: Text(
+                                // "${(profilePercentage * 100).toInt()}%",
+                                "${(profilePercentage * 100)}%",
                                 style: TextStyle(
                                   color: kDarkOrangeColor,
                                   fontSize: 12,

@@ -25,6 +25,7 @@ import 'package:rajemployment/role/employer/job_application/provider/job_applica
 import 'package:rajemployment/role/employer/job_post/provider/add_job_provider.dart';
 import 'package:rajemployment/role/employer/job_post/provider/job_post_provider.dart';
 import 'package:rajemployment/role/employer/sansthadhaarflowpage/provider/sansthadhaarflow_provider.dart';
+import 'package:rajemployment/role/job_seeker/about_app/provider/about_app_provider.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
 import 'package:rajemployment/role/job_seeker/addeducationaldetail/provider/add_educational_detail_provider.dart';
 import 'package:rajemployment/role/job_seeker/addjobpreference/provider/add_job_preference_provider.dart';
@@ -161,6 +162,7 @@ Future<void> init() async {
   sl.registerFactory(() => AddJobProvider(commonRepo: sl()));
   sl.registerFactory(() => JobApplicationProvider(commonRepo: sl()));
   sl.registerFactory(() => EmpQRScanProvider(commonRepo: sl()));
+  sl.registerFactory(() => AboutAppProvider(commonRepo: sl()));
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
   sl.registerFactory(() => ChatProvider(commonRepo: sl()));

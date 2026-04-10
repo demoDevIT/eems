@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rajemployment/constants/colors.dart';
+import 'package:rajemployment/role/job_seeker/about_app/about_app.dart';
 import 'package:rajemployment/utils/size_config.dart';
 
 import '../../../utils/right_to_left_route.dart';
@@ -133,7 +134,16 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
             buildNavigationTile(
               icon: Icons.info_outline,
               title: "About App",
-              onTap: () {},
+              onTap: () {
+                Navigator.of(_scaffoldKey.currentContext!)
+                    .push(
+                  RightToLeftRoute(
+                    page:  AboutAppScreen(),
+                    duration: const Duration(milliseconds: 500),
+                    startOffset: const Offset(-1.0, 0.0),
+                  ),
+                );
+              },
             ),
             SizedBox(height: SizeConfig.defaultSize! * 4 ),
 
