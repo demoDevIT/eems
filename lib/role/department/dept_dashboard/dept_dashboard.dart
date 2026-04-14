@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/department/register_form/register_form.dart';
@@ -217,33 +218,44 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                   const SizedBox(height: 16),
 
-                  _dashboardButton(
-                    title: "Pending List for Department Joining",
-                    // icon: Icons.pending_actions_rounded,
-                    onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const DeptJoinPendingListScreen()
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _dashboardCard(
+                          title: "Internship Joining",
+                          iconPath: "assets/images/internshipImg.png",
+                          borderColor: const Color(0xff7B61FF),
+                          bgColor: const Color(0xffF5F3FF),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const DeptJoinPendingListScreen(),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    },
-                  ),
 
-                  const SizedBox(height: 16),
+                      const SizedBox(width: 14),
 
-                  _dashboardButton(
-                    // title: "Attendance List for Department Joining",
-                    title: "Pending Attendance list for Approval",
-                    // icon: Icons.pending_actions_rounded,
-                    onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const DeptJoinAttendanceListScreen()
+                      Expanded(
+                        child: _dashboardCard(
+                          title: "Internship Attendance",
+                          iconPath: "assets/images/attendanceImg.png",
+                          borderColor: const Color(0xff22C55E),
+                          bgColor: const Color(0xffECFDF5),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const DeptJoinAttendanceListScreen(),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    },
+                    ],
                   ),
                 ],
               ),
@@ -251,6 +263,55 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           },
         ),
       );
+  }
+
+  Widget _dashboardCard({
+    required String title,
+    required String iconPath,
+    required Color borderColor,
+    required Color bgColor,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        height: 170,
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: borderColor,
+            width: 1.3,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              iconPath,
+              width: 70,
+              height: 70,
+              fit: BoxFit.contain,
+            ),
+
+            const SizedBox(height: 14),
+
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black87,
+                height: 1.3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _actionButton({

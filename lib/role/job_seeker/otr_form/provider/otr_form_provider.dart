@@ -698,7 +698,12 @@ class OtrFormProvider extends ChangeNotifier {
     emailController.text = data.eMAIL ?? "";
     religionNameController.text = "";
     religionIdController.text = "";
-    differentlyAbledController.text = data.dISABILITYTYPE ?? "";
+    differentlyAbledController.text =
+    data.iSDISABILITY == '1'
+        ? 'Yes'
+        : data.iSDISABILITY == '0'
+        ? 'No'
+        : '';
     genderController.text = data.gENDER == "MALE"
         ? "Male"
         : data.gENDER == "FEMALE"

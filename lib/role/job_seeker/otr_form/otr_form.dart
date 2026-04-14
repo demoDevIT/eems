@@ -694,17 +694,24 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     value: 'Yes',
                                     groupValue: provider
                                         .differentlyAbledController.text,
-                                    onChanged: (val) => setState(() => provider
-                                            .differentlyAbledController.text =
-                                        val ??
-                                            provider.differentlyAbledController
-                                                .text),
+                                    onChanged: provider
+                                            .differentlyAbledController
+                                            .text
+                                            .isNotEmpty
+                                        ? null // disable if value already exists
+                                        : (val) => setState(() {
+                                              provider
+                                                  .differentlyAbledController
+                                                  .text = val ?? '';
+                                            }),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Yes',
                                     style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
+                                      color: kBlackColor,
+                                      size: 14,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -715,38 +722,56 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     value: 'No',
                                     groupValue: provider
                                         .differentlyAbledController.text,
-                                    onChanged: (val) => setState(() => provider
-                                            .differentlyAbledController.text =
-                                        val ??
-                                            provider.differentlyAbledController
-                                                .text),
+                                    onChanged: provider
+                                            .differentlyAbledController
+                                            .text
+                                            .isNotEmpty
+                                        ? null // disable if value already exists
+                                        : (val) => setState(() {
+                                              provider
+                                                  .differentlyAbledController
+                                                  .text = val ?? '';
+
+                                              /// clear fields if No selected
+                                              provider.disabilityNameController
+                                                  .clear();
+                                              provider.disabilityIdController
+                                                  .clear();
+                                              provider
+                                                  .disabilityPercentageController
+                                                  .clear();
+                                            }),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'No',
                                     style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
+                                      color: kBlackColor,
+                                      size: 14,
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 12),
                             ],
                           ),
 
                           SizedBox(
                             height: 5,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Disability Type & Percentage', required: true),
-                          ),
-                          IgnorePointer(
-                            ignoring: false,
-                            child: Padding(
+                          if (provider.differentlyAbledController.text ==
+                              "Yes") ...[
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<DisabilityTypeData>(
+                              child: labelWithStar(
+                                  'Disability Type & Percentage',
+                                  required: true),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child:
+                                  buildSearchableDropdown<DisabilityTypeData>(
                                 items: provider.disabilityTypeList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -760,27 +785,22 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
                                 onChanged: (value) {
-                                  print(provider.disabilityIdController.text
-                                      .toString());
-                                  print(provider.disabilityNameController.text
-                                      .toString());
                                   setState(() {});
                                 },
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                              provider.disabilityPercentageController,
-                              "Percentage",
-                              MediaQuery.of(context).size.width,
-                              50,
-                              TextInputType.number,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: buildTextWithBorderField(
+                                provider.disabilityPercentageController,
+                                "Percentage",
+                                MediaQuery.of(context).size.width,
+                                50,
+                                TextInputType.number,
+                              ),
                             ),
-                          ),
-
+                          ],
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -1442,13 +1462,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 0,
                                                       vertical: 5),
-                                              child:
-                                              buildSearchableDropdown<DistrictData>(
+                                              child: buildSearchableDropdown<
+                                                  DistrictData>(
                                                 items: provider.cDistrictList,
 
                                                 // ✅ MAP YOUR MODEL HERE
-                                                getId: (item) => item.dropID.toString(),
-                                                getName: (item) => item.name ?? "",
+                                                getId: (item) =>
+                                                    item.dropID.toString(),
+                                                getName: (item) =>
+                                                    item.name ?? "",
 
                                                 controller: provider
                                                     .cDistrictNameController,
@@ -1548,13 +1570,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 0,
                                                       vertical: 5),
-                                              child:
-                                              buildSearchableDropdown<CityData>(
+                                              child: buildSearchableDropdown<
+                                                  CityData>(
                                                 items: provider.cCityList,
 
                                                 // ✅ MAP YOUR MODEL HERE
-                                                getId: (item) => item.dropID.toString(),
-                                                getName: (item) => item.name ?? "",
+                                                getId: (item) =>
+                                                    item.dropID.toString(),
+                                                getName: (item) =>
+                                                    item.name ?? "",
 
                                                 controller: provider
                                                     .cCityNameController,
@@ -1656,13 +1680,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 0,
                                                       vertical: 5),
-                                              child:
-                                              buildSearchableDropdown<WardData>(
+                                              child: buildSearchableDropdown<
+                                                  WardData>(
                                                 items: provider.cWardList,
 
                                                 // ✅ MAP YOUR MODEL HERE
-                                                getId: (item) => item.dropID.toString(),
-                                                getName: (item) => item.name ?? "",
+                                                getId: (item) =>
+                                                    item.dropID.toString(),
+                                                getName: (item) =>
+                                                    item.name ?? "",
 
                                                 controller: provider
                                                     .cWardNameController,
@@ -1831,7 +1857,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           hSpace(4),
 
                           /// Constituency // hide this constituency part as discussed with pankaj sir
-                         /* Padding(
+                          /* Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: labelWithStar('Select Constituency',
@@ -2039,42 +2065,43 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           IgnorePointer(
                             ignoring: false,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<EducationLevelData>(
-                                items: provider.educationLevelsList,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child:
+                                    buildSearchableDropdown<EducationLevelData>(
+                                  items: provider.educationLevelsList,
 
-                                // ✅ MAP YOUR MODEL HERE
-                                getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
 
-                                controller: provider.educationLevelNameController,
-                                idController: provider.educationLevelIdController,
-                                hintText: "--Select Option--",
+                                  controller:
+                                      provider.educationLevelNameController,
+                                  idController:
+                                      provider.educationLevelIdController,
+                                  hintText: "--Select Option--",
 
-                                onChanged: (value) {
-                                  setState(() {
-                                    print("Selected ID: ${value.dropID}");
+                                  onChanged: (value) {
+                                    setState(() {
+                                      print("Selected ID: ${value.dropID}");
 
-                                    if (value.dropID == 2 ||
-                                        value.dropID == 5 ||
-                                        value.dropID == 6 ||
-                                        value.dropID == 8) {
-
-                                      String id = value.dropID == 8 ? "7" : value.dropID.toString();
-                                      provider.graduationTypeApi(context, id);
-
-                                    } else if (value.dropID == 3) {
-                                      provider.boardApi(context);
-
-                                    } else if (value.dropID == 4) {
-                                      provider.boardApi(context);
-                                      provider.streamTypeApi(context);
-                                    }
-                                  });
-                                },
-                              )
-                            ),
+                                      if (value.dropID == 2 ||
+                                          value.dropID == 5 ||
+                                          value.dropID == 6 ||
+                                          value.dropID == 8) {
+                                        String id = value.dropID == 8
+                                            ? "7"
+                                            : value.dropID.toString();
+                                        provider.graduationTypeApi(context, id);
+                                      } else if (value.dropID == 3) {
+                                        provider.boardApi(context);
+                                      } else if (value.dropID == 4) {
+                                        provider.boardApi(context);
+                                        provider.streamTypeApi(context);
+                                      }
+                                    });
+                                  },
+                                )),
                           ),
 
                           provider.educationLevelIdController.text == "2"
@@ -2094,7 +2121,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<GraduationTypeData>(
+                              child:
+                                  buildSearchableDropdown<GraduationTypeData>(
                                 items: provider.classList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -2244,7 +2272,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<GraduationTypeData>(
+                              child:
+                                  buildSearchableDropdown<GraduationTypeData>(
                                 items: provider.graduationTypeList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -2262,12 +2291,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     // reset stream type dropdown
-                                    provider.graduationStreamTypeNameController.clear();
-                                    provider.graduationStreamTypeIdController.clear();
+                                    provider.graduationStreamTypeNameController
+                                        .clear();
+                                    provider.graduationStreamTypeIdController
+                                        .clear();
                                     provider.graduationStreamTypeList.clear();
 
-                                      String id = provider.graduationTypeIdController.text;
-                                      provider.graduationStreamTypeApi(context, id);
+                                    String id = provider
+                                        .graduationTypeIdController.text;
+                                    provider.graduationStreamTypeApi(
+                                        context, id);
                                   });
                                 },
                               ),
@@ -2322,33 +2355,34 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 )
                               : SizedBox(),
 
-                        // stream Type for under graduate/graduate/post graduation
+                          // stream Type for under graduate/graduate/post graduation
                           provider.educationLevelIdController.text == "5" ||
-                              provider.educationLevelIdController.text ==
-                                  "6" ||
-                              provider.educationLevelIdController.text ==
-                                  "8"
+                                  provider.educationLevelIdController.text ==
+                                      "6" ||
+                                  provider.educationLevelIdController.text ==
+                                      "8"
                               ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Stream Type',
-                                required: true),
-                          )
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  child: labelWithStar('Stream Type',
+                                      required: true),
+                                )
                               : SizedBox(),
 
                           Visibility(
                             visible: provider.educationLevelIdController.text ==
-                                "5" ||
-                                provider.educationLevelIdController.text ==
-                                    "6" ||
-                                provider.educationLevelIdController.text ==
-                                    "8"
+                                        "5" ||
+                                    provider.educationLevelIdController.text ==
+                                        "6" ||
+                                    provider.educationLevelIdController.text ==
+                                        "8"
                                 ? true
                                 : false,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<GraduationStreamTypeData>(
+                              child: buildSearchableDropdown<
+                                  GraduationStreamTypeData>(
                                 items: provider.graduationStreamTypeList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -2356,9 +2390,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 getName: (item) => item.name ?? "",
 
                                 controller:
-                                provider.graduationStreamTypeNameController,
+                                    provider.graduationStreamTypeNameController,
                                 idController:
-                                provider.graduationStreamTypeIdController,
+                                    provider.graduationStreamTypeIdController,
                                 hintText: "--Select Option--",
                                 // height: 50,
                                 // color: Colors.transparent,
@@ -2375,24 +2409,26 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                           provider.graduationStreamTypeIdController.text == "-1"
                               ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            child: labelWithStar('Other Stream', required: true),
-                          )
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  child: labelWithStar('Other Stream',
+                                      required: true),
+                                )
                               : SizedBox(),
 
                           provider.graduationStreamTypeIdController.text == "-1"
                               ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                              provider.otherStreamController,
-                              "Enter Other Stream",
-                              MediaQuery.of(context).size.width,
-                              50,
-                              TextInputType.text,
-                            ),
-                          )
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  child: buildTextWithBorderField(
+                                    provider.otherStreamController,
+                                    "Enter Other Stream",
+                                    MediaQuery.of(context).size.width,
+                                    50,
+                                    TextInputType.text,
+                                  ),
+                                )
                               : SizedBox(),
-
 
                           provider.educationLevelIdController.text == "5" ||
                                   provider.educationLevelIdController.text ==
@@ -2510,7 +2546,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: buildSearchableDropdown<MediumTypeData>(
+                                    child:
+                                        buildSearchableDropdown<MediumTypeData>(
                                       items: provider.mediumTypeList,
 
                                       // ✅ MAP YOUR MODEL HERE
@@ -2572,7 +2609,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: buildSearchableDropdown<CourseNatureData>(
+                                    child: buildSearchableDropdown<
+                                        CourseNatureData>(
                                       items: provider.courseNatureList,
 
                                       // ✅ MAP YOUR MODEL HERE
@@ -2856,7 +2894,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<WorkExpEmploymentTypeData>(
+                              child: buildSearchableDropdown<
+                                  WorkExpEmploymentTypeData>(
                                 items: provider.employmentTypesList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -2917,7 +2956,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           // ),
 
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
                             child: labelWithStar(
                                 'Are you interested in private jobs also?',
                                 required: false),
@@ -2928,17 +2968,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 children: [
                                   Radio<String>(
                                     value: 'Yes',
-                                    groupValue: provider.interestedPrivateJobs.text,
+                                    groupValue:
+                                        provider.interestedPrivateJobs.text,
                                     onChanged: (val) {
                                       provider.interestedPrivateJobs.text =
-                                          val ?? provider.interestedPrivateJobs.text;
+                                          val ??
+                                              provider
+                                                  .interestedPrivateJobs.text;
                                       setState(() {});
                                     },
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Yes',
-                                    style: Styles.mediumTextStyle(color: kBlackColor, size: 14),
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
                                   ),
                                 ],
                               ),
@@ -2947,17 +2991,21 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 children: [
                                   Radio<String>(
                                     value: 'No',
-                                    groupValue: provider.interestedPrivateJobs.text,
+                                    groupValue:
+                                        provider.interestedPrivateJobs.text,
                                     onChanged: (val) {
                                       provider.interestedPrivateJobs.text =
-                                          val ?? provider.interestedPrivateJobs.text;
+                                          val ??
+                                              provider
+                                                  .interestedPrivateJobs.text;
                                       setState(() {});
                                     },
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'No',
-                                    style: Styles.mediumTextStyle(color: kBlackColor, size: 14),
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
                                   ),
                                 ],
                               ),
@@ -3305,7 +3353,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<ProficiencyTypeData>(
+                              child:
+                                  buildSearchableDropdown<ProficiencyTypeData>(
                                 items: provider.proficiencyTypeList,
 
                                 // ✅ MAP YOUR MODEL HERE
@@ -3709,14 +3758,13 @@ bool validateBasicDetails(BuildContext context, provider) {
 
   // Disability Validation
   if (provider.disabilityIdController.text.isNotEmpty) {
-
     if (provider.disabilityPercentageController.text.trim().isEmpty) {
       showAlertError("Please enter Disability Percentage", context);
       return false;
     }
 
-    final percent = double.tryParse(
-        provider.disabilityPercentageController.text.trim());
+    final percent =
+        double.tryParse(provider.disabilityPercentageController.text.trim());
 
     if (percent == null) {
       showAlertError("Please enter valid Disability Percentage", context);
@@ -3724,7 +3772,8 @@ bool validateBasicDetails(BuildContext context, provider) {
     }
 
     if (percent < 0 || percent > 100) {
-      showAlertError("Disability Percentage must be between 0 and 100", context);
+      showAlertError(
+          "Disability Percentage must be between 0 and 100", context);
       return false;
     }
   }

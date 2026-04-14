@@ -293,7 +293,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
               "WARD_LL": "वार्ड न. 03",
               "VILLAGE_LL": null,
               "CATEGORY_CODE": 13,
-              "IS_DISABILITY": null,
+              "IS_DISABILITY": "0", //"1"
               "STATUS": 1
             }
           ],

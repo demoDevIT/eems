@@ -191,7 +191,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         "Enter Subject (Related to Complaint)",
                         MediaQuery.of(context).size.width,
                         50,
-                        TextInputType.number,
+                        TextInputType.text,
                       ),
                     ),
 
@@ -207,7 +207,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         MediaQuery.of(context).size.width,
                         100,
                         maxLine: 20,
-                        TextInputType.number,
+                        TextInputType.text,
                       ),
                     ),
 

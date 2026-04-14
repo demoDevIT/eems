@@ -88,7 +88,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Scaffold(
         appBar: commonAppBar2(
-          "Employee OTR Form",
+          "Employer OTR Form",
           context,
           localeProvider.currentLanguage,
           "",
