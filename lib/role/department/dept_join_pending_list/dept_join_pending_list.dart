@@ -58,7 +58,8 @@ class _DeptJoinPendingListScreenState
       backgroundColor: kWhite,
       appBar: AppBar(
         title: const Text(
-          "Pending List for Department Joining",
+          "Internship Joining",
+          // "Pending List for Department Joining",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,

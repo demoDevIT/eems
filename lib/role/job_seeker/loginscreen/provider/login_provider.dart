@@ -125,7 +125,7 @@ class LoginProvider with ChangeNotifier {
           "SSOID": ssoId,
           "Password": pass,
           "DeviceID": deviceId,
-          // "BypassSSO": false //true for sandbox, false for live
+          "BypassSSO": true //true for sandbox, false for live
         };
 
         if (ssoId == "employer1") {

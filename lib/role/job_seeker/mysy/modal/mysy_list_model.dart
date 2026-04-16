@@ -19,9 +19,9 @@ class MysyListModel {
     message = json['Message'];
     errorMessage = json['ErrorMessage'];
 
-    if (json['Data'] != null) {
+    if (json['Data'] != null && json['Data']['Table1'] != null) {
       data = <MysyData>[];
-      json['Data'].forEach((v) {
+      json['Data']['Table1'].forEach((v) {
         data!.add(MysyData.fromJson(v));
       });
     }

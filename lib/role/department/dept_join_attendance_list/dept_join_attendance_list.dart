@@ -67,7 +67,8 @@ class _DeptJoinAttendanceListScreenState
       appBar: AppBar(
         title: const Text(
           //"Attendance List for Department Joining",
-          "Pending Attendance list for Approval",
+          "Internship Attendance",
+          // "Pending Attendance list for Approval",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,

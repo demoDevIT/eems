@@ -534,7 +534,7 @@ var provider;
 
                 // Subtitle paragraph
                 const Text(
-                  'Attendance marked successfullyaa.',
+                  'Attendance marked successfully.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),

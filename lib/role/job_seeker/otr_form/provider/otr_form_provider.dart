@@ -156,6 +156,22 @@ class OtrFormProvider extends ChangeNotifier {
   List<EducationLevelData> educationLevelsList = [];
   List<NcoCodeData> ncoCodeList = [];
   List<GraduationTypeData> graduationTypeList = [];
+
+  // ITI child dropdowns
+  List<GraduationTypeData> itiMainList = [];
+  List<GraduationTypeData> itiChildList = [];
+  List<GraduationTypeData> itiSubChildList = [];
+
+  bool showItiChildDropdown = false;
+  bool showItiSubChildDropdown = false;
+
+// controllers
+  TextEditingController itiChildNameController = TextEditingController();
+  TextEditingController itiChildIdController = TextEditingController();
+
+  TextEditingController itiSubChildNameController = TextEditingController();
+  TextEditingController itiSubChildIdController = TextEditingController();
+
   List<GraduationTypeData> classList = [];
   List<BoardData> boardList = [];
   List<UniversityData> universityList = [];
@@ -912,6 +928,112 @@ class OtrFormProvider extends ChangeNotifier {
       showAlertError(
           AppLocalizations.of(context)!.internet_connection, context);
     }
+  }
+
+  Future<void> loadItiChildDropdown(
+      BuildContext context,
+      String id,
+      int level,
+      ) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
+
+    try {
+      ApiResponse apiResponse =
+      await commonRepo.get("Common/GetGraduationType/$id");
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final sm = GraduationTypeModal.fromJson(responseData);
+
+        if (sm.state == 200) {
+          if (level == 1) {
+            itiChildList.clear();
+            itiChildList.addAll(sm.data!);
+            showItiChildDropdown = true;
+
+            itiSubChildList.clear();
+            showItiSubChildDropdown = false;
+          } else {
+            itiSubChildList.clear();
+            itiSubChildList.addAll(sm.data!);
+            showItiSubChildDropdown = true;
+          }
+
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      showAlertError(e.toString(), context);
+    }
+  }
+
+  Future<void> onSelectItiItem(
+      BuildContext context,
+      GraduationTypeData selected,
+      int level,
+      ) async {
+    if (level == 0) {
+      // first dropdown selected
+      graduationTypeNameController.text = selected.name ?? "";
+      graduationTypeIdController.text = selected.dropID.toString();
+
+      itiChildList.clear();
+      itiSubChildList.clear();
+
+      itiChildNameController.clear();
+      itiChildIdController.clear();
+
+      itiSubChildNameController.clear();
+      itiSubChildIdController.clear();
+
+      showItiChildDropdown = false;
+      showItiSubChildDropdown = false;
+
+      if ((selected.childCount ?? 0) > 0) {
+        await graduationTypeApi(context, selected.dropID.toString());
+        itiChildList = List.from(graduationTypeList);
+        showItiChildDropdown = true;
+      }
+    }
+
+    else if (level == 1) {
+      // child dropdown selected
+      itiChildNameController.text = selected.name ?? "";
+      itiChildIdController.text = selected.dropID.toString();
+
+      itiSubChildList.clear();
+      itiSubChildNameController.clear();
+      itiSubChildIdController.clear();
+
+      showItiSubChildDropdown = false;
+
+      if ((selected.childCount ?? 0) > 0) {
+        await graduationTypeApi(context, selected.dropID.toString());
+        itiSubChildList = List.from(graduationTypeList);
+        showItiSubChildDropdown = true;
+      }
+    }
+
+    else if (level == 2) {
+      itiSubChildNameController.text = selected.name ?? "";
+      itiSubChildIdController.text = selected.dropID.toString();
+    }
+
+    notifyListeners();
   }
 
   Future<GraduationTypeModal?> graduationTypeApi(
@@ -1882,7 +2004,7 @@ class OtrFormProvider extends ChangeNotifier {
           "JanAadharMemberID": memberId,
 
           "isStateGovtEmp": "",
-          "Isdisable": differentlyAbledController.text == "Yes" ? "1" : "2",
+          "Isdisable": differentlyAbledController.text == "Yes" ? "1" : "0",
 
           "DisabilityPercentage": disabilityPercentageController.text,
           "DisabilityType": disabilityIdController.text,

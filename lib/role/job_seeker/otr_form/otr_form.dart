@@ -2081,26 +2081,31 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       provider.educationLevelIdController,
                                   hintText: "--Select Option--",
 
-                                  onChanged: (value) {
-                                    setState(() {
-                                      print("Selected ID: ${value.dropID}");
+                                      onChanged: (value) async {
+                                        setState(() async {
+                                          if (value.dropID == 2 ||
+                                              value.dropID == 5 ||
+                                              value.dropID == 6 ||
+                                              value.dropID == 8 ||
+                                              value.dropID == 382) {
 
-                                      if (value.dropID == 2 ||
-                                          value.dropID == 5 ||
-                                          value.dropID == 6 ||
-                                          value.dropID == 8) {
-                                        String id = value.dropID == 8
-                                            ? "7"
-                                            : value.dropID.toString();
-                                        provider.graduationTypeApi(context, id);
-                                      } else if (value.dropID == 3) {
-                                        provider.boardApi(context);
-                                      } else if (value.dropID == 4) {
-                                        provider.boardApi(context);
-                                        provider.streamTypeApi(context);
-                                      }
-                                    });
-                                  },
+                                            String id = value.dropID == 8 ? "7" : value.dropID.toString();
+
+                                            await provider.graduationTypeApi(context, id);
+
+                                            if (id == "382") {
+                                              provider.itiMainList =
+                                                  List.from(provider.graduationTypeList);
+                                            }
+
+                                          } else if (value.dropID == 3) {
+                                            provider.boardApi(context);
+                                          } else if (value.dropID == 4) {
+                                            provider.boardApi(context);
+                                            provider.streamTypeApi(context);
+                                          }
+                                        });
+                                      },
                                 )),
                           ),
 
@@ -2251,12 +2256,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8"
+                                      "8" ||
+                          provider.educationLevelIdController.text ==
+                              "382"
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Graduation Type',
-                                      required: true),
+                            child: labelWithStar(
+                              getGraduationTypeLabel(),
+                              required: true,
+                            ),
                                 )
                               : SizedBox(),
 
@@ -2266,7 +2275,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     provider.educationLevelIdController.text ==
                                         "6" ||
                                     provider.educationLevelIdController.text ==
-                                        "8"
+                                        "8" ||
+                                provider.educationLevelIdController.text ==
+                                    "382"
                                 ? true
                                 : false,
                             child: Padding(
@@ -2274,7 +2285,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child:
                                   buildSearchableDropdown<GraduationTypeData>(
-                                items: provider.graduationTypeList,
+                                    items: provider.educationLevelIdController.text == "382"
+                                        ? provider.itiMainList
+                                        : provider.graduationTypeList,
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
@@ -2288,24 +2301,58 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
-                                onChanged: (value) {
-                                  setState(() {
-                                    // reset stream type dropdown
-                                    provider.graduationStreamTypeNameController
-                                        .clear();
-                                    provider.graduationStreamTypeIdController
-                                        .clear();
-                                    provider.graduationStreamTypeList.clear();
+                                    onChanged: (value) {
+                                      if (provider.educationLevelIdController.text == "382") {
+                                        provider.onSelectItiItem(context, value, 0);
+                                      } else {
+                                        setState(() {
+                                          provider.graduationStreamTypeNameController.clear();
+                                          provider.graduationStreamTypeIdController.clear();
+                                          provider.graduationStreamTypeList.clear();
 
-                                    String id = provider
-                                        .graduationTypeIdController.text;
-                                    provider.graduationStreamTypeApi(
-                                        context, id);
-                                  });
-                                },
+                                          String id = provider.graduationTypeIdController.text;
+                                          provider.graduationStreamTypeApi(context, id);
+                                        });
+                                      }
+                                    },
                               ),
                             ),
                           ),
+
+                          if (provider.educationLevelIdController.text == "382" &&
+                              provider.showItiChildDropdown)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: buildSearchableDropdown<GraduationTypeData>(
+                                items: provider.itiChildList,
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+                                controller: provider.itiChildNameController,
+                                idController: provider.itiChildIdController,
+                                hintText: "--Select Option--",
+                                onChanged: (value) {
+                                  provider.onSelectItiItem(context, value, 1);
+                                },
+                              ),
+                            ),
+
+                          if (provider.educationLevelIdController.text == "382" &&
+                              provider.showItiSubChildDropdown)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: buildSearchableDropdown<GraduationTypeData>(
+                                items: provider.itiSubChildList,
+                                getId: (item) => item.dropID.toString(),
+                                getName: (item) => item.name ?? "",
+                                controller: provider.itiSubChildNameController,
+                                idController: provider.itiSubChildIdController,
+                                hintText: "--Select Option--",
+                                onChanged: (value) {
+                                  provider.onSelectItiItem(context, value, 2);
+                                },
+                              ),
+                            ),
+
                           (provider.educationLevelIdController.text == "5" &&
                                       provider.graduationTypeIdController
                                               .text ==
@@ -3695,6 +3742,26 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
             ),
           );
         }));
+  }
+
+  String getGraduationTypeLabel() {
+    final provider = Provider.of<OtrFormProvider>(context, listen: false);
+    switch (provider.educationLevelIdController.text) {
+      case "5":
+        return "Under Graduation Type";
+
+      case "6":
+        return "Graduation Type";
+
+      case "8":
+        return "Post Graduation Type";
+
+      case "382":
+        return "ITI Trade Type";
+
+      default:
+        return "Graduation Type";
+    }
   }
 }
 
