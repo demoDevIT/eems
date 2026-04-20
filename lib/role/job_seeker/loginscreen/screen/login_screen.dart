@@ -323,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       //   ),
                                       // );
                                       await provider.ssoLoginWithIDPassApi(context);
-                                      //await provider.callSSOAuthApi(context);
+                                      //await provider.callSSOAuthApi(context); // ye kaam ka nahi h ab
                                       }
                                      },
                               child: Text(

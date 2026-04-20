@@ -2082,29 +2082,28 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   hintText: "--Select Option--",
 
                                       onChanged: (value) async {
-                                        setState(() async {
-                                          if (value.dropID == 2 ||
-                                              value.dropID == 5 ||
-                                              value.dropID == 6 ||
-                                              value.dropID == 8 ||
-                                              value.dropID == 382) {
+                                        if (value.dropID == 2 ||
+                                            value.dropID == 5 ||
+                                            value.dropID == 6 ||
+                                            value.dropID == 8 ||
+                                            value.dropID == 382) {
 
-                                            String id = value.dropID == 8 ? "7" : value.dropID.toString();
+                                          String id = value.dropID == 8 ? "7" : value.dropID.toString();
 
-                                            await provider.graduationTypeApi(context, id);
+                                          await provider.graduationTypeApi(context, id);
 
-                                            if (id == "382") {
-                                              provider.itiMainList =
-                                                  List.from(provider.graduationTypeList);
-                                            }
-
-                                          } else if (value.dropID == 3) {
-                                            provider.boardApi(context);
-                                          } else if (value.dropID == 4) {
-                                            provider.boardApi(context);
-                                            provider.streamTypeApi(context);
+                                          if (id == "382") {
+                                            provider.itiMainList =
+                                                List.from(provider.graduationTypeList);
                                           }
-                                        });
+
+                                          setState(() {});
+                                        } else if (value.dropID == 3) {
+                                          provider.boardApi(context);
+                                        } else if (value.dropID == 4) {
+                                          provider.boardApi(context);
+                                          provider.streamTypeApi(context);
+                                        }
                                       },
                                 )),
                           ),
@@ -2320,7 +2319,11 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           ),
 
                           if (provider.educationLevelIdController.text == "382" &&
-                              provider.showItiChildDropdown)
+                              provider.showItiChildDropdown) ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: labelWithStar('ITI Sub Trade Type', required: true),
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               child: buildSearchableDropdown<GraduationTypeData>(
@@ -2335,9 +2338,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 },
                               ),
                             ),
+                          ],
 
                           if (provider.educationLevelIdController.text == "382" &&
-                              provider.showItiSubChildDropdown)
+                              provider.showItiSubChildDropdown) ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: labelWithStar('ITI Sub Trade Type', required: true),
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               child: buildSearchableDropdown<GraduationTypeData>(
@@ -2352,6 +2360,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 },
                               ),
                             ),
+                          ],
 
                           (provider.educationLevelIdController.text == "5" &&
                                       provider.graduationTypeIdController
@@ -2407,7 +2416,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8"
+                                      "8" ||
+                              provider.educationLevelIdController.text ==
+                                  "382"
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
@@ -2422,7 +2433,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     provider.educationLevelIdController.text ==
                                         "6" ||
                                     provider.educationLevelIdController.text ==
-                                        "8"
+                                        "8" ||
+                                provider.educationLevelIdController.text ==
+                                    "382"
                                 ? true
                                 : false,
                             child: Padding(
@@ -2481,7 +2494,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8"
+                                      "8" ||
+                              provider.educationLevelIdController.text ==
+                                  "382"
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
@@ -2496,7 +2511,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     provider.educationLevelIdController.text ==
                                         "6" ||
                                     provider.educationLevelIdController.text ==
-                                        "8"
+                                        "8" ||
+                                provider.educationLevelIdController.text ==
+                                    "382"
                                 ? true
                                 : false,
                             child: Padding(
@@ -2549,7 +2566,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8"
+                                      "8" ||
+                              provider.educationLevelIdController.text ==
+                                  "382"
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
@@ -2562,7 +2581,9 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8"
+                                      "8" ||
+                              provider.educationLevelIdController.text ==
+                                  "382"
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),

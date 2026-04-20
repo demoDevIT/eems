@@ -121,16 +121,28 @@ class LoginProvider with ChangeNotifier {
         String ssoId = SSOIDController.text;
         String pass = passwordController.text;
         String? deviceId = await UtilityClass.getDeviceId();
-        Map<String, dynamic> body = {
-          "SSOID": ssoId,
-          "Password": pass,
-          "DeviceID": deviceId,
-          "BypassSSO": true //true for sandbox, false for live
-        };
 
-        if (ssoId == "employer1") {
-          getEmpBasicDetailsApi(context, "2261606", 7);
+        Map<String, dynamic> body;
+
+        if(ssoId == "EEMSJobFairEvent"){
+          body = {
+            "SSOID": ssoId,
+            "Password": pass,
+            "DeviceID": deviceId,
+            "BypassSSO": true // for everytime while live or sandbox for this sso 'EEMSJobFairEvent'
+          };
         }else{
+          body = {
+            "SSOID": ssoId,
+            "Password": pass,
+            "DeviceID": deviceId,
+            "BypassSSO": true //true for sandbox, remove for live
+          };
+        }
+
+        // if (ssoId == "employer1") {
+        //   getEmpBasicDetailsApi(context, "2261606", 7);
+        // }else{
 
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(
@@ -203,6 +215,8 @@ class LoginProvider with ChangeNotifier {
                     getBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);
                   } else if (sm.data!.roleID == 7) { //employer
+                    print("getEmpBasicDetailsApi userID => ${sm.data!.userID}");
+                    print("getEmpBasicDetailsApi roleID => ${sm.data!.roleID}");
                     getEmpBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);
                   } else {
@@ -247,7 +261,7 @@ class LoginProvider with ChangeNotifier {
           return TempLoginModal(state: 0, message: 'Something went wrong',
           );
         }
-      }
+     // }
       } on Exception catch (err) {
         print(err.toString());
         ProgressDialog.closeLoadingDialog(context);

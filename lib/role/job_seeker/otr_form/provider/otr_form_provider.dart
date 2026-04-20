@@ -983,54 +983,50 @@ class OtrFormProvider extends ChangeNotifier {
 
   Future<void> onSelectItiItem(
       BuildContext context,
-      GraduationTypeData selected,
+      GraduationTypeData value,
       int level,
       ) async {
-    if (level == 0) {
-      // first dropdown selected
-      graduationTypeNameController.text = selected.name ?? "";
-      graduationTypeIdController.text = selected.dropID.toString();
 
+    int selectedId = value.dropID ?? 0;
+    int childCount = value.childCount ?? 0;
+
+    if (level == 0) {
       itiChildList.clear();
       itiSubChildList.clear();
-
-      itiChildNameController.clear();
-      itiChildIdController.clear();
-
-      itiSubChildNameController.clear();
-      itiSubChildIdController.clear();
-
       showItiChildDropdown = false;
       showItiSubChildDropdown = false;
 
-      if ((selected.childCount ?? 0) > 0) {
-        await graduationTypeApi(context, selected.dropID.toString());
+      itiChildNameController.clear();
+      itiChildIdController.clear();
+      itiSubChildNameController.clear();
+      itiSubChildIdController.clear();
+
+      if (childCount > 0) {
+        await graduationTypeApi(context, selectedId.toString());
+
         itiChildList = List.from(graduationTypeList);
         showItiChildDropdown = true;
+      } else {
+        await graduationStreamTypeApi(context, selectedId.toString());
       }
     }
 
     else if (level == 1) {
-      // child dropdown selected
-      itiChildNameController.text = selected.name ?? "";
-      itiChildIdController.text = selected.dropID.toString();
-
       itiSubChildList.clear();
-      itiSubChildNameController.clear();
-      itiSubChildIdController.clear();
-
       showItiSubChildDropdown = false;
 
-      if ((selected.childCount ?? 0) > 0) {
-        await graduationTypeApi(context, selected.dropID.toString());
+      if (childCount > 0) {
+        await graduationTypeApi(context, selectedId.toString());
+
         itiSubChildList = List.from(graduationTypeList);
         showItiSubChildDropdown = true;
+      } else {
+        await graduationStreamTypeApi(context, selectedId.toString());
       }
     }
 
     else if (level == 2) {
-      itiSubChildNameController.text = selected.name ?? "";
-      itiSubChildIdController.text = selected.dropID.toString();
+      await graduationStreamTypeApi(context, selectedId.toString());
     }
 
     notifyListeners();
@@ -1828,6 +1824,24 @@ class OtrFormProvider extends ChangeNotifier {
     }
   }
 
+  String getEducationTypeId() {
+    if (educationLevelIdController.text == "382") {
+      if (showItiSubChildDropdown &&
+          itiSubChildIdController.text.isNotEmpty) {
+        return itiSubChildIdController.text;
+      }
+
+      if (showItiChildDropdown &&
+          itiChildIdController.text.isNotEmpty) {
+        return itiChildIdController.text;
+      }
+
+      return graduationTypeIdController.text;
+    }
+
+    return graduationTypeIdController.text;
+  }
+
   Future<OTRJanAadharDetailModal?> saveOTRFormApi(
       BuildContext context,
       List<FetchJanAdharResponseData> feachJanAadhaarDataList,
@@ -2048,6 +2062,8 @@ class OtrFormProvider extends ChangeNotifier {
           "EducationState": 0,
           "EducationDistrict": 0,
           "EducationSchool": schoolNameController.text,
+
+          "EducationTypeID": int.tryParse(getEducationTypeId()) ?? 0,
 
           "EducationBoard": int.tryParse(boardIdController.text) ?? 0,
           "EducationUniversity": int.tryParse(universityIdController.text) ?? 0,

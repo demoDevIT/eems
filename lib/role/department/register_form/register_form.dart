@@ -56,7 +56,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             title: const Text(
-              "Register Form",
+              "Registration Form",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
