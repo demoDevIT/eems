@@ -680,14 +680,18 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
 
                     final pref = AppSharedPref();
 
+                    // Clear login session only
+                    UserData().model.value.isLogin = false;
+                    UserData().model.value.userId = null;
+
                   // ✅ Clear SharedPreferences
                     await pref.remove('UserData');
 
                   // ✅ Clear in-memory user data
-                    UserData().model.value.isLogin = false;
-                    UserData().model.value.username = "";
-                    UserData().model.value.password = "";
-                    UserData().model.value.userId = null;
+                  //   UserData().model.value.isLogin = false;
+                  //   UserData().model.value.username = "";
+                  //   UserData().model.value.password = "";
+                  //   UserData().model.value.userId = null;
 
                   // ✅ Navigate cleanly (remove all previous screens)
                     Navigator.pushAndRemoveUntil(
@@ -696,12 +700,12 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                           (route) => false,
                     );
 
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                        const LoginScreen(),
-                      ),
-                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (BuildContext context) =>
+                    //     const LoginScreen(),
+                    //   ),
+                    // );
                   }
                 },
               );

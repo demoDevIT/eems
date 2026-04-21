@@ -420,36 +420,87 @@ class RegisterFormProvider extends ChangeNotifier {
     String? deviceId = await UtilityClass.getDeviceId();
 
     try {
+      // Map<String, dynamic> data = {
+      //   "SSOID": ssoIdController.text.trim(),
+      //   "MobileNo": mobileController.text.trim(),
+      //   "DepartmentId": UserData().model.value.deptID,
+      //   "UserType": "Govt",
+      //   "DistrictCode": selectedDistrict?.code != null
+      //       ? selectedDistrict!.code
+      //       : "0",
+      //   "AreaType": areaType == "Urban" ? 2 : 1,
+      //   "CityCode": areaType == "Urban" && selectedCity?.code != null
+      //       ? selectedCity!.code
+      //       : "0",
+      //   "WardCode": areaType == "Urban" && selectedWard?.code != null
+      //       ? selectedWard!.code
+      //       : "0",
+      //   "BlockCode": areaType == "Rural" && selectedBlock?.code != null
+      //       ? selectedBlock!.code
+      //       : "0",
+      //   "GPCode": areaType == "Rural" && selectedGp?.code != null
+      //       ? selectedGp!.code
+      //       : "0",
+      //   "VillageCode": areaType == "Rural" && selectedVillage?.code != null
+      //       ? selectedVillage!.code
+      //       : "0",
+      //   "OfficeName": officeNameController.text.trim(),
+      //   "AllotmentDeptId": officeIdController.text,
+      //   "OtherOfficeAllotedDept": "", //other key exist but don't send value as discussed with pankaj sir (don't create input box for other case)
+      //
+      //   "DesignationName": designationController.text.trim(),
+      //   "DeviceId": deviceId
+      // };
+
       Map<String, dynamic> data = {
         "SSOID": ssoIdController.text.trim(),
+        "AsPerAadharName": "abcd",
+        "AdministrationDepartmentName": "abcd",
+        "PrivateDepartmentID": UserData().model.value.deptID,
+        "AllotmentDeptId": departmentIdController.text.trim(),
         "MobileNo": mobileController.text.trim(),
-        "DepartmentId": UserData().model.value.deptID,
-        "UserType": "Govt",
-        "DistrictCode": selectedDistrict?.code != null
-            ? selectedDistrict!.code
-            : "0",
+        "OtherOfficeAllotedDept": "",
+        "Designation": designationController.text.trim(),
         "AreaType": areaType == "Urban" ? 2 : 1,
-        "CityCode": areaType == "Urban" && selectedCity?.code != null
-            ? selectedCity!.code
-            : "0",
-        "WardCode": areaType == "Urban" && selectedWard?.code != null
-            ? selectedWard!.code
-            : "0",
-        "BlockCode": areaType == "Rural" && selectedBlock?.code != null
-            ? selectedBlock!.code
-            : "0",
-        "GPCode": areaType == "Rural" && selectedGp?.code != null
-            ? selectedGp!.code
-            : "0",
-        "VillageCode": areaType == "Rural" && selectedVillage?.code != null
-            ? selectedVillage!.code
-            : "0",
-        "OfficeName": officeNameController.text.trim(),
-        "AllotmentDeptId": officeIdController.text,
-        "OtherOfficeAllotedDept": "", //other key exist but don't send value as discussed with pankaj sir (don't create input box for other case)
+        "UserType": "Govt",
+        "ddlDistrict": selectedDistrict?.code != null
+          ? selectedDistrict!.code
+              : "0",
+        "PrivateCityCode": "0",
+        "PrivateBlockCode": "0",
+        "PrivateGPCode": "0",
+        "PrivateWardCode": "0",
+        "PrivateVillageCode": "0",
+        "UserRequestType": ""
+        // "DeviceId": deviceId
+        //
+        // "DepartmentId": UserData().model.value.deptID,
+        //
+        // "DistrictCode": selectedDistrict?.code != null
+        //     ? selectedDistrict!.code
+        //     : "0",
+        //
+        // "CityCode": areaType == "Urban" && selectedCity?.code != null
+        //     ? selectedCity!.code
+        //     : "0",
+        // "WardCode": areaType == "Urban" && selectedWard?.code != null
+        //     ? selectedWard!.code
+        //     : "0",
+        // "BlockCode": areaType == "Rural" && selectedBlock?.code != null
+        //     ? selectedBlock!.code
+        //     : "0",
+        // "GPCode": areaType == "Rural" && selectedGp?.code != null
+        //     ? selectedGp!.code
+        //     : "0",
+        // "VillageCode": areaType == "Rural" && selectedVillage?.code != null
+        //     ? selectedVillage!.code
+        //     : "0",
+        // "OfficeName": officeNameController.text.trim(),
+        // "AllotmentDeptId": officeIdController.text,
+        // "OtherOfficeAllotedDept": "", //other key exist but don't send value as discussed with pankaj sir (don't create input box for other case)
 
-        "DesignationName": designationController.text.trim(),
-        "DeviceId": deviceId
+
+
       };
 
       /// ✅ PRINT FULL REQUEST DATA

@@ -46,59 +46,94 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    // before remember me , it is working code
-
-    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    //   final userAuthProvider = Provider.of<LoginProvider>(context, listen: false);
-    //   if (checkNullValue(UserData().model.value.username.toString()).isNotEmpty && UserData().model.value.password.toString().isNotEmpty) {
-    //     userAuthProvider.rememberMe(true);
-    //     userAuthProvider.SSOIDController.text = UserData().model.value.username.toString();
-    //     userAuthProvider.passwordController.text = UserData().model.value.password.toString();
-    //   } else {
-    //    // userAuthProvider.SSOIDController.text = "DEEPAKJANGID505364";
-    //     //userAuthProvider.passwordController.text = "Iamdk@5364";
-    //
-    //      // userAuthProvider.SSOIDController.text = "deepakmay23"; //"jjseeker123";
-    //      // userAuthProvider.passwordController.text = "KD@1230";
-    //
-    //    // userAuthProvider.SSOIDController.text = "EEMSJobFairEvent"; //eemsdevitjaipur
-    //    // userAuthProvider.passwordController.text = "EEMSJobFair@123"; //KD@1230
-    //
-    //     userAuthProvider.rememberMe(false);
-    //   }
-    // });
-
-    //for remember me changes
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      final provider = Provider.of<LoginProvider>(context, listen: false);
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final provider =
+      Provider.of<LoginProvider>(context, listen: false);
 
       final user = UserData().model.value;
 
+      // Auto login if session active
       if (user.isLogin == true) {
-        // ✅ AUTO LOGIN
         if (user.roleId == 4) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const JobSeekerDashboard()),
+            MaterialPageRoute(
+                builder: (_) => const JobSeekerDashboard()),
           );
+          return;
         }
-        // you can add employer / dept cases here also
-      } else {
-        // ✅ PREFILL ONLY
-        if (checkNullValue(user.username.toString()).isNotEmpty &&
-            user.password.toString().isNotEmpty) {
-          provider.rememberMe(true);
-          provider.SSOIDController.text = user.username.toString();
-          provider.passwordController.text = user.password.toString();
-        } else {
-          provider.rememberMe(false);
-        }
+
+        // Add employer / department navigation here
+        return;
       }
+
+      // Otherwise load remembered credentials
+      await provider.loadRememberedUser();
     });
   }
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //
+  //   // before remember me , it is working code
+  //
+  //   // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+  //   //   final userAuthProvider = Provider.of<LoginProvider>(context, listen: false);
+  //   //   if (checkNullValue(UserData().model.value.username.toString()).isNotEmpty && UserData().model.value.password.toString().isNotEmpty) {
+  //   //     userAuthProvider.rememberMe(true);
+  //   //     userAuthProvider.SSOIDController.text = UserData().model.value.username.toString();
+  //   //     userAuthProvider.passwordController.text = UserData().model.value.password.toString();
+  //   //   } else {
+  //   //    // userAuthProvider.SSOIDController.text = "DEEPAKJANGID505364";
+  //   //     //userAuthProvider.passwordController.text = "Iamdk@5364";
+  //   //
+  //   //      // userAuthProvider.SSOIDController.text = "deepakmay23"; //"jjseeker123";
+  //   //      // userAuthProvider.passwordController.text = "KD@1230";
+  //   //
+  //   //    // userAuthProvider.SSOIDController.text = "EEMSJobFairEvent"; //eemsdevitjaipur
+  //   //    // userAuthProvider.passwordController.text = "EEMSJobFair@123"; //KD@1230
+  //   //
+  //   //     userAuthProvider.rememberMe(false);
+  //   //   }
+  //   // });
+  //
+  //   //for remember me changes
+  //   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+  //     final provider = Provider.of<LoginProvider>(context, listen: false);
+  //
+  //     final user = UserData().model.value;
+  //
+  //     if (user.isLogin == true) {
+  //       // ✅ AUTO LOGIN
+  //       if (user.roleId == 4) {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(builder: (_) => const JobSeekerDashboard()),
+  //         );
+  //       }
+  //       // you can add employer / dept cases here also
+  //     } else {
+  //       // ✅ PREFILL ONLY
+  //       if (checkNullValue(user.username.toString()).isNotEmpty &&
+  //           user.password.toString().isNotEmpty) {
+  //         provider.rememberMe(true);
+  //         provider.SSOIDController.text = user.username.toString();
+  //         provider.passwordController.text = user.password.toString();
+  //       } else {
+  //         provider.rememberMe(false);
+  //       }
+  //     }
+  //   });
+  //
+  //   Future.microtask(() {
+  //     Provider.of<LoginProvider>(context, listen: false)
+  //         .loadRememberedUser();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

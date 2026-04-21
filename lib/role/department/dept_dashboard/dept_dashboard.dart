@@ -10,6 +10,7 @@ import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/right_to_left_route.dart';
+import '../../../utils/user_new.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
@@ -46,27 +47,35 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           actions: [
             IconButton(
               icon: const Icon(Icons.logout, color: Colors.black),
-              onPressed: () {
+              onPressed: () async {
                 showLogoutDialog(
                   context,
                   "Logout",
                   "Are you sure want to Logout ?",
                   "Thank you and see you again!",
-                      (value) {
+                      (value) async {
                     if (value.toString() == "success") {
-                      Provider.of<DepartmentDashboardProvider>(context, listen: false).reset();
+                     // Provider.of<DepartmentDashboardProvider>(context, listen: false).reset();
 
                       final pref = AppSharedPref();
-                      pref.save('UserData', '');
-                      pref.remove('UserData');
+                      // Clear login session only
+                      UserData().model.value.isLogin = false;
+                      UserData().model.value.userId = null;
+                      await pref.remove('UserData');
 
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                          const LoginScreen(),
-                        ),
-                            (route) => false, // Clears all previous routes
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                            (route) => false,
                       );
+
+                      // Navigator.of(context).pushAndRemoveUntil(
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) =>
+                      //     const LoginScreen(),
+                      //   ),
+                      //       (route) => false, // Clears all previous routes
+                      // );
                     }
                   },
                 );

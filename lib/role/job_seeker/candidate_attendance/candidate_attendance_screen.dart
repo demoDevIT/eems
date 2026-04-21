@@ -77,11 +77,11 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
         return false;
       },
       child: Scaffold(
-        drawer: _buildSideDrawer(), // ✅ KEEP drawer
-
+        //drawer: _buildSideDrawer(), // ✅ KEEP drawer
+        backgroundColor: const Color(0xFFF5F6FA),
         appBar: AppBar(
           title: const Text(
-            "Dashboard",
+            "Attendance",
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -90,7 +90,13 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
+          //iconTheme: const IconThemeData(color: Colors.black),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
 
         body: SingleChildScrollView(
@@ -102,29 +108,29 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
                 Row(
                   children: [
                     /// Scan QR
-                    Expanded(
-                      child: _actionButton(
-                        title: "Scan QR",
-                        isSelected: false,
-                        backgroundColor: Colors.white, // ✅ white color
-                        textColor: kViewAllColor,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            RightToLeftRoute(
-                              page: const QRScannerScreen(),
-                              duration: const Duration(milliseconds: 500),
-                              startOffset: const Offset(-1.0, 0.0),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 8),
+                    // Expanded(
+                    //   child: _actionButton(
+                    //     title: "Scan QR",
+                    //     isSelected: false,
+                    //     backgroundColor: Colors.white, // ✅ white color
+                    //     textColor: kViewAllColor,
+                    //     onTap: () {
+                    //       Navigator.of(context).push(
+                    //         RightToLeftRoute(
+                    //           page: const QRScannerScreen(),
+                    //           duration: const Duration(milliseconds: 500),
+                    //           startOffset: const Offset(-1.0, 0.0),
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    // const SizedBox(width: 8),
 
                     /// Event Registration No
                     Expanded(
-                      child: _actionButton(
-                        title: "Event Reg. No.",
+                      child: _toggleButton(
+                        title: "#  Event Reg. No.",
                         isSelected: _searchType == AttendanceSearchType.registration,
                         onTap: () {
                           _regFocusNode.unfocus();
@@ -132,20 +138,17 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
                           setState(() {
                             _searchType = AttendanceSearchType.registration;
                             _showUserDetails = false;
-
-                            // ✅ RESET INPUTS
                             _mobileController.clear();
                             _regController.clear();
                           });
                         },
                       ),
                     ),
-                    const SizedBox(width: 8),
-
-                    /// Mobile Number
+                    const SizedBox(width: 10),
                     Expanded(
-                      child: _actionButton(
+                      child: _toggleButton(
                         title: "Mobile No.",
+                        icon: "assets/icons/mobIcon.svg",
                         isSelected: _searchType == AttendanceSearchType.mobile,
                         onTap: () {
                           _regFocusNode.unfocus();
@@ -153,8 +156,6 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
                           setState(() {
                             _searchType = AttendanceSearchType.mobile;
                             _showUserDetails = false;
-
-                            // ✅ RESET INPUTS
                             _regController.clear();
                             _mobileController.clear();
                           });
@@ -213,6 +214,47 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
     );
   }
 
+  Widget _toggleButton({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+    String? icon, // ✅ NEW
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 48,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: isSelected ? kViewAllColor : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...[
+              SvgPicture.asset(
+                icon,
+                height: 16,
+                width: 16,
+                color: isSelected ? Colors.white : Colors.black54, // ✅ dynamic color
+              ),
+              const SizedBox(width: 6),
+            ],
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+                color: isSelected ? Colors.white : Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _actionButton({
     required String title,
     required VoidCallback onTap,
@@ -258,12 +300,12 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
             overflow: TextOverflow.ellipsis,
           ),
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 14, // ⭐ increases height
-            ),
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
             ),
           ),
           items: provider.eventList.map((event) {
@@ -322,22 +364,48 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
     required VoidCallback onSubmit,
     FocusNode? focusNode,
   }) {
-    return Column(
+    return Row(
       children: [
-        TextField(
-          controller: controller,
-          focusNode: focusNode,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        Expanded(
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              keyboardType: keyboardType,
+              decoration: InputDecoration(
+                hintText: hint,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 12),
-        ElevatedButton(
-          onPressed: onSubmit,
-          child: const Text("Search"),
-        ),
+        const SizedBox(width: 10),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: kViewAllColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kViewAllColor,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: onSubmit,
+            icon: const Icon(Icons.search, color: Colors.white),
+            label: const Text("Search"),
+          ),
+        )
       ],
     );
   }
@@ -428,22 +496,70 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
 
   Widget _userDetailsCard() {
     final provider = Provider.of<CandidateAttendanceProvider>(context);
-
     final user = provider.jobSeeker!;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _detailRow("Name", user.jobSeekerName),
-            _detailRow("Registration Date", user.registrationDate),
-            _detailRow("Highest Qualification", user.higQualification),
-            _detailRow("Mobile Number", user.mobileNo),
-            _detailRow("Event Reg. No.", user.registrationNo),
 
-            const SizedBox(height: 16),
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white, // ✅ FIXED
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 22,
+                backgroundColor: kViewAllColor,
+                child: Text(
+                  user.jobSeekerName[0],
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.jobSeekerName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16)),
+                  const Text("Registered Attendee",
+                      style: TextStyle(color: Colors.grey)),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(height: 16),
 
-            ElevatedButton(
+          _infoTile("assets/icons/reggg.svg", "Registration Date", user.registrationDate),
+          _divider(),
+          _infoTile("assets/icons/graduatIcon.svg", "Highest Qualification", user.higQualification),
+          _divider(),
+          _infoTile("assets/icons/callIcon.svg", "Mobile Number", user.mobileNo),
+          _divider(),
+          _infoTile("assets/icons/eventRegIcon.svg", "Event Reg. No.", user.registrationNo),
+
+          const SizedBox(height: 16),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kViewAllColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onPressed: () {
                 final provider =
                 Provider.of<CandidateAttendanceProvider>(context, listen: false);
@@ -455,18 +571,74 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
 
                 provider.markAttendance(
                   context,
-                  eventId: provider.selectedEvent!.eventId, // ✅ DROPDOWN VALUE
+                  eventId: provider.selectedEvent!.eventId,
                 );
               },
-
-              child: const Text("Mark Attendance"),
-            )
-          ],
-        ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Mark Attendance",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
 
+  Widget _infoTile(String iconPath, String title, String value) {
+    return Row(
+      children: [
+        SvgPicture.asset(
+          iconPath,
+          height: 18,
+          width: 18,
+          color: kViewAllColor, // same blue color as UI
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _divider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Divider(height: 1, color: Colors.grey),
+    );
+  }
 
   Widget _detailRow(String title, String value) {
     return Padding(
@@ -725,19 +897,28 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
               fit: BoxFit.cover,
             ),
             title: Text(AppLocalizations.of(context)!.logout,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) {
+              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
-                  pref.save('UserData', '');
-                  pref.remove('UserData');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                      const LoginScreen(),
-                    ),
+                  // Clear login session only
+                  UserData().model.value.isLogin = false;
+                  UserData().model.value.userId = null;
+                  await pref.remove('UserData');
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
                   );
+
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //     const LoginScreen(),
+                  //   ),
+                  // );
                 }
               },
               );

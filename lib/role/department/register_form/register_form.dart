@@ -70,6 +70,52 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// ===== SSO ID (DISABLED) =====
+                _label("Officer's SSO ID*"),
+                _field(
+                  provider.ssoIdController,
+                  "SSO ID",
+                  isEnabled: false,
+                ),
+
+                /// ===== SSO ID (DISABLED) =====
+                _label("Officer's Name*"),
+                _field(
+                  provider.ssoIdController,
+                  "SSO ID",
+                  isEnabled: false,
+                ),
+
+                /// ===== SSO ID (DISABLED) =====
+                _label("Name As Per Aadhaar*"),
+                _field(
+                  provider.ssoIdController,
+                  "SSO ID",
+                  isEnabled: false,
+                ),
+
+                /// ===== MOBILE =====
+                _label("Mobile No*"),
+                _field(
+                  provider.mobileController,
+                  "Enter mobile number",
+                  keyboardType: TextInputType.phone,
+                ),
+
+                /// ===== DESIGNATION =====
+                _label("Designation As Per SSO*"),
+                _field(
+                  provider.designationController,
+                  "Enter designation",
+                ),
+
+                /// ===== DESIGNATION =====
+                _label("Administration Department*"),
+                _field(
+                  provider.designationController,
+                  "Enter designation",
+                ),
+
                 /// ===== DISTRICT =====
                 _label("District *"),
                 provider.isDistrictLoading
@@ -113,156 +159,156 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         },
                       ),
 
-                /// ===== AREA =====
-                _label("Area *"),
-                Row(
-                  children: [
-                    Radio<String>(
-                      value: 'Urban',
-                      groupValue: provider.areaType,
-                      onChanged: provider.setArea,
-                    ),
-                    const Text("Urban"),
-                    const SizedBox(width: 20),
-                    Radio<String>(
-                      value: 'Rural',
-                      groupValue: provider.areaType,
-                      onChanged: provider.setArea,
-                    ),
-                    const Text("Rural"),
-                  ],
-                ),
-
-                if (provider.areaType == "Urban") ...[
-                  /// ===== CITY =====
-                  _label("City *"),
-                  provider.isCityLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : buildDropdownWithBorderFieldOnlyThisPage<CityData>(
-                          items: provider.cityList,
-                          controller: provider.cityNameController,
-                          idController: provider.cityIdController,
-                          hintText: "--Select City--",
-                          height: 50,
-                          selectedValue: provider.selectedCity,
-                          getLabel: (e) => e.nameEng ?? "",
-                          onChanged: (value) {
-                            provider.selectedCity = value;
-                            provider.cityNameController.text =
-                                value?.nameEng ?? "";
-                            provider.cityIdController.text =
-                                value?.iD?.toString() ?? "";
-
-                            /// 🔴 CLEAR WARD
-                            provider.selectedWard = null;
-                            provider.wardNameController.clear();
-                            provider.wardIdController.clear();
-                            provider.wardList.clear();
-
-                            /// 🔵 LOAD WARD USING CITY CODE
-                            if (value?.code != null) {
-                              provider.getWardApi(context, value!.code!);
-                            }
-
-                            provider.notifyListeners();
-                          },
-                        ),
-
-                  /// ===== WARD =====
-                  _label("Ward"),
-
-                  provider.isWardLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : buildDropdownWithBorderFieldOnlyThisPage<WardData>(
-                          items: provider.wardList,
-                          controller: provider.wardNameController,
-                          idController: provider.wardIdController,
-                          hintText: "--Select Ward--",
-                          height: 50,
-                          selectedValue: provider.selectedWard,
-                          getLabel: (e) => e.nameEng ?? "",
-                          onChanged: (value) {
-                            provider.selectedWard = value;
-                            provider.wardNameController.text =
-                                value?.nameEng ?? "";
-                            provider.wardIdController.text =
-                                value?.iD?.toString() ?? "";
-                            provider.notifyListeners();
-                          },
-                        ),
-                ],
-
-                if (provider.areaType == "Rural") ...[
-
-                  /// ===== BLOCK =====
-                  _label("Block *"),
-                  provider.isBlockLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : buildDropdownWithBorderFieldOnlyThisPage<BlockData>(
-                    items: provider.blockList,
-                    controller: provider.blockNameController,
-                    idController: provider.blockIdController,
-                    hintText: "--Select Block--",
-                    height: 50,
-                    selectedValue: provider.selectedBlock,
-                    getLabel: (e) => e.nameEng ?? "",
-                    onChanged: (value) {
-                      provider.selectedBlock = value;
-                      provider.blockNameController.text = value?.nameEng ?? "";
-                      provider.blockIdController.text = value?.iD.toString() ?? "";
-
-                      provider.getGpApi(context, value!.code!);
-                      provider.notifyListeners();
-                    },
-                  ),
-
-                  /// ===== GRAM PANCHAYAT =====
-                  _label("Gram Panchayat *"),
-                  provider.isGpLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : buildDropdownWithBorderFieldOnlyThisPage<GramPanchayatData>(
-                    items: provider.gpList,
-                    controller: provider.gpNameController,
-                    idController: provider.gpIdController,
-                    hintText: "--Select Gram Panchayat--",
-                    height: 50,
-                    selectedValue: provider.selectedGp,
-                    getLabel: (e) => e.nameEng ?? "",
-                    onChanged: (value) {
-                      provider.selectedGp = value;
-                      provider.gpNameController.text = value?.nameEng ?? "";
-                      provider.gpIdController.text = value?.iD.toString() ?? "";
-
-                      provider.getVillageApi(context, value!.code!);
-                      provider.notifyListeners();
-                    },
-                  ),
-
-                  /// ===== VILLAGE =====
-                  _label("Village *"),
-                  provider.isVillageLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : buildDropdownWithBorderFieldOnlyThisPage<VillageData>(
-                    items: provider.villageList,
-                    controller: provider.villageNameController,
-                    idController: provider.villageIdController,
-                    hintText: "--Select Village--",
-                    height: 50,
-                    selectedValue: provider.selectedVillage,
-                    getLabel: (e) => e.nameEng ?? "",
-                    onChanged: (value) {
-                      provider.selectedVillage = value;
-                      provider.villageNameController.text =
-                          value?.nameEng ?? "";
-                      provider.villageIdController.text =
-                          value?.iD.toString() ?? "";
-                      provider.notifyListeners();
-                    },
-                  ),
-                ],
+                // /// ===== AREA =====
+                // _label("Area *"),
+                // Row(
+                //   children: [
+                //     Radio<String>(
+                //       value: 'Urban',
+                //       groupValue: provider.areaType,
+                //       onChanged: provider.setArea,
+                //     ),
+                //     const Text("Urban"),
+                //     const SizedBox(width: 20),
+                //     Radio<String>(
+                //       value: 'Rural',
+                //       groupValue: provider.areaType,
+                //       onChanged: provider.setArea,
+                //     ),
+                //     const Text("Rural"),
+                //   ],
+                // ),
+                //
+                // if (provider.areaType == "Urban") ...[
+                //   /// ===== CITY =====
+                //   _label("City *"),
+                //   provider.isCityLoading
+                //       ? const Center(child: CircularProgressIndicator())
+                //       : buildDropdownWithBorderFieldOnlyThisPage<CityData>(
+                //           items: provider.cityList,
+                //           controller: provider.cityNameController,
+                //           idController: provider.cityIdController,
+                //           hintText: "--Select City--",
+                //           height: 50,
+                //           selectedValue: provider.selectedCity,
+                //           getLabel: (e) => e.nameEng ?? "",
+                //           onChanged: (value) {
+                //             provider.selectedCity = value;
+                //             provider.cityNameController.text =
+                //                 value?.nameEng ?? "";
+                //             provider.cityIdController.text =
+                //                 value?.iD?.toString() ?? "";
+                //
+                //             /// 🔴 CLEAR WARD
+                //             provider.selectedWard = null;
+                //             provider.wardNameController.clear();
+                //             provider.wardIdController.clear();
+                //             provider.wardList.clear();
+                //
+                //             /// 🔵 LOAD WARD USING CITY CODE
+                //             if (value?.code != null) {
+                //               provider.getWardApi(context, value!.code!);
+                //             }
+                //
+                //             provider.notifyListeners();
+                //           },
+                //         ),
+                //
+                //   /// ===== WARD =====
+                //   _label("Ward"),
+                //
+                //   provider.isWardLoading
+                //       ? const Center(child: CircularProgressIndicator())
+                //       : buildDropdownWithBorderFieldOnlyThisPage<WardData>(
+                //           items: provider.wardList,
+                //           controller: provider.wardNameController,
+                //           idController: provider.wardIdController,
+                //           hintText: "--Select Ward--",
+                //           height: 50,
+                //           selectedValue: provider.selectedWard,
+                //           getLabel: (e) => e.nameEng ?? "",
+                //           onChanged: (value) {
+                //             provider.selectedWard = value;
+                //             provider.wardNameController.text =
+                //                 value?.nameEng ?? "";
+                //             provider.wardIdController.text =
+                //                 value?.iD?.toString() ?? "";
+                //             provider.notifyListeners();
+                //           },
+                //         ),
+                // ],
+                //
+                // if (provider.areaType == "Rural") ...[
+                //
+                //   /// ===== BLOCK =====
+                //   _label("Block *"),
+                //   provider.isBlockLoading
+                //       ? const Center(child: CircularProgressIndicator())
+                //       : buildDropdownWithBorderFieldOnlyThisPage<BlockData>(
+                //     items: provider.blockList,
+                //     controller: provider.blockNameController,
+                //     idController: provider.blockIdController,
+                //     hintText: "--Select Block--",
+                //     height: 50,
+                //     selectedValue: provider.selectedBlock,
+                //     getLabel: (e) => e.nameEng ?? "",
+                //     onChanged: (value) {
+                //       provider.selectedBlock = value;
+                //       provider.blockNameController.text = value?.nameEng ?? "";
+                //       provider.blockIdController.text = value?.iD.toString() ?? "";
+                //
+                //       provider.getGpApi(context, value!.code!);
+                //       provider.notifyListeners();
+                //     },
+                //   ),
+                //
+                //   /// ===== GRAM PANCHAYAT =====
+                //   _label("Gram Panchayat *"),
+                //   provider.isGpLoading
+                //       ? const Center(child: CircularProgressIndicator())
+                //       : buildDropdownWithBorderFieldOnlyThisPage<GramPanchayatData>(
+                //     items: provider.gpList,
+                //     controller: provider.gpNameController,
+                //     idController: provider.gpIdController,
+                //     hintText: "--Select Gram Panchayat--",
+                //     height: 50,
+                //     selectedValue: provider.selectedGp,
+                //     getLabel: (e) => e.nameEng ?? "",
+                //     onChanged: (value) {
+                //       provider.selectedGp = value;
+                //       provider.gpNameController.text = value?.nameEng ?? "";
+                //       provider.gpIdController.text = value?.iD.toString() ?? "";
+                //
+                //       provider.getVillageApi(context, value!.code!);
+                //       provider.notifyListeners();
+                //     },
+                //   ),
+                //
+                //   /// ===== VILLAGE =====
+                //   _label("Village *"),
+                //   provider.isVillageLoading
+                //       ? const Center(child: CircularProgressIndicator())
+                //       : buildDropdownWithBorderFieldOnlyThisPage<VillageData>(
+                //     items: provider.villageList,
+                //     controller: provider.villageNameController,
+                //     idController: provider.villageIdController,
+                //     hintText: "--Select Village--",
+                //     height: 50,
+                //     selectedValue: provider.selectedVillage,
+                //     getLabel: (e) => e.nameEng ?? "",
+                //     onChanged: (value) {
+                //       provider.selectedVillage = value;
+                //       provider.villageNameController.text =
+                //           value?.nameEng ?? "";
+                //       provider.villageIdController.text =
+                //           value?.iD.toString() ?? "";
+                //       provider.notifyListeners();
+                //     },
+                //   ),
+                // ],
 
                 /// ===== DEPARTMENT NAME =====
-                _label("Department Name"),
+                _label("Department*"),
                 provider.isDepartmentLoading
                     ? const Center(child: CircularProgressIndicator())
                     : buildDropdownWithBorderFieldOnlyThisPage<DepartmentData>(
@@ -284,7 +330,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                       ),
 
                 /// ===== Office NAME =====
-                _label("Office Name"),
+                _label("Internship Office Name*"),
                 provider.isOfficeLoading
                     ? const Center(child: CircularProgressIndicator())
                     : buildDropdownWithBorderFieldOnlyThisPage<OfficeData>(
@@ -309,28 +355,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 // _label("Office Name"),
                 // _field(provider.officeNameController, "Enter office name"),
 
-                /// ===== SSO ID (DISABLED) =====
-                _label("SSO ID"),
-                _field(
-                  provider.ssoIdController,
-                  "SSO ID",
-                  isEnabled: false,
-                ),
 
-                /// ===== MOBILE =====
-                _label("Mobile No."),
-                _field(
-                  provider.mobileController,
-                  "Enter mobile number",
-                  keyboardType: TextInputType.phone,
-                ),
-
-                /// ===== DESIGNATION =====
-                _label("Designation"),
-                _field(
-                  provider.designationController,
-                  "Enter designation",
-                ),
 
                 const SizedBox(height: 30),
 
@@ -375,11 +400,34 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
 
   /// ===== LABEL =====
   Widget _label(String text) {
+    final bool hasStar = text.contains('*');
+    final String cleanText = text.replaceAll('*', '');
+
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 6),
-      child: Text(
-        text,
-        style: Styles.mediumTextStyle(size: 14, color: kBlackColor),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: cleanText,
+              style: Styles.mediumTextStyle(
+                size: 14,
+                color: kBlackColor,
+              ).copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (hasStar)
+              const TextSpan(
+                text: ' *',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

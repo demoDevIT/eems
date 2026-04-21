@@ -22,7 +22,9 @@ import '../../../department/register_form/provider/register_form_provider.dart';
 import '../../../department/register_form/register_form.dart';
 import '../../../employer/emp_profile/modal/emp_info_modal.dart';
 import '../../candidate_attendance/candidate_attendance_screen.dart';
+import '../../candidate_attendance/dashboard_screen.dart';
 import '../../candidate_attendance/provider/candidate_attendance_provider.dart';
+import '../../candidate_attendance/provider/dashboard_provider.dart';
 import '../../jobseekerdashboard/job_seeker_dashboard.dart';
 import '../../roleselectionscreen/roleselection_screen.dart';
 import '../modal/jobseeker_basicInfo_modal.dart';
@@ -166,6 +168,7 @@ class LoginProvider with ChangeNotifier {
                 UserData().model.value.districtCode = sm.data!.districtCode;
                 UserData().model.value.deptID = sm.data!.deptID;
                 UserData().model.value.internshipDeptTypeID = sm.data!.internshipDeptTypeID;
+                await saveRememberMeData();
                 getDeptBasicDetails(
                     context, sm.data!.userID.toString(), sm.data!.roleID,
                     ssoId);
@@ -197,26 +200,30 @@ class LoginProvider with ChangeNotifier {
                   // getEmpBasicDetailsApi(context,"2261606",7);
                   // return null;
                   if (sm.data!.roleID == 24) { //earlier it was role 6
-                    print("Redirecting to CandidateAttendanceScreen");
+                    // print("Redirecting to CandidateAttendanceScreen");
+                    print("Redirecting to DashboardScreen");
+                    await saveRememberMeData();
                     Navigator.of(context).push(
                       RightToLeftRoute(
                         page: ChangeNotifierProvider(
                           create: (_) =>
-                              CandidateAttendanceProvider(
+                              DashboardProvider(
                                 commonRepo: commonRepo, // ✅ FIX
                               ),
-                          child: const CandidateAttendanceScreen(),
+                          child: const DashboardScreen(),
                         ),
                         duration: const Duration(milliseconds: 500),
                         startOffset: const Offset(-1.0, 0.0),
                       ),
                     );
                   } else if (sm.data!.roleID == 4) { //jobseeker
+                    await saveRememberMeData();
                     getBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);
                   } else if (sm.data!.roleID == 7) { //employer
                     print("getEmpBasicDetailsApi userID => ${sm.data!.userID}");
                     print("getEmpBasicDetailsApi roleID => ${sm.data!.roleID}");
+                    await saveRememberMeData();
                     getEmpBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);
                   } else {
@@ -884,12 +891,38 @@ class LoginProvider with ChangeNotifier {
   }
 
 
-  rememberMe(bool? value) {
+  void rememberMe(bool? value) {
     isChecked = value ?? false;
     notifyListeners();
     // You can implement any action here based on checkbox change
   }
 
+  Future<void> loadRememberedUser() async {
+    final pref = AppSharedPref();
 
+    final data = await pref.read('RememberUser');
 
+    if (data != '' && data != null) {
+      isChecked = true;
+      _SSOIDController.text = data['username'] ?? '';
+      _passwordController.text = data['password'] ?? '';
+    } else {
+      isChecked = false;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> saveRememberMeData() async {
+    final pref = AppSharedPref();
+
+    if (isChecked) {
+      await pref.save('RememberUser', {
+        "username": _SSOIDController.text.trim(),
+        "password": _passwordController.text.trim(),
+      });
+    } else {
+      await pref.remove('RememberUser');
+    }
+  }
 }

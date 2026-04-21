@@ -387,19 +387,28 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               AppLocalizations.of(context)!.logout,
               style: Styles.mediumTextStyle(size: 14),
             ),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) {
+              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
-                  pref.save('UserData', '');
-                  pref.remove('UserData');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                      const LoginScreen(),
-                    ),
+                  // Clear login session only
+                  UserData().model.value.isLogin = false;
+                  UserData().model.value.userId = null;
+                  await pref.remove('UserData');
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
                   );
+
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //     const LoginScreen(),
+                  //   ),
+                  // );
                 }
               },
               );

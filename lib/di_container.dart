@@ -35,6 +35,7 @@ import 'package:rajemployment/role/job_seeker/addworkexperience/provider/add_wor
 import 'package:rajemployment/role/job_seeker/applied_jobs/provider/applied_jobs_provider.dart';
 import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_details_provider.dart' show BasicDetailsProvider;
 import 'package:rajemployment/role/job_seeker/camera/provider/comera_provider.dart';
+import 'package:rajemployment/role/job_seeker/candidate_attendance/provider/candidate_attendance_provider.dart';
 import 'package:rajemployment/role/job_seeker/cv_builder/provider/cv_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/departmental_schemes/provider/mysy_pending_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/educationdetail/provider/education_details_provider.dart';
@@ -163,6 +164,7 @@ Future<void> init() async {
   sl.registerFactory(() => JobApplicationProvider(commonRepo: sl()));
   sl.registerFactory(() => EmpQRScanProvider(commonRepo: sl()));
   sl.registerFactory(() => AboutAppProvider(commonRepo: sl()));
+  sl.registerFactory(() => CandidateAttendanceProvider(commonRepo: sl()));
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
   sl.registerFactory(() => ChatProvider(commonRepo: sl()));
