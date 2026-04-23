@@ -7,6 +7,7 @@ import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
+import '../../../../constants/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
@@ -351,8 +352,8 @@ class GrievanceListProvider extends ChangeNotifier {
 
     if (fileName == null || fileName.isEmpty) return;
 
-    String fileUrl =
-        "https://eems.devitsandbox.com/mobileapi/Uploads/$fileName";
+   // String fileUrl = "https://eems.devitsandbox.com/mobileapi/Uploads/$fileName";
+    String fileUrl = "${Constants.uploadBaseUrl}$fileName";
 
     showDialog(
       context: context,

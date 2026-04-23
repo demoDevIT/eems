@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
+import 'package:rajemployment/role/counselor/role/role_screen.dart';
 import 'package:rajemployment/role/job_seeker/roleselectionscreen/provider/role_selection_provider.dart';
 import 'package:rajemployment/utils/gradient_scaffold.dart';
 import 'package:rajemployment/utils/size_config.dart';
@@ -86,7 +87,7 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID,)),
+                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID,flowType: UserFlowType.jobSeeker)),
                             );
                           },
                         ),
@@ -103,14 +104,20 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                             );
                           },
                         ),
-                        SizedBox(height: SizeConfig.screenHeight! * 0.40),
-                        // roleCard(
-                        //   title: "Counselor",
-                        //   description:
-                        //   "A counselor helps job seekers by guiding them in their career paths.",
-                        //   imagePath: "assets/images/counselor.png",
-                        //   onTap: () {},
-                        // ),
+                        SizedBox(height: SizeConfig.screenHeight! * 0.01),
+                        roleCard(
+                          title: "Counselor",
+                          description:
+                          "A counselor helps job seekers by guiding them in their career paths.",
+                          imagePath: "assets/images/counselor.png",
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  RoleScreen()),
+                            );
+                          },
+                        ),
+                        SizedBox(height: SizeConfig.screenHeight! * 0.08),
                       ],
                     ),
                   ),

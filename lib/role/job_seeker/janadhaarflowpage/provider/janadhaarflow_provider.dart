@@ -11,6 +11,7 @@ import '../../../../repo/common_repo.dart';
 import '../../../../services/HttpService.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
+import '../../../counselor/counsellor_otr/counsellor_otr_screen.dart';
 import '../../otr_form/modal/fetch_jan_adhar_modal.dart';
 import '../../otr_form/otr_form.dart';
 import '../janadhaarflowpage_screen.dart';
@@ -22,13 +23,13 @@ class JanAadhaarFlowProvider with ChangeNotifier {
 
   JanAadhaarFlowProvider({required this.commonRepo});
 
-  final TextEditingController janAadhaarController =
-      TextEditingController(text: "1478552555");
+   final TextEditingController janAadhaarController = TextEditingController(text: "1478552555");
+  //final TextEditingController janAadhaarController = TextEditingController();
   final FocusNode janAadhaarFocusNode = FocusNode();
 
   FlowStep currentStep = FlowStep.enterJanAadhaar;
-  final TextEditingController otpController =
-      TextEditingController(text: "9464");
+  final TextEditingController otpController = TextEditingController(text: "9464");
+  //final TextEditingController otpController = TextEditingController();
 
   List<FetchJanAdharResponseData> feachJanAadhaarDataList = [];
 
@@ -76,7 +77,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
           final sm = FetchMemberListModal.fromJson(responseData);
 
           notifyListeners();
-          // if (sm.state == 200) { //test with live
+           //if (sm.state == 200) { //test with live
             print("a2");
             if (sm.state == 1) { //test with sandbox
             fetchMemberList.clear();
@@ -164,8 +165,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             responseData = jsonDecode(responseData);
           }
           final sm = GenerateOTPModal.fromJson(responseData);
-          // if (sm.state == 400) {
-          if (sm.state == 2) {
+          // if (sm.state == 400) { //live
+          if (sm.state == 2) { //sandbox
             print("b2");
             tid = sm.data!.response!.tid.toString();
             currentStep = FlowStep.otp;
@@ -213,6 +214,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String otp,
       String ssoId,
       String userID,
+      UserFlowType flowType
       ) async {
     // Simulate network delay
     await Future.delayed(Duration(seconds: 1));
@@ -312,18 +314,46 @@ class JanAadhaarFlowProvider with ChangeNotifier {
     feachJanAadhaarDataList.addAll(sm.data!.response!.data!);
 
     // Navigate to OTR form screen
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => OtrFormScreen(
-          feachJanAadhaarDataList: feachJanAadhaarDataList,
-          janMemberId: memberId,
-          ssoId: ssoId,
-          userID: userID,
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => OtrFormScreen(
+    //       feachJanAadhaarDataList: feachJanAadhaarDataList,
+    //       janMemberId: memberId,
+    //       ssoId: ssoId,
+    //       userID: userID,
+    //     ),
+    //   ),
+    //       (route) => false,
+    // );
+
+    if (flowType == UserFlowType.jobSeeker) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => OtrFormScreen(
+            feachJanAadhaarDataList: feachJanAadhaarDataList,
+            janMemberId: memberId,
+            ssoId: ssoId,
+            userID: userID,
+          ),
         ),
-      ),
-          (route) => false,
-    );
+            (route) => false,
+      );
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CounselorOtrScreen( // ✅ YOUR NEW SCREEN
+            feachJanAadhaarDataList: feachJanAadhaarDataList,
+            janMemberId: memberId,
+            ssoId: ssoId,
+            userID: userID,
+          ),
+        ),
+            (route) => false,
+      );
+    }
 
     notifyListeners();
   }
@@ -335,7 +365,9 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String tid,
       String otp,
       String ssoId,
-      String userID) async {
+      String userID,
+      UserFlowType flowType
+      ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -362,20 +394,34 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             responseData = jsonDecode(responseData);
           }
           final sm = FetchJanAdharModal.fromJson(responseData);
-          // if (sm.state == 200) {
-          if (sm.state == 1) {
+          // if (sm.state == 200) { //live
+          if (sm.state == 1) { //sandbox
             print("oppopopo");
             feachJanAadhaarDataList.clear();
             feachJanAadhaarDataList.addAll(sm.data!.response!.data!);
-            Navigator.pushAndRemoveUntil<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => OtrFormScreen(
-                        feachJanAadhaarDataList: feachJanAadhaarDataList,
-                        janMemberId: memberId,
-                        ssoId: ssoId,
-                        userID: userID)),
-                (route) => false);
+            if (flowType == UserFlowType.jobSeeker) {
+              Navigator.pushAndRemoveUntil<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          OtrFormScreen(
+                              feachJanAadhaarDataList: feachJanAadhaarDataList,
+                              janMemberId: memberId,
+                              ssoId: ssoId,
+                              userID: userID)),
+                      (route) => false);
+            } else{
+              Navigator.pushAndRemoveUntil<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          CounselorOtrScreen(
+                              feachJanAadhaarDataList: feachJanAadhaarDataList,
+                              janMemberId: memberId,
+                              ssoId: ssoId,
+                              userID: userID)),
+                      (route) => false);
+            }
             notifyListeners();
             return sm;
           } else {
@@ -392,7 +438,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             return smmm;
           }
         } else {
-          addSaticData(context, memberId, ssoId, userID);
+          addSaticData(context, memberId, ssoId, userID, flowType);
 
           notifyListeners();
           return FetchJanAdharModal(
@@ -413,7 +459,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
   }
 
   addSaticData(
-      BuildContext context, String memberId, String ssoId, String userID) {
+      BuildContext context, String memberId, String ssoId, String userID, UserFlowType flowType) {
     feachJanAadhaarDataList.clear();
     feachJanAadhaarDataList.add(
       FetchJanAdharResponseData(
@@ -473,15 +519,29 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       ),
     );
 
-    Navigator.pushAndRemoveUntil<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) => OtrFormScreen(
-                feachJanAadhaarDataList: feachJanAadhaarDataList,
-                janMemberId: memberId,
-                ssoId: ssoId,
-                userID: userID)),
-        (route) => false);
+    if (flowType == UserFlowType.jobSeeker) {
+      Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) =>
+                  OtrFormScreen(
+                      feachJanAadhaarDataList: feachJanAadhaarDataList,
+                      janMemberId: memberId,
+                      ssoId: ssoId,
+                      userID: userID)),
+              (route) => false);
+    }else{
+      Navigator.pushAndRemoveUntil<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) =>
+                  CounselorOtrScreen(
+                      feachJanAadhaarDataList: feachJanAadhaarDataList,
+                      janMemberId: memberId,
+                      ssoId: ssoId,
+                      userID: userID)),
+              (route) => false);
+    }
   }
 
   void clearData() {

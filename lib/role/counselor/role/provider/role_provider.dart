@@ -10,8 +10,30 @@ class RoleProvider extends ChangeNotifier {
 
   RoleProvider({required this.commonRepo});
 
+  String selectedFlow = ""; // "", "gov", "private"
 
+  bool? isRajasthanResident; // for radio
 
+  void selectGovernment() {
+    selectedFlow = "gov";
+    notifyListeners();
+  }
+
+  void selectPrivate() {
+    selectedFlow = "private";
+    notifyListeners();
+  }
+
+  void reset() {
+    selectedFlow = "";
+    isRajasthanResident = null;
+    notifyListeners();
+  }
+
+  void setResident(bool value) {
+    isRajasthanResident = value;
+    notifyListeners();
+  }
 
   @override
   void dispose() {

@@ -38,8 +38,8 @@ class CvListProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      String url =
-          "https://eems.devitsandbox.com/mobileapi/api/CvTemplate/CvBuilderDownloadByUserid";
+     // String url = "https://eems.devitsandbox.com/mobileapi/api/CvTemplate/CvBuilderDownloadByUserid";
+      String url = "CvTemplate/CvBuilderDownloadByUserid";
 
       Map<String, dynamic> body = {
         "UserID": UserData().model.value.userId.toString() //8253

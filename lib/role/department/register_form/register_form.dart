@@ -17,10 +17,14 @@ import 'modal/city_modal.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   final String ssoId;
+  final String displayName;
+  final String mobileNo;
 
   const RegisterFormScreen({
     super.key,
     required this.ssoId,
+    required this.displayName,
+    required this.mobileNo
   });
 
   @override
@@ -34,11 +38,11 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     final provider =
     Provider.of<RegisterFormProvider>(context, listen: false);
 
-    provider.init(widget.ssoId);   // ✅ dynamic
+    provider.init(widget.ssoId, widget.displayName, widget.mobileNo);   // ✅ dynamic
     SchedulerBinding.instance.addPostFrameCallback((_) {
       provider.getDistrictApi(context, 6);
       provider.getDepartmentApi(context);
-      provider.getOfficeApi(context);
+      // provider.getOfficeApi(context);
     });
   }
 
@@ -81,17 +85,17 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 /// ===== SSO ID (DISABLED) =====
                 _label("Officer's Name*"),
                 _field(
-                  provider.ssoIdController,
-                  "SSO ID",
+                  provider.displayNameController,
+                  "Officer's Name",
                   isEnabled: false,
                 ),
 
                 /// ===== SSO ID (DISABLED) =====
                 _label("Name As Per Aadhaar*"),
                 _field(
-                  provider.ssoIdController,
-                  "SSO ID",
-                  isEnabled: false,
+                  provider.nameAAdhaarController,
+                  "Name As Per Aadhaar",
+                 // isEnabled: false,
                 ),
 
                 /// ===== MOBILE =====
@@ -99,7 +103,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 _field(
                   provider.mobileController,
                   "Enter mobile number",
-                  keyboardType: TextInputType.phone,
+                 // keyboardType: TextInputType.phone,
+                  isEnabled: false,
                 ),
 
                 /// ===== DESIGNATION =====
@@ -112,8 +117,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 /// ===== DESIGNATION =====
                 _label("Administration Department*"),
                 _field(
-                  provider.designationController,
-                  "Enter designation",
+                  provider.adminDeptNameController,
+                  "Enter Administration Department",
                 ),
 
                 /// ===== DISTRICT =====
@@ -325,7 +330,18 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                               value?.nameEng ?? "";
                           provider.departmentIdController.text =
                               value?.iD?.toString() ?? "";
+                          /// ✅ CLEAR OFFICE (important when dept changes)
+                          provider.selectedOffice = null;
+                          provider.officeNameController.clear();
+                          provider.officeIdController.clear();
+                          provider.officeList.clear();
                           provider.notifyListeners();
+
+                          /// ✅ CALL OFFICE API WITH NEW DEPARTMENT ID
+                          if (value?.iD != null) {
+                            provider.getOfficeApi(context);
+                          }
+
                         },
                       ),
 
@@ -511,61 +527,71 @@ bool validateBasicDetails(
   BuildContext context,
   RegisterFormProvider provider,
 ) {
+
+  if (provider.nameAAdhaarController.text.trim().isEmpty) {
+    showAlertError("Please enter Name (As per Aadhaar)", context);
+    return false;
+  }
+
+  if (provider.designationController.text.trim().isEmpty) {
+    showAlertError("Please enter Designation (As Per SSO)", context);
+    return false;
+  }
+
+  if (provider.adminDeptNameController.text.trim().isEmpty) {
+    showAlertError("Please enter Administration Department", context);
+    return false;
+  }
+
   if (provider.selectedDistrict == null ||
       provider.districtController.text.trim().isEmpty) {
     showAlertError("Please select District", context);
     return false;
   }
 
-  if (provider.areaType == null || provider.areaType!.isEmpty) {
-    showAlertError("Please select Area (Rural / Urban)", context);
-    return false;
-  }
-  if (provider.areaType == "Urban") {
-    if (provider.selectedCity == null ||
-        provider.cityNameController.text
-            .trim()
-            .isEmpty) {
-      showAlertError("Please select City", context);
-      return false;
-    }
-
-    if (provider.selectedWard == null ||
-        provider.wardNameController.text
-            .trim()
-            .isEmpty) {
-      showAlertError("Please select Ward", context);
-      return false;
-    }
-  }
-  if (provider.areaType == "Rural") {
-    if (provider.selectedBlock == null ||
-        provider.selectedGp == null ||
-        provider.selectedVillage == null) {
-      showAlertError("Please complete location details", context);
-      return false;
-    }
-  }
-
-  if (provider.departmentNameController.text.trim().isEmpty) {
-    showAlertError("Please select Department Name", context);
+  if (provider.selectedDepartment == null ||
+      provider.departmentNameController.text.trim().isEmpty) {
+    showAlertError("Please select Department", context);
     return false;
   }
 
-  if (provider.officeNameController.text.trim().isEmpty) {
-    showAlertError("Please select office name", context);
+  if (provider.selectedOffice == null ||
+      provider.officeNameController.text.trim().isEmpty) {
+    showAlertError("Please select Internship Office Name", context);
     return false;
   }
 
-  if (provider.mobileController.text.trim().isEmpty) {
-    showAlertError("Please enter Mobile Number", context);
-    return false;
-  }
+  // if (provider.areaType == null || provider.areaType!.isEmpty) {
+  //   showAlertError("Please select Area (Rural / Urban)", context);
+  //   return false;
+  // }
+  // if (provider.areaType == "Urban") {
+  //   if (provider.selectedCity == null ||
+  //       provider.cityNameController.text
+  //           .trim()
+  //           .isEmpty) {
+  //     showAlertError("Please select City", context);
+  //     return false;
+  //   }
+  //
+  //   if (provider.selectedWard == null ||
+  //       provider.wardNameController.text
+  //           .trim()
+  //           .isEmpty) {
+  //     showAlertError("Please select Ward", context);
+  //     return false;
+  //   }
+  // }
+  // if (provider.areaType == "Rural") {
+  //   if (provider.selectedBlock == null ||
+  //       provider.selectedGp == null ||
+  //       provider.selectedVillage == null) {
+  //     showAlertError("Please complete location details", context);
+  //     return false;
+  //   }
+  // }
 
-  if (provider.designationController.text.trim().isEmpty) {
-    showAlertError("Please enter Designation", context);
-    return false;
-  }
+
 
   return true;
 }

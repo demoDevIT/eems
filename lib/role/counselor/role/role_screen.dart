@@ -7,6 +7,7 @@ import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 
 import '../../job_seeker/janadhaarflowpage/janadhaarflowpage_screen.dart';
+import '../counsellor_otr/counsellor_otr_screen.dart';
 
 class RoleScreen extends StatefulWidget {
   const RoleScreen({Key? key}) : super(key: key);
@@ -37,7 +38,13 @@ class RoleScreenState extends State<RoleScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            final provider = context.read<RoleProvider>();
+
+                            if (provider.selectedFlow != "") {
+                              provider.reset(); // go back to initial state
+                            } else {
+                              Navigator.pop(context);
+                            }
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +61,9 @@ class RoleScreenState extends State<RoleScreen> {
                                   alignment: Alignment.topCenter,
                                   padding: const EdgeInsets.only(right: 40),
                                   child: Text(
-                                    "Select Your Role",
+                                    provider.selectedFlow == "gov"
+                                        ? "Employment status"
+                                        : "Select Counsellor Type",
                                     style: UtilityClass.poppins(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -69,25 +78,168 @@ class RoleScreenState extends State<RoleScreen> {
 
 
                         SizedBox(height: SizeConfig.screenHeight! * 0.01),
-                        roleCard(
-                          title: "Government Employee",
-                          description:
-                          "A job seeker is an individual who is actively looking for employment opportunities.",
-                          imagePath: "assets/images/employee.png",
-                          onTap: () {
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
 
-                          },
-                        ),
-                        SizedBox(height: SizeConfig.screenHeight! * 0.01),
-                        roleCard(
-                          title: "Private / Other  Employee",
-                          description:
-                          "A job seeker is an individual who is actively looking for employment opportunities.",
-                          imagePath: "assets/images/counselor.png",
-                          onTap: () {
+                            /// 🔹 Default Screen
+                            if (provider.selectedFlow == "") ...[
+                              roleCard(
+                                title: "Government Employee",
+                                description:
+                                "A job seeker is an individual who is actively looking for employment opportunities.",
+                                imagePath: "assets/images/employee.png",
+                                onTap: () {
+                                  provider.selectGovernment();
+                                },
+                              ),
 
-                          },
+                              SizedBox(height: SizeConfig.screenHeight! * 0.01),
+
+                              roleCard(
+                                title: "Private / Other Employee",
+                                description:
+                                "A job seeker is an individual who is actively looking for employment opportunities.",
+                                imagePath: "assets/images/counselor.png",
+                                onTap: () {
+                                  provider.selectPrivate();
+                                },
+                              ),
+                            ],
+
+                            /// 🔹 Government Flow
+                            if (provider.selectedFlow == "gov") ...[
+                              roleCard(
+                                title: "Serving Government Employee",
+                                description: "",
+                                imagePath: "assets/images/employee.png",
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => JanAadhaarFlowPage(
+                                        ssoId: "your_sso",
+                                        userID: "your_userid",
+                                        flowType: UserFlowType.counselor,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              SizedBox(height: SizeConfig.screenHeight! * 0.01),
+
+                              roleCard(
+                                title: "Retired Government Employee",
+                                description: "",
+                                imagePath: "assets/images/employee.png",
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => JanAadhaarFlowPage(
+                                        ssoId: "your_sso",
+                                        userID: "your_userid",
+                                        flowType: UserFlowType.counselor,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+
+                            /// 🔹 Private Flow
+                            if (provider.selectedFlow == "private") ...[
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: kTextColor1, // same as roleCard
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Image.asset(
+                                          "assets/images/counselor.png", // optional image
+                                          height: 60,
+                                        ),
+                                      ),
+
+                                      SizedBox(height: SizeConfig.screenHeight! * 0.01),
+
+                                      Text(
+                                        "Are you a resident of Rajasthan?",
+                                        style: UtilityClass.poppins(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: kthemecolor,
+                                        ),
+                                      ),
+
+                                      SizedBox(height: SizeConfig.screenHeight! * 0.02),
+
+                                      Row(
+                                        children: [
+                                          Radio<bool>(
+                                            value: true,
+                                            groupValue: provider.isRajasthanResident,
+                                            onChanged: (value) {
+                                              provider.setResident(value!);
+                                              if (provider.isRajasthanResident == true) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => JanAadhaarFlowPage(
+                                                      ssoId: "your_sso",
+                                                      userID: "your_userid",
+                                                      flowType: UserFlowType.counselor,
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          Text(
+                                            "Yes",
+                                            style: UtilityClass.poppins(fontSize: 18,
+                                                fontWeight: FontWeight.w600,color: kthemecolor),
+                                          ),
+
+                                          SizedBox(width: 20),
+
+                                          Radio<bool>(
+                                            value: false,
+                                            groupValue: provider.isRajasthanResident,
+                                            onChanged: (value) {
+                                              provider.setResident(value!);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => CounselorOtrScreen(
+                                                    ssoId: "your_sso",
+                                                    userID: "your_userid",
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          Text(
+                                            "No",
+                                            style: UtilityClass.poppins(fontSize: 18,
+                                                fontWeight: FontWeight.w600,color: kthemecolor),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
+                        SizedBox(height: SizeConfig.screenHeight! * 0.85),
                       ],
                     ),
                   ),

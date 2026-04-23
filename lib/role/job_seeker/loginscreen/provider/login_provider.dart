@@ -183,6 +183,8 @@ class LoginProvider with ChangeNotifier {
                       child: RegisterFormScreen(
                         ssoId: sm.data!.sSOID ??
                             SSOIDController.text, // ✅ pass SSO
+                          displayName: sm.data!.displayName ?? "",
+                          mobileNo: sm.data!.mobileno ?? ""
                       ),
                     ),
                     duration: const Duration(milliseconds: 500),

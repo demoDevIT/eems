@@ -147,8 +147,11 @@ class RegisterFormProvider extends ChangeNotifier {
   //final TextEditingController departmentNameController = TextEditingController();
 
   final TextEditingController ssoIdController = TextEditingController();
+  final TextEditingController nameAAdhaarController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController designationController = TextEditingController();
+  final TextEditingController adminDeptNameController = TextEditingController();
+  final TextEditingController displayNameController = TextEditingController();
 
   Future<void> getDistrictApi(BuildContext context, int stateId) async {
     isDistrictLoading = true;
@@ -380,23 +383,48 @@ class RegisterFormProvider extends ChangeNotifier {
 
     final internshipDeptTypeID = UserData().model.value.internshipDeptTypeID;
     try {
-      final apiResponse = await commonRepo.get(
-        "Common/GetIntershipDeptListbyDeptTypeID/$internshipDeptTypeID",
+      // OLD API
+      // final apiResponse = await commonRepo.get(
+      //   "Common/GetIntershipDeptListbyDeptTypeID/$internshipDeptTypeID",
+      // );
+
+      Map<String, dynamic> data = {
+        "PrivateDepartmentID": int.tryParse(departmentIdController.text) ?? 0,
+        "ddlDistrict": selectedDistrict?.code ?? "0",
+
+        "PrivateCityCode": "0",
+        "PrivateBlockCode": "0",
+        "PrivateGPCode": "0",
+        "PrivateWardCode": "0",
+        "PrivateVillageCode": "0",
+      };
+
+      /// ✅ DEBUG PRINT (recommended)
+      print("========== OFFICE API PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("========================================");
+
+      /// ✅ CALL POST API
+      final apiResponse = await commonRepo.post(
+        "Common/GetIntershipDeptListbyDeptTypeID_WIthModelNew",
+        data,
       );
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
+
         if (responseData is String) {
           responseData = jsonDecode(responseData);
         }
 
         if (responseData['Data'] != null) {
-          for (var e in responseData['Data']) {
-            officeList.add(OfficeData.fromJson(e));
-          }
+          officeList = (responseData['Data'] as List)
+              .map((e) => OfficeData.fromJson(e))
+              .toList();
         }
       }
-    } catch (_) {
+    } catch (e) {
+      print("Office API Error: $e");
       officeList.clear();
     }
 
@@ -651,8 +679,10 @@ class RegisterFormProvider extends ChangeNotifier {
     }
   }
 
-  void init(String ssoId) {
+  void init(String ssoId, String displayName, String mobileNo) {
     ssoIdController.text = ssoId; // disabled field
+    displayNameController.text = displayName; // disabled field
+    mobileController.text = mobileNo; // disabled field
   }
 
   void clearData() {
