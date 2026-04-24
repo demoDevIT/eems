@@ -852,7 +852,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.cPinCodeController,
-                                "Year of Professional Experience",
+                                " Year of Professional Experience ",
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
