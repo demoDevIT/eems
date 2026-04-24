@@ -845,14 +845,14 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Year Of Professional Experience', required: true),
+                            child: labelWithStar('Year of Professional Experience', required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.cPinCodeController,
-                                "Year Of Professional Experience",
+                                "Year of Professional Experience",
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
