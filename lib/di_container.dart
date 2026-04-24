@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rajemployment/repo/common_repo.dart';
+import 'package:rajemployment/role/counselor/counsellor_otr/provider/counsellor_otr_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_jobs_list_provider.dart';
 import 'package:rajemployment/role/counselor/home/provider/counselor_provider.dart';
@@ -167,6 +168,7 @@ Future<void> init() async {
   sl.registerFactory(() => AboutAppProvider(commonRepo: sl()));
   sl.registerFactory(() => CandidateAttendanceProvider(commonRepo: sl()));
   sl.registerFactory(() => RoleProvider(commonRepo: sl()));
+  sl.registerFactory(() => CounselorOtrProvider(commonRepo: sl()));
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
   sl.registerFactory(() => ChatProvider(commonRepo: sl()));

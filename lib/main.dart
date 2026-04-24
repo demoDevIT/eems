@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rajemployment/role/counselor/counsellor_otr/provider/counsellor_otr_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_dashboard/counselor_dashboard.dart';
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_jobs_list_provider.dart';
@@ -191,6 +192,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<AboutAppProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<CandidateAttendanceProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<RoleProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<CounselorOtrProvider>()),
           //farid code
           ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
