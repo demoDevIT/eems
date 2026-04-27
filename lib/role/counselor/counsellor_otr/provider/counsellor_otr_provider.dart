@@ -15,7 +15,14 @@ import '../../../../utils/utility_class.dart';
 import '../../../employer/empotr_form/modal/upload_document_modal.dart';
 import '../../../job_seeker/addeducationaldetail/modal/education_level_modal.dart';
 import '../../../job_seeker/addeducationaldetail/modal/graduation_type_modal.dart';
+import '../../../job_seeker/addeducationaldetail/modal/passing_year_modal.dart';
+import '../../../job_seeker/addeducationaldetail/modal/university_modal.dart';
 import '../../../job_seeker/addjobpreference/modal/language_type_modal.dart';
+import '../../../job_seeker/otr_form/modal/fetch_jan_adhar_modal.dart';
+import '../modal/counseling_medium_modal.dart';
+import '../modal/preferred_age_group.dart';
+import '../modal/primary_domain_modal.dart';
+import '../modal/tech_tool_modal.dart';
 
 class CounselorOtrProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -49,6 +56,7 @@ class CounselorOtrProvider extends ChangeNotifier {
   final TextEditingController dateOfRetireController = TextEditingController();
   final TextEditingController proExpYearController = TextEditingController();
   final TextEditingController postDeptController = TextEditingController();
+  final TextEditingController speSubController = TextEditingController();
 
   List<EducationLevelData> educationLevelsList = [];
   final TextEditingController educationLevelIdController =
@@ -61,6 +69,107 @@ class CounselorOtrProvider extends ChangeNotifier {
   final TextEditingController graduationTypeNameController =
   TextEditingController();
 
+  List<UniversityData> universityList = [];
+  final TextEditingController universityIdController =
+  TextEditingController();
+  final TextEditingController universityNameController =
+  TextEditingController();
+
+  List<PassingYearData> passingYearList= [];
+  final TextEditingController yearOfPassingIdController = TextEditingController();
+  final TextEditingController yearOfPassingNameController = TextEditingController();
+
+  final TextEditingController addQualiController = TextEditingController();
+
+  List<PrimaryDomainData> primaryDomainList= [];
+  final TextEditingController primaryDomainIdController = TextEditingController();
+  final TextEditingController primaryDomainNameController = TextEditingController();
+  final TextEditingController certCourseController = TextEditingController();
+  final TextEditingController issuOrgController = TextEditingController();
+  final TextEditingController compYearIdController = TextEditingController();
+  final TextEditingController compYearNameController = TextEditingController();
+
+  final TextEditingController langProfIdController = TextEditingController();
+  final TextEditingController langProfNameController = TextEditingController();
+
+  List<CounselingMediumData> counsMedList= [];
+  final TextEditingController counsMedIdController = TextEditingController();
+  final TextEditingController counsMedNameController = TextEditingController();
+
+  List<TechToolData> techToolList= [];
+  final TextEditingController techToolIdController = TextEditingController();
+  final TextEditingController techToolNameController = TextEditingController();
+
+  final TextEditingController yearExpController = TextEditingController();
+  final TextEditingController clinicalPsychologistController = TextEditingController();
+
+  final TextEditingController pubWorkArtController = TextEditingController();
+  final TextEditingController linkPortController = TextEditingController();
+  final TextEditingController trainWorkCondController = TextEditingController();
+  final TextEditingController availUpskillController = TextEditingController();
+
+  List<PreAgeGroupData> preAgeGroupCounsList= [];
+  final TextEditingController preAgeGroupCounsIdController = TextEditingController();
+  final TextEditingController preAgeGroupCounsNameController = TextEditingController();
+
+  bool isDeclarationAccepted = false;
+
+  void setJanAadhaarControllers(BuildContext context, FetchJanAdharResponseData data, String ssoID) {
+    // print("ssoIdaaaaaaaa-->" + ssoID);
+    // print("data.dOB1111aaaaaaaaaa-->" + data.dOB);
+    // //  print("data.district code-->" + data.dISTRICTCD);
+     debugPrint("kjhfksdjfsjdfhaaaaaaaaaaaaa" + jsonEncode(data.toJson()), wrapWidth: 1024);
+
+    ssoIDController.text = ssoID;
+    nameController.text = data.nAMEEN ?? "";
+    fullNameController.text = data.nAMEEN ?? "";
+    mobileNOController.text = data.mOBILENO?.toString() ?? "";
+    mobileNumberController.text = data.mOBILENO?.toString() ?? "";
+    dateOfBirthController.text = data.dOB ?? "";
+    genderController.text = data.gENDER == "MALE"
+        ? "Male"
+        : data.gENDER == "FEMALE"
+        ? "Female"
+        : "TransGender";
+    // print("dateOfBirthController.text22222-->" + dateOfBirthController.text);
+    // fatherNameController.text = data.fATHERNAMEEN ?? "";
+    // maritalStatusController.text = data.mARITALSTATUS ?? "";
+    // castController.text = data.cATEGORYDESCENG ?? "";
+    // aadhaarRefNOController.text = maskAadhaarRef(data.aADHARREFID?.toString()) ?? "";
+    // minorityController.text = data.iSMINORITY.toString() == "N" ? "No" : "Yes";
+    // emailController.text = data.eMAIL ?? "";
+    // religionNameController.text = "";
+    // religionIdController.text = "";
+    // differentlyAbledController.text =
+    // data.iSDISABILITY == '1'
+    //     ? 'Yes'
+    //     : data.iSDISABILITY == '0'
+    //     ? 'No'
+    //     : '';
+
+    // familyIncomeController.text = ""; // No field available in model
+    // uidTypeIdController.text = "";
+    // uidTypeNameController.text = "";
+    // uidNOController.text = "";
+    // linkedinController.text = "";
+    // districtNameController.text = data.dISTRICT?.toString() ?? "";
+    // districtIdController.text = data.dISTRICTCD?.toString() ?? "";
+    //
+    // exchangeDistrictNameController.text = data.dISTRICT?.toString() ?? "";
+    //
+    // // Call API to get Exchange Name
+    // if (data.dISTRICTCD != null) {
+    //   fetchExchangeNameByDistrict(context, data.dISTRICTCD.toString());
+    // }
+    //
+    // cityIdController.text = data.bLOCKCITYCD?.toString() ?? "";
+    // cityNameController.text = data.bLOCKCITY?.toString() ?? "";
+    // wardIdController.text = data.gPWARDCD?.toString() ?? "";
+    // wardNameController.text = data.wARDLL?.toString() ?? "";
+    // addressController.text = data.aDDRESS?.toString() ?? "";
+    // pinCodeController.text = data.pINCODE?.toString() ?? "";
+    notifyListeners();
+  }
 
   Future<LanguageTypeModal?> languageTypeModaltApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -308,6 +417,262 @@ class CounselorOtrProvider extends ChangeNotifier {
       showAlertError(
           AppLocalizations.of(context)!.internet_connection, context);
     }
+  }
+
+  Future<UniversityModal?> universityApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/Board_UniversityMaster/University";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = UniversityModal.fromJson(responseData);
+
+          if (sm.state == 200) {
+            universityList.clear();
+            universityList.addAll(sm.data!);
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = UniversityModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return UniversityModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = UniversityModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<PassingYearModal?> passingYearModalApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/CommonMasterDataByCode/PassingYear/1";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = PassingYearModal.fromJson(responseData);
+
+          if(sm.state == 200) {
+            passingYearList.clear();
+            passingYearList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = PassingYearModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return PassingYearModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = PassingYearModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<PrimaryDomainModal?> primaryDomainModalApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/CommonMasterDataByCode/PrimaryDomainExperties/0/0";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = PrimaryDomainModal.fromJson(responseData);
+
+          if(sm.state == 200) {
+            primaryDomainList.clear();
+            primaryDomainList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = PrimaryDomainModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return PrimaryDomainModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = PrimaryDomainModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<CounselingMediumModal?> counsMedModalApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/CommonMasterDataByCode/Counselling/0/0";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = CounselingMediumModal.fromJson(responseData);
+
+          if(sm.state == 200) {
+            counsMedList.clear();
+            counsMedList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = CounselingMediumModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return CounselingMediumModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = CounselingMediumModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<TechToolModal?> techToolModalApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/CommonMasterDataByCode/TechnicalTools/0/0";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = TechToolModal.fromJson(responseData);
+
+          if(sm.state == 200) {
+            techToolList.clear();
+            techToolList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = TechToolModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return TechToolModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = TechToolModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<PreAgeGroupModal?> preAgeGroupModalApi(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //ProgressDialog.showLoadingDialog(context);
+        String url = "Common/CommonMasterDataByCode/PrefferredAge/0/0";
+        ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = PreAgeGroupModal.fromJson(responseData);
+
+          if(sm.state == 200) {
+            preAgeGroupCounsList.clear();
+            preAgeGroupCounsList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm = PreAgeGroupModal(state: 0, message: sm.message.toString());
+            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            return smmm;
+          }
+
+        } else {
+          return PreAgeGroupModal(state: 0, message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        // ProgressDialog.closeLoadingDialog(context);
+        final sm = PreAgeGroupModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  void toggleDeclaration(bool value) {
+    isDeclarationAccepted = value;
+    notifyListeners();
   }
 
   void validateEmail(String value) {

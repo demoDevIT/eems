@@ -9,13 +9,39 @@ import 'package:rajemployment/utils/utility_class.dart';
 import '../../job_seeker/janadhaarflowpage/janadhaarflowpage_screen.dart';
 import '../counsellor_otr/counsellor_otr_screen.dart';
 
-class RoleScreen extends StatefulWidget {
-  const RoleScreen({Key? key}) : super(key: key);
+// class RoleScreen extends StatefulWidget {
+//   const RoleScreen({Key? key}) : super(key: key);
+//
+//   RoleScreenState createState() => RoleScreenState();
+//  }
 
+class RoleScreen extends StatefulWidget {
+  final String ssoId;
+  final String userID;
+  final UserFlowType flowType;
+
+  const RoleScreen({
+    Key? key,
+    required this.ssoId,
+    required this.userID,
+    required this.flowType,
+  }) : super(key: key);
+
+  @override
   RoleScreenState createState() => RoleScreenState();
- }
+}
+
 class RoleScreenState extends State<RoleScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    print(widget.ssoId);
+    print(widget.userID);
+    print(widget.flowType);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +144,8 @@ class RoleScreenState extends State<RoleScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => JanAadhaarFlowPage(
-                                        ssoId: "your_sso",
-                                        userID: "your_userid",
+                                        ssoId: widget.ssoId,
+                                        userID: widget.userID,
                                         flowType: UserFlowType.counselor,
                                       ),
                                     ),
@@ -138,8 +164,8 @@ class RoleScreenState extends State<RoleScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => JanAadhaarFlowPage(
-                                        ssoId: "your_sso",
-                                        userID: "your_userid",
+                                        ssoId: widget.ssoId,
+                                        userID: widget.userID,
                                         flowType: UserFlowType.counselor,
                                       ),
                                     ),

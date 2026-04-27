@@ -80,34 +80,15 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
-
-//         Navigator.of(context).push(
-//       RightToLeftRoute(
-//         page: ChangeNotifierProvider(
-//           create: (_) => DepartmentDashboardProvider(),
-//           child: const DepartmentDashboardPage(), // ✅ UI widget
-//         ),
-//         duration: const Duration(milliseconds: 500),
-//         startOffset: const Offset(-1.0, 0.0),
-//       ),
-//     );
-// return null;
-
+    // // temporary, because APIs are not working
     // Navigator.of(context).push(
     //   RightToLeftRoute(
-    //     page: ChangeNotifierProvider(
-    //       create: (_) => RegisterFormProvider(
-    //         commonRepo: commonRepo,
-    //       ),
-    //       child: RegisterFormScreen(
-    //         ssoId: "mohdfaizzafar04",  // ✅ pass SSO
-    //       ),
-    //     ),
+    //     page: RoleSelectionScreen(
+    //         ssoId: SSOIDController.text, userID: ""),
     //     duration: const Duration(milliseconds: 500),
     //     startOffset: const Offset(-1.0, 0.0),
     //   ),
     // );
-    // return null ;
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {

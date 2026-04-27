@@ -113,7 +113,13 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  RoleScreen()),
+                              MaterialPageRoute(
+                                builder: (context) => RoleScreen(
+                                  ssoId: ssoId,
+                                  userID: userID,
+                                  flowType: UserFlowType.counselor,
+                                ),
+                              ),
                             );
                           },
                         ),

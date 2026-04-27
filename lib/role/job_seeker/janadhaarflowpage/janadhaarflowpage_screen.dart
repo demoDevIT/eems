@@ -49,6 +49,11 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    print("SSO ID: $ssoId");
+    print("User ID: $userID");
+    print("Flow Type: $flowType");
+
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       final provider = Provider.of<JanAadhaarFlowProvider>(context, listen: false);
       provider.clearData();

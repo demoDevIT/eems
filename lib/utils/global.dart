@@ -1335,6 +1335,36 @@ showDatePickerYearMonthDialog(context, dateCtrl,initialdate,firstdate,lastdate) 
   }
 }
 
+showDatePickerYearMonthDialogCounselorOTR(context, dateCtrl,initialdate,firstdate,lastdate) async {
+
+  DateTime? pickedDate = await showDatePicker(
+    initialEntryMode: DatePickerEntryMode.calendarOnly,
+    context: context,
+    initialDate: initialdate,
+    // Default to today
+    firstDate:  firstdate,
+    // Allow selection up to 100 years ago
+    lastDate:lastdate,
+    // Prevent future dates
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: kbuttonColor,
+          ),
+        ),
+        child: child!,
+      );
+    },
+  );
+  if (pickedDate != null) {
+    print(pickedDate);
+    String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+    dateCtrl.text = formattedDate.toString();
+  } else {
+    print("Date is not selected");
+  }
+}
 
 String formatCase(String value) {
   if (value.isEmpty) return "";
