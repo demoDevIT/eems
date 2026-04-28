@@ -45,27 +45,34 @@ class OtrFormScreen extends StatefulWidget {
   String janMemberId;
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
 
   OtrFormScreen(
       {super.key,
       required this.feachJanAadhaarDataList,
       required this.janMemberId,
       required this.ssoId,
-      required this.userID});
+      required this.userID,
+      required this.displayName,
+      required this.mobileNo,
+      });
 
   @override
   State<OtrFormScreen> createState() =>
-      _OtrFormScreenState(feachJanAadhaarDataList, janMemberId, ssoId, userID);
+      _OtrFormScreenState(feachJanAadhaarDataList, janMemberId, ssoId, userID, displayName, mobileNo);
 }
 
 class _OtrFormScreenState extends State<OtrFormScreen> {
   String janMemberId;
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
   List<FetchJanAdharResponseData> feachJanAadhaarDataList = [];
 
   _OtrFormScreenState(
-      this.feachJanAadhaarDataList, this.janMemberId, this.ssoId, this.userID);
+      this.feachJanAadhaarDataList, this.janMemberId, this.ssoId, this.userID, this.displayName, this.mobileNo);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -95,7 +102,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
       provider.disabilityTypeApi(context);
       provider.uidTypeApi(context);
       provider.setJanAadhaarControllers(
-          context, feachJanAadhaarDataList[0], ssoId);
+          context, feachJanAadhaarDataList[0], ssoId, displayName, mobileNo);
 
       provider.areYouSkilledController.text = 'No'; // default
       provider.areYouInterestedRsldcNameController.text = 'Yes'; // or 'No'

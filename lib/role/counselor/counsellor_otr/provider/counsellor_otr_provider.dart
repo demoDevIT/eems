@@ -20,6 +20,7 @@ import '../../../job_seeker/addeducationaldetail/modal/university_modal.dart';
 import '../../../job_seeker/addjobpreference/modal/language_type_modal.dart';
 import '../../../job_seeker/otr_form/modal/fetch_jan_adhar_modal.dart';
 import '../modal/counseling_medium_modal.dart';
+import '../modal/counselor_otr_detail_modal.dart';
 import '../modal/preferred_age_group.dart';
 import '../modal/primary_domain_modal.dart';
 import '../modal/tech_tool_modal.dart';
@@ -673,6 +674,181 @@ class CounselorOtrProvider extends ChangeNotifier {
   void toggleDeclaration(bool value) {
     isDeclarationAccepted = value;
     notifyListeners();
+  }
+
+  Future<CounselorOTRDetailModal?> submitCounsellorFormApi(
+      BuildContext context,
+      List<FetchJanAdharResponseData> feachJanAadhaarDataList,
+      String memberId,
+      // String userID
+      ) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        String? IpAddress = await UtilityClass.getIpAddress();
+        // List<Map<String, dynamic>> jsonList = languageDataList.map((e) {
+        //   final json = e.toJson();
+        //   json.remove('languageName');
+        //   json.remove('proficiencyName');
+        //   json.remove('dread');
+        //   json.remove('dwrite');
+        //   json.remove('dspeak');
+        //   return json;
+        // }).toList();
+        Map<String, dynamic> data =
+        {
+          "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
+          "Additional_Qualificate": addQualiController.text,
+          "AdministrativedepartmentName": adminDeptController.text,
+          "AffiliatedWithAnyCareerID": 0,
+          "AreaOfProfessionalExpertise": "",
+          "AvailibiltyForUpskilling": availUpskillController.text,
+          "CertificationName": certCourseController.text,
+          "Certifications_CoursesCompleted": certCourseController.text,
+          "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
+          "ConditionCheckbox": isDeclarationAccepted,
+          "CounselingMediumID": counsMedIdController.text,
+          "CounselorID": 0,
+          "DOB": dateOfBirthController.text,
+          "DateofRetirement": dateOfRetireController.text,
+          "Dateofjoining": dateOfJoinController.text,
+          "DegreeID": graduationTypeIdController.text,
+          "DegreeName": graduationTypeNameController.text,
+          "DesignationID": designationController.text,
+          "DisclaimerStatus": true,
+          "DistrictCode": "",
+          "DistrictId": 0,
+          "DivIsPresentGovtEmploye": true, // flag should come from back pages 'govt hai ya nahi'
+          "DivIsPresentPrivateEmploye": true, // flag should come from back pages 'private hai ya nahi'
+          "EducationPassingYearID": yearOfPassingIdController.text,
+          "EducationQualificationID": educationLevelIdController.text,
+          "Email": emailController.text,
+          "EmpTypeName": "string", //PrivateEmp/GovernmentEmp/RetiredGovernmentEmp
+          "EmployeeID": "",
+          "EmployeeNumber": null,
+          "EmployeeType": "", // Private/government
+          "EmployeeTypeID": 0,
+          "EmploymentID": empIdController.text,
+          "EmploymentStatusID": 0,
+          "EnrID": feachJanAadhaarDataList[0].eNRID,
+          "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
+          "FirstName": nameController.text,
+          "FreePsychometricTests": false,  // add new radio with yes no, Are you registered clinical psychologist? yes then open Are you willing to take free psychometric tests? with yes no
+          "Gender": genderController.text,
+          "IsDivCounsellorType": false,
+          "IsJanIDShow": false,
+          "IsPresentEmployee": false,
+          "IsPresentGovtEmploye": false,
+          "IsPresentGovtEmployee": true, // flag should come from back pages 'govt hai ya nahi'
+          "IsResidentState": true,
+          "IscounselorType": false,
+          "IssuingOrganization": issuOrgController.text,
+          "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
+          "JanmenID": memberId,
+          "LanguageID": languageIdController.text,
+          "LanguageProficiencyID": langProfIdController.text,
+          "LinkedIn_PortfolioURL": linkPortController.text,
+          "MobileNo": mobileNOController.text,
+          "Name": nameController.text,
+          "OccupationName": "",
+          "OrganizationName": issuOrgController.text,
+          "OtherDegreeName": "",
+          "PPONumber": null,
+          "PinCode": "",
+          "PostedDepartmentName": "admin",
+          "PreferredAgeGroupForCounselingID": preAgeGroupCounsIdController.text,
+          "PresentEmployeeID": 0,
+          "PrimaryDomainExpertiseID": primaryDomainIdController.text,
+          "PrivateCityID": 0,
+          "PrivateDistrictID": 0,
+          "PrivateStateID": 0,
+          "ProfileImageUrl": fileName,
+          "PublishedWorkArticles": pubWorkArtController.text,
+          "QualificationID": 0,
+          "RegistrationNo": "",
+          "ResidentStateID": 0,
+          "SIPFHRMSNumber": sipfNoController.text,
+          "SSOID": ssoIDController.text,
+          "ShowEmployeIDField": false,
+          "Specialization_ExpertiseID": specializationIdController.text,
+          "Specialization_Subject": speSubController.text,
+          "StateID": 0,
+          "TechnicalToolsProficiencyID": techToolIdController.text,
+          "Training_WorkshopConducted": trainWorkCondController.text,
+          "UIDNumber": "",
+          "UIDTypeID": 0,
+          "UniversityID": universityIdController.text,
+          "UniversityInstitutionName": universityNameController.text,
+          "UploadDegreeCertificate": "",
+          "UploadDegreeCertificateYearOfCompletion": "",
+          "UploadExperienceLetterCertificate": "",
+          "UploadProfessionalID": "",
+          "UserID": 0,
+          "UserId": 0,
+          "YearOfCompletionID": compYearIdController.text,
+          "YearOfProfessionalExperience": proExpYearController.text,
+          "YearsOfExperienceInCounseling": yearExpController.text,
+          "category": "",
+
+        };
+        print("printFullData -->");
+       // printFullJson(data);
+
+        String url = "Counselor/CounsellorRegSaveData";
+        ProgressDialog.showLoadingDialog(context);
+        // ApiResponse apiResponse = await commonRepo.postArray(url,body);
+
+        ApiResponse apiResponse = await commonRepo.post(url, data);
+        ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = CounselorOTRDetailModal.fromJson(responseData);
+          if (sm.state == 200) {
+            successDialog(
+              context,
+              sm.message.toString(),
+                  (value) {
+                if (value.toString() == "success") {
+                  if (sm.data != null &&
+                      sm.data![0].userId != null &&
+                      sm.data![0].userId > 0) {
+                   // getBasicDetailsApi(context, sm.data![0].userId.toString(),
+                      //  sm.data![0].roleId);
+                  }
+                }
+              },
+            );
+            return sm;
+          } else {
+            final smmm = CounselorOTRDetailModal(
+                state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return CounselorOTRDetailModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        ProgressDialog.closeLoadingDialog(context);
+        final sm = CounselorOTRDetailModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
   }
 
   void validateEmail(String value) {

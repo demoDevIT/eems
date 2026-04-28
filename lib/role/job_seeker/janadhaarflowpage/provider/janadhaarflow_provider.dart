@@ -214,6 +214,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String otp,
       String ssoId,
       String userID,
+      String displayName,
+      String mobileNo,
       UserFlowType flowType
       ) async {
     // Simulate network delay
@@ -336,6 +338,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             janMemberId: memberId,
             ssoId: ssoId,
             userID: userID,
+            displayName: displayName,
+            mobileNo: mobileNo,
           ),
         ),
             (route) => false,
@@ -349,6 +353,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             janMemberId: memberId,
             ssoId: ssoId,
             userID: userID,
+              displayName: displayName,
+              mobileNo: mobileNo
           ),
         ),
             (route) => false,
@@ -366,6 +372,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String otp,
       String ssoId,
       String userID,
+      String displayName,
+      String mobileNo,
       UserFlowType flowType
       ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -408,7 +416,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                               feachJanAadhaarDataList: feachJanAadhaarDataList,
                               janMemberId: memberId,
                               ssoId: ssoId,
-                              userID: userID)),
+                              userID: userID,
+                              displayName: displayName,
+                              mobileNo: mobileNo,
+                          )),
                       (route) => false);
             } else{
               Navigator.pushAndRemoveUntil<dynamic>(
@@ -419,7 +430,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                               feachJanAadhaarDataList: feachJanAadhaarDataList,
                               janMemberId: memberId,
                               ssoId: ssoId,
-                              userID: userID)),
+                              userID: userID,
+                              displayName: displayName,
+                              mobileNo: mobileNo
+                          )),
                       (route) => false);
             }
             notifyListeners();
@@ -438,7 +452,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             return smmm;
           }
         } else {
-          addSaticData(context, memberId, ssoId, userID, flowType);
+          addSaticData(context, memberId, ssoId, userID, displayName, mobileNo, flowType);
 
           notifyListeners();
           return FetchJanAdharModal(
@@ -459,7 +473,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
   }
 
   addSaticData(
-      BuildContext context, String memberId, String ssoId, String userID, UserFlowType flowType) {
+      BuildContext context, String memberId, String ssoId, String userID, String displayName, String mobileNo, UserFlowType flowType) {
     feachJanAadhaarDataList.clear();
     feachJanAadhaarDataList.add(
       FetchJanAdharResponseData(
@@ -528,7 +542,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                       feachJanAadhaarDataList: feachJanAadhaarDataList,
                       janMemberId: memberId,
                       ssoId: ssoId,
-                      userID: userID)),
+                      userID: userID,
+                      displayName: displayName,
+                      mobileNo: mobileNo
+                  )),
               (route) => false);
     }else{
       Navigator.pushAndRemoveUntil<dynamic>(
@@ -539,7 +556,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                       feachJanAadhaarDataList: feachJanAadhaarDataList,
                       janMemberId: memberId,
                       ssoId: ssoId,
-                      userID: userID)),
+                      userID: userID,
+                      displayName: displayName,
+                      mobileNo: mobileNo
+                  )),
               (route) => false);
     }
   }

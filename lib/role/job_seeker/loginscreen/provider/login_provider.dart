@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rajemployment/role/counselor/counsellor_otr/counsellor_otr_screen.dart';
 import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
 import '../../../../api_service/model/base/api_response.dart';
@@ -80,11 +81,17 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
-    // // temporary, because APIs are not working
+    // temporary, because APIs are not working
     // Navigator.of(context).push(
     //   RightToLeftRoute(
-    //     page: RoleSelectionScreen(
-    //         ssoId: SSOIDController.text, userID: ""),
+    //     page:  CounselorOtrScreen(
+    //       // ssoId: SSOIDController.text,
+    //       // userID:userId,
+    //         ssoId: SSOIDController.text, // ✅ pass SSO
+    //         userID:"",
+    //         displayName: "",
+    //         mobileNo: ""
+    //     ),
     //     duration: const Duration(milliseconds: 500),
     //     startOffset: const Offset(-1.0, 0.0),
     //   ),
@@ -209,11 +216,25 @@ class LoginProvider with ChangeNotifier {
                     await saveRememberMeData();
                     getEmpBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);
+                  } else if (sm.data!.roleID == 8) { //counselor
+                    print("getCounselorBasicDetailsApi userID => ${sm.data!.userID}");
+                    print("getCounselorBasicDetailsApi roleID => ${sm.data!.roleID}");
+                    await saveRememberMeData();
+                    // getCounselorBasicDetailsApi(
+                    //     context, sm);
                   } else {
                     Navigator.of(context).push(
                       RightToLeftRoute(
                         page: RoleSelectionScreen(
-                            ssoId: SSOIDController.text, userID: ""),
+                            // ssoId: SSOIDController.text,
+                            // userID: "",
+                            ssoId: sm.data!.sSOID ??
+                                SSOIDController.text,
+                            userID: "",// ✅ pass SSO
+                            displayName: sm.data!.displayName ?? "",
+                            mobileNo: sm.data!.mobileno ?? ""
+
+                        ),
                         duration: const Duration(milliseconds: 500),
                         startOffset: const Offset(-1.0, 0.0),
                       ),
@@ -224,7 +245,13 @@ class LoginProvider with ChangeNotifier {
                   Navigator.of(context).push(
                     RightToLeftRoute(
                       page: RoleSelectionScreen(
-                          ssoId: SSOIDController.text, userID: ""),
+                         // ssoId: SSOIDController.text, userID: ""
+                          ssoId: sm.data!.sSOID ??
+                              SSOIDController.text,// ✅ pass SSO
+                          userID: "",
+                          displayName: sm.data!.displayName ?? "",
+                          mobileNo: sm.data!.mobileno ?? ""
+                      ),
                       duration: const Duration(milliseconds: 500),
                       startOffset: const Offset(-1.0, 0.0),
                     ),
@@ -239,7 +266,13 @@ class LoginProvider with ChangeNotifier {
             Navigator.of(context).push(
               RightToLeftRoute(
                 page: RoleSelectionScreen(
-                    ssoId: SSOIDController.text, userID: ""),
+                   // ssoId: SSOIDController.text, userID: ""
+                    ssoId: sm.data!.sSOID ??
+                        SSOIDController.text, // ✅ pass SSO
+                    userID: "",
+                    displayName: sm.data!.displayName ?? "",
+                    mobileNo: sm.data!.mobileno ?? ""
+                ),
                 duration: const Duration(milliseconds: 500),
                 startOffset: const Offset(-1.0, 0.0),
               ),
@@ -632,7 +665,13 @@ class LoginProvider with ChangeNotifier {
             final smmm = JobseekerBasicInfoModal(state: 0, message: sm.message.toString());
             Navigator.of(context).push(
               RightToLeftRoute(
-                page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:userId),
+                page:  RoleSelectionScreen(
+                    //ssoId: SSOIDController.text,userID:userId
+                    ssoId: SSOIDController.text, // ✅ pass SSO
+                    userID:userId,
+                    displayName: "",
+                    mobileNo: ""
+                ),
                 duration: const Duration(milliseconds: 500),
                 startOffset: const Offset(-1.0, 0.0),
               ),
@@ -848,7 +887,14 @@ class LoginProvider with ChangeNotifier {
             final smmm = EmpInfoModal(state: 0, message: sm.message.toString());
             Navigator.of(context).push(
               RightToLeftRoute(
-                page:  RoleSelectionScreen(ssoId: SSOIDController.text,userID:userId),
+                page:  RoleSelectionScreen(
+                    // ssoId: SSOIDController.text,
+                    // userID:userId,
+                    ssoId: SSOIDController.text, // ✅ pass SSO
+                    userID:userId,
+                      displayName: "",
+                    mobileNo: ""
+                ),
                 duration: const Duration(milliseconds: 500),
                 startOffset: const Offset(-1.0, 0.0),
               ),

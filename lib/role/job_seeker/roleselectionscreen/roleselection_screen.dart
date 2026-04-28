@@ -13,16 +13,20 @@ import '../janadhaarflowpage/janadhaarflowpage_screen.dart';
 class RoleSelectionScreen extends StatefulWidget {
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
 
-  RoleSelectionScreen({super.key,required this.ssoId, required this.userID});
+  RoleSelectionScreen({super.key,required this.ssoId, required this.userID, required this.displayName, required this.mobileNo});
 
-  RolwSelectionScreenState createState() => RolwSelectionScreenState(ssoId,userID);
+  RolwSelectionScreenState createState() => RolwSelectionScreenState(ssoId,userID,displayName,mobileNo);
 }
 class RolwSelectionScreenState extends State<RoleSelectionScreen> {
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
 
-  RolwSelectionScreenState(this.ssoId,this.userID);
+  RolwSelectionScreenState(this.ssoId,this.userID,this.displayName, this.mobileNo);
 
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -87,7 +91,7 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID,flowType: UserFlowType.jobSeeker)),
+                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID, displayName: displayName, mobileNo: mobileNo, flowType: UserFlowType.jobSeeker)),
                             );
                           },
                         ),
@@ -117,6 +121,8 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                                 builder: (context) => RoleScreen(
                                   ssoId: ssoId,
                                   userID: userID,
+                                  displayName: displayName,
+                                  mobileNo: mobileNo,
                                   flowType: UserFlowType.counselor,
                                 ),
                               ),

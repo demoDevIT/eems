@@ -18,12 +18,16 @@ import '../counsellor_otr/counsellor_otr_screen.dart';
 class RoleScreen extends StatefulWidget {
   final String ssoId;
   final String userID;
+  final String displayName;
+  final String mobileNo;
   final UserFlowType flowType;
 
   const RoleScreen({
     Key? key,
     required this.ssoId,
     required this.userID,
+    required this.displayName,
+    required this.mobileNo,
     required this.flowType,
   }) : super(key: key);
 
@@ -40,6 +44,8 @@ class RoleScreenState extends State<RoleScreen> {
 
     print(widget.ssoId);
     print(widget.userID);
+    print(widget.displayName);
+    print(widget.mobileNo);
     print(widget.flowType);
   }
 
@@ -146,6 +152,8 @@ class RoleScreenState extends State<RoleScreen> {
                                       builder: (context) => JanAadhaarFlowPage(
                                         ssoId: widget.ssoId,
                                         userID: widget.userID,
+                                        displayName: widget.displayName,
+                                        mobileNo: widget.mobileNo,
                                         flowType: UserFlowType.counselor,
                                       ),
                                     ),
@@ -166,6 +174,8 @@ class RoleScreenState extends State<RoleScreen> {
                                       builder: (context) => JanAadhaarFlowPage(
                                         ssoId: widget.ssoId,
                                         userID: widget.userID,
+                                        displayName: widget.displayName,
+                                        mobileNo: widget.mobileNo,
                                         flowType: UserFlowType.counselor,
                                       ),
                                     ),
@@ -218,8 +228,10 @@ class RoleScreenState extends State<RoleScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) => JanAadhaarFlowPage(
-                                                      ssoId: "your_sso",
-                                                      userID: "your_userid",
+                                                      ssoId: widget.ssoId,
+                                                      userID: widget.userID,
+                                                      displayName: widget.displayName,
+                                                      mobileNo: widget.mobileNo,
                                                       flowType: UserFlowType.counselor,
                                                     ),
                                                   ),
@@ -244,8 +256,10 @@ class RoleScreenState extends State<RoleScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => CounselorOtrScreen(
-                                                    ssoId: "your_sso",
-                                                    userID: "your_userid",
+                                                    ssoId: "",
+                                                    userID: "",
+                                                    displayName: widget.displayName,
+                                                    mobileNo: widget.mobileNo,
                                                   ),
                                                 ),
                                               );

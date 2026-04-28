@@ -35,6 +35,8 @@ class CounselorOtrScreen extends StatefulWidget {
   final String? janMemberId;
   final String ssoId;
   final String userID;
+  final String displayName;
+  final String mobileNo;
 
   CounselorOtrScreen({
     super.key,
@@ -42,6 +44,8 @@ class CounselorOtrScreen extends StatefulWidget {
     this.janMemberId,
     required this.ssoId,
     required this.userID,
+    required this.displayName,
+    required this.mobileNo,
   }) : feachJanAadhaarDataList = feachJanAadhaarDataList ?? [];
 
   @override
@@ -1428,7 +1432,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                     "Are you sure you want to submit the form?",
                                         (value) {
                                       if (value.toString() == "success") {
-                                        //provider.submitCounsellorFormApi(context);
+                                        provider.submitCounsellorFormApi(context, widget.feachJanAadhaarDataList, widget.janMemberId.toString());
                                       }
                                     },
                                   );

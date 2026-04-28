@@ -22,18 +22,22 @@ enum UserFlowType {
 class JanAadhaarFlowPage extends StatefulWidget {
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
   UserFlowType flowType;
 
   JanAadhaarFlowPage({
     super.key,
     required this.ssoId,
     required this.userID,
+    required this.displayName,
+    required this.mobileNo,
     required this.flowType
   });
 
 
   @override
-  State<JanAadhaarFlowPage> createState() => _JanAadhaarFlowPageState(ssoId,userID, flowType);
+  State<JanAadhaarFlowPage> createState() => _JanAadhaarFlowPageState(ssoId,userID,displayName,mobileNo, flowType);
 }
 
 class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
@@ -41,8 +45,10 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String ssoId;
   String userID;
+  String displayName;
+  String mobileNo;
   UserFlowType flowType;
-  _JanAadhaarFlowPageState(this.ssoId,this.userID, this.flowType);
+  _JanAadhaarFlowPageState(this.ssoId,this.userID,this.displayName,this.mobileNo, this.flowType);
 
 
   @override
@@ -564,8 +570,8 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
                     showAlertError("Please enter otp", context);
                   }
                   else {
-                    //provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,flowType);
-                     provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,flowType);
+                    //provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,flowType);
+                     provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,flowType);
 
                   }
                 },

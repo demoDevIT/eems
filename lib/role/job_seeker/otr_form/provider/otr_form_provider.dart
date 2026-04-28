@@ -692,7 +692,7 @@ class OtrFormProvider extends ChangeNotifier {
     return encoder.convert(json);
   }
 
-  void setJanAadhaarControllers(BuildContext context, FetchJanAdharResponseData data, String ssoID) {
+  void setJanAadhaarControllers(BuildContext context, FetchJanAdharResponseData data, String ssoID, String displayName, String mobileNo) {
     print("ssoId-->" + ssoID);
     print("data.dOB1111-->" + data.dOB);
   //  print("data.district code-->" + data.dISTRICTCD);
@@ -700,9 +700,9 @@ class OtrFormProvider extends ChangeNotifier {
 
 
     ssoIDController.text = ssoID;
-    nameController.text = data.nAMEEN ?? "";
+    nameController.text = displayName ?? "";
     fullNameController.text = data.nAMEEN ?? "";
-    mobileNOController.text = data.mOBILENO?.toString() ?? "";
+    mobileNOController.text = mobileNo ?? "";
     mobileNumberController.text = data.mOBILENO?.toString() ?? "";
     dateOfBirthController.text = data.dOB ?? "";
     print("dateOfBirthController.text22222-->" + dateOfBirthController.text);

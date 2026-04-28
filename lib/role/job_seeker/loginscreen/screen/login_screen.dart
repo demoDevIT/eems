@@ -377,7 +377,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: () {
                               Navigator.of(_scaffoldKey.currentContext!).push(
                                 RightToLeftRoute(
-                                  page:  RoleSelectionScreen(ssoId:provider.SSOIDController.text,userID: "",),
+                                  page:  RoleSelectionScreen(ssoId:provider.SSOIDController.text,userID: "",displayName: "",mobileNo: ""),
                                   duration: const Duration(milliseconds: 500),
                                   startOffset: const Offset(-1.0, 0.0),
                                 ),
