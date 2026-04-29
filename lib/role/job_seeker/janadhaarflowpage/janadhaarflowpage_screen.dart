@@ -24,6 +24,8 @@ class JanAadhaarFlowPage extends StatefulWidget {
   String userID;
   String displayName;
   String mobileNo;
+  String type;
+  String subType;
   UserFlowType flowType;
 
   JanAadhaarFlowPage({
@@ -32,12 +34,14 @@ class JanAadhaarFlowPage extends StatefulWidget {
     required this.userID,
     required this.displayName,
     required this.mobileNo,
+    required this.type,
+    required this.subType,
     required this.flowType
   });
 
 
   @override
-  State<JanAadhaarFlowPage> createState() => _JanAadhaarFlowPageState(ssoId,userID,displayName,mobileNo, flowType);
+  State<JanAadhaarFlowPage> createState() => _JanAadhaarFlowPageState(ssoId,userID,displayName,mobileNo,type,subType, flowType);
 }
 
 class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
@@ -47,8 +51,10 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
   String userID;
   String displayName;
   String mobileNo;
+  String type;
+  String subType;
   UserFlowType flowType;
-  _JanAadhaarFlowPageState(this.ssoId,this.userID,this.displayName,this.mobileNo, this.flowType);
+  _JanAadhaarFlowPageState(this.ssoId,this.userID,this.displayName,this.mobileNo,this.type,this.subType, this.flowType);
 
 
   @override
@@ -570,8 +576,8 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
                     showAlertError("Please enter otp", context);
                   }
                   else {
-                    //provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,flowType);
-                     provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,flowType);
+                    //provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
+                     provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
 
                   }
                 },

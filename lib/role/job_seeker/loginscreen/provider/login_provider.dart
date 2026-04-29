@@ -17,6 +17,7 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../counselor/counselor_dashboard/counselor_dashboard.dart';
 import '../../../department/dept_dashboard/dept_dashboard.dart';
 import '../../../department/dept_dashboard/modal/dept_info_modal.dart';
 import '../../../department/register_form/provider/register_form_provider.dart';
@@ -220,8 +221,8 @@ class LoginProvider with ChangeNotifier {
                     print("getCounselorBasicDetailsApi userID => ${sm.data!.userID}");
                     print("getCounselorBasicDetailsApi roleID => ${sm.data!.roleID}");
                     await saveRememberMeData();
-                    // getCounselorBasicDetailsApi(
-                    //     context, sm);
+                    getCounselorBasicDetailsApi(
+                        context, sm);
                   } else {
                     Navigator.of(context).push(
                       RightToLeftRoute(
@@ -919,6 +920,63 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getCounselorBasicDetailsApi(
+      BuildContext context, TempLoginModal sm) async {
+
+    print("Counselor Data सेट हो रहा है");
+
+    final pref = AppSharedPref();
+
+    if (sm.state == 200 && sm.data != null) {
+
+      if (isChecked) {
+        // Remember Me ON
+       // UserData().model.value.officeID = sm.data!.officeID;
+        UserData().model.value.userId = sm.data!.userID;
+        UserData().model.value.isLogin = true;
+        UserData().model.value.username = SSOIDController.text.toString();
+        UserData().model.value.password = passwordController.text.toString();
+      } else {
+        // Remember Me OFF
+        UserData().model.value.userId = sm.data!.userID;
+        UserData().model.value.isLogin = true;
+        UserData().model.value.username = "";
+        UserData().model.value.password = "";
+      }
+      // Common fields
+      UserData().model.value.roleId = sm.data!.roleID;
+      // Counselor specific डेटा
+      UserData().model.value.displayName = sm.data!.displayName;
+      UserData().model.value.mobileNumber = sm.data!.mobileno;
+      //UserData().model.value.email = sm.data!.mailPersonal;
+      UserData().model.value.departmentName = sm.data!.departmentName;
+      UserData().model.value.departmentId = sm.data!.departmentID;
+      UserData().model.value.profileId = sm.data!.profileID;
+
+      // Optional fields
+      UserData().model.value.firstName = sm.data!.firstName;
+      UserData().model.value.lastName = sm.data!.lastName;
+      UserData().model.value.userType = sm.data!.userType;
+
+      // Save in shared pref
+      pref.save('UserData', UserData().model.value);
+
+      print("Counselor UserData saved");
+
+      // Navigate
+      Navigator.of(context).push(
+        RightToLeftRoute(
+          page: const CounselorDashboard(), // 👈 create this स्क्रीन
+          duration: const Duration(milliseconds: 500),
+          startOffset: const Offset(-1.0, 0.0),
+        ),
+      );
+
+    } else {
+      showAlertError(
+          sm.message ?? "Login failed for counselor", context);
+    }
+  }
 
   void rememberMe(bool? value) {
     isChecked = value ?? false;

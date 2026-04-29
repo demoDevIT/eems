@@ -91,7 +91,7 @@ class RolwSelectionScreenState extends State<RoleSelectionScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID, displayName: displayName, mobileNo: mobileNo, flowType: UserFlowType.jobSeeker)),
+                              MaterialPageRoute(builder: (context) =>  JanAadhaarFlowPage(ssoId: ssoId,userID: userID, displayName: displayName, mobileNo: mobileNo, type: "", subType:"", flowType: UserFlowType.jobSeeker)),
                             );
                           },
                         ),

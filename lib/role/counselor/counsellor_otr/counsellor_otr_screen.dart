@@ -37,6 +37,9 @@ class CounselorOtrScreen extends StatefulWidget {
   final String userID;
   final String displayName;
   final String mobileNo;
+  final String type;
+  final String subType;
+  final String ppoNumber;
 
   CounselorOtrScreen({
     super.key,
@@ -46,6 +49,9 @@ class CounselorOtrScreen extends StatefulWidget {
     required this.userID,
     required this.displayName,
     required this.mobileNo,
+    required this.type,
+    required this.subType,
+    required this.ppoNumber,
   }) : feachJanAadhaarDataList = feachJanAadhaarDataList ?? [];
 
   @override
@@ -71,6 +77,16 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    print("=== CounselorOtrScreen Data ===");
+    print("ssoId: ${widget.ssoId}");
+    print("userID: ${widget.userID}");
+    print("displayName: ${widget.displayName}");
+    print("mobileNo: ${widget.mobileNo}");
+    print("type: ${widget.type}");
+    print("subType: ${widget.subType}");
+    print("janMemberId: ${widget.janMemberId}");
+
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       final provider = Provider.of<CounselorOtrProvider>(context, listen: false);
 
@@ -896,9 +912,39 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  provider.graduationTypeNameController.text = value.name ?? "";
+                                  provider.graduationTypeIdController.text = value.dropID.toString();
+
+                                  /// Clear if not "Other"
+                                  if (value.dropID != -1) {
+                                    provider.otherDegreeController.clear();
+                                  }
+
+                                  setState(() {});
+                                },
                               ),
                             ),
+
+                          if (provider.graduationTypeIdController.text == "-1") ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: labelWithStar('Other Degree', required: true),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: TextField(
+                                controller: provider.otherDegreeController,
+                                decoration: InputDecoration(
+                                  hintText: "Enter other degree",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
 
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -1202,10 +1248,13 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                           ),
 
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Are you registered clinical psychologist?', required: false),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: labelWithStar(
+                              'Are you registered clinical psychologist?',
+                              required: false,
+                            ),
                           ),
+
                           Row(
                             children: [
                               Row(
@@ -1213,15 +1262,12 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                   Radio<String>(
                                     value: 'Yes',
                                     groupValue: provider.clinicalPsychologistController.text,
-                                    onChanged: (val) => setState(() =>
-                                    provider.clinicalPsychologistController.text = val ?? ""),
+                                    onChanged: (val) => setState(() {
+                                      provider.clinicalPsychologistController.text = val ?? "";
+                                    }),
                                   ),
                                   const SizedBox(width: 4),
-                                  Text(
-                                    'Yes',
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
-                                  ),
+                                  Text('Yes', style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
                                 ],
                               ),
                               const SizedBox(width: 12),
@@ -1230,19 +1276,61 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                   Radio<String>(
                                     value: 'No',
                                     groupValue: provider.clinicalPsychologistController.text,
-                                    onChanged: (val) => setState(() =>
-                                    provider.clinicalPsychologistController.text = val ?? ""),
+                                    onChanged: (val) => setState(() {
+                                      provider.clinicalPsychologistController.text = val ?? "";
+                                    }),
                                   ),
                                   const SizedBox(width: 4),
-                                  Text(
-                                    'No',
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
-                                  ),
+                                  Text('No', style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
                                 ],
                               ),
                             ],
                           ),
+
+                          /// 👇 SHOW THIS ONLY WHEN YES SELECTED
+                          if (provider.clinicalPsychologistController.text == "Yes") ...[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: labelWithStar(
+                                'Are you willing to take free psychometric tests?',
+                                required: false,
+                              ),
+                            ),
+
+                            Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'Yes',
+                                      groupValue: provider.psychometricTestController.text,
+                                      onChanged: (val) => setState(() {
+                                        provider.psychometricTestController.text = val ?? "";
+                                      }),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text('Yes',
+                                        style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
+                                  ],
+                                ),
+                                const SizedBox(width: 12),
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'No',
+                                      groupValue: provider.psychometricTestController.text,
+                                      onChanged: (val) => setState(() {
+                                        provider.psychometricTestController.text = val ?? "";
+                                      }),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text('No',
+                                        style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ]
 
                         ],
                       ),
@@ -1432,7 +1520,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                     "Are you sure you want to submit the form?",
                                         (value) {
                                       if (value.toString() == "success") {
-                                        provider.submitCounsellorFormApi(context, widget.feachJanAadhaarDataList, widget.janMemberId.toString());
+                                        provider.submitCounsellorFormApi(context, widget.feachJanAadhaarDataList, widget.janMemberId.toString(), widget.type, widget.subType);
                                       }
                                     },
                                   );

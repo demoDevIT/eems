@@ -153,6 +153,16 @@ class LoginData {
   dynamic internshipDeptTypeID;
   // dynamic district; already exist
 
+  //for counselor
+  dynamic displayName;
+  dynamic mobileNumber;
+ // dynamic email;
+  dynamic departmentName;
+  dynamic departmentId;
+  dynamic profileId;
+  dynamic firstName;
+  dynamic lastName;
+
   LoginData({
     this.userId,
     this.roleId,
@@ -271,6 +281,16 @@ class LoginData {
     this.deptID,
     this.internshipDeptTypeID,
     // already exist
+
+    //counselor
+    this.displayName,
+    this.mobileNumber,
+   // this.email,
+    this.departmentName,
+    this.departmentId,
+    this.profileId,
+    this.firstName,
+    this.lastName
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -389,6 +409,16 @@ class LoginData {
     officeID = json['OfficeID'];
     deptID = json['DepartmentID'];
     internshipDeptTypeID = json['InternshipDeptTypeID'];
+
+    //counselor
+    displayName = json['DisplayName'];
+    mobileNumber = json['Mobileno'];
+   // email = json['Email'];
+    departmentName = json['DepartmentName'];
+    departmentId = json['DepartmentID'];
+    profileId = json['ProfileID'];
+    firstName = json['FirstName'];
+    lastName = json['LastName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -509,6 +539,16 @@ class LoginData {
     data['OfficeID'] = this.officeID;
     data['DepartmentID'] = this.deptID;
     data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
+
+    //counselor
+    data['DisplayName'] = this.displayName;
+    data['Mobileno'] = this.mobileNumber;
+    data['DepartmentName'] = this.departmentName;
+    data['DepartmentID'] = this.departmentId;
+    data['ProfileID'] = this.profileId;
+    data['FirstName'] = this.firstName;
+    data['LastName'] = this.lastName;
+
     return data;
   }
 }

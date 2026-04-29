@@ -216,6 +216,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String userID,
       String displayName,
       String mobileNo,
+      String type,
+      String subType,
       UserFlowType flowType
       ) async {
     // Simulate network delay
@@ -353,8 +355,11 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             janMemberId: memberId,
             ssoId: ssoId,
             userID: userID,
-              displayName: displayName,
-              mobileNo: mobileNo
+            displayName: displayName,
+            mobileNo: mobileNo,
+            type: type,
+            subType: subType,
+            ppoNumber: "",
           ),
         ),
             (route) => false,
@@ -374,6 +379,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       String userID,
       String displayName,
       String mobileNo,
+      String type,
+      String subType,
       UserFlowType flowType
       ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -432,7 +439,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                               ssoId: ssoId,
                               userID: userID,
                               displayName: displayName,
-                              mobileNo: mobileNo
+                              mobileNo: mobileNo,
+                              type: type,
+                              subType: subType,
+                              ppoNumber: ""
                           )),
                       (route) => false);
             }
@@ -452,7 +462,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             return smmm;
           }
         } else {
-          addSaticData(context, memberId, ssoId, userID, displayName, mobileNo, flowType);
+          addSaticData(context, memberId, ssoId, userID, displayName, mobileNo, type, subType, flowType);
 
           notifyListeners();
           return FetchJanAdharModal(
@@ -473,7 +483,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
   }
 
   addSaticData(
-      BuildContext context, String memberId, String ssoId, String userID, String displayName, String mobileNo, UserFlowType flowType) {
+      BuildContext context, String memberId, String ssoId, String userID, String displayName, String mobileNo, String type, String subType, UserFlowType flowType) {
     feachJanAadhaarDataList.clear();
     feachJanAadhaarDataList.add(
       FetchJanAdharResponseData(
@@ -558,7 +568,10 @@ class JanAadhaarFlowProvider with ChangeNotifier {
                       ssoId: ssoId,
                       userID: userID,
                       displayName: displayName,
-                      mobileNo: mobileNo
+                      mobileNo: mobileNo,
+                      type: type,
+                      subType: subType,
+                      ppoNumber: "",
                   )),
               (route) => false);
     }

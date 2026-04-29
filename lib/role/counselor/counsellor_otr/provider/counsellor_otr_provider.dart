@@ -69,6 +69,8 @@ class CounselorOtrProvider extends ChangeNotifier {
   TextEditingController();
   final TextEditingController graduationTypeNameController =
   TextEditingController();
+  final TextEditingController otherDegreeController =
+  TextEditingController();
 
   List<UniversityData> universityList = [];
   final TextEditingController universityIdController =
@@ -103,6 +105,7 @@ class CounselorOtrProvider extends ChangeNotifier {
 
   final TextEditingController yearExpController = TextEditingController();
   final TextEditingController clinicalPsychologistController = TextEditingController();
+  final TextEditingController psychometricTestController = TextEditingController();
 
   final TextEditingController pubWorkArtController = TextEditingController();
   final TextEditingController linkPortController = TextEditingController();
@@ -676,10 +679,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String getEmpTypeName(String empType, String? subType) {
+    if (empType == "govt" && subType == "retired") {
+      return "RetiredGovernmentEmp";
+    } else if (empType == "govt" && subType == "serving") {
+      return "GovernmentEmp";
+    } else if (empType == "private") {
+      return "PrivateEmp";
+    }
+    return "Unknown"; // fallback (optional)
+  }
+
   Future<CounselorOTRDetailModal?> submitCounsellorFormApi(
       BuildContext context,
       List<FetchJanAdharResponseData> feachJanAadhaarDataList,
       String memberId,
+      String empType,
+      String empSubType,
       // String userID
       ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -697,13 +713,14 @@ class CounselorOtrProvider extends ChangeNotifier {
         // }).toList();
         Map<String, dynamic> data =
         {
+          //these value I got from amit tripathi in teams
           "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
           "Additional_Qualificate": addQualiController.text,
-          "AdministrativedepartmentName": adminDeptController.text,
+          "AdministrativedepartmentName": empType == "govt" ? adminDeptController.text : "",
           "AffiliatedWithAnyCareerID": 0,
           "AreaOfProfessionalExpertise": "",
           "AvailibiltyForUpskilling": availUpskillController.text,
-          "CertificationName": certCourseController.text,
+          "CertificationName": "",
           "Certifications_CoursesCompleted": certCourseController.text,
           "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
           "ConditionCheckbox": isDeclarationAccepted,
@@ -713,34 +730,34 @@ class CounselorOtrProvider extends ChangeNotifier {
           "DateofRetirement": dateOfRetireController.text,
           "Dateofjoining": dateOfJoinController.text,
           "DegreeID": graduationTypeIdController.text,
-          "DegreeName": graduationTypeNameController.text,
+          "DegreeName": "", //graduationTypeNameController.text, this is not used any where pass static ""
           "DesignationID": designationController.text,
-          "DisclaimerStatus": true,
+          "DisclaimerStatus": false,
           "DistrictCode": "",
-          "DistrictId": 0,
-          "DivIsPresentGovtEmploye": true, // flag should come from back pages 'govt hai ya nahi'
-          "DivIsPresentPrivateEmploye": true, // flag should come from back pages 'private hai ya nahi'
+          "DistrictId": 0, //***********
+          "DivIsPresentGovtEmploye": empType == "govt" ? true : false,
+          "DivIsPresentPrivateEmploye": empType == "private" ? true : false,
           "EducationPassingYearID": yearOfPassingIdController.text,
           "EducationQualificationID": educationLevelIdController.text,
           "Email": emailController.text,
-          "EmpTypeName": "string", //PrivateEmp/GovernmentEmp/RetiredGovernmentEmp
+          "EmpTypeName": getEmpTypeName(empType, empSubType),
           "EmployeeID": "",
           "EmployeeNumber": null,
-          "EmployeeType": "", // Private/government
+          "EmployeeType": empType == "private" ? "Private" : "government",
           "EmployeeTypeID": 0,
           "EmploymentID": empIdController.text,
           "EmploymentStatusID": 0,
           "EnrID": feachJanAadhaarDataList[0].eNRID,
           "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
-          "FirstName": nameController.text,
-          "FreePsychometricTests": false,  // add new radio with yes no, Are you registered clinical psychologist? yes then open Are you willing to take free psychometric tests? with yes no
+          "FirstName": nameController.text,  // janadhaar name
+          "FreePsychometricTests": psychometricTestController.toString() == 'Yes' ? true : false,
           "Gender": genderController.text,
           "IsDivCounsellorType": false,
           "IsJanIDShow": false,
           "IsPresentEmployee": false,
-          "IsPresentGovtEmploye": false,
-          "IsPresentGovtEmployee": true, // flag should come from back pages 'govt hai ya nahi'
-          "IsResidentState": true,
+          "IsPresentGovtEmploye": empType == "govt" ? true : false,
+          //"IsPresentGovtEmployee": true, // this field has not sent by amit
+          "IsResidentState": true, //************
           "IscounselorType": false,
           "IssuingOrganization": issuOrgController.text,
           "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
@@ -749,19 +766,19 @@ class CounselorOtrProvider extends ChangeNotifier {
           "LanguageProficiencyID": langProfIdController.text,
           "LinkedIn_PortfolioURL": linkPortController.text,
           "MobileNo": mobileNOController.text,
-          "Name": nameController.text,
+          "Name": "", //nameController.text
           "OccupationName": "",
-          "OrganizationName": issuOrgController.text,
-          "OtherDegreeName": "",
-          "PPONumber": null,
+          "OrganizationName": "",
+          "OtherDegreeName": otherDegreeController.text,
+          "PPONumber": null, // ************ ppo number
           "PinCode": "",
-          "PostedDepartmentName": "admin",
+          "PostedDepartmentName": postDeptController.text,
           "PreferredAgeGroupForCounselingID": preAgeGroupCounsIdController.text,
           "PresentEmployeeID": 0,
           "PrimaryDomainExpertiseID": primaryDomainIdController.text,
-          "PrivateCityID": 0,
-          "PrivateDistrictID": 0,
-          "PrivateStateID": 0,
+          "PrivateCityID": 0, // ***********
+          "PrivateDistrictID": 0, //************
+          "PrivateStateID": 0,//***********
           "ProfileImageUrl": fileName,
           "PublishedWorkArticles": pubWorkArtController.text,
           "QualificationID": 0,
@@ -778,7 +795,7 @@ class CounselorOtrProvider extends ChangeNotifier {
           "UIDNumber": "",
           "UIDTypeID": 0,
           "UniversityID": universityIdController.text,
-          "UniversityInstitutionName": universityNameController.text,
+          "UniversityInstitutionName": "",
           "UploadDegreeCertificate": "",
           "UploadDegreeCertificateYearOfCompletion": "",
           "UploadExperienceLetterCertificate": "",
@@ -788,7 +805,7 @@ class CounselorOtrProvider extends ChangeNotifier {
           "YearOfCompletionID": compYearIdController.text,
           "YearOfProfessionalExperience": proExpYearController.text,
           "YearsOfExperienceInCounseling": yearExpController.text,
-          "category": "",
+          "category": "", //**********janadhar category
 
         };
         print("printFullData -->");

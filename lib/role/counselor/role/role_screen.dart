@@ -7,6 +7,7 @@ import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 
 import '../../job_seeker/janadhaarflowpage/janadhaarflowpage_screen.dart';
+import '../counsellor_otr/PpoNumberScreen.dart';
 import '../counsellor_otr/counsellor_otr_screen.dart';
 
 // class RoleScreen extends StatefulWidget {
@@ -154,6 +155,8 @@ class RoleScreenState extends State<RoleScreen> {
                                         userID: widget.userID,
                                         displayName: widget.displayName,
                                         mobileNo: widget.mobileNo,
+                                        type:"govt",
+                                        subType: "serving",
                                         flowType: UserFlowType.counselor,
                                       ),
                                     ),
@@ -171,15 +174,29 @@ class RoleScreenState extends State<RoleScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => JanAadhaarFlowPage(
+                                      builder: (context) => PpoNumberScreen(
                                         ssoId: widget.ssoId,
                                         userID: widget.userID,
                                         displayName: widget.displayName,
                                         mobileNo: widget.mobileNo,
-                                        flowType: UserFlowType.counselor,
                                       ),
                                     ),
                                   );
+
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => JanAadhaarFlowPage(
+                                  //       ssoId: widget.ssoId,
+                                  //       userID: widget.userID,
+                                  //       displayName: widget.displayName,
+                                  //       mobileNo: widget.mobileNo,
+                                  //       type:"govt",
+                                  //       subType: "retired",
+                                  //       flowType: UserFlowType.counselor,
+                                  //     ),
+                                  //   ),
+                                  // );
                                 },
                               ),
                             ],
@@ -232,6 +249,8 @@ class RoleScreenState extends State<RoleScreen> {
                                                       userID: widget.userID,
                                                       displayName: widget.displayName,
                                                       mobileNo: widget.mobileNo,
+                                                      type:"private",
+                                                      subType: "rajasthan",
                                                       flowType: UserFlowType.counselor,
                                                     ),
                                                   ),
@@ -260,6 +279,9 @@ class RoleScreenState extends State<RoleScreen> {
                                                     userID: "",
                                                     displayName: widget.displayName,
                                                     mobileNo: widget.mobileNo,
+                                                    type:"private",
+                                                    subType: "nonRajasthan",
+                                                    ppoNumber: "",
                                                   ),
                                                 ),
                                               );
