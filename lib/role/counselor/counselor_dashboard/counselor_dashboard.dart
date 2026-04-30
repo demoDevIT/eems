@@ -18,6 +18,7 @@ import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../../job_seeker/profile/profile.dart';
 import '../../notification/notification_list.dart';
 import '../counselor_jobs/counselor_jobs_list.dart';
+import '../counselor_profile/counselor_profile.dart';
 import '../home/screen/counselor_home.dart';
 
 
@@ -118,12 +119,12 @@ class _CounselorDashboard extends State<CounselorDashboard> {
             iconPath: "assets/images/profilee.svg",
             color: const Color(0xFF6C63FF),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => CounselorProfileScreen(isAppBarHide: false),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CounselorProfileScreen(isAppBarHide: false),
+                ),
+              );
             },
           ),
 

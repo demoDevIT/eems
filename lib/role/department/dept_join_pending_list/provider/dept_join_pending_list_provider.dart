@@ -522,7 +522,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
   <html>
     <body onload="document.forms[0].submit()">
       <form method="POST"
-            action="https://esignuat.rajasthan.gov.in:9006/esign/2.1/signdoc/"
+            action="https://esign.rajasthan.gov.in/esign/2.1/signdoc/"
             enctype="multipart/form-data">
 
         <textarea name="esignData">

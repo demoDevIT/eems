@@ -145,8 +145,9 @@ class LoginProvider with ChangeNotifier {
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
-          // String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
-          // print(authToken);
+          String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
+          print("authtoken -> $authToken");
+
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
