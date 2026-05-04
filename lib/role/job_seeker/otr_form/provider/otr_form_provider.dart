@@ -1097,7 +1097,9 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //  ProgressDialog.showLoadingDialog(context);
-        String url = "Common/DDl_StreamType/$id";
+        // String url = "Common/DDl_StreamType/$id"; //earlier it was working
+        String url = "Common/GetGraduationType/$id"; //changed with this one
+
         ApiResponse apiResponse = await commonRepo.get(url);
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&

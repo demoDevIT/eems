@@ -17,6 +17,7 @@ import 'package:rajemployment/utils/textstyles.dart';
 import '../../../api_service/datasource/remote/dio/dio_client.dart';
 import '../../../api_service/model/base/api_response.dart';
 import '../../../constants/constants.dart';
+import '../../../constants/static_variables.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
@@ -66,6 +67,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
   @override
   void initState() {
     super.initState();
+    print("StaticVariables authtoken -> ${StaticVariables.authToken}");
 
     final dio = Dio();
 
@@ -679,6 +681,9 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                     // changes for remember me
 
                     final pref = AppSharedPref();
+
+                    // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                    // commonRepo.dioClient.clearAuthToken();
 
                     // Clear login session only
                     UserData().model.value.isLogin = false;

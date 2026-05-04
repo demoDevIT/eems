@@ -115,8 +115,11 @@ class GraduationStreamTypeData {
     // dropID = json['ID'];
     // streamName = json['StreamName'];
 
-    dropID = json['EducationStreamID'];
-    name = json['StreamName'];
+    // dropID = json['EducationStreamID'];
+    // name = json['StreamName'];
+
+    dropID = json['QualificationID'];
+    name = json['Name'];
 
     // enumValue = json['EnumValue'];
     // name = json['Name'];
@@ -159,8 +162,8 @@ class GraduationStreamTypeData {
     // data['ID'] = this.dropID;
     // data['StreamName'] = this.streamName;
 
-    data['EducationStreamID'] = this.dropID;
-    data['StreamName'] = this.name;
+    data['QualificationID'] = this.dropID;
+    data['Name'] = this.name;
 
     // data['EnumValue'] = this.enumValue;
     // data['Name'] = this.name;

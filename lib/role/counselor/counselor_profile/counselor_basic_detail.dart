@@ -168,7 +168,7 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                       TextInputType.emailAddress,
                     ),
                   ),
-
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                     ],
                   ),
 
-
+                  const SizedBox(height: 10),
                   Row(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,6 +270,8 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                     ],
                   ),
 
+                  const SizedBox(height: 10),
+                  
                   labelWithStar('Email',required: false),
 
                   Padding(

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
@@ -392,6 +393,10 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
+
+                  // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                  // commonRepo.dioClient.clearAuthToken();
+
                   // Clear login session only
                   UserData().model.value.isLogin = false;
                   UserData().model.value.userId = null;

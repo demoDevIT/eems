@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
@@ -298,6 +299,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
                   // Clear login session only
+                  // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                  // commonRepo.dioClient.clearAuthToken();
+
                   UserData().model.value.isLogin = false;
                   UserData().model.value.userId = null;
                   await pref.remove('UserData');

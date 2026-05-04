@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../constants/static_variables.dart';
 import 'logging_interceptor.dart';
 
 class DioClient {
@@ -34,19 +35,62 @@ class DioClient {
     dio.options.baseUrl = baseUrl;
     dio.options.connectTimeout = const Duration(milliseconds: 30000);
     dio.options.receiveTimeout = const Duration(milliseconds: 30000);
-
     dio.options.headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
     };
-
-    if (token != null && token!.isNotEmpty) {
-      dio.options.headers["X-AuthToken"] = token;
-    }
+    print("StaticVariables authtoken -> ${StaticVariables.authToken}");
+    //
+    // dio.options.headers = {
+    //   "Content-Type": "application/json",
+    //   "Accept": "application/json",
+    //   "Authorization":"Bearer ${StaticVariables.authToken}"
+    // };
 
     if (loggingInterceptor != null) {
       dio.interceptors.add(loggingInterceptor!);
+
+      // dio.interceptors.add(
+      //   InterceptorsWrapper(
+      //     onRequest: (options, handler) {
+      //       // ✅ Login API → blank token
+      //       if (options.path.contains("Login/MobileLogin")) {
+      //         options.headers["Authorization"] = "";
+      //       } else {
+      //         // ✅ ALL APIs (GET, POST, PUT, DELETE...)
+      //         if (token != null && token!.isNotEmpty) {
+      //           options.headers["Authorization"] = "Bearer $token";
+      //         }
+      //       }
+      //
+      //       print("👉 FINAL HEADER: ${options.headers}");
+      //
+      //       return handler.next(options);
+      //     },
+      //   ),
+      // );
+
     }
+
+    // dio.interceptors.add(
+    //   InterceptorsWrapper(
+    //     onRequest: (options, handler) {
+    //       if (options.path.contains("Login/MobileLogin")) {
+    //         // ✅ Login API → send blank token
+    //         options.headers["Authorization"] = "";
+    //       } else {
+    //         // ✅ Other APIs → send real token
+    //         if (token != null && token!.isNotEmpty) {
+    //           options.headers["Authorization"] = "Bearer $token";
+    //         }
+    //       }
+    //
+    //       return handler.next(options);
+    //     },
+    //   ),
+    // );
+
   }
 
 
@@ -56,11 +100,22 @@ class DioClient {
     token = updateToken;
     dio.options.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-    /*  'Authorization': 'Bearer $updateToken',*/
-      'X-AuthToken': token, // 👈 Add here
+      'Authorization': 'Bearer $token',
+      // 'Authorization': token, // 👈 Add here
       'Accept': 'application/json',
     };
   }
+
+  // void clearAuthToken() {
+  //   token = null;
+  //
+  //   dio.options.headers.remove('Authorization');
+  //
+  //   // Optional: also clear from storage
+  //   sharedPreferences?.remove("token");
+  //
+  //   print("✅ Token cleared");
+  // }
 
   Future<Response> get(
     String uri, {

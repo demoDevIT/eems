@@ -37,26 +37,14 @@ class CounselorBasicDetailsProvider extends ChangeNotifier {
     mobileController.text = data.mobileNo ?? "";
     emailController.text = data.email ?? "";
     //prefLangController.text = data.pref ?? "";
-    specExpertiseLangController.text = data.specExpertID ?? "";
+    specExpertiseLangController.text = data.specExpertID.toString() ?? "";
     // stateController.text = data.sta ?? "";
     // districtController.text = data.district ?? "";
     // cityController.text = data.city ?? "";
     notifyListeners();
   }
 
-  // String maskUid(String uid) {
-  //   if (uid.isEmpty) return '';
-  //
-  //   if (uid.length <= 4) {
-  //     return uid; // nothing to mask
-  //   }
-  //
-  //   final maskedLength = uid.length - 4;
-  //   return '*' * maskedLength + uid.substring(uid.length - 4);
-  // }
-  //
-
-  // clearData() {
+  clearData() {
   //   fullNameController.clear();
   //   fatherNameController.clear();
   //   dobController.clear();
@@ -73,5 +61,5 @@ class CounselorBasicDetailsProvider extends ChangeNotifier {
   //   isMinority = false;
   //   gender = "Male";
   //   notifyListeners();
-  // }
+  }
 }

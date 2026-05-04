@@ -37,18 +37,21 @@ class GraduationTypeModal {
 class GraduationTypeData {
   int? dropID;
   String? name;
+  dynamic childCount;
 
   GraduationTypeData({this.dropID, this.name});
 
   GraduationTypeData.fromJson(Map<String, dynamic> json) {
     dropID = json['QualificationID'];
     name = json['Name'];
+    childCount = json['ChildCount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['QualificationID'] = this.dropID;
     data['Name'] = this.name;
+    data['ChildCount'] = this.childCount;
     return data;
   }
 }

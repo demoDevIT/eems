@@ -58,6 +58,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                      // Provider.of<DepartmentDashboardProvider>(context, listen: false).reset();
 
                       final pref = AppSharedPref();
+
+                      // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                      // commonRepo.dioClient.clearAuthToken();
                       // Clear login session only
                       UserData().model.value.isLogin = false;
                       UserData().model.value.userId = null;

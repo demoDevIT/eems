@@ -15,8 +15,10 @@ import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
 import '../../educationdetail/modal/profile_qualication_info_list_modal.dart';
+import '../../otr_form/modal/graduation_stream_type_modal.dart';
+import '../../otr_form/modal/graduation_type_modal.dart';
 import '../modal/education_level_modal.dart';
-import '../modal/graduation_type_modal.dart';
+
 import '../modal/medium_type_modal.dart';
 import '../modal/nco_code_modal.dart';
 import '../modal/save_data_education_modal.dart';
@@ -39,6 +41,24 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   List<EducationLevelData> educationLevelsList = [];
   List<NcoCodeData> ncoCodeList = [];
   List<GraduationTypeData> graduationTypeList = [];
+
+  // ITI child dropdowns
+  List<GraduationTypeData> itiMainList = [];
+  List<GraduationTypeData> itiChildList = [];
+  List<GraduationTypeData> itiSubChildList = [];
+
+  bool isItiSelected = false;
+
+  bool showItiChildDropdown = false;
+  bool showItiSubChildDropdown = false;
+
+  // controllers
+  TextEditingController itiChildNameController = TextEditingController();
+  TextEditingController itiChildIdController = TextEditingController();
+
+  TextEditingController itiSubChildNameController = TextEditingController();
+  TextEditingController itiSubChildIdController = TextEditingController();
+
   List<GraduationTypeData> classList = [];
   List<BoardData> boardList = [];
   List<UniversityData> universityList = [];
@@ -47,6 +67,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   List<PassingYearData> passingYearList= [];
   List<StreamTypeData> streamTypeList = [];
   List<GradeTypeData> gradeTypeList = [];
+
+  List<GraduationStreamTypeData> graduationStreamTypeList = [];
+  final TextEditingController graduationStreamTypeNameController =
+  TextEditingController();
+  final TextEditingController graduationStreamTypeIdController =
+  TextEditingController();
 
   final TextEditingController educationLevelIdController = TextEditingController();
   final TextEditingController educationLevelNameController = TextEditingController();
@@ -207,7 +233,10 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     }
   }
 
-  Future<GraduationTypeModal?> graduationTypeApi(BuildContext context,String id,bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<GraduationTypeModal?> graduationTypeApi(BuildContext context,String id,[
+    bool isUpdate = false,
+    ProfileQualicationInfoData? profileData,
+  ]) async {
     print("classIDDDD=>$id");
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
@@ -225,6 +254,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
 
           if (sm.state == 200) {
             if(id == "2"){
+              print("graduationTypeApi function ID 2");
               classList.clear();
               classList.addAll(sm.data!);
               classList.sort((a, b) => a.dropID!.compareTo(b.dropID!));  // ascending
@@ -241,6 +271,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
 
             }
             else{
+              print("graduationTypeApi function ID not 2 - $id");
               graduationTypeList.clear();
               graduationTypeList.addAll(sm.data!);
             }
@@ -309,6 +340,60 @@ class AddEducationalDetailProvider extends ChangeNotifier {
       }
     } else {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<GraduationStreamTypeModal?> graduationStreamTypeApi(
+      BuildContext context, String id) async {
+    print("ID======> $id");
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        //  ProgressDialog.showLoadingDialog(context);
+        // String url = "Common/DDl_StreamType/$id"; //earlier it was working
+        String url = "Common/GetGraduationType/$id"; //changed with this one
+
+        ApiResponse apiResponse = await commonRepo.get(url);
+        //  ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          var responseData = apiResponse.response?.data;
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+          final sm = GraduationStreamTypeModal.fromJson(responseData);
+
+          if (sm.state == 200) {
+            graduationStreamTypeList.clear();
+            graduationStreamTypeList.addAll(sm.data!);
+
+            notifyListeners();
+            return sm;
+          } else {
+            final smmm =
+            GraduationStreamTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          return GraduationStreamTypeModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      } on Exception catch (err) {
+        //ProgressDialog.closeLoadingDialog(context);
+        final sm = GraduationStreamTypeModal(state: 0, message: err.toString());
+        showAlertError(sm.message.toString(), context);
+        return sm;
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -724,7 +809,60 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> onSelectItiItem(
+      BuildContext context,
+      GraduationTypeData value,
+      int level,
+      ) async {
 
+
+    int selectedId = value.dropID ?? 0;
+    int childCount = value.childCount ?? 0;
+
+    print("selectedId-> $selectedId");
+    print("childCount-> $childCount");
+
+    if (level == 0) {
+      itiChildList.clear();
+      itiSubChildList.clear();
+      showItiChildDropdown = false;
+      showItiSubChildDropdown = false;
+
+      itiChildNameController.clear();
+      itiChildIdController.clear();
+      itiSubChildNameController.clear();
+      itiSubChildIdController.clear();
+
+      if (childCount > 0) {
+        await graduationTypeApi(context, selectedId.toString());
+
+        itiChildList = List.from(graduationTypeList);
+        showItiChildDropdown = true;
+      } else {
+        await graduationStreamTypeApi(context, selectedId.toString());
+      }
+    }
+
+    else if (level == 1) {
+      itiSubChildList.clear();
+      showItiSubChildDropdown = false;
+
+      if (childCount > 0) {
+        await graduationTypeApi(context, selectedId.toString());
+
+        itiSubChildList = List.from(graduationTypeList);
+        showItiSubChildDropdown = true;
+      } else {
+        await graduationStreamTypeApi(context, selectedId.toString());
+      }
+    }
+
+    else if (level == 2) {
+      await graduationStreamTypeApi(context, selectedId.toString());
+    }
+
+    notifyListeners();
+  }
 
 
   updateData(ProfileQualicationInfoData? profileData){

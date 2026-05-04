@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rajemployment/constants/static_variables.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/counsellor_otr_screen.dart';
 import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import 'package:rajemployment/role/employer/employerdashboard/employer_dashboard.dart';
@@ -138,6 +139,7 @@ class LoginProvider with ChangeNotifier {
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(
             "Login/MobileLogin", body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -145,8 +147,14 @@ class LoginProvider with ChangeNotifier {
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
-          String? authToken = apiResponse.response?.headers?['x-authtoken']?.first;
+          String? authToken = apiResponse.response?.headers?['X-AuthToken']?.first;
           print("authtoken -> $authToken");
+
+         // StaticVariables.authToken = authToken.toString();
+          if (authToken != null) {
+            commonRepo.dioClient.updateHeader(authToken);
+          }
+
 
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {

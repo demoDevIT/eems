@@ -14,6 +14,7 @@ class StaticVariables {
   static String fromDate = "";
   static String toDate = "";
   static String memberNameCredit = "";
+  static String authToken = "";
 
 
 

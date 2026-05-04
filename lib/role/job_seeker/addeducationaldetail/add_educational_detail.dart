@@ -11,6 +11,8 @@ import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
 import '../educationdetail/modal/profile_qualication_info_list_modal.dart';
 import '../loginscreen/provider/locale_provider.dart';
+import '../otr_form/modal/graduation_type_modal.dart';
+import 'modal/education_level_modal.dart';
 
 class AddEducationalDetail extends StatefulWidget {
   bool isUpdate;
@@ -132,14 +134,19 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<EducationLevelData>(
                           items: provider.educationLevelsList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.educationLevelNameController,
                           idController: provider.educationLevelIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {
                             setState(() {
                               print("test==-->" +
@@ -151,14 +158,22 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                   provider.educationLevelIdController.text ==
                                       "6" ||
                                   provider.educationLevelIdController.text ==
-                                      "8") {
-                                String id = provider
-                                            .educationLevelIdController.text ==
-                                        "8"
-                                    ? "7"
-                                    : provider.educationLevelIdController.text;
+                                      "8" ||
+                                  provider.educationLevelIdController.text ==
+                                      "9") {
+                                // String id = provider
+                                //             .educationLevelIdController.text ==
+                                //         "8"
+                                //     ? "7"
+                                //     : provider.educationLevelIdController.text;
                                 provider.graduationTypeApi(
-                                    context, id, isUpdate, profileData);
+                                    context, provider.educationLevelIdController.text, isUpdate, profileData);
+
+                                if (provider.educationLevelIdController.text == "9") {
+                                  provider.itiMainList =
+                                      List.from(provider.graduationTypeList);
+                                }
+
                               } else if (provider
                                       .educationLevelIdController.text ==
                                   "3") {
@@ -321,8 +336,9 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
 
                     provider.educationLevelIdController.text == "5" ||
                             provider.educationLevelIdController.text == "6" ||
-                            provider.educationLevelIdController.text == "8"
-                        ? labelWithStar('Graduation Type', required: true)
+                            provider.educationLevelIdController.text == "8" ||
+                        provider.educationLevelIdController.text == "9"
+                        ? labelWithStar(getGraduationTypeLabel(), required: true)
                         : SizedBox(),
 
                     /*   provider.educationLevelIdController.text == "5" ||  provider.educationLevelIdController.text == "6"  ||  provider.educationLevelIdController.text == "8" ?  Padding(
@@ -340,14 +356,17 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       visible: provider.educationLevelIdController.text ==
                                   "5" ||
                               provider.educationLevelIdController.text == "6" ||
-                              provider.educationLevelIdController.text == "8"
+                              provider.educationLevelIdController.text == "8" ||
+                          provider.educationLevelIdController.text == "9"
                           ? true
                           : false,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
                         child: buildDropdownWithBorderField(
-                          items: provider.graduationTypeList,
+                          items: provider.educationLevelIdController.text == "9"
+                              ? provider.itiMainList
+                              : provider.graduationTypeList,
                           controller: provider.graduationTypeNameController,
                           idController: provider.graduationTypeIdController,
                           hintText: "--Select Option--",
@@ -355,11 +374,69 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {
-                            setState(() {});
+                            if (provider.educationLevelIdController.text == "9") {
+                              final selectedItem = provider.itiMainList.firstWhere(
+                                    (e) => e.dropID.toString() == value,
+                              );
+                              provider.onSelectItiItem(context, selectedItem, 0);
+                            } else {
+                              setState(() {
+                                provider.graduationStreamTypeNameController.clear();
+                                provider.graduationStreamTypeIdController.clear();
+                                provider.graduationStreamTypeList.clear();
+
+                                String id = provider.graduationTypeIdController.text;
+                                provider.graduationStreamTypeApi(context, id);
+                              });
+                            }
                           },
                         ),
                       ),
                     ),
+
+                    if (provider.educationLevelIdController.text == "9" &&
+                        provider.showItiChildDropdown) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: labelWithStar('ITI Sub Trade Type', required: true),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: buildSearchableDropdown<GraduationTypeData>(
+                          items: provider.itiChildList,
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+                          controller: provider.itiChildNameController,
+                          idController: provider.itiChildIdController,
+                          hintText: "--Select Option--",
+                          onChanged: (value) {
+                            provider.onSelectItiItem(context, value, 1);
+                          },
+                        ),
+                      ),
+                    ],
+
+                    if (provider.educationLevelIdController.text == "9" &&
+                        provider.showItiSubChildDropdown) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: labelWithStar('ITI Sub Trade Type', required: true),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: buildSearchableDropdown<GraduationTypeData>(
+                          items: provider.itiSubChildList,
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+                          controller: provider.itiSubChildNameController,
+                          idController: provider.itiSubChildIdController,
+                          hintText: "--Select Option--",
+                          onChanged: (value) {
+                            provider.onSelectItiItem(context, value, 2);
+                          },
+                        ),
+                      ),
+                    ],
 
                     (provider.educationLevelIdController.text == "5" &&
                                 provider.graduationTypeIdController.text ==
@@ -917,6 +994,26 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
             ),
           );
         }));
+  }
+
+  String getGraduationTypeLabel() {
+    final provider = Provider.of<AddEducationalDetailProvider>(context, listen: false);
+    switch (provider.educationLevelIdController.text) {
+      case "5":
+        return "Under Graduation Type";
+
+      case "6":
+        return "Graduation Type";
+
+      case "8":
+        return "Post Graduation Type";
+
+      case "9":
+        return "ITI Trade Type";
+
+      default:
+        return "Graduation Type";
+    }
   }
 
   bool validateEducationForm(BuildContext context, provider) {

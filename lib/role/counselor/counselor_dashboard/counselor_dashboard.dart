@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rajemployment/role/counselor/create_session/screen/create_session_info.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/right_to_left_route.dart';
@@ -318,6 +319,8 @@ class _CounselorDashboard extends State<CounselorDashboard> {
               Navigator.pop(context);
 
               final pref = AppSharedPref();
+              // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+              // commonRepo.dioClient.clearAuthToken();
               UserData().model.value.isLogin = false;
               UserData().model.value.userId = null;
               await pref.remove('UserData');
