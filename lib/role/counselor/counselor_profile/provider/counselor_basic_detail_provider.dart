@@ -31,6 +31,7 @@ class CounselorBasicDetailsProvider extends ChangeNotifier {
   }
 
   void setCounselorData(CounselorInfoData data) {
+    print("basicData=> $data");
     fullNameController.text = data.firstName ?? "";
     gender = data.gender ?? "Male";
     dobController.text = data.dob ?? "";

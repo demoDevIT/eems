@@ -166,6 +166,21 @@ class LoginProvider with ChangeNotifier {
                 UserData().model.value.districtCode = sm.data!.districtCode;
                 UserData().model.value.deptID = sm.data!.deptID;
                 UserData().model.value.internshipDeptTypeID = sm.data!.internshipDeptTypeID;
+                UserData().model.value.NameAsjanAdhar = sm.data!.NameAsjanAdhar;
+                UserData().model.value.DistrictEn = sm.data!.DistrictEn;
+
+
+                final design11 = UserData().model.value.designation;
+                final design22 = sm.data!.designation;
+
+                print("design11->$design11");
+                print("design22->$design22");
+
+                UserData().model.value.designation = sm.data!.designation;
+
+
+
+
                 await saveRememberMeData();
                 getDeptBasicDetails(
                     context, sm.data!.userID.toString(), sm.data!.roleID,
@@ -462,7 +477,13 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.mobileNo = sm.data![0].mobileNo;
               UserData().model.value.userType = sm.data![0].userType;
               UserData().model.value.office = sm.data![0].office;
-              UserData().model.value.designation = sm.data![0].designation;
+
+              // final des11 = UserData().model.value.designation;
+              // final des22 = sm.data![0].designation;
+              // print("des11->$des11");
+              // print("des22->$des22");
+              //
+              // UserData().model.value.designation = sm.data![0].designation;
               UserData().model.value.territoryType = sm.data![0].territoryType;
               UserData().model.value.village = sm.data![0].village;
               UserData().model.value.gp = sm.data![0].gp;
@@ -479,7 +500,13 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.mobileNo = sm.data![0].mobileNo;
               UserData().model.value.userType = sm.data![0].userType;
               UserData().model.value.office = sm.data![0].office;
-              UserData().model.value.designation = sm.data![0].designation;
+
+              // final des33 = UserData().model.value.designation;
+              // final des44 = sm.data![0].designation;
+              // print("des33->$des33");
+              // print("des44->$des44");
+              //
+              // UserData().model.value.designation = sm.data![0].designation;
               UserData().model.value.territoryType = sm.data![0].territoryType;
               UserData().model.value.village = sm.data![0].village;
               UserData().model.value.gp = sm.data![0].gp;

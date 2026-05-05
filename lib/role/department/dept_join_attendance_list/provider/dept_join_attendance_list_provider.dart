@@ -12,6 +12,7 @@ import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../esign_webview/esign_webview_screen.dart';
 import '../modal/dept_join_attendance_modal.dart';
 import '../modal/financial_year_modal.dart';
 import '../modal/level_name_modal.dart';
@@ -989,7 +990,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "departmentName": basicData.departmentName,
         "Address": basicData.address,
         "Assembly": "",
-        "DistrictName": basicData.districtName,
+        "DistrictName": UserData().model.value.DistrictEn, //basicData.districtName,
+        "Designation": UserData().model.value.designation,
+        "NameAsAdhar": UserData().model.value.NameAsjanAdhar,
 
         "AttendanceLetter": "",
         "attendanceMonth": "$year-$monthNumber", // 🔥 2026-02
@@ -1024,6 +1027,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       print(const JsonEncoder.withIndent('  ').convert(data));
       print("==========================================");
 
+     // return null;
       /// 🔥 STEP 3: CALL FINAL API
       ApiResponse apiResponse = await commonRepo.post(
         "Common/InsertAttendance",
@@ -1038,17 +1042,90 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           responseData = jsonDecode(responseData);
         }
 
-        if (responseData["State"] == 200) {
-          Navigator.pop(context);
+        // if (responseData["State"] == 200) {
+        //   Navigator.pop(context);
+        //
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(content: Text(responseData["Message"])),
+        //   );
+        //
+        //   /// 🔄 Refresh list
+        //   await getDeptJoinAttendanceListApi(context);
+        // } else {
+        //   showAlertError(responseData["Message"], context);
+        // }
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseData["Message"])),
+        /// ✅ Directly read JSON
+        if (responseData["State"] == 200) {
+
+          // final staticEsignResponse = {
+          //   "status": "SUCCESS",
+          //   "message": responseData["Message"],
+          //   "data": {
+          //     "responseCode": responseData["Data"]["responseCode"],
+          //     "responseMsg": responseData["Data"]["responseMsg"],
+          //     "signedXMLData": responseData["Data"]["signedXMLData"],
+          //     "prn": responseData["Data"]["prn"],
+          //     "txnId": responseData["Data"]["txnId"],
+          //   }
+          // };
+          //
+          // final base64Xml = staticEsignResponse["data"]["signedXMLData"];
+
+          final base64Xml = responseData["Data"]["signedXMLData"];
+
+          final decodedXml = utf8.decode(base64Decode(base64Xml)).trim();
+
+          /// ✅ STEP 2: DECODE XML
+          // String xml = decodedXml;
+
+          /// ✅ STEP 3: CREATE HTML FORM
+          String html = """
+        <html>
+          <body onload="document.forms[0].submit()">
+            <form method="POST"
+                  action="https://esign.rajasthan.gov.in/esign/2.1/signdoc/"
+                  enctype="multipart/form-data">
+
+              <textarea name="esignData">
+                ${decodedXml.replaceAll("'", "&apos;")}
+              </textarea>
+
+            </form>
+          </body>
+        </html>
+        """;
+
+          /// ✅ STEP 4: OPEN WEBVIEW
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EsignWebViewScreen(htmlData: html),
+            ),
           );
 
-          /// 🔄 Refresh list
-          await getDeptJoinAttendanceListApi(context);
+          /// ✅ STEP 5: HANDLE RESULT
+          if (result != null) {
+            print("✅ eSign Completed: $result");
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("eSign Completed")),
+            );
+
+            /// 🔄 REFRESH LIST
+            await getDeptJoinAttendanceListApi(
+              context,
+              registrationNumber: null,
+              jobSeekerId: null,
+              userId: null,
+            );
+          }
+
         } else {
-          showAlertError(responseData["Message"], context);
+          showAlertError(
+            responseData["Message"] ?? "Something went wrong",
+            context,
+          );
         }
       } else {
         showAlertError("Something went wrong", context);

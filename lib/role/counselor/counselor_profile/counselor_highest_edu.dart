@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
-// import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_details_provider.dart';
 import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/user_new.dart';
@@ -12,21 +11,23 @@ import '../../../utils/global.dart';
 import '../../../utils/images.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
+import '../../job_seeker/addeducationaldetail/modal/education_level_modal.dart';
+import '../../job_seeker/addeducationaldetail/modal/graduation_type_modal.dart';
 import '../../job_seeker/loginscreen/provider/locale_provider.dart';
 import 'modal/counselor_info_modal.dart';
 import 'provider/counselor_basic_detail_provider.dart';
-// import '../loginscreen/provider/locale_provider.dart';
+import 'provider/counselor_highest_edu_provider.dart';
 
-class CounselorBasicDetailsScreen extends StatefulWidget {
+class CounselorHighestEduScreen extends StatefulWidget {
   final CounselorInfoData? counselor;
 
-  const CounselorBasicDetailsScreen({super.key, this.counselor});
+  const CounselorHighestEduScreen({super.key, this.counselor});
 
   @override
-  State<CounselorBasicDetailsScreen> createState() => _CounselorBasicDetailsScreenState();
+  State<CounselorHighestEduScreen> createState() => _CounselorHighestEduScreenState();
 }
 
-class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScreen> {
+class _CounselorHighestEduScreenState extends State<CounselorHighestEduScreen> {
 
   @override
   void initState() {
@@ -34,11 +35,16 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       final provider =
-      Provider.of<CounselorBasicDetailsProvider>(context, listen: false);
+      Provider.of<CounselorHighestEduProvider>(context, listen: false);
+
+      print("Counselor Data: ${widget.counselor}");
 
       if (widget.counselor != null) {
         provider.setCounselorData(widget.counselor!);
       }
+
+      provider.educationLevelApi(context);
+      provider.degreeTypeApi(context, provider.selectedQualificationId.toString());
       //provider.clearData();
       //provider.addData();
     });
@@ -52,12 +58,12 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
 
     return Scaffold(
 
-        appBar: commonAppBar2("Basic Info", context,
+        appBar: commonAppBar2("Highest Education Detail", context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
 
-        body: Consumer<CounselorBasicDetailsProvider>(builder: (context, provider, child) {
+        body: Consumer<CounselorHighestEduProvider>(builder: (context, provider, child) {
           return  SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Container(
@@ -66,7 +72,7 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Basic Details",
+                    "Highest Education Detail",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   // const Text(
@@ -75,85 +81,136 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                   // ),
                   const SizedBox(height: 20),
 
-                  Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none, // allow button to overflow a little
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // showImagePicker(context,
-                            //         (pickedImage) async {
-                            //       if (pickedImage != null) {
-                            //         provider.profileFile = pickedImage;
-                            //         setState(() {});
-                            //       }
-                            //     });
-                          },
-                          child: DashedBorderContainer(
-                              color: const Color(0xFFF3E5F9),
-                              dash: 4,
-                              gap: 4,
-                              strokeWidth: 2,
-                              radius: "100",
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.18,
-                                height: MediaQuery.of(context).size.width * 0.18,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.blue, // 👉 Border color
-                                    width: 3,           // 👉 Border width
-                                  ),
-                                ),
-                                child: ClipOval(
-                                  // child:  provider.profileFile != null ? Image.file(File(provider.profileFile!.path,), fit: BoxFit.cover,) :
-                                  // Image.network(
-                                  //   widget.counselor?.profileImg ?? "",
-                                  //   fit: BoxFit.cover,
-                                  //   errorBuilder: (context, error, stackTrace) {
-                                  //     return Image.asset(Images.placeholder);
-                                  //   },
-                                  // )
-                                ),
-                              )
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    child: labelWithStar('Highest Qualification',
+                        required: true),
+                  ),
 
-                          ),
-                        ),
+                  IgnorePointer(
+                    ignoring: true, // ✅ disable dropdown
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: buildSearchableDropdown<EducationLevelData>(
+                        items: provider.educationLevelsList
+                            .where((item) =>
+                        item.dropID == 5 ||
+                            item.dropID == 6 ||
+                            item.dropID == 8)
+                            .toList(),
 
-                        // ✅ Place edit icon overlapping border
-                        // Positioned(
-                        //   bottom: 3,  // slightly outside
-                        //   right: -6,   // slightly outside
-                        //   child: GestureDetector(
-                        //     onTap: () {
-                        //       // showImagePicker(context,
-                        //       //         (pickedImage) async {
-                        //       //       if (pickedImage != null) {
-                        //       //         provider.profileFile = pickedImage;
-                        //       //         setState(() {});
-                        //       //       }
-                        //       //     });
-                        //     },
-                        //     child: Container(
-                        //       decoration: BoxDecoration(
-                        //         color: kPrimaryColor,
-                        //         shape: BoxShape.circle,
-                        //         border: Border.all(
-                        //           color: Colors.white, // 👈 white outline makes it "sit" on border
-                        //           width: 2,
-                        //         ),
-                        //       ),
-                        //       padding: const EdgeInsets.all(4),
-                        //       child: const Icon(Icons.add, size: 16, color: Colors.white),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
+                        controller: provider.educationLevelNameController,
+                        idController: provider.educationLevelIdController,
+
+                        hintText: "--Select Option--",
+
+                        onChanged: (value) {},
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    child: labelWithStar('Degree',
+                        required: true),
+                  ),
+
+                  IgnorePointer(
+                    ignoring: true, // ✅ disable dropdown
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: buildSearchableDropdown<GraduationTypeData>(
+                        items: provider.graduationTypeList,
+
+                        // ✅ MAP YOUR MODEL HERE
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
+                        controller: provider.graduationTypeNameController,
+                        idController: provider.graduationTypeIdController,
+
+                        hintText: "--Select Option--",
+
+                        onChanged: (value) {},
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    child: labelWithStar('Highest Qualification',
+                        required: true),
+                  ),
+
+                  IgnorePointer(
+                    ignoring: true, // ✅ disable dropdown
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: buildSearchableDropdown<EducationLevelData>(
+                        items: provider.educationLevelsList
+                            .where((item) =>
+                        item.dropID == 5 ||
+                            item.dropID == 6 ||
+                            item.dropID == 8)
+                            .toList(),
+
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
+                        controller: provider.educationLevelNameController,
+                        idController: provider.educationLevelIdController,
+
+                        hintText: "--Select Option--",
+
+                        onChanged: (value) {},
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    child: labelWithStar('Highest Qualification',
+                        required: true),
+                  ),
+
+                  IgnorePointer(
+                    ignoring: true, // ✅ disable dropdown
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: buildSearchableDropdown<EducationLevelData>(
+                        items: provider.educationLevelsList
+                            .where((item) =>
+                        item.dropID == 5 ||
+                            item.dropID == 6 ||
+                            item.dropID == 8)
+                            .toList(),
+
+                        getId: (item) => item.dropID.toString(),
+                        getName: (item) => item.name ?? "",
+
+                        controller: provider.educationLevelNameController,
+                        idController: provider.educationLevelIdController,
+
+                        hintText: "--Select Option--",
+
+                        onChanged: (value) {},
+                      ),
+                    ),
+                  ),
+
                   labelWithStar('Full Name',required: false),
 
                   Padding(
@@ -271,7 +328,7 @@ class _CounselorBasicDetailsScreenState extends State<CounselorBasicDetailsScree
                   ),
 
                   const SizedBox(height: 10),
-                  
+
                   labelWithStar('Email',required: false),
 
                   Padding(

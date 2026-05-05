@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rajemployment/role/job_seeker/loginscreen/modal/temp_login_modal.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
@@ -32,23 +33,23 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
   TextEditingController regNoController = TextEditingController();
 
-  Map<String, dynamic> staticEsignResponse = {
-    "status": "SUCCESS",
-    "message": "Signed XML generated successfully",
-    "data": {
-      "responseCode": "E_0002",
-      "responseMsg": "XML Generated Successful, PDF Signing Pending",
-      "signedXMLData": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PEVzaWduIEF1dGhNb2RlPSIxIiBhc3BJZD0iSDQ3ZHo3cFljV2ROaGVRT25naVBiSzZua1JSdEhTOEQiIGVreWNJZD0iIiBla3ljSWRUeXBlPSJBIiByZXNwb25zZVNpZ1R5cGU9InBrY3M3IiByZXNwb25zZVVybD0iaHR0cDovL2xvY2FsaG9zdDo0MjAwL2FwaS9FU2lnbi9HZXRFU2lnblJlc3BvbnNlIiBzYz0iWSIgdHM9IjIwMjYtMDQtMDJUMTI6MDE6NTciIHR4bj0iRUVNUzJVQVQwMjA0MjAyNjEyMDQwNDM3OTg4IiB2ZXI9IjIuMSI+CiAgICA8RG9jcz4KICAgICAgICA8SW5wdXRIYXNoIGRvY0luZm89IlRlc3QiIGhhc2hBbGdvcml0aG09IlNIQTI1NiIgaWQ9IjEiPmMyMGZkNzAyN2NkYTM5MjdjMTRjODlmN2MxNmI2Y2RiODRiMTJkYzc3NjYwMDAyYmNmMDBhMmQxZTRjMGRjMTk8L0lucHV0SGFzaD4KICAgIDwvRG9jcz4KPFNpZ25hdHVyZSB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnIyI+PFNpZ25lZEluZm8+PENhbm9uaWNhbGl6YXRpb25NZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy14bWwtYzE0bi0yMDAxMDMxNSIvPjxTaWduYXR1cmVNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjcnNhLXNoYTEiLz48UmVmZXJlbmNlIFVSST0iIj48VHJhbnNmb3Jtcz48VHJhbnNmb3JtIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI2VudmVsb3BlZC1zaWduYXR1cmUiLz48VHJhbnNmb3JtIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMteG1sLWMxNG4tMjAwMTAzMTUiLz48L1RyYW5zZm9ybXM+PERpZ2VzdE1ldGhvZCBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNzaGExIi8+PERpZ2VzdFZhbHVlPnFJcHp5MGk1S3NlUXk5Uk9OTlNvck96UUQ3ND08L0RpZ2VzdFZhbHVlPjwvUmVmZXJlbmNlPjwvU2lnbmVkSW5mbz48U2lnbmF0dXJlVmFsdWU+cWxTR0k5Z3VmcWRXcmQzMVNha0lDdTVSYTM5ZWI3UmhLZlJtak5xQ0VMSWYzU2xEZHlmZmFTVlArTXFmWFBFZW5ObDd3aTNkSXNJeAprQmFERzdXbVAzM3JsTUZyaFUvOG9DUWREa3JlRDhhZEJ2NHhSb1l1YWZiT2N3K2JDNjJzTmdjbmtXTzdyWWp5VFFwRHVac3BpU3o4CmNHSHA1VjBMNlFvTi8yRXY3QjhoS0VEdjFoY1hZM2RqRW9HMFI0c01RRmdQd0c2Sk8vaTN6MElmallJSGZNQ0FzTlBTdG9CQnJ4cVAKclJ5R2RZRy85ZXBNQWJYeWE0aFk2S0VyaVhSdit5WnZEaUZ1c2QvSU90TW1JeFFCMVVic29zRGRwQXJhSkJ5NmltbHhnSVBITUMreApSdk1HNGVZdkRHQUUyRGRmemJWazByMGNScDJ5bnNkeXNPT1g4dz09PC9TaWduYXR1cmVWYWx1ZT48S2V5SW5mbz48WDUwOURhdGE+PFg1MDlDZXJ0aWZpY2F0ZT5NSUlGVmpDQ0JENmdBd0lCQWdJR1o3VUpHaGZITUEwR0NTcUdTSWIzRFFFQkN3VUFNSFF4Q3pBSkJnTlZCQVlUQWtsT01TSXdJQVlEClZRUUtFeGxTWVdwRFQwMVFJRWx1Wm04Z1UyVnlkbWxqWlhNZ1RIUmtNUTh3RFFZRFZRUUxFd1pUZFdJdFEwRXhNREF1QmdOVkJBTVQKSjFKaGFrTlBUVkFnYzNWaUxVTkJJR1p2Y2lCRWIyTjFiV1Z1ZENCVGFXZHVaWElnTWpBeU1qQWVGdzB5TlRBek1qZ3dOVE0zTlRKYQpGdzB5T0RBek1qZ3dOVE0zTlRKYU1JR2hNUXN3Q1FZRFZRUUdFd0pKVGpFbU1DUUdBMVVFQ2hNZFVrRktRMDlOVUNCSlRrWlBJRk5GClVsWkpRMFZUSUV4SlRVbFVSVVF4RnpBVkJnTlZCQXNURGtGVlZFZ2dVMGxIVGtGVVQxSlpNUTh3RFFZRFZRUVJFd1l6TURJd01EVXgKRWpBUUJnTlZCQWdUQ1ZKQlNrRlRWRWhCVGpFc01Db0dBMVVFQXhNalJGTWdVa0ZLUTA5TlVDQkpUa1pQSUZORlVsWkpRMFZUSUV4SgpUVWxVUlVRZ01UQXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDd3dDOHp5ZHFTcXdJTkNKdU56dnBtCkZjK0tpVWhUbFl4WWdrSWFDSmhCSG81Yzl5OVU2bytPdkVBSncxVGZ2TUc2NUU0eUd6Yk5hNEEveGFLOFdpMGZsV0F5KzdJRUxqY0QKSmQ1dVZEUFh3MEoyc3NVRjExbm5YelJXWEovRXFJaEZPMDNLQ2JZcVdzMkdLanpaWUJxRGs2dUdjbnhPUjFDYVcvbFFsS2FoWWhyeAo0WTBWTXpsRlR5TGY5bW9SKzZTYVkwL2ZQYWgycTJpaytTQ3ZLbEJOS1dQUlo0RTJ1S296eHpUQU9iV3IxcXNWdUUzWXB4NE5ZT213CldJWDB4Y09tZTJyUUJSK2dCb1VEazZ4VUNWMmt6dzV4Znpha1FhN3h2bjhSSEl4SkkwMk9TNHFMZmc0cVBtZjFxVG16OGk2L3JZZGMKVFptRjh1MUhrTk5HMzFJdEFnTUJBQUdqZ2dHK01JSUJ1akFUQmdOVkhTTUVEREFLZ0FoS2ZDNFNIZndrRnpBUkJnTlZIUTRFQ2dRSQpSOHR6T0pzQlpxZ3dnWndHQ0NzR0FRVUZCd0VCQklHUE1JR01NRXdHQ0NzR0FRVUZCekFDaGtCb2RIUndPaTh2Y21Wd2IzTnBkRzl5CmVTNXlZV3BoYzNSb1lXNHVaMjkyTG1sdUwyTmxjblJwWm1sallYUmxMMFJ2WTFOcFoyNWxjakl3TWpJdVkyVnlNRHdHQ0NzR0FRVUYKQnpBQmhqQm9kSFJ3T2k4dmIyTnpjQzV5WVdwaGMzUm9ZVzR1WjI5MkxtbHVMMFJ2WTNWdFpXNTBVMmxuYm1WeU1qQXlNaTh3VWdZRApWUjBmQkVzd1NUQkhvRVdnUTRaQmFIUjBjRG92TDNKbGNHOXphWFJ2Y25rdWNtRnFZWE4wYUdGdUxtZHZkaTVwYmk5amNtd3ZVa2xUClRFUnZZM1Z0Wlc1MFUybG5ibVZ5TWpBeU1pNWpjbXd3SndZRFZSMGdCQ0F3SGpBSUJnWmdnbVJrQWdNd0NBWUdZSUprWkFJQ01BZ0cKQm1DQ1pHUUtBVEFNQmdOVkhSTUJBZjhFQWpBQU1Db0dBMVVkSlFRak1DRUdDQ3NHQVFVRkJ3TUVCZ2txaGtpRzl5OEJBUVVHQ2lzRwpBUVFCZ2pjS0F3d3dLZ1lEVlIwUkJDTXdJWUVmWVc1cGJITnBibWRvTG5KcGMyeEFjbUZxWVhOMGFHRnVMbWR2ZGk1cGJqQU9CZ05WCkhROEJBZjhFQkFNQ0JzQXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSk1ZOEtWRWd3YSt5Um1IREtLVTRSOVlJcGRNM0ppNHlGRkUKUzRIemFsL0pwckNkcmFETU11V1l0QXRmY0VqQ29PbU9heVUwZ2VsRFQ0Y3UyL2RDNXZvb2prMlJlUENObDdNanNvalQzR1ZPRUVPVwo3Zjh2elZxODFCZ1drUFoxOXVraVBWTlZEcnl3M2piTllBcTdxeEFYdGNiUjI4Qk5IZGFBSmdxcUk0VlpQbmhRNk43WDFoOVluWFpxCjA4eWdaSWtqUjgxZUYxTE55Q3YxSEpDYnB5Y29EeloxUCtZZTJjSFVjRTJHVEJNWThSV21iTlBVSDRaTjh0VFJDWFNjbit3Ui9VUU4KanI0dWRGOFdZd1RKUkNmWHJEV05JMGZBcFNYMGN5NzRiWEhxM1lpUHlIakE1eDBaVXV6bHJWNktnQVNVS2Jic0NuT1RldDZMRm1QMQpUTms9PC9YNTA5Q2VydGlmaWNhdGU+PFg1MDlJc3N1ZXJTZXJpYWw+PFg1MDlJc3N1ZXJOYW1lPkNOPWVzaWduLCBPVT1lc2lnbiwgTz1lc2lnbiwgTD1JbmRpYSwgQz05MTwvWDUwOUlzc3Vlck5hbWU+PFg1MDlTZXJpYWxOdW1iZXI+MTE0MDI3MjM5NDQ2NDcxPC9YNTA5U2VyaWFsTnVtYmVyPjwvWDUwOUlzc3VlclNlcmlhbD48L1g1MDlEYXRhPjwvS2V5SW5mbz48L1NpZ25hdHVyZT48L0VzaWduPg==",
-      "prn": "EEMS2UAT0204202612040437988",
-      "txnId": "27603"
-    }
-  };
-
-  String get base64Xml =>
-      staticEsignResponse["data"]["signedXMLData"];
-
-  String get decodedXml =>
-      utf8.decode(base64Decode(base64Xml));
+  // Map<String, dynamic> staticEsignResponse = {
+  //   "status": "SUCCESS",
+  //   "message": "Signed XML generated successfully",
+  //   "data": {
+  //     "responseCode": "E_0002",
+  //     "responseMsg": "XML Generated Successful, PDF Signing Pending",
+  //     "signedXMLData": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PEVzaWduIEF1dGhNb2RlPSIxIiBhc3BJZD0idldnQjhxSHNLbjNZNHRiVEF1UG45NEhBQlMxUEdKUEMiIGVreWNJZD0iIiBla3ljSWRUeXBlPSJBIiByZXNwb25zZVNpZ1R5cGU9InBrY3M3IiByZXNwb25zZVVybD0iaHR0cHM6Ly9yYWplbXBsb3ltZW50YXBpLnJhamFzdGhhbi5nb3YuaW4vV2ViQVBJL2FwaS9FU2lnbi9HZXRFU2lnblJlc3BvbnNlIiBzYz0iWSIgdHM9IjIwMjYtMDUtMDRUMTk6NTM6NTEiIHR4bj0iRUVNUzJQUk9EMDQwNTIwMjYxOTUzNTE3MDgxNCIgdmVyPSIyLjEiPgogICAgPERvY3M+CiAgICAgICAgPElucHV0SGFzaCBkb2NJbmZvPSJUZXN0IiBoYXNoQWxnb3JpdGhtPSJTSEEyNTYiIGlkPSIxIj40YWNmYmE5OGFlZDEwNjVmNjAzM2ViZDE4YTBjODYxNzgxMjQzZTA2YmQwOTgxOGQ1NGM5Mjk3YjU2NzFjMGIwPC9JbnB1dEhhc2g+CiAgICA8L0RvY3M+CjxTaWduYXR1cmUgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyMiPjxTaWduZWRJbmZvPjxDYW5vbmljYWxpemF0aW9uTWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMteG1sLWMxNG4tMjAwMTAzMTUiLz48U2lnbmF0dXJlTWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3JzYS1zaGExIi8+PFJlZmVyZW5jZSBVUkk9IiI+PFRyYW5zZm9ybXM+PFRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8+PFRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnL1RSLzIwMDEvUkVDLXhtbC1jMTRuLTIwMDEwMzE1Ii8+PC9UcmFuc2Zvcm1zPjxEaWdlc3RNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjc2hhMSIvPjxEaWdlc3RWYWx1ZT5VenU3UEdZbGF5c2t4TlNHR0JYaTRXMm82ems9PC9EaWdlc3RWYWx1ZT48L1JlZmVyZW5jZT48L1NpZ25lZEluZm8+PFNpZ25hdHVyZVZhbHVlPk93UzJzdWpKazhZRXBWS29pRmVwak92TnVZOW9sMEFobU91RXhRMFEydzl6cldhdE82Vlk1Rm9IK2UzQ0pGVGdRNjFyR0VHV3RYZ3MKYzNnVGxzcUVRVEFSWDh6b3NtL3hmSnVaRlMwOWFtQTZySnp2VWFtOEJtZncxRE13UUE1dEFMQUVYeVZjYW1FTm9pN0VFRFo1aHo0RwpLVFpRcFFOWGRaVjJzVlppLzlVTWxUM2hBbGJoTjBuMWQ3bGdkZk9heFRGOHcyWXhiRjdoK01tVWpYWkVueTI5TVRiUW85c3p6a2lrCkZSY2dtdnRBMUZFcnNKUVJIa1pCQjNLZWxaU1ZuL2FkUlZGTUlVZDBtc3hiUVZYMEtFQVpyU2lGZWtjODM1T1VaWDEzNTRGWGp0OXQKbUpHRTNsYVhvN1h4dENIb2pjRVdia2dXSk54UnYwMW1QcmlNR1E9PTwvU2lnbmF0dXJlVmFsdWU+PEtleUluZm8+PFg1MDlEYXRhPjxYNTA5Q2VydGlmaWNhdGU+TUlJRlZqQ0NCRDZnQXdJQkFnSUdaN1VKR2hmSE1BMEdDU3FHU0liM0RRRUJDd1VBTUhReEN6QUpCZ05WQkFZVEFrbE9NU0l3SUFZRApWUVFLRXhsU1lXcERUMDFRSUVsdVptOGdVMlZ5ZG1salpYTWdUSFJrTVE4d0RRWURWUVFMRXdaVGRXSXRRMEV4TURBdUJnTlZCQU1UCkoxSmhha05QVFZBZ2MzVmlMVU5CSUdadmNpQkViMk4xYldWdWRDQlRhV2R1WlhJZ01qQXlNakFlRncweU5UQXpNamd3TlRNM05USmEKRncweU9EQXpNamd3TlRNM05USmFNSUdoTVFzd0NRWURWUVFHRXdKSlRqRW1NQ1FHQTFVRUNoTWRVa0ZLUTA5TlVDQkpUa1pQSUZORgpVbFpKUTBWVElFeEpUVWxVUlVReEZ6QVZCZ05WQkFzVERrRlZWRWdnVTBsSFRrRlVUMUpaTVE4d0RRWURWUVFSRXdZek1ESXdNRFV4CkVqQVFCZ05WQkFnVENWSkJTa0ZUVkVoQlRqRXNNQ29HQTFVRUF4TWpSRk1nVWtGS1EwOU5VQ0JKVGtaUElGTkZVbFpKUTBWVElFeEoKVFVsVVJVUWdNVEF3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ3d3Qzh6eWRxU3F3SU5DSnVOenZwbQpGYytLaVVoVGxZeFlna0lhQ0poQkhvNWM5eTlVNm8rT3ZFQUp3MVRmdk1HNjVFNHlHemJOYTRBL3hhSzhXaTBmbFdBeSs3SUVMamNECkpkNXVWRFBYdzBKMnNzVUYxMW5uWHpSV1hKL0VxSWhGTzAzS0NiWXFXczJHS2p6WllCcURrNnVHY254T1IxQ2FXL2xRbEthaFlocngKNFkwVk16bEZUeUxmOW1vUis2U2FZMC9mUGFoMnEyaWsrU0N2S2xCTktXUFJaNEUydUtvenh6VEFPYldyMXFzVnVFM1lweDROWU9tdwpXSVgweGNPbWUyclFCUitnQm9VRGs2eFVDVjJrenc1eGZ6YWtRYTd4dm44UkhJeEpJMDJPUzRxTGZnNHFQbWYxcVRtejhpNi9yWWRjClRabUY4dTFIa05ORzMxSXRBZ01CQUFHamdnRytNSUlCdWpBVEJnTlZIU01FRERBS2dBaEtmQzRTSGZ3a0Z6QVJCZ05WSFE0RUNnUUkKUjh0ek9Kc0JacWd3Z1p3R0NDc0dBUVVGQndFQkJJR1BNSUdNTUV3R0NDc0dBUVVGQnpBQ2hrQm9kSFJ3T2k4dmNtVndiM05wZEc5eQplUzV5WVdwaGMzUm9ZVzR1WjI5MkxtbHVMMk5sY25ScFptbGpZWFJsTDBSdlkxTnBaMjVsY2pJd01qSXVZMlZ5TUR3R0NDc0dBUVVGCkJ6QUJoakJvZEhSd09pOHZiMk56Y0M1eVlXcGhjM1JvWVc0dVoyOTJMbWx1TDBSdlkzVnRaVzUwVTJsbmJtVnlNakF5TWk4d1VnWUQKVlIwZkJFc3dTVEJIb0VXZ1E0WkJhSFIwY0RvdkwzSmxjRzl6YVhSdmNua3VjbUZxWVhOMGFHRnVMbWR2ZGk1cGJpOWpjbXd2VWtsVApURVJ2WTNWdFpXNTBVMmxuYm1WeU1qQXlNaTVqY213d0p3WURWUjBnQkNBd0hqQUlCZ1pnZ21Sa0FnTXdDQVlHWUlKa1pBSUNNQWdHCkJtQ0NaR1FLQVRBTUJnTlZIUk1CQWY4RUFqQUFNQ29HQTFVZEpRUWpNQ0VHQ0NzR0FRVUZCd01FQmdrcWhraUc5eThCQVFVR0Npc0cKQVFRQmdqY0tBd3d3S2dZRFZSMFJCQ013SVlFZllXNXBiSE5wYm1kb0xuSnBjMnhBY21GcVlYTjBhR0Z1TG1kdmRpNXBiakFPQmdOVgpIUThCQWY4RUJBTUNCc0F3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUpNWThLVkVnd2EreVJtSERLS1U0UjlZSXBkTTNKaTR5RkZFClM0SHphbC9KcHJDZHJhRE1NdVdZdEF0ZmNFakNvT21PYXlVMGdlbERUNGN1Mi9kQzV2b29qazJSZVBDTmw3TWpzb2pUM0dWT0VFT1cKN2Y4dnpWcTgxQmdXa1BaMTl1a2lQVk5WRHJ5dzNqYk5ZQXE3cXhBWHRjYlIyOEJOSGRhQUpncXFJNFZaUG5oUTZON1gxaDlZblhacQowOHlnWklralI4MWVGMUxOeUN2MUhKQ2JweWNvRHpaMVArWWUyY0hVY0UyR1RCTVk4UldtYk5QVUg0Wk44dFRSQ1hTY24rd1IvVVFOCmpyNHVkRjhXWXdUSlJDZlhyRFdOSTBmQXBTWDBjeTc0YlhIcTNZaVB5SGpBNXgwWlV1emxyVjZLZ0FTVUtiYnNDbk9UZXQ2TEZtUDEKVE5rPTwvWDUwOUNlcnRpZmljYXRlPjxYNTA5SXNzdWVyU2VyaWFsPjxYNTA5SXNzdWVyTmFtZT5DTj1lc2lnbiwgT1U9ZXNpZ24sIE89ZXNpZ24sIEw9SW5kaWEsIEM9OTE8L1g1MDlJc3N1ZXJOYW1lPjxYNTA5U2VyaWFsTnVtYmVyPjExNDAyNzIzOTQ0NjQ3MTwvWDUwOVNlcmlhbE51bWJlcj48L1g1MDlJc3N1ZXJTZXJpYWw+PC9YNTA5RGF0YT48L0tleUluZm8+PC9TaWduYXR1cmU+PC9Fc2lnbj4=",
+  //     "prn": "EEMS2UAT0204202612040437988",
+  //     "txnId": "27603"
+  //   }
+  // };
+  //
+  // String get base64Xml =>
+  //     staticEsignResponse["data"]["signedXMLData"];
+  //
+  // String get decodedXml =>
+  //     utf8.decode(base64Decode(base64Xml));
 
 
   /// LEVEL
@@ -255,6 +256,18 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         String? userId,
       }) async {
 
+    final nameAsAdhar = UserData().model.value.NameAsjanAdhar;
+    print("nameAsAdhar=> $nameAsAdhar");
+
+    final DistrictEn = UserData().model.value.DistrictEn;
+    print("DistrictEn=> $DistrictEn");
+
+    final dept1 = UserData().model.value.departmentId;
+    final dept2 = UserData().model.value.deptID;
+    print("dept1=> $dept1");
+    print("dept2=> $dept2");
+
+
     /// Save parameters for future refresh
     this.registrationNumber = registrationNumber ?? this.registrationNumber;
     this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
@@ -409,99 +422,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     // open PDF / WebView
   }
 
-  // void approveJoining(
-  //     BuildContext context,
-  //     DeptJoinPendingItem item,
-  //     DateTime joiningDate,
-  //     ) async {
-  //   var isInternet = await UtilityClass.checkInternetConnectivity();
-  //   if (!isInternet) {
-  //     showAlertError(
-  //       AppLocalizations.of(context)!.internet_connection,
-  //       context,
-  //     );
-  //     return;
-  //   }
-  //
-  //   String? deviceId = await UtilityClass.getDeviceId();
-  //
-  //   try {
-  //     Map<String, dynamic> data = {
-  //       "JobSeekerUserId": item.jobSeekerUserId,
-  //       "PrivateDepartmentID": Userdata().model.value.deptID,
-  //       "DeviceId": deviceId,
-  //       "ApprovedByUserId": UserData().model.value.userId, //1234,
-  //       "InternshipPdfPath": "",
-  //       "JoiningDate": DateTime(
-  //         joiningDate.year,
-  //         joiningDate.month,
-  //         joiningDate.day,
-  //       ).toIso8601String(),
-  //     };
-  //
-  //     /// ✅ PRINT FULL REQUEST DATA
-  //     print("========== approve joining API PAYLOAD ==========");
-  //     print(const JsonEncoder.withIndent('  ').convert(data));
-  //     print("=========================================");
-  //
-  //     ProgressDialog.showLoadingDialog(context);
-  //
-  //     ApiResponse apiResponse = await commonRepo.post(
-  //       "Common/ApproveMYSYInternship",
-  //       data,
-  //     );
-  //
-  //     ProgressDialog.closeLoadingDialog(context);
-  //
-  //     if (apiResponse.response != null &&
-  //         apiResponse.response?.statusCode == 200) {
-  //
-  //       var responseData = apiResponse.response?.data;
-  //
-  //       if (responseData is String) {
-  //         responseData = jsonDecode(responseData);
-  //       }
-  //
-  //       /// ✅ Directly read JSON
-  //       if (responseData["State"] == 200) {
-  //         Navigator.pop(context); // close popup
-  //
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text(responseData["Message"] ?? "Success"),
-  //           ),
-  //         );
-  //
-  //         /// 🔥 Reset search parameters after approval
-  //         registrationNumber = null;
-  //         jobSeekerId = null;
-  //         userId = null;
-  //
-  //         /// 🔄 Refresh list with normal dashboard data
-  //         await getDeptJoinPendingListApi(
-  //           context,
-  //           registrationNumber: null,
-  //           jobSeekerId: null,
-  //           userId: null,
-  //         );
-  //       } else {
-  //         showAlertError(
-  //           responseData["Message"] ?? "Something went wrong",
-  //           context,
-  //         );
-  //       }
-  //     } else {
-  //       showAlertError("Something went wrong", context);
-  //     }
-  //
-  //
-  //   } catch (e) {
-  //     ProgressDialog.closeLoadingDialog(context);
-  //     showAlertError(e.toString(), context);
-  //   }
-  // }
-
-  void approveJoining(
+  Future<void> approveJoining(
       BuildContext context,
       DeptJoinPendingItem item,
       DateTime joiningDate,
@@ -515,47 +436,187 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
       return;
     }
 
-    if (true) { // temporary for testing
-      String xml = decodedXml;
+    String? deviceId = await UtilityClass.getDeviceId();
 
-      String html = """
-  <html>
-    <body onload="document.forms[0].submit()">
-      <form method="POST"
-            action="https://esign.rajasthan.gov.in/esign/2.1/signdoc/"
-            enctype="multipart/form-data">
+    try {
+      Map<String, dynamic> data = {
+        "JobSeekerUserId": item.jobSeekerUserId,
+        "PrivateDepartmentID": UserData().model.value.deptID,
+        "DeviceId": deviceId,
+        "NameAsAdhar": UserData().model.value.NameAsjanAdhar, //"Mahesh Saini",
+        "ApprovedByUserId": UserData().model.value.userId,
+        "Designation": UserData().model.value.designation, //"Education Intern",
+        "DeptName": "",
+        "Location": UserData().model.value.DistrictEn, //"Barmer",
+        "InternshipPdfPath": "",
+        "JoiningDate": DateTime(
+          joiningDate.year,
+          joiningDate.month,
+          joiningDate.day,
+        ).toIso8601String(),
+      };
 
-        <textarea name="esignData">
-          ${xml.replaceAll("'", "&apos;")}
-        </textarea>
+      /// ✅ PRINT FULL REQUEST DATA
+      print("========== approve joining API PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("=========================================");
 
-      </form>
-    </body>
-  </html>
-  """;
+      // return null;
+      ProgressDialog.showLoadingDialog(context);
 
-      /// 🔹 STEP 3: Open WebView
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => EsignWebViewScreen(htmlData: html),
-        ),
+      ApiResponse apiResponse = await commonRepo.post(
+        // "Common/ApproveMYSYInternship",
+        "Common/StartInternshipEsign",
+        data,
       );
 
-      /// 🔹 STEP 4: Handle redirect response
-      if (result != null) {
-        print("✅ eSign Completed: $result");
+      ProgressDialog.closeLoadingDialog(context);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("eSign Completed")),
-        );
+      if (apiResponse.response?.statusCode == 200) {
+        var responseData = apiResponse.response!.data;
 
-        /// 🔄 Refresh list after success
-        await getDeptJoinPendingListApi(context);
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        /// ✅ Directly read JSON
+        if (responseData["State"] == 200) {
+
+          // final staticEsignResponse = {
+          //   "status": "SUCCESS",
+          //   "message": responseData["Message"],
+          //   "data": {
+          //     "responseCode": responseData["Data"]["responseCode"],
+          //     "responseMsg": responseData["Data"]["responseMsg"],
+          //     "signedXMLData": responseData["Data"]["signedXMLData"],
+          //     "prn": responseData["Data"]["prn"],
+          //     "txnId": responseData["Data"]["txnId"],
+          //   }
+          // };
+          //
+          // final base64Xml = staticEsignResponse["data"]["signedXMLData"];
+
+          final base64Xml = responseData["Data"]["signedXMLData"];
+
+          final decodedXml = utf8.decode(base64Decode(base64Xml)).trim();
+
+          /// ✅ STEP 2: DECODE XML
+         // String xml = decodedXml;
+
+          /// ✅ STEP 3: CREATE HTML FORM
+          String html = """
+        <html>
+          <body onload="document.forms[0].submit()">
+            <form method="POST"
+                  action="https://esign.rajasthan.gov.in/esign/2.1/signdoc/"
+                  enctype="multipart/form-data">
+
+              <textarea name="esignData">
+                ${decodedXml.replaceAll("'", "&apos;")}
+              </textarea>
+
+            </form>
+          </body>
+        </html>
+        """;
+
+          /// ✅ STEP 4: OPEN WEBVIEW
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EsignWebViewScreen(htmlData: html),
+            ),
+          );
+
+          /// ✅ STEP 5: HANDLE RESULT
+          if (result != null) {
+            print("✅ eSign Completed: $result");
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("eSign Completed")),
+            );
+
+            /// 🔄 REFRESH LIST
+            await getDeptJoinPendingListApi(
+              context,
+              registrationNumber: null,
+              jobSeekerId: null,
+              userId: null,
+            );
+          }
+
+        } else {
+          showAlertError(
+            responseData["Message"] ?? "Something went wrong",
+            context,
+          );
+        }
+      } else {
+        showAlertError("Something went wrong", context);
       }
-    }
 
+
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+      showAlertError(e.toString(), context);
+    }
   }
+
+//   Future<void> approveJoining(
+//       BuildContext context,
+//       DeptJoinPendingItem item,
+//       DateTime joiningDate,
+//       ) async {
+//     var isInternet = await UtilityClass.checkInternetConnectivity();
+//     if (!isInternet) {
+//       showAlertError(
+//         AppLocalizations.of(context)!.internet_connection,
+//         context,
+//       );
+//       return;
+//     }
+//
+//     if (true) { // temporary for testing
+//       String xml = decodedXml;
+//
+//       String html = """
+//   <html>
+//     <body onload="document.forms[0].submit()">
+//       <form method="POST"
+//             action="https://esign.rajasthan.gov.in/esign/2.1/signdoc/"
+//             enctype="multipart/form-data">
+//
+//         <textarea name="esignData">
+//           ${xml.replaceAll("'", "&apos;")}
+//         </textarea>
+//
+//       </form>
+//     </body>
+//   </html>
+//   """;
+//       print("cccc");
+//       /// 🔹 STEP 3: Open WebView
+//       final result = await Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (_) => EsignWebViewScreen(htmlData: html),
+//         ),
+//       );
+// print("sasasasas");
+//       /// 🔹 STEP 4: Handle redirect response
+//       if (result != null) {
+//         print("✅ eSign Completed: $result");
+//
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text("eSign Completed")),
+//         );
+//
+//         /// 🔄 Refresh list after success
+//         await getDeptJoinPendingListApi(context);
+//       }
+//     }
+//
+//   }
 
   void openApproveJoiningPopup(
       BuildContext context,

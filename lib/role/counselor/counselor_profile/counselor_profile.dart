@@ -7,6 +7,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../utils/images.dart';
 import '../../../utils/textstyles.dart';
 import 'counselor_basic_detail.dart';
+import 'counselor_highest_edu.dart';
 import 'provider/counselor_profile_provider.dart';
 
 
@@ -158,10 +159,10 @@ class _CounselorProfileScreenState extends State<CounselorProfileScreen> {
                 const SizedBox(height: 20),
 
                 /// Menu List
-                buildMenuItem(context, "Basic Details", AppLocalizations.of(context)!.basicdetl, counselor),
-                buildMenuItem(context, "Highest Education Details", AppLocalizations.of(context)!.addinfo, counselor),
-                buildMenuItem(context, "Skill Set / Domain Expertise", AppLocalizations.of(context)!.edudetl, counselor),
-                buildMenuItem(context, "Additional Details (Optional)", AppLocalizations.of(context)!.workexp, counselor),
+                buildMenuItem(context, "Basic Details", "Basic Details", counselor),
+                buildMenuItem(context, "Highest Education Details", "Highest Education Details", counselor),
+                buildMenuItem(context, "Skill Set / Domain Expertise", "Skill Set / Domain Expertise", counselor),
+                buildMenuItem(context, "Additional Details (Optional)", "Additional Details (Optional)", counselor),
               ],
             ),
           );
@@ -191,18 +192,20 @@ class _CounselorProfileScreenState extends State<CounselorProfileScreen> {
                 ),
               ),
             );
-          } else if (title == "Address Info") {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => CounselorHighestEduScreen()),
-            // );
+          } else if (title == "Highest Education Details") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CounselorHighestEduScreen(
+                counselor: counselor,
+              )),
+            );
           }
-          else if (title == "Education Details") {
+          else if (title == "Skill Set / Domain Expertise") {
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(builder: (context) => SkillSetDomainScreen()),
             // );
-          } else if (title == "Work experience") {
+          } else if (title == "Additional Details (Optional)") {
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(builder: (context) => AdditionalDetailScreen()),

@@ -7,6 +7,7 @@ import 'package:rajemployment/role/counselor/counselor_dashboard/counselor_dashb
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_jobs_list_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_profile/provider/counselor_basic_detail_provider.dart';
+import 'package:rajemployment/role/counselor/counselor_profile/provider/counselor_highest_edu_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_profile/provider/counselor_profile_provider.dart';
 import 'package:rajemployment/role/counselor/home/provider/counselor_provider.dart';
 import 'package:rajemployment/role/counselor/otp/provider/otp_provider.dart';
@@ -197,6 +198,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<CounselorOtrProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<CounselorProfileProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<CounselorBasicDetailsProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<CounselorHighestEduProvider>()),
           //farid code
           ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
