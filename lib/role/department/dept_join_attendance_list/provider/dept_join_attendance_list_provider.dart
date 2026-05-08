@@ -699,7 +699,13 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   Future<void> downloadAndOpenPdf(String url) async {
     try {
-      final response = await http.get(Uri.parse(url));
+      const baseUrl =
+          "https://rajemploymentapi.rajasthan.gov.in/webAPI";
+
+      // Concatenate base URL with relative PDF path
+      final fullUrl = "$baseUrl$url";
+
+      final response = await http.get(Uri.parse(fullUrl));
 
       if (response.statusCode == 200) {
         final dir = await getApplicationDocumentsDirectory();
@@ -1002,6 +1008,11 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "BaseUrl": "http://localhost:5000/",
       };
 
+      print("========== FINAL INSERT PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("==========================================");
+
+     // return null;
       // Map<String, dynamic> data = {
       //   "JobSeekerID": item.jobSeekerUserId, // 8253
       //   //"JoiningID": item.joiningID, // static
@@ -1096,6 +1107,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         </html>
         """;
 
+          Navigator.pop(context);
           /// ✅ STEP 4: OPEN WEBVIEW
           final result = await Navigator.push(
             context,
@@ -1108,17 +1120,27 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           if (result != null) {
             print("✅ eSign Completed: $result");
 
+            /// ✅ Delay ensures UI is rebuilt before API call
+            Future.microtask(() async {
+              await getDeptJoinAttendanceListApi(
+                context,
+                registrationNumber: null,
+                jobSeekerId: null,
+                userId: null,
+              );
+            });
+
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("eSign Completed")),
             );
 
             /// 🔄 REFRESH LIST
-            await getDeptJoinAttendanceListApi(
-              context,
-              registrationNumber: null,
-              jobSeekerId: null,
-              userId: null,
-            );
+            // await getDeptJoinAttendanceListApi(
+            //   context,
+            //   registrationNumber: null,
+            //   jobSeekerId: null,
+            //   userId: null,
+            // );
           }
 
         } else {

@@ -128,7 +128,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
-            "BypassSSO": true //true for sandbox, remove for live
+            //"BypassSSO": true //true for sandbox, remove for live
           };
         }
 
@@ -158,6 +158,7 @@ class LoginProvider with ChangeNotifier {
 
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {
+            print("aaaaaaaaaaaaaaa");
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
               if (sm.data != null && sm.data!.userID != null &&
                   sm.data!.userID! > 0 && sm.data!.roleID > 0) {
@@ -286,6 +287,7 @@ class LoginProvider with ChangeNotifier {
               }
             }
           } else {
+            print("bbbbbbbbbbbbbbb");
             final smmm = TempLoginModal(
                 state: 0, message: sm.message.toString());
             Navigator.of(context).push(

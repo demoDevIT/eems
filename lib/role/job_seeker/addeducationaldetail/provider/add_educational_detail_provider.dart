@@ -45,19 +45,19 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   // ITI child dropdowns
   List<GraduationTypeData> itiMainList = [];
   List<GraduationTypeData> itiChildList = [];
-  List<GraduationTypeData> itiSubChildList = [];
+  // List<GraduationTypeData> itiSubChildList = [];
 
   bool isItiSelected = false;
 
   bool showItiChildDropdown = false;
-  bool showItiSubChildDropdown = false;
+  // bool showItiSubChildDropdown = false;
 
   // controllers
   TextEditingController itiChildNameController = TextEditingController();
   TextEditingController itiChildIdController = TextEditingController();
 
-  TextEditingController itiSubChildNameController = TextEditingController();
-  TextEditingController itiSubChildIdController = TextEditingController();
+  // TextEditingController itiSubChildNameController = TextEditingController();
+  // TextEditingController itiSubChildIdController = TextEditingController();
 
   List<GraduationTypeData> classList = [];
   List<BoardData> boardList = [];
@@ -72,6 +72,9 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   final TextEditingController graduationStreamTypeNameController =
   TextEditingController();
   final TextEditingController graduationStreamTypeIdController =
+  TextEditingController();
+
+  final TextEditingController otherStreamController =
   TextEditingController();
 
   final TextEditingController educationLevelIdController = TextEditingController();
@@ -274,6 +277,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
               print("graduationTypeApi function ID not 2 - $id");
               graduationTypeList.clear();
               graduationTypeList.addAll(sm.data!);
+
+              // ✅ FIX HERE
+              if (id == "9") {
+                itiMainList.clear();
+                itiMainList.addAll(graduationTypeList);
+              }
             }
 
 
@@ -745,7 +754,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             "School": schoolNameController.text.isNotEmpty ? schoolNameController.text :"",
             "Course": natureOfCourseIdController.text.isNotEmpty ? natureOfCourseIdController.text : "0",
             "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text : "0",
-            "Graduationtype": graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
+            "Graduationtype": graduationStreamTypeIdController.text, //graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
             "College": collageNameController.text.isNotEmpty ? collageNameController.text : "",
             "passingyear":yearOfPassingNameController.text.isNotEmpty ? yearOfPassingNameController.text :"0",
             "OtherMediumEducation": otherMediumEducationController.text.isNotEmpty ? otherMediumEducationController.text :"",
@@ -814,8 +823,6 @@ class AddEducationalDetailProvider extends ChangeNotifier {
       GraduationTypeData value,
       int level,
       ) async {
-
-
     int selectedId = value.dropID ?? 0;
     int childCount = value.childCount ?? 0;
 
@@ -823,15 +830,16 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     print("childCount-> $childCount");
 
     if (level == 0) {
+      // RESET EVERYTHING
       itiChildList.clear();
-      itiSubChildList.clear();
       showItiChildDropdown = false;
-      showItiSubChildDropdown = false;
 
       itiChildNameController.clear();
       itiChildIdController.clear();
-      itiSubChildNameController.clear();
-      itiSubChildIdController.clear();
+
+      graduationStreamTypeList.clear();
+      graduationStreamTypeNameController.clear();
+      graduationStreamTypeIdController.clear();
 
       if (childCount > 0) {
         await graduationTypeApi(context, selectedId.toString());
@@ -844,20 +852,11 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     }
 
     else if (level == 1) {
-      itiSubChildList.clear();
-      showItiSubChildDropdown = false;
+      // ✅ FINAL LEVEL → DIRECT STREAM
+      graduationStreamTypeList.clear();
+      graduationStreamTypeNameController.clear();
+      graduationStreamTypeIdController.clear();
 
-      if (childCount > 0) {
-        await graduationTypeApi(context, selectedId.toString());
-
-        itiSubChildList = List.from(graduationTypeList);
-        showItiSubChildDropdown = true;
-      } else {
-        await graduationStreamTypeApi(context, selectedId.toString());
-      }
-    }
-
-    else if (level == 2) {
       await graduationStreamTypeApi(context, selectedId.toString());
     }
 

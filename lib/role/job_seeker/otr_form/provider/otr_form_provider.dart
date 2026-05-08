@@ -986,20 +986,18 @@ class OtrFormProvider extends ChangeNotifier {
       GraduationTypeData value,
       int level,
       ) async {
-
     int selectedId = value.dropID ?? 0;
     int childCount = value.childCount ?? 0;
 
     if (level == 0) {
+      // Reset
       itiChildList.clear();
-      itiSubChildList.clear();
       showItiChildDropdown = false;
-      showItiSubChildDropdown = false;
 
       itiChildNameController.clear();
       itiChildIdController.clear();
-      itiSubChildNameController.clear();
-      itiSubChildIdController.clear();
+
+      graduationStreamTypeList.clear();
 
       if (childCount > 0) {
         await graduationTypeApi(context, selectedId.toString());
@@ -1012,20 +1010,7 @@ class OtrFormProvider extends ChangeNotifier {
     }
 
     else if (level == 1) {
-      itiSubChildList.clear();
-      showItiSubChildDropdown = false;
-
-      if (childCount > 0) {
-        await graduationTypeApi(context, selectedId.toString());
-
-        itiSubChildList = List.from(graduationTypeList);
-        showItiSubChildDropdown = true;
-      } else {
-        await graduationStreamTypeApi(context, selectedId.toString());
-      }
-    }
-
-    else if (level == 2) {
+      // ✅ THIS IS FINAL LEVEL NOW → DIRECTLY LOAD STREAM
       await graduationStreamTypeApi(context, selectedId.toString());
     }
 
@@ -1827,7 +1812,7 @@ class OtrFormProvider extends ChangeNotifier {
   }
 
   String getEducationTypeId() {
-    if (educationLevelIdController.text == "382") {
+    if (educationLevelIdController.text == "9") {
       if (showItiSubChildDropdown &&
           itiSubChildIdController.text.isNotEmpty) {
         return itiSubChildIdController.text;
@@ -2065,7 +2050,7 @@ class OtrFormProvider extends ChangeNotifier {
           "EducationDistrict": 0,
           "EducationSchool": schoolNameController.text,
 
-          "EducationTypeID": int.tryParse(getEducationTypeId()) ?? 0,
+          "EducationTypeID": graduationStreamTypeIdController.text, //int.tryParse(getEducationTypeId()) ?? 0,
 
           "EducationBoard": int.tryParse(boardIdController.text) ?? 0,
           "EducationUniversity": int.tryParse(universityIdController.text) ?? 0,

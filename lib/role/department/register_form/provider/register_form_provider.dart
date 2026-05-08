@@ -482,8 +482,8 @@ class RegisterFormProvider extends ChangeNotifier {
 
       Map<String, dynamic> data = {
         "SSOID": ssoIdController.text.trim(),
-        "AsPerAadharName": "abcd",
-        "AdministrationDepartmentName": "abcd",
+        "AsPerAadharName": nameAAdhaarController.text, //"abcd",
+        "AdministrationDepartmentName": adminDeptNameController.text, //"abcd",
         "PrivateDepartmentID": UserData().model.value.deptID,
         "AllotmentDeptId": departmentIdController.text.trim(),
         "MobileNo": mobileController.text.trim(),

@@ -441,6 +441,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> data = {
         "JobSeekerUserId": item.jobSeekerUserId,
+        "JobSeekerID": item.jobSeekerID,
         "PrivateDepartmentID": UserData().model.value.deptID,
         "DeviceId": deviceId,
         "NameAsAdhar": UserData().model.value.NameAsjanAdhar, //"Mahesh Saini",
@@ -520,6 +521,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         </html>
         """;
 
+          Navigator.pop(context);
           /// ✅ STEP 4: OPEN WEBVIEW
           final result = await Navigator.push(
             context,
@@ -532,17 +534,21 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
           if (result != null) {
             print("✅ eSign Completed: $result");
 
+            Future.microtask(() async {
+              /// 🔄 REFRESH LIST
+              await getDeptJoinPendingListApi(
+                context,
+                registrationNumber: null,
+                jobSeekerId: null,
+                userId: null,
+              );
+            });
+
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("eSign Completed")),
             );
 
-            /// 🔄 REFRESH LIST
-            await getDeptJoinPendingListApi(
-              context,
-              registrationNumber: null,
-              jobSeekerId: null,
-              userId: null,
-            );
+
           }
 
         } else {

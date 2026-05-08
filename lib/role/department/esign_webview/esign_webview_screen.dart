@@ -22,10 +22,10 @@ class _EsignWebViewScreenState extends State<EsignWebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (request) {
-            print("URL => ${request.url}");
+            print("URLaa => ${request.url}");
 
             /// 🔥 Step 7 (handle redirect)
-            if (request.url.contains("GetESignResponse")) {
+            if (request.url.contains("Success")) {
               Navigator.pop(context, request.url);
               return NavigationDecision.prevent;
             }

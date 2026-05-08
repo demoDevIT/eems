@@ -2347,27 +2347,27 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             ),
                           ],
 
-                          if (provider.educationLevelIdController.text == "9" &&
-                              provider.showItiSubChildDropdown) ...[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: labelWithStar('ITI Sub Trade Type', required: true),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<GraduationTypeData>(
-                                items: provider.itiSubChildList,
-                                getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
-                                controller: provider.itiSubChildNameController,
-                                idController: provider.itiSubChildIdController,
-                                hintText: "--Select Option--",
-                                onChanged: (value) {
-                                  provider.onSelectItiItem(context, value, 2);
-                                },
-                              ),
-                            ),
-                          ],
+                          // if (provider.educationLevelIdController.text == "9" &&
+                          //     provider.showItiSubChildDropdown) ...[
+                          //   Padding(
+                          //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          //     child: labelWithStar('ITI Sub Trade Type', required: true),
+                          //   ),
+                          //   Padding(
+                          //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          //     child: buildSearchableDropdown<GraduationTypeData>(
+                          //       items: provider.itiSubChildList,
+                          //       getId: (item) => item.dropID.toString(),
+                          //       getName: (item) => item.name ?? "",
+                          //       controller: provider.itiSubChildNameController,
+                          //       idController: provider.itiSubChildIdController,
+                          //       hintText: "--Select Option--",
+                          //       onChanged: (value) {
+                          //         provider.onSelectItiItem(context, value, 2);
+                          //       },
+                          //     ),
+                          //   ),
+                          // ],
 
                           (provider.educationLevelIdController.text == "5" &&
                                       provider.graduationTypeIdController

@@ -11,6 +11,7 @@ import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
 import '../educationdetail/modal/profile_qualication_info_list_modal.dart';
 import '../loginscreen/provider/locale_provider.dart';
+import '../otr_form/modal/graduation_stream_type_modal.dart';
 import '../otr_form/modal/graduation_type_modal.dart';
 import 'modal/education_level_modal.dart';
 
@@ -62,6 +63,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     futures.add(provider.passingYearModalApi(context, isUpdate, profileData));
     futures.add(provider.gradeTypeApi(context, isUpdate, profileData));
     futures.add(provider.universityApi(context, isUpdate));
+
 
     if (isUpdate) {
       String eduId = profileData!.hightestEducationLevelID.toString();
@@ -170,8 +172,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                     context, provider.educationLevelIdController.text, isUpdate, profileData);
 
                                 if (provider.educationLevelIdController.text == "9") {
-                                  provider.itiMainList =
-                                      List.from(provider.graduationTypeList);
+                                  provider.itiMainList = List.from(provider.graduationTypeList);
                                 }
 
                               } else if (provider
@@ -363,21 +364,32 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
-                        child: buildDropdownWithBorderField(
+                        child: buildSearchableDropdown<GraduationTypeData>(
                           items: provider.educationLevelIdController.text == "9"
                               ? provider.itiMainList
                               : provider.graduationTypeList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
                           controller: provider.graduationTypeNameController,
                           idController: provider.graduationTypeIdController,
                           hintText: "--Select Option--",
-                          height: 50,
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
                           onChanged: (value) {
                             if (provider.educationLevelIdController.text == "9") {
-                              final selectedItem = provider.itiMainList.firstWhere(
-                                    (e) => e.dropID.toString() == value,
-                              );
+                              final selectedItem = value; // ✅ already object
+
+                              setState(() {
+                                provider.graduationTypeIdController.text =
+                                    selectedItem.dropID.toString();
+                                provider.graduationTypeNameController.text =
+                                    selectedItem.name ?? "";
+                              });
+
                               provider.onSelectItiItem(context, selectedItem, 0);
                             } else {
                               setState(() {
@@ -416,27 +428,27 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       ),
                     ],
 
-                    if (provider.educationLevelIdController.text == "9" &&
-                        provider.showItiSubChildDropdown) ...[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: labelWithStar('ITI Sub Trade Type', required: true),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: buildSearchableDropdown<GraduationTypeData>(
-                          items: provider.itiSubChildList,
-                          getId: (item) => item.dropID.toString(),
-                          getName: (item) => item.name ?? "",
-                          controller: provider.itiSubChildNameController,
-                          idController: provider.itiSubChildIdController,
-                          hintText: "--Select Option--",
-                          onChanged: (value) {
-                            provider.onSelectItiItem(context, value, 2);
-                          },
-                        ),
-                      ),
-                    ],
+                    // if (provider.educationLevelIdController.text == "9" &&
+                    //     provider.showItiSubChildDropdown) ...[
+                    //   Padding(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    //     child: labelWithStar('ITI Sub Trade Type', required: true),
+                    //   ),
+                    //   Padding(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    //     child: buildSearchableDropdown<GraduationTypeData>(
+                    //       items: provider.itiSubChildList,
+                    //       getId: (item) => item.dropID.toString(),
+                    //       getName: (item) => item.name ?? "",
+                    //       controller: provider.itiSubChildNameController,
+                    //       idController: provider.itiSubChildIdController,
+                    //       hintText: "--Select Option--",
+                    //       onChanged: (value) {
+                    //         provider.onSelectItiItem(context, value, 2);
+                    //       },
+                    //     ),
+                    //   ),
+                    // ],
 
                     (provider.educationLevelIdController.text == "5" &&
                                 provider.graduationTypeIdController.text ==
@@ -482,6 +494,85 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                             ),
                           )
                         : SizedBox(),
+
+                    // stream Type for under graduate/graduate/post graduation
+                    provider.educationLevelIdController.text == "5" ||
+                        provider.educationLevelIdController.text ==
+                            "6" ||
+                        provider.educationLevelIdController.text ==
+                            "8" ||
+                        provider.educationLevelIdController.text ==
+                            "9"
+                        ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: labelWithStar('Stream Type',
+                          required: true),
+                    )
+                        : SizedBox(),
+
+                    Visibility(
+                      visible: provider.educationLevelIdController.text ==
+                          "5" ||
+                          provider.educationLevelIdController.text ==
+                              "6" ||
+                          provider.educationLevelIdController.text ==
+                              "8" ||
+                          provider.educationLevelIdController.text ==
+                              "9"
+                          ? true
+                          : false,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: buildSearchableDropdown<GraduationStreamTypeData>(
+                          items: provider.graduationStreamTypeList,
+
+                          // ✅ MAP YOUR MODEL HERE
+                          getId: (item) => item.dropID.toString(),
+                          getName: (item) => item.name ?? "",
+
+                          controller:
+                          provider.graduationStreamTypeNameController,
+                          idController:
+                          provider.graduationStreamTypeIdController,
+                          hintText: "--Select Option--",
+                          // height: 50,
+                          // color: Colors.transparent,
+                          // borderRadius: BorderRadius.circular(8),
+                          onChanged: (value) {
+                            setState(() {
+                              provider.otherStreamController.clear();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    // stream Type for under graduate/graduate/post graduation
+
+                    provider.graduationStreamTypeIdController.text == "-1"
+                        ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: labelWithStar('Other Stream',
+                          required: true),
+                    )
+                        : SizedBox(),
+
+                    provider.graduationStreamTypeIdController.text == "-1"
+                        ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: buildTextWithBorderField(
+                        provider.otherStreamController,
+                        "Enter Other Stream",
+                        MediaQuery.of(context).size.width,
+                        50,
+                        TextInputType.text,
+                      ),
+                    )
+                        : SizedBox(),
+
 
                     provider.educationLevelIdController.text == "5" ||
                             provider.educationLevelIdController.text == "6" ||
