@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.rajemployment.eems.rajemployment"
+    namespace = "com.rajemployment.eems2"
     compileSdk = 36
     buildToolsVersion = "36.1.0"
     ndkVersion = "29.0.14206865"
 
     defaultConfig {
-        applicationId = "com.rajemployment.eems.rajemployment"
+        applicationId = "com.rajemployment.eems2"
         minSdk = 26
         targetSdk = 36
         versionCode = 2
