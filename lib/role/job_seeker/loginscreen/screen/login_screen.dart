@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import '../../roleselectionscreen/roleselection_screen.dart';
 import '../provider/login_provider.dart';
 
+import 'package:upgrader/upgrader.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -138,7 +140,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return PopScope(
+   // return PopScope(
+    return UpgradeAlert(
+    upgrader: Upgrader(
+   // debugDisplayAlways: true,
+    debugLogging: true,
+    ),
+    showIgnore: false,
+    showLater: false,
+    child: PopScope(
       canPop: true,
       child: Scaffold(
         key: _scaffoldKey,
@@ -410,6 +420,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    ),
     );
   }
 }

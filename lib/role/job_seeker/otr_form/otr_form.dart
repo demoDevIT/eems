@@ -471,7 +471,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar('Fathers Name', required: true),
+                                labelWithStar("Father's Name", required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -479,6 +479,26 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             child: buildTextWithBorderField(
                               provider.fatherNameController,
                               "Enter father name",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text,
+                              isEnabled: false,
+                              boxColor: fafafaColor,
+                            ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child:
+                            labelWithStar("Mother's Name", required: true),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: buildTextWithBorderField(
+                              provider.motherNameController,
+                              "Enter mother name",
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -1000,6 +1020,104 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               50,
                               TextInputType.text,
                             ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: labelWithStar('Ex-Service Man', required: false),
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'Yes',
+                                    groupValue:
+                                    provider.exServiceManController.text,
+                                    onChanged: (val) => setState(() => provider
+                                        .exServiceManController.text =
+                                        val ??
+                                            provider.exServiceManController.text),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Yes',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 12),
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'No',
+                                    groupValue:
+                                    provider.exServiceManController.text,
+                                    onChanged: (val) => setState(() => provider
+                                        .exServiceManController.text =
+                                        val ??
+                                            provider.exServiceManController.text),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'No',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: labelWithStar('EWS Banificiary', required: false),
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'Yes',
+                                    groupValue:
+                                    provider.ewsBeniController.text,
+                                    onChanged: (val) => setState(() => provider
+                                        .ewsBeniController.text =
+                                        val ??
+                                            provider.ewsBeniController.text),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Yes',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 12),
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'No',
+                                    groupValue:
+                                    provider.ewsBeniController.text,
+                                    onChanged: (val) => setState(() => provider
+                                        .ewsBeniController.text =
+                                        val ??
+                                            provider.ewsBeniController.text),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'No',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -3825,6 +3943,12 @@ bool validateBasicDetails(BuildContext context, provider) {
   // Father Name
   if (provider.fatherNameController.text.isEmpty) {
     showAlertError("Please enter Father’s Name", context);
+    return false;
+  }
+
+  // Mother Name
+  if (provider.motherNameController.text.isEmpty) {
+    showAlertError("Please enter Mother’s Name", context);
     return false;
   }
 

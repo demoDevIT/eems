@@ -32,7 +32,7 @@ Future<void> getVideo(BuildContext context) async {
     String ? IpAddress =  await UtilityClass.getIpAddress();
     String ? DeviceId =  await UtilityClass.getDeviceId();
     String ? ApkVersion =  await UtilityClass.getApkVersion();
-    Position ? CurrentLocation =  await LocationService.getCurrentLocation();
+   // Position ? CurrentLocation =  await LocationService.getCurrentLocation();
     Map<String, dynamic> body = {
         'Action': 'GetVideoProfile',
         'UserID': UserData().model.value.userId.toString() //'1781'

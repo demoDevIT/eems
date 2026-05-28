@@ -47,10 +47,40 @@ class JanAadhaarFlowProvider with ChangeNotifier {
         // https://rajemployment.rajasthan.gov.in/mobileapi/api/NewJanAdharMobile
         //  in this URL, earlier 'NewJanAadharDetail/JanAdharDataNew?', now 'NewJanAdharMobile/JanAdharDataNew?'
         ProgressDialog.showLoadingDialog(context);
-        Map<String, dynamic> body = {};
+
+        //latest changes, now api having parameters
+        Map<String, dynamic> body = {
+          "SchemeName": "",
+          "sType": "FetchMemberList",
+          "JanaadhaarNo": janAadhaarNumber,
+          "memberId": "",
+          "tid": "",
+          "otp": "",
+          "ENR_ID": 0,
+          "AADHAR_ID": 0,
+          "Name": "",
+          "MOBILE_NO": "",
+          "SRDR_MID": "",
+          "JAN_MEMBER_ID": "",
+          "JAN_AADHAR": "",
+          "NAME_HINDI": "",
+          "SRDR_ID": "",
+          "MaskedMid": "string",
+          "AADHAR_REF_NO": "string"
+        };
+
         ApiResponse apiResponse = await commonRepo.post(
-            "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=FetchMemberList&JanaadhaarNo=${janAadhaarNumber}",
+            "NewJanAdharMobile/JanAdharDataNew",
             body);
+        //latest changes, now api having parameters
+
+        //earlier blank body
+        // Map<String, dynamic> body = {};
+        // ApiResponse apiResponse = await commonRepo.post(
+        //     "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=FetchMemberList&JanaadhaarNo=${janAadhaarNumber}",
+        //     body);
+        //earlier blank body
+
         // ApiResponse apiResponse = await commonRepo.post(
         //   "${Constants.janAadhaarBaseUrl}"
         //       "NewJanAadharDetail/JanAdharDataNew"
@@ -139,10 +169,40 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       try {
         //member id - 45053402607
         ProgressDialog.showLoadingDialog(context);
-        Map<String, dynamic> body = {};
+
+        //latest changes, now api having parameters
+        Map<String, dynamic> body = {
+          "SchemeName": "",
+          "sType": "GenerateOTP",
+          "JanaadhaarNo": janAadhaarController.text,
+          "memberId": memberId,
+          "tid": "",
+          "otp": "",
+          "ENR_ID": 0,
+          "AADHAR_ID": 0,
+          "Name": "",
+          "MOBILE_NO": "",
+          "SRDR_MID": "",
+          "JAN_MEMBER_ID": "",
+          "JAN_AADHAR": "",
+          "NAME_HINDI": "",
+          "SRDR_ID": "",
+          "MaskedMid": "string",
+          "AADHAR_REF_NO": "string"
+        };
+
         ApiResponse apiResponse = await commonRepo.post(
-            "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=GenerateOTP&memberId=${memberId}",
+            "NewJanAdharMobile/JanAdharDataNew",
             body);
+        //latest changes, now api having parameters
+
+        //earlier blank body
+        // Map<String, dynamic> body = {};
+        // ApiResponse apiResponse = await commonRepo.post(
+        //     "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=GenerateOTP&memberId=${memberId}",
+        //     body);
+        //earlier blank body
+
         // ApiResponse apiResponse = await commonRepo.post(
         //   "${Constants.janAadhaarBaseUrl}"
         //       "NewJanAadharDetail/JanAdharDataNew"
@@ -185,7 +245,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
           }
         } else {
           print("b4");
-          tid = "7421";
+          tid = ""; //"7421"
           currentStep = FlowStep.otp;
           notifyListeners();
           return GenerateOTPModal(
@@ -388,10 +448,40 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       try {
         //member id - 45053402607
         ProgressDialog.showLoadingDialog(context);
-        Map<String, dynamic> body = {};
+
+
+        //latest changes, now api having parameters
+        Map<String, dynamic> body = {
+          "SchemeName": "string",
+          "sType": "ValidateOTP_FetchRequestedData",
+          "JanaadhaarNo": janAadhaarController.text,
+          "memberId": memberId,
+          "tid": tid,
+          "otp": otp,
+          "ENR_ID": 0,
+          "AADHAR_ID": 0,
+          "Name": "",
+          "MOBILE_NO": "",
+          "SRDR_MID": "",
+          "JAN_MEMBER_ID": "",
+          "JAN_AADHAR": "",
+          "NAME_HINDI": "",
+          "SRDR_ID": "",
+          "MaskedMid": "",
+          "AADHAR_REF_NO": ""
+        };
         ApiResponse apiResponse = await commonRepo.post(
-            "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=ValidateOTP_FetchRequestedData&memberId=${memberId}&tid=${tid}&otp=${otp}",
+            "NewJanAdharMobile/JanAdharDataNew",
             body);
+        //latest changes, now api having parameters
+
+        //earlier blank body
+        // Map<String, dynamic> body = {};
+        // ApiResponse apiResponse = await commonRepo.post(
+        //     "NewJanAdharMobile/JanAdharDataNew?SchemeName=EEMS&sType=ValidateOTP_FetchRequestedData&memberId=${memberId}&tid=${tid}&otp=${otp}",
+        //     body);
+        //earlier blank body
+
         // ApiResponse apiResponse = await commonRepo.post(
         //   "${Constants.janAadhaarBaseUrl}"
         //       "NewJanAadharDetail/JanAdharDataNew"

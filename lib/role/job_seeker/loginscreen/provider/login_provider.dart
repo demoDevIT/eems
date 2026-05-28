@@ -99,6 +99,25 @@ class LoginProvider with ChangeNotifier {
     //   ),
     // );
 
+    // Navigator.of(context).push(
+    //   RightToLeftRoute(
+    //     page: ChangeNotifierProvider(
+    //       create: (_) =>
+    //           RegisterFormProvider(
+    //             commonRepo: commonRepo,
+    //           ),
+    //       child: RegisterFormScreen(
+    //           ssoId: "aaa" ??
+    //               SSOIDController.text, // ✅ pass SSO
+    //           displayName: "ssss" ?? "",
+    //           mobileNo: "1111" ?? ""
+    //       ),
+    //     ),
+    //     duration: const Duration(milliseconds: 500),
+    //     startOffset: const Offset(-1.0, 0.0),
+    //   ),
+    // );
+    // return null;
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -128,7 +147,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
-            //"BypassSSO": true //true for sandbox, remove for live
+            "BypassSSO": true //true for sandbox, remove for live
           };
         }
 
@@ -198,7 +217,9 @@ class LoginProvider with ChangeNotifier {
                         ssoId: sm.data!.sSOID ??
                             SSOIDController.text, // ✅ pass SSO
                           displayName: sm.data!.displayName ?? "",
-                          mobileNo: sm.data!.mobileno ?? ""
+                          mobileNo: sm.data!.mobileno ?? "",
+                          designation: sm.data!.designation ?? "",
+                          deptName: sm.data!.departmentName ?? ""
                       ),
                     ),
                     duration: const Duration(milliseconds: 500),

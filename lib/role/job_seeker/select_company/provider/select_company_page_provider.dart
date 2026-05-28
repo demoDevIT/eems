@@ -211,18 +211,18 @@ class SelectCompanyPageProvider extends ChangeNotifier {
 
       if (apply) {
         // ✅ CHECK (Apply Job)
-        final position = await LocationService.getCurrentLocation();
-        if (position == null) {
-          throw "Unable to get location";
-        }
+        // final position = await LocationService.getCurrentLocation();
+        // if (position == null) {
+        //   throw "Unable to get location";
+        // }
 
         body = {
           "ActionName": "Insert",
           "UserId": UserData().model.value.userId,
           "RoleId": UserData().model.value.roleId,
           "EventId": job.eventid,
-          "Longitude": position.longitude,
-          "Latitude": position.latitude,
+          "Longitude": "", //position.longitude,
+          "Latitude": "", //position.latitude,
           "EmployerUserId": job.employerID,
           "JobPostId": job.jobPostId,
           "IsActive": 1,

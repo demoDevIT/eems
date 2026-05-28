@@ -298,15 +298,15 @@ print("mergedddFile=>$mergedPath");
       String? appVersion = await UtilityClass.getApkVersion();
 
       // 📍 Get location
-      final position = await LocationService.getCurrentLocation();
-      if (position == null) {
-        throw "Unable to get location";
-      }
+      // final position = await LocationService.getCurrentLocation();
+      // if (position == null) {
+      //   throw "Unable to get location";
+      // }
 
-      final double userLatitude = position.latitude; //26.915486;
-      final double userLongitude = position.longitude; //75.819518;
+      // final double userLatitude = position.latitude; //26.915486;
+      // final double userLongitude = position.longitude; //75.819518;
 
-      print('userLatitude2 lat: $userLatitude');
+     // print('userLatitude2 lat: $userLatitude');
       print('mergedPath long: $mergedPath');
 
       File file = File(mergedPath);

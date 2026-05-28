@@ -20,8 +20,8 @@ class QrScannerScreenProvider extends ChangeNotifier {
 
   Future<Map<String, dynamic>?> attendanceApi(
       BuildContext context,
-      double? currentLat,
-      double? currentLng,
+      // double? currentLat,
+      // double? currentLng,
       String? roleId,
       String? userId,
       String? eventId,
@@ -42,8 +42,8 @@ class QrScannerScreenProvider extends ChangeNotifier {
         "RoleId": roleId,
         "EventId": eventId,
         "userId": userId,
-        "Latitude": currentLat.toString(),
-        "Longitude": currentLng.toString(),
+        "Latitude": "", //currentLat.toString(),
+        "Longitude": "", //currentLng.toString(),
         "DeviceID": deviceId,
       };
 
@@ -88,16 +88,42 @@ class QrScannerScreenProvider extends ChangeNotifier {
       bool isUserID,
       )
   {
-    final bool isAlreadyMarked = state == 4;
+    // final bool isAlreadyMarked = state == 4;
+    //
+    // final IconData icon =
+    // isAlreadyMarked ? Icons.info : Icons.check_circle;
+    //
+    // final Color iconColor =
+    // isAlreadyMarked ? Colors.orange : Colors.green;
+    //
+    // final String title =
+    // isAlreadyMarked ? "Already Marked" : "Successful";
 
-    final IconData icon =
-    isAlreadyMarked ? Icons.info : Icons.check_circle;
+    /// =========================
+    /// STATUS HANDLING
+    /// =========================
 
-    final Color iconColor =
-    isAlreadyMarked ? Colors.orange : Colors.green;
+    bool isSuccess = state == 1 || state == 200;
+    bool isAlreadyMarked = state == 4;
+    bool isFailed = !isSuccess && !isAlreadyMarked;
 
-    final String title =
-    isAlreadyMarked ? "Already Marked" : "Successful";
+    IconData icon;
+    Color iconColor;
+    String title;
+
+    if (isAlreadyMarked) {
+      icon = Icons.info;
+      iconColor = Colors.orange;
+      title = "Already Marked";
+    } else if (isFailed) {
+      icon = Icons.cancel;
+      iconColor = Colors.red;
+      title = "Failed";
+    } else {
+      icon = Icons.check_circle;
+      iconColor = Colors.green;
+      title = "Successful";
+    }
 
     return showDialog<bool>(
       context: context,

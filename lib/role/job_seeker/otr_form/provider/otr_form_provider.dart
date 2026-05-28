@@ -68,6 +68,7 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController fatherNameController = TextEditingController();
+  final TextEditingController motherNameController = TextEditingController();
   final TextEditingController maritalStatusController = TextEditingController();
   final TextEditingController castController = TextEditingController();
   final TextEditingController aadhaarRefNOController = TextEditingController();
@@ -89,6 +90,9 @@ class OtrFormProvider extends ChangeNotifier {
   final TextEditingController uidTypeNameController = TextEditingController();
   final TextEditingController uidNOController = TextEditingController();
   final TextEditingController linkedinController = TextEditingController();
+  final TextEditingController exServiceManController = TextEditingController();
+  final TextEditingController ewsBeniController = TextEditingController();
+
   List<ReligionData> religionList = [];
   List<UIDTypeData> uidTypeList = [];
   String? selectedUIDTypeData;
@@ -707,6 +711,7 @@ class OtrFormProvider extends ChangeNotifier {
     dateOfBirthController.text = data.dOB ?? "";
     print("dateOfBirthController.text22222-->" + dateOfBirthController.text);
     fatherNameController.text = data.fATHERNAMEEN ?? "";
+    motherNameController.text = data.mOTHERNAMEEN ?? "";
     maritalStatusController.text = data.mARITALSTATUS ?? "";
     castController.text = data.cATEGORYDESCENG ?? "";
     aadhaarRefNOController.text = maskAadhaarRef(data.aADHARREFID?.toString()) ?? "";
@@ -1983,6 +1988,7 @@ class OtrFormProvider extends ChangeNotifier {
           "Salutation": "",
           "FirstName": fullNameController.text,
           "FatherName": fatherNameController.text,
+          "MotherName": motherNameController.text,
 
           "DOB": "1990-07-01",
           "Gender": genderController.text,
@@ -2000,6 +2006,8 @@ class OtrFormProvider extends ChangeNotifier {
               ? religionOtherNameController.text
               : religionIdController.text,
           "Minority": minorityController.text == "Yes" ? "1" : "2",
+          "IsExServiceMan": minorityController.text == "Yes" ? "1" : "0",
+          "IsEWSCategory": minorityController.text == "Yes" ? "1" : "0",
 
           "JanAadharNo": feachJanAadhaarDataList[0].jANAADHAR.toString(),
           "JanAadharMemberID": memberId,
@@ -2050,7 +2058,7 @@ class OtrFormProvider extends ChangeNotifier {
           "EducationDistrict": 0,
           "EducationSchool": schoolNameController.text,
 
-          "EducationTypeID": graduationStreamTypeIdController.text, //int.tryParse(getEducationTypeId()) ?? 0,
+          "EducationTypeID": graduationStreamTypeIdController.text != '' ? graduationStreamTypeIdController.text : 0, //int.tryParse(getEducationTypeId()) ?? 0,
 
           "EducationBoard": int.tryParse(boardIdController.text) ?? 0,
           "EducationUniversity": int.tryParse(universityIdController.text) ?? 0,
@@ -2485,6 +2493,7 @@ class OtrFormProvider extends ChangeNotifier {
     dateOfBirthController.clear();
     mobileNumberController.clear();
     fatherNameController.clear();
+    motherNameController.clear();
     maritalStatusController.clear();
     castController.clear();
     aadhaarRefNOController.clear();
@@ -2499,6 +2508,8 @@ class OtrFormProvider extends ChangeNotifier {
     uidTypeNameController.clear();
     uidNOController.clear();
     linkedinController.clear();
+    exServiceManController.clear();
+    ewsBeniController.clear();
 
     religionList.clear();
     uidTypeList.clear();

@@ -13,6 +13,7 @@ class BasicDetailsProvider extends ChangeNotifier {
   // Controllers for text fields
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController fatherNameController = TextEditingController();
+  final TextEditingController motherNameController = TextEditingController();
   final TextEditingController dobController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -32,6 +33,8 @@ class BasicDetailsProvider extends ChangeNotifier {
 
   // Switch and Radio values
   bool isMinority = false;
+  String isExServiceMan = "no";
+  String isEWSCategory = "no";
   String gender = "Male";
 
   // Profile image
@@ -47,6 +50,7 @@ class BasicDetailsProvider extends ChangeNotifier {
   addData() {
     fullNameController.text = UserData().model.value.nAMEENG.toString();
     fatherNameController.text = UserData().model.value.fATHERNAMEENG.toString();
+    motherNameController.text = UserData().model.value.motherName.toString();
     dobController.text = UserData().model.value.dOB.toString();
     mobileController.text = UserData().model.value.mOBILENO.toString();
     emailController.text = UserData().model.value.eMAILID.toString();
@@ -62,6 +66,8 @@ class BasicDetailsProvider extends ChangeNotifier {
     casteController.text = UserData().model.value.caste.toString();
     uidTypeController.text = "Aadhar";
     isMinority = UserData().model.value.miniority == 1 ?  true :  false;
+    isExServiceMan = UserData().model.value.isExServiceMan.toString() == false ? "No" : "Yes";
+    isEWSCategory = UserData().model.value.isEWSCategory.toString() == false ? "No" : "Yes";
     gender = checkNullValue(UserData().model.value.gENDER.toString()).isNotEmpty ?  UserData().model.value.gENDER.toString() :  "Male";
     familyIncomeController.text =UserData().model.value.familyIncome.toString();
     notifyListeners();
@@ -82,6 +88,7 @@ class BasicDetailsProvider extends ChangeNotifier {
   clearData() {
     fullNameController.clear();
     fatherNameController.clear();
+    motherNameController.clear();
     dobController.clear();
     mobileController.clear();
     emailController.clear();
@@ -94,6 +101,8 @@ class BasicDetailsProvider extends ChangeNotifier {
     caste =  "";
     uidType =  "";
     isMinority = false;
+    isExServiceMan = "no";
+    isEWSCategory = "no";
     gender = "Male";
     notifyListeners();
   }

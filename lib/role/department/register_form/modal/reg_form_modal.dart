@@ -31,6 +31,8 @@ class RegFormModal {
 class RegFormData {
   dynamic userId;
   dynamic roleId;
+  dynamic isApprove;
+  dynamic resMsg;
   // dynamic registrationNumber;
   // dynamic mobile;
   // dynamic branchName;
@@ -38,6 +40,8 @@ class RegFormData {
   RegFormData({
     this.userId,
     this.roleId,
+    this.isApprove,
+    this.resMsg,
     // this.registrationNumber,
     // this.mobile,
     // this.branchName,
@@ -46,6 +50,8 @@ class RegFormData {
   RegFormData.fromJson(Map<String, dynamic> json) {
     userId = json['UserId'];
     roleId = json['RoleId'];
+    isApprove = json['IsApproved'];
+    resMsg = json['ResponseMessage'];
     // registrationNumber = json['RegistrationNumber'];
     // mobile = json['Mobile'];
     // branchName = json['BranchName'];

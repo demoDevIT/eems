@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
 import 'modal/block_modal.dart';
@@ -19,12 +20,16 @@ class RegisterFormScreen extends StatefulWidget {
   final String ssoId;
   final String displayName;
   final String mobileNo;
+  final String designation;
+  final String deptName;
 
   const RegisterFormScreen({
     super.key,
     required this.ssoId,
     required this.displayName,
-    required this.mobileNo
+    required this.mobileNo,
+    required this.designation,
+    required this.deptName
   });
 
   @override
@@ -38,7 +43,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     final provider =
     Provider.of<RegisterFormProvider>(context, listen: false);
 
-    provider.init(widget.ssoId, widget.displayName, widget.mobileNo);   // ✅ dynamic
+    provider.init(widget.ssoId, widget.displayName, widget.mobileNo, widget.designation, widget.deptName);   // ✅ dynamic
     SchedulerBinding.instance.addPostFrameCallback((_) {
       provider.getDistrictApi(context, 6);
       provider.getDepartmentApi(context);
@@ -98,6 +103,17 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                  // isEnabled: false,
                 ),
 
+                /// ===== AADHAAR NOTE =====
+                const SizedBox(height: 6),
+                Text(
+                  "Note - Enter your name exactly as per your Aadhaar for verification of applicant's internship joining and attendance.",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+
                 /// ===== MOBILE =====
                 _label("Mobile No*"),
                 _field(
@@ -125,14 +141,19 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 _label("District *"),
                 provider.isDistrictLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
+                    : buildSearchableDropdown<DistrictData>(
                         items: provider.districtList,
+
+                  // ✅ MAP YOUR MODEL HERE
+                  getId: (item) => item.iD.toString(),
+                  getName: (item) => item.name ?? "",
+
                         controller: provider.districtController,
                         idController: provider.districtIdController,
                         hintText: "--Select District--",
-                        height: 50,
-                        selectedValue: provider.selectedDistrict,
-                        getLabel: (e) => e.name ?? "",
+                        // height: 50,
+                        // selectedValue: provider.selectedDistrict,
+                        // getLabel: (e) => e.name ?? "",
                         onChanged: (value) {
                           provider.selectedDistrict = value;
                           provider.districtController.text = value?.name ?? "";
@@ -313,17 +334,22 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 // ],
 
                 /// ===== DEPARTMENT NAME =====
-                _label("Department*"),
+                _label("Internship Department*"),
                 provider.isDepartmentLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : buildDropdownWithBorderFieldOnlyThisPage<DepartmentData>(
+                    : buildSearchableDropdown<DepartmentData>(
                         items: provider.departmentList,
+
+                  // ✅ MAP YOUR MODEL HERE
+                  getId: (item) => item.iD.toString(),
+                  getName: (item) => item.nameEng ?? "",
+
                         controller: provider.departmentNameController,
                         idController: provider.departmentIdController,
                         hintText: "--Select Department--",
-                        height: 50,
-                        selectedValue: provider.selectedDepartment,
-                        getLabel: (e) => e.nameEng ?? "",
+                        // height: 50,
+                        // selectedValue: provider.selectedDepartment,
+                        // getLabel: (e) => e.nameEng ?? "",
                         onChanged: (value) {
                           provider.selectedDepartment = value;
                           provider.departmentNameController.text =
@@ -349,14 +375,19 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 _label("Internship Office Name*"),
                 provider.isOfficeLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : buildDropdownWithBorderFieldOnlyThisPage<OfficeData>(
+                    : buildSearchableDropdown<OfficeData>(
                   items: provider.officeList,
+
+                  // ✅ MAP YOUR MODEL HERE
+                  getId: (item) => item.iD.toString(),
+                  getName: (item) => item.nameEng ?? "",
+
                   controller: provider.officeNameController,
                   idController: provider.officeIdController,
                   hintText: "--Select Office--",
-                  height: 50,
-                  selectedValue: provider.selectedOffice,
-                  getLabel: (e) => e.nameEng ?? "",
+                  // height: 50,
+                  // selectedValue: provider.selectedOffice,
+                  // getLabel: (e) => e.nameEng ?? "",
                   onChanged: (value) {
                     provider.selectedOffice = value;
                     provider.officeNameController.text =
@@ -405,7 +436,9 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     child: const Text('Save',
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
-                )
+                ),
+
+                const SizedBox(height: 60),
               ],
             ),
           ),

@@ -9,7 +9,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocationService.getCurrentLocation();
+  //  LocationService.getCurrentLocation();
 
     return Scaffold(
       backgroundColor: Colors.white,

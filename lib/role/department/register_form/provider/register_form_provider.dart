@@ -11,6 +11,7 @@ import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../../dept_dashboard/modal/dept_info_modal.dart';
 import '../modal/block_modal.dart';
 import '../modal/department_modal.dart';
@@ -499,8 +500,8 @@ class RegisterFormProvider extends ChangeNotifier {
         "PrivateGPCode": "0",
         "PrivateWardCode": "0",
         "PrivateVillageCode": "0",
-        "UserRequestType": ""
-        // "DeviceId": deviceId
+        "UserRequestType": "",
+         "DeviceId": deviceId
         //
         // "DepartmentId": UserData().model.value.deptID,
         //
@@ -558,18 +559,26 @@ class RegisterFormProvider extends ChangeNotifier {
         if (sm.state == 200) {
           successDialog(
             context,
-            sm.message ?? "Success",
+            sm.data![0].resMsg ?? "Success",
                 (value) {
               if (value.toString() == "success") {
                 if (sm.data != null &&
                     sm.data!.isNotEmpty &&
-                    sm.data![0].userId != null) {
-                  getDeptBasicDetails(
+                    sm.data![0].userId != null &&
+                    sm.data![0].isApprove == 0) {
+
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    sm.data![0].userId.toString(),
-                    sm.data![0].roleId,
-                    ssoIdController.text.trim()
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
                   );
+
+                  // getDeptBasicDetails(
+                  //   context,
+                  //   sm.data![0].userId.toString(),
+                  //   sm.data![0].roleId,
+                  //   ssoIdController.text.trim()
+                  // );
 
                 }
               }
@@ -679,10 +688,12 @@ class RegisterFormProvider extends ChangeNotifier {
     }
   }
 
-  void init(String ssoId, String displayName, String mobileNo) {
+  void init(String ssoId, String displayName, String mobileNo, String designation, String deptName) {
     ssoIdController.text = ssoId; // disabled field
     displayNameController.text = displayName; // disabled field
     mobileController.text = mobileNo; // disabled field
+    designationController.text = designation; // disabled field
+    adminDeptNameController.text = deptName; // disabled field
   }
 
   void clearData() {

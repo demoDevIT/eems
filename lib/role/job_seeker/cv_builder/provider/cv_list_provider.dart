@@ -13,6 +13,7 @@ import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
+import '../../../../constants/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
@@ -74,7 +75,8 @@ class CvListProvider extends ChangeNotifier {
           final message = dataList[0]["Message"] ?? "";
 
           if (cvUrl.isNotEmpty) {
-            await _downloadAndOpenPdf(cvUrl);
+            print("FileURL -> ${Constants.fileUrl + cvUrl}"); //from API "CVPath":"/StaticFiles/Jobseeker/CVDownloads/Resume_2373566.pdf"
+            await _downloadAndOpenPdf(Constants.fileUrl + cvUrl);
           } else {
             apiMessage = message;
           }

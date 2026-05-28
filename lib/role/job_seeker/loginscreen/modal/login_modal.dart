@@ -50,6 +50,7 @@ class LoginData {
   dynamic nAMEHINDI;
   dynamic fATHERNAMEENG;
   dynamic fATHERNAMEHND;
+  dynamic motherName;
   dynamic dOB;
   dynamic gENDER;
   dynamic mOBILENO;
@@ -60,6 +61,8 @@ class LoginData {
   dynamic nCOCode;
   dynamic aadharNo;
   dynamic miniority;
+  dynamic isExServiceMan;
+  dynamic isEWSCategory;
   dynamic uIDName;
   dynamic uIDType;
   dynamic uIDNumber;
@@ -180,6 +183,7 @@ class LoginData {
     this.nAMEHINDI,
     this.fATHERNAMEENG,
     this.fATHERNAMEHND,
+    this.motherName,
     this.dOB,
     this.gENDER,
     this.mOBILENO,
@@ -190,6 +194,8 @@ class LoginData {
     this.nCOCode,
     this.aadharNo,
     this.miniority,
+    this.isExServiceMan,
+    this.isEWSCategory,
     this.uIDName,
     this.uIDType,
     this.uIDNumber,
@@ -313,6 +319,7 @@ class LoginData {
     nAMEHINDI = json['NAME_HINDI'];
     fATHERNAMEENG = json['FATHER_NAME_ENG'];
     fATHERNAMEHND = json['FATHER_NAME_HND'];
+    motherName = json['MotherName'];
     dOB = json['DOB'];
     gENDER = json['GENDER'];
     mOBILENO = json['MOBILE_NO'];
@@ -323,6 +330,8 @@ class LoginData {
     nCOCode = json['NCO_Code'];
     aadharNo = json['AadharNo'];
     miniority = json['Miniority'];
+    isExServiceMan = json['IsExServiceMan'];
+    isEWSCategory = json['IsEWSCategory'];
     uIDName = json['UIDName'];
     uIDType = json['UIDType'];
     uIDNumber = json['UIDNumber'];
@@ -444,6 +453,7 @@ class LoginData {
     data['NAME_HINDI'] = this.nAMEHINDI;
     data['FATHER_NAME_ENG'] = this.fATHERNAMEENG;
     data['FATHER_NAME_HND'] = this.fATHERNAMEHND;
+    data['MotherName'] = this.motherName;
     data['DOB'] = this.dOB;
     data['GENDER'] = this.gENDER;
     data['MOBILE_NO'] = this.mOBILENO;
@@ -454,6 +464,8 @@ class LoginData {
     data['NCO_Code'] = this.nCOCode;
     data['AadharNo'] = this.aadharNo;
     data['Miniority'] = this.miniority;
+    data['IsExServiceMan'] = this.isExServiceMan;
+    data['IsEWSCategory'] = this.isEWSCategory;
     data['UIDName'] = this.uIDName;
     data['UIDType'] = this.uIDType;
     data['UIDNumber'] = this.uIDNumber;

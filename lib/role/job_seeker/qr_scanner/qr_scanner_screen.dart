@@ -137,6 +137,7 @@ var provider;
   }
 
   _onDetect(BarcodeCapture capture) async {
+    print("ooooondetecttttt");
     if (_handled) return;
 
     final barcodes = capture.barcodes;
@@ -188,16 +189,16 @@ var provider;
         final encryptedDeviceId = encrypt(deviceId ?? "");
 
         // 📍 Get location
-        final position = await LocationService.getCurrentLocation();
-        if (position == null) {
-          throw "Unable to get location";
-        }
+        // final position = await LocationService.getCurrentLocation();
+        // if (position == null) {
+        //   throw "Unable to get location";
+        // }
 
-        final double userLatitude = position.latitude; //26.915486;
-        final double userLongitude = position.longitude; //75.819518;
+        // final double userLatitude = position.latitude; //26.915486;
+        // final double userLongitude = position.longitude; //75.819518;
 
-        print('userLatitude1 lat: $userLatitude');
-        print('userLongitude1 long: $userLongitude');
+        // print('userLatitude1 lat: $userLatitude');
+        // print('userLongitude1 long: $userLongitude');
 
         // final distance = calculateDistanceInMeters(
         //   double.parse(eventLatitude),
@@ -212,8 +213,8 @@ var provider;
 
         final result = await provider.attendanceApi(
           context,
-          userLatitude,
-          userLongitude,
+          // userLatitude,
+          // userLongitude,
           roleId.toString(),
           userId.toString(),
           eventId,
@@ -257,16 +258,16 @@ var provider;
         final encryptedDeviceId = encrypt(deviceId ?? "");
 
         // 📍 Get location
-        final position = await LocationService.getCurrentLocation();
-        if (position == null) {
-          throw "Unable to get location";
-        }
+        // final position = await LocationService.getCurrentLocation();
+        // if (position == null) {
+        //   throw "Unable to get location";
+        // }
 
-        final double userLatitude = position.latitude; //26.915486;
-        final double userLongitude = position.longitude; //75.819518;
+        // final double userLatitude = position.latitude; //26.915486;
+        // final double userLongitude = position.longitude; //75.819518;
 
-        print('userLatitude2 lat: $userLatitude');
-        print('userLongitude2 long: $userLongitude');
+        // print('userLatitude2 lat: $userLatitude');
+        // print('userLongitude2 long: $userLongitude');
 
         final user = UserData().model.value;
         print('userdddata: ${user.toJson()}');
@@ -284,8 +285,8 @@ var provider;
 
         final result = await provider.attendanceApi(
           context,
-          userLatitude,
-          userLongitude,
+          // userLatitude,
+          // userLongitude,
           user.roleId.toString(),
           user.userId.toString(),
           eventId,
@@ -707,46 +708,46 @@ Future <void> scanFromGallery(BuildContext context,  QrScannerScreenProvider pro
 
 
   // 📍 Get current location
-  final position = await LocationService.getCurrentLocation();
-  if (position == null) {
-    showAlertError("Unable to get location", context);
-    _handled = false;
-    _controller.start();
-    return;
-  }
+  // final position = await LocationService.getCurrentLocation();
+  // if (position == null) {
+  //   showAlertError("Unable to get location", context);
+  //   _handled = false;
+  //   _controller.start();
+  //   return;
+  // }
 
   // final double currentLat = position.latitude;
   // final double currentLng = position.longitude;
 
 
-final double currentLat = position.latitude;
-  final double currentLng = position.longitude;
+// final double currentLat = position.latitude;
+//   final double currentLng = position.longitude;
 
 
 
-  print("📍 Current LAT: $currentLat");
-  print("📍 Current LNG: $currentLng");
+  // print("📍 Current LAT: $currentLat");
+  // print("📍 Current LNG: $currentLng");
 
   // 📏 Calculate distance
-  final distance = calculateDistanceInMeters(
-    qrLat,
-    qrLng,
-    currentLat,
-    currentLng,
-  );
+  // final distance = calculateDistanceInMeters(
+  //   qrLat,
+  //   qrLng,
+  //   currentLat,
+  //   currentLng,
+  // );
 
-  print("📏 Distance: ${distance.toStringAsFixed(2)} meters");
+ // print("📏 Distance: ${distance.toStringAsFixed(2)} meters");
 
   // 🚨 Distance validation
-  if (distance > 2000) {
-    showAlertError(
-      "You are too far from the location.\nDistance: ${(distance).toStringAsFixed(0)} meters",
-      context,
-    );
-    _handled = false;
-    _controller.start();
-    return;
-  }
+  // if (distance > 2000) {
+  //   showAlertError(
+  //     "You are too far from the location.\nDistance: ${(distance).toStringAsFixed(0)} meters",
+  //     context,
+  //   );
+  //   _handled = false;
+  //   _controller.start();
+  //   return;
+  // }
 
 
   // ✅ Success

@@ -99,6 +99,8 @@ import 'di_container.dart' as di;
 import 'l10n/app_localizations.dart';
 import 'role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:upgrader/upgrader.dart';
+
 // If you use FlutterFire CLI, also import:
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -204,7 +206,16 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<BottomProvider>()),
        ],
-        child:MyApp(),
+        child: MyApp(),
+        // child: UpgradeAlert(
+        //   upgrader: Upgrader(
+        //     debugDisplayAlways: true,
+        //     debugLogging: true,
+        //   ),
+        //   showIgnore: false,
+        //   showLater: false,
+        //   child: MyApp(),
+        // ),
       ),
     );
   }, (error, stack) {
@@ -238,6 +249,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(colorScheme: const ColorScheme.light().copyWith(primary: kPrimaryDark,),textTheme:textTheme ),
         debugShowCheckedModeBanner: false,
         home:  MyHomePage(),
+        // home: UpgradeAlert(
+        //   upgrader: Upgrader(
+        //     debugDisplayAlways: true,
+        //     debugLogging: true,
+        //   ),
+        //   showIgnore: false,
+        //   showLater: false,
+        //   child: MyHomePage(),
+        // ),
       );
     });
   }
@@ -271,9 +291,18 @@ class _MyHomePageState extends State<MyHomePage>
     // TODO: implement initState
     super.initState();
     _controller.forward();
-    _controller.addStatusListener((status) {
+    // _controller.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed) {
+    //     _controller.stop();
+    //     getUserData();
+    //   }
+    // });
+    _controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
         _controller.stop();
+
+        await Future.delayed(const Duration(seconds: 2));
+
         getUserData();
       }
     });

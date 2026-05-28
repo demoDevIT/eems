@@ -187,13 +187,13 @@ class CandidateAttendanceProvider extends ChangeNotifier {
       String? deviceId = await UtilityClass.getDeviceId();
 
       // 📍 Get location
-      final position = await LocationService.getCurrentLocation();
-      if (position == null) {
-        throw "Unable to get location";
-      }
+      // final position = await LocationService.getCurrentLocation();
+      // if (position == null) {
+      //   throw "Unable to get location";
+      // }
 
-      final double userLatitude = position.latitude;
-      final double userLongitude = position.longitude;
+      // final double userLatitude = position.latitude;
+      // final double userLongitude = position.longitude;
 
       // 🧠 Get user from search result
       if (jobSeeker == null) {
@@ -211,8 +211,8 @@ class CandidateAttendanceProvider extends ChangeNotifier {
 
       final result = await attendanceApi(
         context,
-        userLatitude,
-        userLongitude,
+        // userLatitude,
+        // userLongitude,
         encryptedRoleId,
         encryptedUserId,
         encryptedEventId,
@@ -241,8 +241,8 @@ class CandidateAttendanceProvider extends ChangeNotifier {
 
   Future<Map<String, dynamic>?> attendanceApi(
       BuildContext context,
-      double? currentLat,
-      double? currentLng,
+      // double? currentLat,
+      // double? currentLng,
       String? roleId,
       String? userId,
       String? eventId,
@@ -266,8 +266,8 @@ class CandidateAttendanceProvider extends ChangeNotifier {
         "RoleId": roleId,
         "EventId": eventId,
         "userId": userId,
-        "Latitude": currentLat.toString(),
-        "Longitude": currentLng.toString(),
+        "Latitude": "", //currentLat.toString(),
+        "Longitude": "", //currentLng.toString(),
         "DeviceID": deviceId,
       };
 
