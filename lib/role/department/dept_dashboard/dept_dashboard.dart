@@ -15,6 +15,7 @@ import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../dept_join_pending_list/dept_join_pending_list.dart';
+import '../dept_profile/dept_profile.dart';
 import 'provider/dept_dashboard_provider.dart';
 
 class DepartmentDashboardPage extends StatefulWidget {
@@ -30,9 +31,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: _buildSideDrawer(),
         backgroundColor: kWhite,
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          //automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
@@ -275,6 +277,145 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           },
         ),
       );
+  }
+
+  /// Side Drawer
+  Drawer _buildSideDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          // ===== Header =====
+          Container(
+            padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    ClipOval(
+                      child: Image.network(
+                        UserData().model.value.latestPhotoPath.toString(),
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/placeholder.png',
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          UserData().model.value.name.toString(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DeptProfileScreen(isAppBarHide: true),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Update Profile",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: kViewAllColor,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: SvgPicture.asset(
+                    'assets/icons/close.svg',
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.dashboard),
+            title: const Text("Dashboard", style: TextStyle(fontSize: 14)),
+            onTap: () {
+              Navigator.pop(context); // Already on dashboard
+            },
+          ),
+
+          Container(
+            margin: const EdgeInsets.only(left: 50),
+            child: const Divider(height: 1, color: E3E5F9Color),
+          ),
+
+          // ===== Logout =====
+          ListTile(
+            leading: SvgPicture.asset(
+              'assets/icons/logout.svg',
+              width: 20,
+              height: 20,
+              fit: BoxFit.cover,
+            ),
+            title: Text(
+              "logout",
+              style: Styles.mediumTextStyle(size: 14),
+            ),
+            onTap: () async {
+              Navigator.pop(context); // Close the drawer
+              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
+                if (value.toString() == "success") {
+                  final pref = AppSharedPref();
+
+                  // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                  // commonRepo.dioClient.clearAuthToken();
+
+                  // Clear login session only
+                  UserData().model.value.isLogin = false;
+                  UserData().model.value.userId = null;
+                  await pref.remove('UserData');
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
+                  );
+
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //     const LoginScreen(),
+                  //   ),
+                  // );
+                }
+              },
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _dashboardCard({

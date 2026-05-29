@@ -51,6 +51,10 @@ class DeptInfoData {
   dynamic sso;
   dynamic district;
   dynamic districtCode;
+  dynamic mailPersonal;
+  dynamic mailOfficial;
+  dynamic postalAddress;
+  dynamic empNumber;
 
   DeptInfoData(
       {this.userID,
@@ -68,6 +72,10 @@ class DeptInfoData {
         this.city,
         this.district,
         this.districtCode,
+        this.mailPersonal,
+        this.mailOfficial,
+        this.postalAddress,
+        this.empNumber,
       });
 
   DeptInfoData.fromJson(Map<String, dynamic> json) {
@@ -87,6 +95,10 @@ class DeptInfoData {
     sso = json['SSOID'];
     district = json['District'];
     districtCode = json['DistrictCode'];
+    mailPersonal = json['MailPersonal'];
+    mailOfficial = json['MailOfficial'];
+    postalAddress = json['postalAddress'];
+    empNumber = json['EmployeeNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -107,6 +119,10 @@ class DeptInfoData {
     data['SSOID'] = this.sso;
     data['District'] = this.district;
     data['DistrictCode'] = this.districtCode;
+    data['MailPersonal'] = this.mailPersonal;
+    data['MailOfficial'] = this.mailOfficial;
+    data['postalAddress'] = this.postalAddress;
+    data['EmployeeNumber'] = this.empNumber;
     return data;
   }
 }

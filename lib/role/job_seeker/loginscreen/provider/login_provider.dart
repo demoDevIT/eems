@@ -198,7 +198,10 @@ class LoginProvider with ChangeNotifier {
 
                 UserData().model.value.designation = sm.data!.designation;
 
-
+                UserData().model.value.mailPersonal = sm.data!.mailPersonal;
+                UserData().model.value.mailOfficial = sm.data!.mailOfficial;
+                UserData().model.value.postalAddress = sm.data!.postalAddress;
+                UserData().model.value.empNumber = sm.data!.empNumber;
 
 
                 await saveRememberMeData();
@@ -513,6 +516,10 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
               UserData().model.value.sso = ssoID;
+              // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+              // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
+              // UserData().model.value.empNumber = sm.data![0].empNumber;
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }else{
@@ -536,6 +543,10 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
               UserData().model.value.sso = ssoID;
+              // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+              // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
+              // UserData().model.value.empNumber = sm.data![0].empNumber;
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }

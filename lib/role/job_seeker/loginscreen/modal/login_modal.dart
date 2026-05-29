@@ -167,6 +167,10 @@ class LoginData {
   dynamic profileId;
   dynamic firstName;
   dynamic lastName;
+  dynamic mailPersonal;
+  dynamic mailOfficial;
+  dynamic postalAddress;
+  dynamic empNumber;
 
   LoginData({
     this.userId,
@@ -301,7 +305,11 @@ class LoginData {
     this.departmentId,
     this.profileId,
     this.firstName,
-    this.lastName
+    this.lastName,
+    this.mailPersonal,
+    this.mailOfficial,
+    this.postalAddress,
+    this.empNumber,
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -435,6 +443,10 @@ class LoginData {
     profileId = json['ProfileID'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
+    mailPersonal = json['MailPersonal'];
+    mailOfficial = json['MailOfficial'];
+    postalAddress = json['postalAddress'];
+    empNumber = json['EmployeeNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -569,6 +581,10 @@ class LoginData {
     data['ProfileID'] = this.profileId;
     data['FirstName'] = this.firstName;
     data['LastName'] = this.lastName;
+    data['MailPersonal'] = this.mailPersonal;
+    data['MailOfficial'] = this.mailOfficial;
+    data['postalAddress'] = this.postalAddress;
+    data['EmployeeNumber'] = this.empNumber;
 
     return data;
   }

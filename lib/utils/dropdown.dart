@@ -139,6 +139,7 @@ Widget buildSearchableDropdown<T>({
   required String hintText,
   required Function(T) onChanged,
   Widget Function(T item)? customItemBuilder,
+  bool enabled = true,
 }) {
   T? selectedItem;
 
@@ -151,6 +152,7 @@ Widget buildSearchableDropdown<T>({
   }
 
   return DropdownSearch<T>(
+    enabled: enabled,
     items: (filter, infiniteScrollProps) => items,
 
     // ✅ FIXED compare

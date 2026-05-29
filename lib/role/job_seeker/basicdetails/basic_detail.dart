@@ -621,6 +621,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
               ),
 
               const SizedBox(height: 12),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -628,7 +629,46 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      labelWithStar('Is EWS Category',required: false),
+                      labelWithStar('Ex-Service Man',required: false),
+                      const SizedBox(height: 8),
+
+                      Row(
+                        children: [
+                          Radio<String>(
+                            value: "yes",
+                            groupValue:  provider.isExServiceMan,
+                            onChanged: (val) => () {
+                              //setState(() =>  provider.gender = val!);
+                            },
+                            visualDensity: VisualDensity.compact, // reduce space inside
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          const Text("Yes"),
+                          Radio<String>(
+                            value: "no",
+                            groupValue:  provider.isExServiceMan,
+                            onChanged: (val) => () {
+                              //setState(() =>  provider.gender = val!);
+                            },
+                            visualDensity: VisualDensity.compact, // reduce space inside
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          const Text("No"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelWithStar('EWS Banificiary',required: false),
                       const SizedBox(height: 8),
 
                       Row(
@@ -661,44 +701,6 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
               ),
 
               const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      labelWithStar('Is Ex Service Man',required: false),
-                      const SizedBox(height: 8),
-
-                      Row(
-                        children: [
-                          Radio<String>(
-                            value: "yes",
-                            groupValue:  provider.isExServiceMan,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
-                            },
-                            visualDensity: VisualDensity.compact, // reduce space inside
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          const Text("Yes"),
-                          Radio<String>(
-                            value: "no",
-                            groupValue:  provider.isExServiceMan,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
-                            },
-                            visualDensity: VisualDensity.compact, // reduce space inside
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          const Text("No"),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
 
               labelWithStar('Family Income',required: false),
 

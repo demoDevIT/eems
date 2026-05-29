@@ -88,6 +88,7 @@ class TempLoginData {
   dynamic internshipDeptTypeID;
   dynamic NameAsjanAdhar;
   dynamic DistrictEn;
+  dynamic empNumber;
 
   TempLoginData(
       {this.profileID,
@@ -147,7 +148,8 @@ class TempLoginData {
         this.deptID,
         this.internshipDeptTypeID,
         this.NameAsjanAdhar,
-        this.DistrictEn
+        this.DistrictEn,
+        this.empNumber,
       });
 
   TempLoginData.fromJson(Map<String, dynamic> json) {
@@ -209,6 +211,8 @@ class TempLoginData {
     internshipDeptTypeID = json['InternshipDeptTypeID'];
     NameAsjanAdhar = json['NameAsjanAdhar'];
     DistrictEn = json['DistrictEn'];
+    empNumber = json['EmployeeNumber'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -271,6 +275,7 @@ class TempLoginData {
     data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
     data['NameAsjanAdhar'] = this.NameAsjanAdhar;
     data['DistrictEn'] = this.DistrictEn;
+    data['EmployeeNumber'] = this.empNumber;
 
     return data;
   }
