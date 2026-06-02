@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -66,8 +68,16 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       // Clear login session only
                       UserData().model.value.isLogin = false;
                       UserData().model.value.userId = null;
+                      // UserData().model.value.postalAddress = null;
+                      // UserData().model.value.empNumber = null;
                       await pref.remove('UserData');
 
+                      print("========== AFTER LOGOUT COMPLETE USER MODEL1 ==========");
+                      print(
+                        const JsonEncoder.withIndent('  ')
+                            .convert(UserData().model.value.toJson()),
+                      );
+                      print("=========================================");
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -394,7 +404,15 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   // Clear login session only
                   UserData().model.value.isLogin = false;
                   UserData().model.value.userId = null;
+                  // UserData().model.value.postalAddress = null;
+                  // UserData().model.value.empNumber = null;
                   await pref.remove('UserData');
+                  print("========== AFTER LOGOUT COMPLETE USER MODEL ==========");
+                  print(
+                    const JsonEncoder.withIndent('  ')
+                        .convert(UserData().model.value.toJson()),
+                  );
+                  print("=========================================");
 
                   Navigator.pushAndRemoveUntil(
                     context,

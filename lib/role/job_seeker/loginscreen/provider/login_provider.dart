@@ -107,10 +107,11 @@ class LoginProvider with ChangeNotifier {
     //             commonRepo: commonRepo,
     //           ),
     //       child: RegisterFormScreen(
-    //           ssoId: "aaa" ??
-    //               SSOIDController.text, // ✅ pass SSO
-    //           displayName: "ssss" ?? "",
-    //           mobileNo: "1111" ?? ""
+    //           ssoId: "aaa" ,
+    //               displayName: "",
+    //           mobileNo: "",
+    //           designation: "",
+    //           deptName: ""
     //       ),
     //     ),
     //     duration: const Duration(milliseconds: 500),
@@ -178,6 +179,15 @@ class LoginProvider with ChangeNotifier {
           final sm = TempLoginModal.fromJson(responseData);
           if (sm.state == 200) {
             print("aaaaaaaaaaaaaaa");
+
+            print("===== LOGIN RESPONSE VALUES =====");
+            print("PostalAddress = ${sm.data?.postalAddress}");
+            print("postalAddress1 = ${sm.data?.postalAddress1}");
+            print("employeeNumber = ${sm.data?.employeeNumber}");
+            print("empNumber = ${sm.data?.empNumber}");
+            print("================================");
+
+            print("LOGIN postalAddress => ${UserData().model.value.postalAddress}");
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
               if (sm.data != null && sm.data!.userID != null &&
                   sm.data!.userID! > 0 && sm.data!.roleID > 0) {
@@ -188,7 +198,13 @@ class LoginProvider with ChangeNotifier {
                 UserData().model.value.internshipDeptTypeID = sm.data!.internshipDeptTypeID;
                 UserData().model.value.NameAsjanAdhar = sm.data!.NameAsjanAdhar;
                 UserData().model.value.DistrictEn = sm.data!.DistrictEn;
+                // UserData().model.value.postalAddress = sm.data!.postalAddress;
+                // UserData().model.value.empNumber = sm.data!.employeeNumber;
+                print("PA1 = ${sm.data!.postalAddress}");
+                print("PA2 = ${sm.data!.postalAddress1}");
 
+                print("EMP1 = ${sm.data!.employeeNumber}");
+                print("EMP2 = ${sm.data!.empNumber}");
 
                 final design11 = UserData().model.value.designation;
                 final design22 = sm.data!.designation;
@@ -198,10 +214,11 @@ class LoginProvider with ChangeNotifier {
 
                 UserData().model.value.designation = sm.data!.designation;
 
-                UserData().model.value.mailPersonal = sm.data!.mailPersonal;
-                UserData().model.value.mailOfficial = sm.data!.mailOfficial;
-                UserData().model.value.postalAddress = sm.data!.postalAddress;
-                UserData().model.value.empNumber = sm.data!.empNumber;
+                // UserData().model.value.mailPersonal = sm.data!.mailPersonal;
+                // UserData().model.value.mailOfficial = sm.data!.mailOfficial;
+                // UserData().model.value.postalAddress = sm.data!.postalAddress1;
+                // UserData().model.value.empNumber = sm.data!.employeeNumber;
+                // UserData().model.value.gENDER = sm.data!.gender;
 
 
                 await saveRememberMeData();
@@ -504,6 +521,18 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.userType = sm.data![0].userType;
               UserData().model.value.office = sm.data![0].office;
 
+              UserData().model.value.empNumber = sm.data![0].empNumber;
+              UserData().model.value.firstName = sm.data![0].firstName;
+              UserData().model.value.lastName = sm.data![0].lastName;
+              UserData().model.value.postalAddress = sm.data![0].postalAddress;
+              UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+              UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+              UserData().model.value.gENDER = sm.data![0].gender;
+
+
+              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
+
+             // UserData().model.value.postalAddress = sm.data![0].postalAddress;
               // final des11 = UserData().model.value.designation;
               // final des22 = sm.data![0].designation;
               // print("des11->$des11");
@@ -530,6 +559,14 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.mobileNo = sm.data![0].mobileNo;
               UserData().model.value.userType = sm.data![0].userType;
               UserData().model.value.office = sm.data![0].office;
+
+              UserData().model.value.empNumber = sm.data![0].empNumber;
+              UserData().model.value.firstName = sm.data![0].firstName;
+              UserData().model.value.lastName = sm.data![0].lastName;
+              UserData().model.value.postalAddress = sm.data![0].postalAddress;
+              UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+              UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+              UserData().model.value.gENDER = sm.data![0].gender;
 
               // final des33 = UserData().model.value.designation;
               // final des44 = sm.data![0].designation;

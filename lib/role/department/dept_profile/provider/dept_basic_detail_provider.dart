@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rajemployment/role/job_seeker/loginscreen/modal/temp_login_modal.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
@@ -67,6 +68,14 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
   List<DeptProfileModalData> deptProfileData = [];
 
   Future<DeptProfileModal?> deptProfile(BuildContext context) async {
+
+    print("========== COMPLETE USER MODEL ==========");
+    print(
+      const JsonEncoder.withIndent('  ')
+          .convert(UserData().model.value.toJson()),
+    );
+    print("=========================================");
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -317,6 +326,9 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
   }
 
   Future<RegFormModal> submitForm(BuildContext context) async {
+    print("SUBMIT postalAddress => ${UserData().model.value.postalAddress}");
+    print("SUBMIT empNumber => ${UserData().model.value.empNumber}");
+    print("CONTROLLER empNumber => ${empNumberController.text}");
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -331,6 +343,9 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
 
     String? deviceId = await UtilityClass.getDeviceId();
 
+    //these parameters got from amit tripathi , these are extra parameters which are no need to paas in this
+    // API (double work both front and backend side) -
+    // Gender, MailPersonal, MailOfficial, postalAddress, LastName, EmployeeNumber,UserType
     try {
       Map<String, dynamic> data = {
         "ActionName": "UserProfileUpdate",
@@ -346,12 +361,13 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
         "AllotmentDeptId": allotDeptIdController.text,
         "OtherOfficeAllotedDept": "",
         "Gender": UserData().model.value.gENDER,
-        "MailPersonal": UserData().model.value.mailPersonal,
-        "MailOfficial": UserData().model.value.mailOfficial,
-        "postalAddress": UserData().model.value.postalAddress,
-        "LastName": UserData().model.value.lastName,
-        "EmployeeNumber": UserData().model.value.empNumber,
-        "UserType": UserData().model.value.userType
+        "MailPersonal": UserData().model.value.mailPersonal, //personalMailController.text, //UserData().model.value.mailPersonal,
+        "MailOfficial": UserData().model.value.mailOfficial, //officialMailController.text, //UserData().model.value.mailOfficial,
+        "postalAddress": UserData().model.value.postalAddress, //UserData().model.value.postalAddress,
+        "LastName": UserData().model.value.lastName, //lastNameController.text, //UserData().model.value.lastName,
+        "EmployeeNumber": UserData().model.value.empNumber, //UserData().model.value.empNumber, //empNumberController.text, //UserData().model.value.empNumber,
+        "UserType": UserData().model.value.userType,
+        "DeviceId": deviceId
       };
 
       /// ✅ PRINT FULL REQUEST DATA
@@ -359,11 +375,11 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
       print(const JsonEncoder.withIndent('  ').convert(data));
       print("=========================================");
 
-      return RegFormModal(
-        state: 1,
-        message: "Debug Stop",
-      );
 
+      // return RegFormModal(
+      //   state: 1,
+      //   message: "Debug Stop",
+      // );
       ProgressDialog.showLoadingDialog(context);
 
       ApiResponse apiResponse = await commonRepo.post(

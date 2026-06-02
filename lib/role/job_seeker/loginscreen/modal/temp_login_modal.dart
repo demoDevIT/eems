@@ -47,6 +47,7 @@ class TempLoginData {
   dynamic ipPhone;
   dynamic mailPersonal;
   dynamic postalAddress;
+  dynamic postalAddress1;
   dynamic postalCode;
   dynamic city;
   dynamic state;
@@ -108,6 +109,7 @@ class TempLoginData {
         this.ipPhone,
         this.mailPersonal,
         this.postalAddress,
+        this.postalAddress1,
         this.postalCode,
         this.city,
         this.state,
@@ -169,7 +171,8 @@ class TempLoginData {
     telephoneNumber = json['TelephoneNumber'];
     ipPhone = json['IpPhone'];
     mailPersonal = json['MailPersonal'];
-    postalAddress = json['PostalAddress'];
+    postalAddress = json['postalAddress'];
+    // postalAddress1 = json['PostalAddress'];
     postalCode = json['PostalCode'];
     city = json['City'];
     state = json['State'];
@@ -211,7 +214,7 @@ class TempLoginData {
     internshipDeptTypeID = json['InternshipDeptTypeID'];
     NameAsjanAdhar = json['NameAsjanAdhar'];
     DistrictEn = json['DistrictEn'];
-    empNumber = json['EmployeeNumber'];
+    //empNumber = json['EmployeeNumber'];
 
   }
 
@@ -234,6 +237,7 @@ class TempLoginData {
     data['IpPhone'] = this.ipPhone;
     data['MailPersonal'] = this.mailPersonal;
     data['PostalAddress'] = this.postalAddress;
+    data['postalAddress'] = this.postalAddress1;
     data['PostalCode'] = this.postalCode;
     data['City'] = this.city;
     data['State'] = this.state;
@@ -275,7 +279,7 @@ class TempLoginData {
     data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
     data['NameAsjanAdhar'] = this.NameAsjanAdhar;
     data['DistrictEn'] = this.DistrictEn;
-    data['EmployeeNumber'] = this.empNumber;
+   // data['EmployeeNumber'] = this.empNumber;
 
     return data;
   }

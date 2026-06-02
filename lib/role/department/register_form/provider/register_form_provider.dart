@@ -154,6 +154,11 @@ class RegisterFormProvider extends ChangeNotifier {
   final TextEditingController adminDeptNameController = TextEditingController();
   final TextEditingController displayNameController = TextEditingController();
 
+  String? otpResponseId;
+  String? otpResponseCode;
+  String? otpRequestJson;
+  String? otpResponseJson;
+
   Future<void> getDistrictApi(BuildContext context, int stateId) async {
     isDistrictLoading = true;
     selectedDistrict = null;
@@ -433,6 +438,203 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> loginHistoryMessagesApi(BuildContext context) async {
+    try {
+      Map<String, dynamic> body = {
+        "SMSCategoryType": "LoginOTPHistory",
+        "TemplateID": "",
+        "MobileNo": mobileController.text.trim(),
+        "Request_Status": "",
+        "RequestJson": "",
+        "ResponseJson": "",
+        "TransactionId": "",
+        "OTP": "",
+        "UserID": UserData().model.value.userId ?? "0",
+        "RoleID": UserData().model.value.roleId ?? "0",
+        "CreatedBy_IP": "",
+        "CreatedBy_IPv6": "",
+        "Action": "Insert",
+        "uniqueId": "EMPLOYMENT_SMS",
+        "isManualDeveloperLogin": 0
+      };
+
+      print("========== LOGIN HISTORY API ==========");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+
+      final apiResponse = await commonRepo.post(
+        "Common/LoginHistoryMessages",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final responseDataMap = responseData["Data"];
+
+        otpResponseId = responseDataMap["ResponseId"];
+        otpResponseCode = responseDataMap["ResponseCode"];
+        otpRequestJson = responseDataMap["RequestJson"];
+        otpResponseJson = responseDataMap["ResponseJson"];
+
+        print("========== LOGIN HISTORY RESPONSE ==========");
+        print(const JsonEncoder.withIndent('  ').convert(responseData));
+
+        if (responseData["State"] == 200) {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      print("LoginHistoryMessages Error : $e");
+      return false;
+    }
+  }
+
+  Future<void> showOtpDialog(
+      BuildContext context, {
+        required Function(String otp) onSubmit,
+      }) async {
+    final TextEditingController otpController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: const Text(
+            "OTP Verification",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Text(
+                "OTP has been sent to ${mobileController.text}",
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Please enter OTP",
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                decoration: const InputDecoration(
+                  hintText: "Enter OTP",
+                  border: OutlineInputBorder(),
+                  counterText: "",
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (otpController.text.trim().isEmpty) {
+                  showAlertError(
+                    "Please enter OTP",
+                    context,
+                  );
+                  return;
+                }
+
+                Navigator.pop(context);
+
+                onSubmit(
+                  otpController.text.trim(),
+                );
+              },
+              child: const Text("Submit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> verifyOtpApi(
+      BuildContext context,
+      String otp,
+      ) async {
+    try {
+      Map<String, dynamic> body = {
+        "SMSCategoryType": "LoginOTPHistory",
+        "TemplateID": "1407170730552013237",
+
+        "MobileNo": mobileController.text.trim(),
+
+        "Request_Status": "SUCCESS",
+
+        "RequestJson": otpRequestJson ?? "",
+        "ResponseJson": otpResponseJson ?? "",
+
+        "OTP": otp,
+
+        "TransactionId": otpResponseId ?? "",
+
+        "MessageBody": "",
+        "Key": "",
+        "OrginPath": "",
+        "smsResponse": "",
+        "uniqueId": "",
+
+        "UserID": UserData().model.value.userId ?? "",
+        "RoleID": UserData().model.value.roleId ?? "",
+
+        "IsLocal": true,
+        "isManualDeveloperLogin": 1,
+      };
+
+      print("========== VERIFY OTP REQUEST ==========");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+
+      final apiResponse = await commonRepo.post(
+        "Common/LoginVerifyOTP",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        print("========== VERIFY OTP RESPONSE ==========");
+        print(const JsonEncoder.withIndent('  ').convert(responseData));
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"] is List &&
+            responseData["Data"].isNotEmpty &&
+            responseData["Data"][0]["res"] == 1) {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      print("Verify OTP Error : $e");
+      return false;
+    }
+  }
+
   Future<RegFormModal> submitForm(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
@@ -538,6 +740,25 @@ class RegisterFormProvider extends ChangeNotifier {
       print("=========================================");
 
       ProgressDialog.showLoadingDialog(context);
+
+      /// STEP-1 : Generate OTP Entry
+      // bool otpCreated = await loginHistoryMessagesApi(context);
+      //
+      // if (!otpCreated) {
+      //   showAlertError(
+      //     "Unable to initiate OTP process. Please try again.",
+      //     context,
+      //   );
+      //   return RegFormModal(
+      //     state: 0,
+      //     message: "OTP API Failed",
+      //   );
+      // }
+
+      // return RegFormModal(
+      //   state: 1,
+      //   message: "Debug Stop",
+      // );
 
       ApiResponse apiResponse = await commonRepo.post(
         "Common/CreateDepartmentUser",

@@ -417,9 +417,39 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                           context,
                           "Confirm Submission",
                           "Are you sure you want to submit the form ?",
-                          (value) {
+                          (value) async {
                             if (value.toString() == "success") {
-                              provider.submitForm(context);
+                              // provider.submitForm(context);
+                              bool otpSent =
+                                  await provider.loginHistoryMessagesApi(context);
+
+                              if (!otpSent) {
+                                showAlertError(
+                                  "Failed to send OTP",
+                                  context,
+                                );
+                                return;
+                              }
+
+                              provider.showOtpDialog(
+                                context,
+                                onSubmit: (otp) async {
+                                  print("Entered OTP : $otp");
+
+                                  bool verified =
+                                  await provider.verifyOtpApi(context, otp);
+
+                                  if (!verified) {
+                                    showAlertError(
+                                      "Invalid OTP. Please try again.",
+                                      context,
+                                    );
+                                    return;
+                                  }
+
+                                  await provider.submitForm(context);
+                                },
+                              );
                             }
                           },
                         );
@@ -438,7 +468,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 100),
               ],
             ),
           ),
