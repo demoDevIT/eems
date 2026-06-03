@@ -24,6 +24,9 @@ import '../modal/counselor_otr_detail_modal.dart';
 import '../modal/preferred_age_group.dart';
 import '../modal/primary_domain_modal.dart';
 import '../modal/tech_tool_modal.dart';
+import '../../../counselor/counsellor_otr/modal/state_modal.dart';
+import '../../../counselor/counsellor_otr/modal/district_modal.dart';
+import '../../../counselor/counsellor_otr/modal/city_modal.dart';
 
 class CounselorOtrProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -117,6 +120,72 @@ class CounselorOtrProvider extends ChangeNotifier {
   final TextEditingController preAgeGroupCounsNameController = TextEditingController();
 
   bool isDeclarationAccepted = false;
+
+  List<StateData> stateList = [];
+  StateData? selectedState;
+  TextEditingController stateController = TextEditingController();
+  TextEditingController stateIdController = TextEditingController();
+
+  List<DistrictData> districtList = [];
+  DistrictData? selectedDistrict;
+  TextEditingController districtController = TextEditingController();
+  TextEditingController districtIdController = TextEditingController();
+  bool isDistrictLoading = false;
+
+  List<CityData> cityList = [];
+  CityData? selectedCity;
+  TextEditingController cityController = TextEditingController();
+  TextEditingController cityIdController = TextEditingController();
+
+  Future<void> getStateApi() async {
+    print("getState===========>");
+    final res = await commonRepo.get("Common/GetStateMaster");
+    if (res.response?.statusCode == 200) {
+      var data = res.response!.data;
+      if (data is String) data = jsonDecode(data);
+      stateList = (StateModal.fromJson(data).data ?? []);
+      notifyListeners();
+    }
+  }
+
+  Future<void> getDistrictApi(String stateId) async {
+    isDistrictLoading = true;
+    notifyListeners();
+
+    // final res =
+    // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+
+    final res =
+    await commonRepo.get("Common/GetDistrict/$stateId");
+
+    if (res.response?.statusCode == 200) {
+      var data = res.response!.data;
+      if (data is String) data = jsonDecode(data);
+
+      districtList.clear();
+      for (var e in data['Data']) {
+        districtList.add(DistrictData.fromJson(e));
+      }
+    }
+
+    isDistrictLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getCityApi(String districtId) async {
+    final res = await commonRepo.get("Common/GetCityMaster/$districtId");
+
+    if (res.response?.statusCode == 200) {
+      var data = res.response!.data;
+      if (data is String) data = jsonDecode(data);
+
+      cityList.clear();
+      for (var e in data['Data']) {
+        cityList.add(CityData.fromJson(e));
+      }
+      notifyListeners();
+    }
+  }
 
   void setJanAadhaarControllers(BuildContext context, FetchJanAdharResponseData data, String ssoID) {
     // print("ssoIdaaaaaaaa-->" + ssoID);
@@ -711,106 +780,211 @@ class CounselorOtrProvider extends ChangeNotifier {
         //   json.remove('dspeak');
         //   return json;
         // }).toList();
+
+
+        // Map<String, dynamic> data =
+        // {
+        //   //***********these value I got from amit tripathi in teams
+        //   "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
+        //   "Additional_Qualificate": addQualiController.text,
+        //   "AdministrativedepartmentName": empType == "govt" ? adminDeptController.text : "",
+        //   "AffiliatedWithAnyCareerID": 0,
+        //   "AreaOfProfessionalExpertise": "",
+        //   "AvailibiltyForUpskilling": availUpskillController.text,
+        //   "CertificationName": "",
+        //   "Certifications_CoursesCompleted": certCourseController.text,
+        //   "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
+        //   "ConditionCheckbox": isDeclarationAccepted,
+        //   "CounselingMediumID": counsMedIdController.text,
+        //   "CounselorID": 0,
+        //   "DOB": dateOfBirthController.text,
+        //   "DateofRetirement": dateOfRetireController.text,
+        //   "Dateofjoining": dateOfJoinController.text,
+        //   "DegreeID": graduationTypeIdController.text,
+        //   "DegreeName": "", //graduationTypeNameController.text, this is not used any where pass static ""
+        //   "DesignationID": designationController.text,
+        //   "DisclaimerStatus": false,
+        //   "DistrictCode": "",
+        //   "DistrictId": 0, //***********
+        //   "DivIsPresentGovtEmploye": empType == "govt" ? true : false,
+        //   "DivIsPresentPrivateEmploye": empType == "private" ? true : false,
+        //   "EducationPassingYearID": yearOfPassingIdController.text,
+        //   "EducationQualificationID": educationLevelIdController.text,
+        //   "Email": emailController.text,
+        //   "EmpTypeName": getEmpTypeName(empType, empSubType),
+        //   "EmployeeID": "",
+        //   "EmployeeNumber": null,
+        //   "EmployeeType": empType == "private" ? "Private" : "government",
+        //   "EmployeeTypeID": 0,
+        //   "EmploymentID": empIdController.text,
+        //   "EmploymentStatusID": 0,
+        //   "EnrID": feachJanAadhaarDataList[0].eNRID,
+        //   "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
+        //   "FirstName": nameController.text,  // janadhaar name
+        //   "FreePsychometricTests": psychometricTestController.toString() == 'Yes' ? true : false,
+        //   "Gender": genderController.text,
+        //   "IsDivCounsellorType": false,
+        //   "IsJanIDShow": false,
+        //   "IsPresentEmployee": false,
+        //   "IsPresentGovtEmploye": empType == "govt" ? true : false,
+        //   //"IsPresentGovtEmployee": true, // this field has not sent by amit
+        //   "IsResidentState": true, //************
+        //   "IscounselorType": false,
+        //   "IssuingOrganization": issuOrgController.text,
+        //   "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
+        //   "JanmenID": memberId,
+        //   "LanguageID": languageIdController.text,
+        //   "LanguageProficiencyID": langProfIdController.text,
+        //   "LinkedIn_PortfolioURL": linkPortController.text,
+        //   "MobileNo": mobileNOController.text,
+        //   "Name": "", //nameController.text
+        //   "OccupationName": "",
+        //   "OrganizationName": "",
+        //   "OtherDegreeName": otherDegreeController.text,
+        //   "PPONumber": null, // ************ ppo number
+        //   "PinCode": "",
+        //   "PostedDepartmentName": postDeptController.text,
+        //   "PreferredAgeGroupForCounselingID": preAgeGroupCounsIdController.text,
+        //   "PresentEmployeeID": 0,
+        //   "PrimaryDomainExpertiseID": primaryDomainIdController.text,
+        //   "PrivateCityID": 0, // ***********
+        //   "PrivateDistrictID": 0, //************
+        //   "PrivateStateID": 0,//***********
+        //   "ProfileImageUrl": fileName,
+        //   "PublishedWorkArticles": pubWorkArtController.text,
+        //   "QualificationID": 0,
+        //   "RegistrationNo": "",
+        //   "ResidentStateID": 0,
+        //   "SIPFHRMSNumber": sipfNoController.text,
+        //   "SSOID": ssoIDController.text,
+        //   "ShowEmployeIDField": false,
+        //   "Specialization_ExpertiseID": specializationIdController.text,
+        //   "Specialization_Subject": speSubController.text,
+        //   "StateID": 0,
+        //   "TechnicalToolsProficiencyID": techToolIdController.text,
+        //   "Training_WorkshopConducted": trainWorkCondController.text,
+        //   "UIDNumber": "",
+        //   "UIDTypeID": 0,
+        //   "UniversityID": universityIdController.text,
+        //   "UniversityInstitutionName": "",
+        //   "UploadDegreeCertificate": "",
+        //   "UploadDegreeCertificateYearOfCompletion": "",
+        //   "UploadExperienceLetterCertificate": "",
+        //   "UploadProfessionalID": "",
+        //   "UserID": 0,
+        //   "UserId": 0,
+        //   "YearOfCompletionID": compYearIdController.text,
+        //   "YearOfProfessionalExperience": proExpYearController.text,
+        //   "YearsOfExperienceInCounseling": yearExpController.text,
+        //   "category": "", //**********janadhar category
+        //
+        // };
+
         Map<String, dynamic> data =
         {
-          //these value I got from amit tripathi in teams
-          "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
-          "Additional_Qualificate": addQualiController.text,
-          "AdministrativedepartmentName": empType == "govt" ? adminDeptController.text : "",
-          "AffiliatedWithAnyCareerID": 0,
-          "AreaOfProfessionalExpertise": "",
-          "AvailibiltyForUpskilling": availUpskillController.text,
-          "CertificationName": "",
-          "Certifications_CoursesCompleted": certCourseController.text,
-          "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
-          "ConditionCheckbox": isDeclarationAccepted,
-          "CounselingMediumID": counsMedIdController.text,
-          "CounselorID": 0,
+          //***********these value I got from Renu in teams
+
+          "CounsellorID": 0,
+          "FirstName": nameController.text,
           "DOB": dateOfBirthController.text,
-          "DateofRetirement": dateOfRetireController.text,
-          "Dateofjoining": dateOfJoinController.text,
-          "DegreeID": graduationTypeIdController.text,
-          "DegreeName": "", //graduationTypeNameController.text, this is not used any where pass static ""
-          "DesignationID": designationController.text,
-          "DisclaimerStatus": false,
-          "DistrictCode": "",
-          "DistrictId": 0, //***********
-          "DivIsPresentGovtEmploye": empType == "govt" ? true : false,
-          "DivIsPresentPrivateEmploye": empType == "private" ? true : false,
-          "EducationPassingYearID": yearOfPassingIdController.text,
-          "EducationQualificationID": educationLevelIdController.text,
-          "Email": emailController.text,
-          "EmpTypeName": getEmpTypeName(empType, empSubType),
-          "EmployeeID": "",
-          "EmployeeNumber": null,
-          "EmployeeType": empType == "private" ? "Private" : "government",
-          "EmployeeTypeID": 0,
-          "EmploymentID": empIdController.text,
-          "EmploymentStatusID": 0,
-          "EnrID": feachJanAadhaarDataList[0].eNRID,
-          "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
-          "FirstName": nameController.text,  // janadhaar name
-          "FreePsychometricTests": psychometricTestController.toString() == 'Yes' ? true : false,
-          "Gender": genderController.text,
-          "IsDivCounsellorType": false,
-          "IsJanIDShow": false,
-          "IsPresentEmployee": false,
-          "IsPresentGovtEmploye": empType == "govt" ? true : false,
-          //"IsPresentGovtEmployee": true, // this field has not sent by amit
-          "IsResidentState": true, //************
-          "IscounselorType": false,
-          "IssuingOrganization": issuOrgController.text,
-          "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
-          "JanmenID": memberId,
-          "LanguageID": languageIdController.text,
-          "LanguageProficiencyID": langProfIdController.text,
-          "LinkedIn_PortfolioURL": linkPortController.text,
+          "Name": "", //blank
           "MobileNo": mobileNOController.text,
-          "Name": "", //nameController.text
-          "OccupationName": "",
-          "OrganizationName": "",
-          "OtherDegreeName": otherDegreeController.text,
-          "PPONumber": null, // ************ ppo number
-          "PinCode": "",
-          "PostedDepartmentName": postDeptController.text,
-          "PreferredAgeGroupForCounselingID": preAgeGroupCounsIdController.text,
-          "PresentEmployeeID": 0,
-          "PrimaryDomainExpertiseID": primaryDomainIdController.text,
-          "PrivateCityID": 0, // ***********
-          "PrivateDistrictID": 0, //************
-          "PrivateStateID": 0,//***********
-          "ProfileImageUrl": fileName,
-          "PublishedWorkArticles": pubWorkArtController.text,
-          "QualificationID": 0,
-          "RegistrationNo": "",
-          "ResidentStateID": 0,
-          "SIPFHRMSNumber": sipfNoController.text,
-          "SSOID": ssoIDController.text,
-          "ShowEmployeIDField": false,
+          "Gender": genderController.text,
+          "Email": emailController.text,
+          "LanguageID": languageIdController.text,
           "Specialization_ExpertiseID": specializationIdController.text,
-          "Specialization_Subject": speSubController.text,
-          "StateID": 0,
-          "TechnicalToolsProficiencyID": techToolIdController.text,
-          "Training_WorkshopConducted": trainWorkCondController.text,
-          "UIDNumber": "",
-          "UIDTypeID": 0,
-          "UniversityID": universityIdController.text,
-          "UniversityInstitutionName": "",
-          "UploadDegreeCertificate": "",
-          "UploadDegreeCertificateYearOfCompletion": "",
+          "EmploymentID": empIdController.text,
+          "OrganizationName": "", // blank
+          "DesignationID": designationController.text,
+          "YearOfProfessionalExperience": proExpYearController.text,
+          "AreaOfProfessionalExpertise": "",
           "UploadExperienceLetterCertificate": "",
           "UploadProfessionalID": "",
-          "UserID": 0,
-          "UserId": 0,
+          "AffiliatedWithAnyCareerID": 0,
+          "EducationQualificationID": educationLevelIdController.text,
+          "DegreeName": graduationTypeNameController.text,
+          "Specialization_Subject": speSubController.text,
+          "Additional_Qualificate": addQualiController.text,
+          "EducationPassingYearID": yearOfPassingIdController.text,
+          "UploadDegreeCertificate": "",
+          "PrimaryDomainExpertiseID": primaryDomainIdController.text,
+          "Certifications_CoursesCompleted": certCourseController.text,
+          "CertificationName": "",
+          "IssuingOrganization": issuOrgController.text,
           "YearOfCompletionID": compYearIdController.text,
-          "YearOfProfessionalExperience": proExpYearController.text,
+          "UploadDegreeCertificateYearOfCompletion": "",
+          "LanguageProficiencyID": langProfIdController.text,
+          "CounselingMediumID": counsMedIdController.text,
+          "TechnicalToolsProficiencyID": techToolIdController.text,
           "YearsOfExperienceInCounseling": yearExpController.text,
-          "category": "", //**********janadhar category
-
+          "PublishedWorkArticles": pubWorkArtController.text,
+          "LinkedIn_PortfolioURL": linkPortController.text,
+          "Training_WorkshopConducted": trainWorkCondController.text,
+          "AvailibiltyForUpskilling": availUpskillController.text,
+          "PreferredAgeGroupForCounselingID": preAgeGroupCounsIdController.text,
+          "ConditionCheckbox": isDeclarationAccepted,
+          "EmployeeType": empType == "private" ? "Private" : "government",
+          "IsPresentEmployee": empType == "govt" ? false : true,
+          "IsDivCounsellorType": false, // static
+          "IsPresentGovtEmploye": empType == "govt" ? true : false,
+          "IscounselorType": false, // static
+          "ShowEmployeIDField": false, // static
+          "EmployeeID": "", // blank
+          "PPONumber": "", // blank
+          "IsJanIDShow": false, // static
+          "SSOID": ssoIDController.text,
+          "UserID": 0, // static
+          "CounselorID": 0, // static
+          "UIDTypeID": 0, // static
+          "UIDNumber": "", // blank
+          "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
+          "EmploymentStatusID": 0, // static
+          "QualificationID": 0, // static
+          "OccupationName": "", // blank
+          "StateID": 0, // static
+          "DistrictCode": "0", // static
+          "PinCode": "", // static blank
+          "DisclaimerStatus": false, // static
+          "UserId": 0, // static
+          "ResidentStateID": 0, // static
+          "EmployeeTypeID": 0, // static
+          "PresentEmployeeID": 0, // static
+          "EmployeeNumber": null, // ***************login se
+          "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
+          "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
+          "JanmenID": memberId,
+          "EnrID": feachJanAadhaarDataList[0].eNRID,
+          "RegistrationNo": "", // blank
+          "AdministrativedepartmentName": empType == "govt" ? adminDeptController.text : "",
+          "SIPFHRMSNumber": sipfNoController.text,
+          "Dateofjoining": dateOfJoinController.text,
+          "DateofRetirement": dateOfRetireController.text,
+          "PostedDepartmentName": postDeptController.text,
+          "EmpTypeName": getEmpTypeName(empType, empSubType),
+          "UniversityInstitutionName": universityNameController.text,
+          "IsResidentState": empSubType == 'rajasthan' ? true : false,
+          "DivIsPresentGovtEmploye": empType == "govt" ? true : false,
+          "DivIsPresentPrivateEmploye": empType == "private" ? true : false,
+          "IsPresentGovtEmployee": empType == "govt" ? true : false,
+          "DistrictId": 0, //***********janadhar district code se district id nikalo
+          "category": feachJanAadhaarDataList[0].cATEGORYDESCENG,
+          "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
+          "FreePsychometricTests": psychometricTestController.toString() == 'Yes' ? true : false,
+          "ProfileImageUrl": fileName,
+          "DegreeID": graduationTypeIdController.text,
+          "UniversityID": universityIdController.text,
+          "OtherDegreeName": otherDegreeController.text,
+          "PrivateDistrictID": 0, //************not residence rajasthan, open district dropdown
+          "PrivateStateID": 0,//***********not residence rajasthan, open state dropdown
+          "PrivateCityID": 0, // ***********not residence rajasthan, open state dropdown
         };
-        print("printFullData -->");
-       // printFullJson(data);
 
+        print("printFullData -->");
+        // printFullJson(data);
+        print("========== counselor OTR SUBMIT API PAYLOAD ==========");
+        print(const JsonEncoder.withIndent('  ').convert(data));
+        print("=========================================");
+return null;
         String url = "Counselor/CounsellorRegSaveData";
         ProgressDialog.showLoadingDialog(context);
         // ApiResponse apiResponse = await commonRepo.postArray(url,body);
@@ -899,6 +1073,11 @@ extension EmailValidator on String {
     // Full regex for username@domain.tld
     return RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
         .hasMatch(trimmed);
+  }
+  void printFullJson(Map<String, dynamic> json) {
+    const encoder = JsonEncoder.withIndent('  ');
+    final prettyString = encoder.convert(json);
+    prettyString.split('\n').forEach((line) => debugPrint(line));
   }
 }
 

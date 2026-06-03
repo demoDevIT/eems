@@ -15,6 +15,9 @@ import '../../../utils/images.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
+import '../../counselor/counsellor_otr/modal/state_modal.dart';
+import '../../counselor/counsellor_otr/modal/district_modal.dart';
+import '../../counselor/counsellor_otr/modal/city_modal.dart';
 import '../../job_seeker/addeducationaldetail/modal/education_level_modal.dart';
 import '../../job_seeker/addeducationaldetail/modal/graduation_type_modal.dart';
 import '../../job_seeker/addeducationaldetail/modal/passing_year_modal.dart';
@@ -87,12 +90,24 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
     print("subType: ${widget.subType}");
     print("janMemberId: ${widget.janMemberId}");
 
+    final isGovt = widget.type.trim().toLowerCase() == "govt";
+
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      final provider = Provider.of<CounselorOtrProvider>(context, listen: false);
+      final provider =
+          Provider.of<CounselorOtrProvider>(context, listen: false);
 
-      provider.setJanAadhaarControllers(
-          context, widget.feachJanAadhaarDataList[0], widget.ssoId);
+      // provider.setJanAadhaarControllers(
+      //     context, widget.feachJanAadhaarDataList[0], widget.ssoId);
 
+      if (widget.feachJanAadhaarDataList.isNotEmpty) {
+        provider.setJanAadhaarControllers(
+          context,
+          widget.feachJanAadhaarDataList[0],
+          widget.ssoId,
+        );
+      }
+
+      provider.getStateApi();
       provider.languageTypeModaltApi(context);
       provider.specializationApi(context);
       provider.educationLevelApi(context);
@@ -102,7 +117,6 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
       provider.counsMedModalApi(context);
       provider.techToolModalApi(context);
       provider.preAgeGroupModalApi(context);
-
     });
   }
 
@@ -113,130 +127,218 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2(
-            "Counsellor OTR Form", context, localeProvider.currentLanguage, "", false, "",
-            onTapClick: () {
-              localeProvider.toggleLocale();
-            }),
-        body: Consumer<CounselorOtrProvider>(builder: (context, provider, child) {
+        appBar: commonAppBar2("Counsellor OTR Form", context,
+            localeProvider.currentLanguage, "", false, "", onTapClick: () {
+          localeProvider.toggleLocale();
+        }),
+        body:
+            Consumer<CounselorOtrProvider>(builder: (context, provider, child) {
           return SafeArea(
             child: Form(
               key: _formKey,
               child: ListView(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 5, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 18),
                 // child: Column(
                 //   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: labelWithStar('SSOID', required: false),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: buildTextWithBorderField(
-                          provider.ssoIDController,
-                          "Enter sso id",
-                          MediaQuery.of(context).size.width,
-                          50,
-                          TextInputType.text,
-                          isEnabled: false,
-                          boxColor: fafafaColor),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: labelWithStar('Name', required: false),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: buildTextWithBorderField(
-                        provider.nameController,
-                        "Enter Name",
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: labelWithStar('SSOID', required: false),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: buildTextWithBorderField(
+                        provider.ssoIDController,
+                        "Enter sso id",
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.text,
-                        boxColor: fafafaColor,
                         isEnabled: false,
-                      ),
+                        boxColor: fafafaColor),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: labelWithStar('Name', required: false),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: buildTextWithBorderField(
+                      provider.nameController,
+                      "Enter Name",
+                      MediaQuery.of(context).size.width,
+                      50,
+                      TextInputType.text,
+                      boxColor: fafafaColor,
+                      isEnabled: false,
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: labelWithStar('Mobile No', required: false),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: labelWithStar('Mobile No', required: false),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: buildTextWithBorderField(
+                      provider.mobileNOController,
+                      "Enter mobile number",
+                      MediaQuery.of(context).size.width,
+                      50,
+                      TextInputType.number,
+                      boxColor: fafafaColor,
+                      isEnabled: false,
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: buildTextWithBorderField(
-                        provider.mobileNOController,
-                        "Enter mobile number",
-                        MediaQuery.of(context).size.width,
-                        50,
-                        TextInputType.number,
-                        boxColor: fafafaColor,
-                        isEnabled: false,
-                      ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 5,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10)),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Basic Details",
-                              style: Styles.semiBoldTextStyle(
-                                  size: 14, color: kWhite),
-                            ),
+                    elevation: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
                           ),
-                          SizedBox(height: spacing + 10),
-                          Center(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              clipBehavior: Clip.none,
-                              // allow button to overflow a little
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    showImagePicker(context, (pickedImage) async {
-                                      if (pickedImage != null) {
-                                        final file = File(pickedImage.path);
-                                        final int fileSizeInBytes =
-                                        await file.length();
-                                        final double fileSizeInKB =
-                                            fileSizeInBytes / 1024;
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Basic Details",
+                            style: Styles.semiBoldTextStyle(
+                                size: 14, color: kWhite),
+                          ),
+                        ),
+                        SizedBox(height: spacing + 10),
+                        Center(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            clipBehavior: Clip.none,
+                            // allow button to overflow a little
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showImagePicker(context, (pickedImage) async {
+                                    if (pickedImage != null) {
+                                      final file = File(pickedImage.path);
+                                      final int fileSizeInBytes =
+                                          await file.length();
+                                      final double fileSizeInKB =
+                                          fileSizeInBytes / 1024;
 
-                                        // ✅ 100 KB validation
-                                        if (fileSizeInKB > 100) {
-                                          showAlertError(
-                                            "Image size must be less than 100 KB",
-                                            context,
-                                          );
-                                          return; // ❌ STOP upload
-                                        }
+                                      // ✅ 100 KB validation
+                                      if (fileSizeInKB > 100) {
+                                        showAlertError(
+                                          "Image size must be less than 100 KB",
+                                          context,
+                                        );
+                                        return; // ❌ STOP upload
+                                      }
+                                      // First update the file path (optional)
+                                      provider.profileFile = pickedImage;
+
+                                      // Do async work here
+                                      String timestamp =
+                                          "${DateTime.now().millisecondsSinceEpoch}.jpg";
+                                      String fileName = timestamp;
+
+                                      Map<String, dynamic> fields = {
+                                        "file": await MultipartFile.fromFile(
+                                          provider.profileFile!.path,
+                                          filename: fileName,
+                                        ),
+                                      };
+
+                                      FormData param = FormData.fromMap(fields);
+
+                                      // Call upload API
+                                      await provider.uploadDocumentApi(
+                                          context, param);
+
+                                      // Now update state if needed
+                                      setState(() {
+                                        // Update UI-related state if needed
+                                      });
+                                    }
+                                  });
+                                },
+                                child: DashedBorderContainer(
+                                    color: const Color(0xFFF3E5F9),
+                                    dash: 4,
+                                    gap: 4,
+                                    strokeWidth: 2,
+                                    radius: "100",
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.18,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.18,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.blue,
+                                          // 👉 Border color
+                                          width: 3, // 👉 Border width
+                                        ),
+                                      ),
+                                      child: ClipOval(
+                                        child: provider.profileFile != null
+                                            ? Image.file(
+                                                File(
+                                                  provider.profileFile!.path,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                checkNullValue(UserData()
+                                                            .model
+                                                            .value
+                                                            .latestPhotoPath
+                                                            .toString())
+                                                        .isNotEmpty
+                                                    ? UserData()
+                                                        .model
+                                                        .value
+                                                        .latestPhotoPath
+                                                        .toString()
+                                                    : "",
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    Images.placeholder,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                    )),
+                              ),
+
+                              // ✅ Place edit icon overlapping border
+                              Positioned(
+                                bottom: 3, // slightly outside
+                                right: -6, // slightly outside
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showImagePicker(context,
+                                        (pickedImage) async {
+                                      if (pickedImage != null) {
                                         // First update the file path (optional)
                                         provider.profileFile = pickedImage;
 
@@ -252,7 +354,8 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                           ),
                                         };
 
-                                        FormData param = FormData.fromMap(fields);
+                                        FormData param =
+                                            FormData.fromMap(fields);
 
                                         // Call upload API
                                         await provider.uploadDocumentApi(
@@ -265,128 +368,122 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                       }
                                     });
                                   },
-                                  child: DashedBorderContainer(
-                                      color: const Color(0xFFF3E5F9),
-                                      dash: 4,
-                                      gap: 4,
-                                      strokeWidth: 2,
-                                      radius: "100",
-                                      child: Container(
-                                        width:
-                                        MediaQuery.of(context).size.width * 0.18,
-                                        height:
-                                        MediaQuery.of(context).size.width * 0.18,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.blue, // 👉 Border color
-                                            width: 3, // 👉 Border width
-                                          ),
-                                        ),
-                                        child: ClipOval(
-                                          child: provider.profileFile != null
-                                              ? Image.file(
-                                            File(
-                                              provider.profileFile!.path,
-                                            ),
-                                            fit: BoxFit.cover,
-                                          )
-                                              : Image.network(
-                                            checkNullValue(UserData()
-                                                .model
-                                                .value
-                                                .latestPhotoPath
-                                                .toString())
-                                                .isNotEmpty
-                                                ? UserData()
-                                                .model
-                                                .value
-                                                .latestPhotoPath
-                                                .toString()
-                                                : "",
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                Images.placeholder,
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      )),
-                                ),
-
-                                // ✅ Place edit icon overlapping border
-                                Positioned(
-                                  bottom: 3, // slightly outside
-                                  right: -6, // slightly outside
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showImagePicker(context, (pickedImage) async {
-                                        if (pickedImage != null) {
-                                          // First update the file path (optional)
-                                          provider.profileFile = pickedImage;
-
-                                          // Do async work here
-                                          String timestamp =
-                                              "${DateTime.now().millisecondsSinceEpoch}.jpg";
-                                          String fileName = timestamp;
-
-                                          Map<String, dynamic> fields = {
-                                            "file": await MultipartFile.fromFile(
-                                              provider.profileFile!.path,
-                                              filename: fileName,
-                                            ),
-                                          };
-
-                                          FormData param = FormData.fromMap(fields);
-
-                                          // Call upload API
-                                          await provider.uploadDocumentApi(
-                                              context, param);
-
-                                          // Now update state if needed
-                                          setState(() {
-                                            // Update UI-related state if needed
-                                          });
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: kPrimaryColor,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Colors.white,
-                                          // 👈 white outline makes it "sit" on border
-                                          width: 2,
-                                        ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        // 👈 white outline makes it "sit" on border
+                                        width: 2,
                                       ),
-                                      padding: const EdgeInsets.all(4),
-                                      child: const Icon(Icons.add,
-                                          size: 16, color: Colors.white),
                                     ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: const Icon(Icons.add,
+                                        size: 16, color: Colors.white),
                                   ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: spacing + 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Full Name', required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                            provider.fullNameController,
+                            "Enter full name",
+                            MediaQuery.of(context).size.width,
+                            50,
+                            TextInputType.text,
+                            isEnabled: false,
+                            boxColor: fafafaColor,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Gender', required: false),
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Male',
+                                  groupValue: provider.genderController.text,
+                                  // onChanged: (val) => setState(() => provider
+                                  //     .genderController.text =
+                                  //     val ?? provider.genderController.text),
+                                  onChanged: null,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'Male',
+                                  style: Styles.mediumTextStyle(
+                                      color: kBlackColor, size: 14),
                                 ),
                               ],
                             ),
-                          ),
-
-                          SizedBox(height: spacing + 10),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Full Name', required: true),
-                          ),
-                          Padding(
+                            const SizedBox(width: 12),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Female',
+                                  groupValue: provider.genderController.text,
+                                  // onChanged: (val) => setState(() => provider
+                                  //     .genderController.text =
+                                  //     val ?? provider.genderController.text),
+                                  onChanged: null,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'Female',
+                                  style: Styles.mediumTextStyle(
+                                      color: kBlackColor, size: 14),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 12),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'TransGender',
+                                  groupValue: provider.genderController.text,
+                                  // onChanged: (val) => setState(() => provider
+                                  //     .genderController.text =
+                                  //     val ?? provider.genderController.text),
+                                  onChanged: null,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'TransGender',
+                                  style: Styles.mediumTextStyle(
+                                      color: kBlackColor, size: 14),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Date of Birth', required: true),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
-                              provider.fullNameController,
-                              "Enter full name",
+                              provider.dateOfBirthController,
+                              "Select Date of Birth",
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -394,230 +491,244 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                               boxColor: fafafaColor,
                             ),
                           ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Gender', required: false),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Mobile Number', required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                            provider.mobileNumberController,
+                            "Enter mobile number",
+                            MediaQuery.of(context).size.width,
+                            50,
+                            TextInputType.text,
+                            isEnabled: false,
+                            boxColor: fafafaColor,
                           ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Radio<String>(
-                                    value: 'Male',
-                                    groupValue: provider.genderController.text,
-                                    // onChanged: (val) => setState(() => provider
-                                    //     .genderController.text =
-                                    //     val ?? provider.genderController.text),
-                                    onChanged: null,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Male',
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 12),
-                              Row(
-                                children: [
-                                  Radio<String>(
-                                    value: 'Female',
-                                    groupValue: provider.genderController.text,
-                                    // onChanged: (val) => setState(() => provider
-                                    //     .genderController.text =
-                                    //     val ?? provider.genderController.text),
-                                    onChanged: null,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Female',
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 12),
-                              Row(
-                                children: [
-                                  Radio<String>(
-                                    value: 'TransGender',
-                                    groupValue: provider.genderController.text,
-                                    // onChanged: (val) => setState(() => provider
-                                    //     .genderController.text =
-                                    //     val ?? provider.genderController.text),
-                                    onChanged: null,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'TransGender',
-                                    style: Styles.mediumTextStyle(
-                                        color: kBlackColor, size: 14),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child:
-                            labelWithStar('Date of Birth', required: true),
-                          ),
-                          InkWell(
-                            onTap: () {
-                            },
-                            child: Padding(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Email Address', required: true),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
-                                provider.dateOfBirthController,
-                                "Select Date of Birth",
+                                provider.emailController,
+                                "Enter email address",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text,
-                                isEnabled: false,
-                                boxColor: fafafaColor,
+                                TextInputType.emailAddress,
+                                fun: (text) {
+                                  provider.validateEmail(text);
+                                },
                               ),
                             ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child:
-                            labelWithStar('Mobile Number', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                              provider.mobileNumberController,
-                              "Enter mobile number",
-                              MediaQuery.of(context).size.width,
-                              50,
-                              TextInputType.text,
-                              isEnabled: false,
-                              boxColor: fafafaColor,
-                            ),
-                          ),
-
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child:
-                            labelWithStar('Email Address', required: true),
-                          ),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
+                            if (provider.emailErrorText != null)
                               Padding(
+                                padding: const EdgeInsets.only(top: 4, left: 8),
+                                child: Text(
+                                  provider.emailErrorText!,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar(
+                                  'Preferred Language for Counseling',
+                                  required: true),
+                            ),
+
+                            IgnorePointer(
+                              ignoring: false,
+                              child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: buildTextWithBorderField(
-                                  provider.emailController,
-                                  "Enter email address",
-                                  MediaQuery.of(context).size.width,
-                                  50,
-                                  TextInputType.emailAddress,
-                                  fun: (text) {
-                                    provider.validateEmail(text);
+                                child:
+                                    buildSearchableDropdown<LanguageTypeData>(
+                                  //items: provider.lang  uageKnownList,
+                                  items: provider.languageKnownList
+                                      .where((item) =>
+                                          item.dropID == 1 ||
+                                          item.dropID == 2 ||
+                                          item.dropID == 7)
+                                      .toList(),
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
+                                  controller: provider.languageNameController,
+                                  idController: provider.languageIdController,
+                                  hintText: "--Select Option--",
+                                  // height: 50,
+                                  // color: Colors.transparent,
+                                  // borderRadius: BorderRadius.circular(8),
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar(
+                                  'Specialization / Expertise Area',
+                                  required: true),
+                            ),
+
+                            IgnorePointer(
+                              ignoring: false,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child:
+                                    buildSearchableDropdown<SpecializationData>(
+                                  items: provider.specializationList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.dropID.toString(),
+                                  getName: (item) => item.name ?? "",
+
+                                  controller:
+                                      provider.specializationNameController,
+                                  idController:
+                                      provider.specializationIdController,
+                                  hintText: "--Select Option--",
+                                  onChanged: (value) {
+                                    print(provider
+                                        .specializationIdController.text
+                                        .toString());
+                                    print(provider
+                                        .specializationNameController.text
+                                        .toString());
+                                    setState(() {});
                                   },
                                 ),
                               ),
-                              if (provider.emailErrorText != null)
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(top: 4, left: 8),
-                                  child: Text(
-                                    provider.emailErrorText!,
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
+                            ),
 
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: labelWithStar('Preferred Language for Counseling',
-                                    required: true),
-                              ),
-
-                              IgnorePointer(
+                            /// ===== Dropdowns =====
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('State', required: true),
+                            ),
+                            IgnorePointer(
                                 ignoring: false,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: buildSearchableDropdown<LanguageTypeData>(
-                                    //items: provider.lang  uageKnownList,
-                                    items: provider.languageKnownList
-                                        .where((item) => item.dropID == 1 || item.dropID == 2 || item.dropID == 7)
-                                        .toList(),
+                                  child: buildSearchableDropdown<StateData>(
+                                    items: provider.stateList,
+
                                     // ✅ MAP YOUR MODEL HERE
-                                    getId: (item) => item.dropID.toString(),
+                                    getId: (item) => item.iD.toString(),
                                     getName: (item) => item.name ?? "",
 
-                                    controller: provider.languageNameController,
-                                    idController: provider.languageIdController,
-                                    hintText: "--Select Option--",
+                                    controller: provider.stateController,
+                                    idController: provider.stateIdController,
+                                    hintText: "--Select State--",
                                     // height: 50,
-                                    // color: Colors.transparent,
-                                    // borderRadius: BorderRadius.circular(8),
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: labelWithStar('Specialization / Expertise Area',
-                                    required: true),
-                              ),
-
-                              IgnorePointer(
-                                ignoring: false,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  child: buildSearchableDropdown<SpecializationData>(
-                                    items: provider.specializationList,
-
-                                    // ✅ MAP YOUR MODEL HERE
-                                    getId: (item) => item.dropID.toString(),
-                                    getName: (item) => item.name ?? "",
-
-                                    controller: provider.specializationNameController,
-                                    idController: provider.specializationIdController,
-                                    hintText: "--Select Option--",
+                                    // selectedValue: provider.selectedState,
+                                    // getLabel: (e) => e.name ?? "",
                                     onChanged: (value) {
-                                      print(provider.specializationIdController.text
-                                          .toString());
-                                      print(provider.specializationNameController.text
-                                          .toString());
+                                      provider.getDistrictApi(
+                                          provider.stateIdController.text);
                                       setState(() {});
                                     },
                                   ),
+                                )),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('District', required: true),
+                            ),
+                            provider.isDistrictLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : IgnorePointer(
+                                    ignoring: false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      child:
+                                          buildSearchableDropdown<DistrictData>(
+                                        items: provider.districtList,
+
+                                        // ✅ MAP YOUR MODEL HERE
+                                        getId: (item) => item.iD.toString(),
+                                        getName: (item) => item.name ?? "",
+
+                                        controller: provider.districtController,
+                                        idController:
+                                            provider.districtIdController,
+                                        hintText: "--Select District--",
+                                        // height: 50,
+                                        // selectedValue: provider.selectedDistrict,
+                                        // getLabel: (e) => e.name ?? "",
+                                        onChanged: (value) {
+                                          provider.getCityApi(provider
+                                              .districtIdController.text);
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: labelWithStar('City', required: true),
+                            ),
+                            IgnorePointer(
+                              ignoring: false,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: buildSearchableDropdown<CityData>(
+                                  items: provider.cityList,
+
+                                  // ✅ MAP YOUR MODEL HERE
+                                  getId: (item) => item.iD.toString(),
+                                  getName: (item) => item.nameEng ?? "",
+
+                                  controller: provider.cityController,
+                                  idController: provider.cityIdController,
+                                  hintText: "--Select City--",
+                                  // height: 50,
+                                  // selectedValue: provider.selectedCity,
+                                  // getLabel: (e) => e.nameEng ?? "",
+                                  onChanged: (value) {
+                                    //provider.getCityApi(provider.districtIdController.text);
+                                    //setState(() {});
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
-                      ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
-
+                  ),
+                  if (widget.type.toLowerCase() == "govt") ...[
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -643,11 +754,11 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                   size: 14, color: kWhite),
                             ),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Administrative department', required: true),
+                            child: labelWithStar('Administrative department',
+                                required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -657,12 +768,9 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 "Administrative department",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                            ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -676,12 +784,9 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 "Employee ID",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                                ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -695,12 +800,9 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 "SIPF Number",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                            ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -714,12 +816,9 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 "Designation",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                            ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -740,7 +839,8 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                               });
                             },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.dateOfJoinController,
                                 "Date of joining",
@@ -759,22 +859,23 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 required: true),
                           ),
                           InkWell(
-                              onTap: () {
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                                showDatePickerYearMonthDialogCounselorOTR(
-                                  context,
-                                  provider.dateOfRetireController,
-                                  DateTime.now(), // initialDate
-                                  DateTime(DateTime.now().year -
-                                      100), // firstDate
-                                  DateTime.now(), // lastDate
-                                ).then((_) {
-                                  setState(() {});
-                                });
-                              },
+                            onTap: () {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              showDatePickerYearMonthDialogCounselorOTR(
+                                context,
+                                provider.dateOfRetireController,
+                                DateTime.now(), // initialDate
+                                DateTime(
+                                    DateTime.now().year - 100), // firstDate
+                                DateTime.now(), // lastDate
+                              ).then((_) {
+                                setState(() {});
+                              });
+                            },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.dateOfRetireController,
                                 "Date of Retirement",
@@ -789,7 +890,9 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Year of Professional Experience', required: true),
+                            child: labelWithStar(
+                                'Year of Professional Experience',
+                                required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -799,16 +902,14 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 " Year of Professional Experience ",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                            ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
-
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Posted Department', required: true),
+                            child: labelWithStar('Posted Department',
+                                required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -818,456 +919,529 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 "Posted Department",
                                 MediaQuery.of(context).size.width,
                                 50,
-                                TextInputType.text
-                            ),
+                                TextInputType.text),
                           ),
-
                           hSpace(4),
                         ],
                       ),
                     ),
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10)),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Highest Education Details",
-                              style: Styles.semiBoldTextStyle(
-                                  size: 14, color: kWhite),
-                            ),
+                  ],
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
                           ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Highest Qualification',
-                                required: true),
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Highest Education Details",
+                            style: Styles.semiBoldTextStyle(
+                                size: 14, color: kWhite),
                           ),
-
-                          IgnorePointer(
-                            ignoring: false,
-                            child: Padding(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Highest Qualification',
+                              required: true),
+                        ),
+                        IgnorePointer(
+                          ignoring: false,
+                          child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                              buildSearchableDropdown<EducationLevelData>(
-                               // items: provider.educationLevelsList,
+                                  buildSearchableDropdown<EducationLevelData>(
+                                // items: provider.educationLevelsList,
                                 items: provider.educationLevelsList
-                                    .where((item) => item.dropID == 5 || item.dropID == 6 || item.dropID == 8)
+                                    .where((item) =>
+                                        item.dropID == 5 ||
+                                        item.dropID == 6 ||
+                                        item.dropID == 8)
                                     .toList(),
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
                                 getName: (item) => item.name ?? "",
 
                                 controller:
-                                provider.educationLevelNameController,
+                                    provider.educationLevelNameController,
                                 idController:
-                                provider.educationLevelIdController,
+                                    provider.educationLevelIdController,
                                 hintText: "--Select Option--",
 
                                 onChanged: (value) async {
-                                    await provider.degreeTypeApi(context, value.dropID.toString());
-                                    setState(() {});
-                                },
-                              )
-                            ),
-                          ),
+                                  // Set selected qualification
+                                  provider.educationLevelNameController.text =
+                                      value.name ?? "";
+                                  provider.educationLevelIdController.text =
+                                      value.dropID.toString();
 
+                                  // Reset Degree dropdown
+                                  provider.graduationTypeList.clear();
+                                  provider.graduationTypeNameController.clear();
+                                  provider.graduationTypeIdController.clear();
+
+                                  // Hide/clear Other Degree field
+                                  provider.otherDegreeController.clear();
+                                  await provider.degreeTypeApi(
+                                      context, value.dropID.toString());
+                                  setState(() {});
+                                },
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Degree', required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<GraduationTypeData>(
+                            items: provider.graduationTypeList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.graduationTypeNameController,
+                            idController: provider.graduationTypeIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {
+                              provider.graduationTypeNameController.text =
+                                  value.name ?? "";
+                              provider.graduationTypeIdController.text =
+                                  value.dropID.toString();
+
+                              /// Clear if not "Other"
+                              if (value.dropID != -1) {
+                                provider.otherDegreeController.clear();
+                              }
+
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                        if (provider.graduationTypeIdController.text ==
+                            "-1") ...[
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Degree',
-                                required: true),
+                            child:
+                                labelWithStar('Other Degree', required: true),
                           ),
-
                           Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: TextField(
+                              controller: provider.otherDegreeController,
+                              decoration: InputDecoration(
+                                hintText: "Enter other degree",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Specialization / Subject',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.speSubController,
+                              "Specialization / Subject",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('University / Institution Name',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<UniversityData>(
+                            items: provider.universityList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.universityNameController,
+                            idController: provider.universityIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Passing Year', required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<PassingYearData>(
+                            items: provider.passingYearList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.yearOfPassingNameController,
+                            idController: provider.yearOfPassingIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar(
+                              'Additional Qualification(if any)',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.addQualiController,
+                              "Additional Qualification(if any)",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Skill Set / Domain Expertise",
+                            style: Styles.semiBoldTextStyle(
+                                size: 14, color: kWhite),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Primary Domain Expertise',
+                              required: true),
+                        ),
+
+                        IgnorePointer(
+                          ignoring: false,
+                          child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: buildSearchableDropdown<GraduationTypeData>(
-                                items: provider.graduationTypeList,
-
+                              child: buildSearchableDropdown<PrimaryDomainData>(
+                                items: provider.primaryDomainList,
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
                                 getName: (item) => item.name ?? "",
 
-                                controller: provider.graduationTypeNameController,
-                                idController: provider.graduationTypeIdController,
+                                controller:
+                                    provider.primaryDomainNameController,
+                                idController:
+                                    provider.primaryDomainIdController,
                                 hintText: "--Select Option--",
-                                // height: 50,
-                                // color: Colors.transparent,
-                                // borderRadius: BorderRadius.circular(8),
-                                onChanged: (value) {
-                                  provider.graduationTypeNameController.text = value.name ?? "";
-                                  provider.graduationTypeIdController.text = value.dropID.toString();
 
-                                  /// Clear if not "Other"
-                                  if (value.dropID != -1) {
-                                    provider.otherDegreeController.clear();
-                                  }
-
-                                  setState(() {});
+                                onChanged: (value) async {
+                                  // await provider.degreeTypeApi(context, value.dropID.toString());
+                                  // setState(() {});
                                 },
-                              ),
-                            ),
+                              )),
+                        ),
 
-                          if (provider.graduationTypeIdController.text == "-1") ...[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: labelWithStar('Other Degree', required: true),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Certificate/ Course Name',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.certCourseController,
+                              "Certificate/ Course Name",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
 
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: TextField(
-                                controller: provider.otherDegreeController,
-                                decoration: InputDecoration(
-                                  hintText: "Enter other degree",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Issuing Organization',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.issuOrgController,
+                              "Issuing Organization",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Year of Completion',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<PassingYearData>(
+                            items: provider.passingYearList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.compYearNameController,
+                            idController: provider.compYearIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Language Proficiency',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<LanguageTypeData>(
+                            items: provider.languageKnownList
+                                .where((item) =>
+                                    item.dropID == 1 ||
+                                    item.dropID == 2 ||
+                                    item.dropID == 3 ||
+                                    item.dropID == 4 ||
+                                    item.dropID == 5 ||
+                                    item.dropID == 6)
+                                .toList(),
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.langProfNameController,
+                            idController: provider.langProfIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Counseling Medium',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<CounselingMediumData>(
+                            items: provider.counsMedList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.counsMedNameController,
+                            idController: provider.counsMedIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Technical Tools Proficiency',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<TechToolData>(
+                            items: provider.techToolList,
+
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.techToolNameController,
+                            idController: provider.techToolIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar(
+                              'Years Of Experience in Counseling',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.yearExpController,
+                              "Years Of Experience in Counseling",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar(
+                            'Are you registered clinical psychologist?',
+                            required: false,
+                          ),
+                        ),
+
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'Yes',
+                                  groupValue: provider
+                                      .clinicalPsychologistController.text,
+                                  onChanged: (val) => setState(() {
+                                    provider.clinicalPsychologistController
+                                        .text = val ?? "";
+                                  }),
                                 ),
-                              ),
+                                const SizedBox(width: 4),
+                                Text('Yes',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14)),
+                              ],
+                            ),
+                            const SizedBox(width: 12),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'No',
+                                  groupValue: provider
+                                      .clinicalPsychologistController.text,
+                                  onChanged: (val) => setState(() {
+                                    provider.clinicalPsychologistController
+                                        .text = val ?? "";
+                                  }),
+                                ),
+                                const SizedBox(width: 4),
+                                Text('No',
+                                    style: Styles.mediumTextStyle(
+                                        color: kBlackColor, size: 14)),
+                              ],
                             ),
                           ],
+                        ),
 
+                        /// 👇 SHOW THIS ONLY WHEN YES SELECTED
+                        if (provider.clinicalPsychologistController.text ==
+                            "Yes") ...[
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Specialization / Subject', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.speSubController,
-                                "Specialization / Subject",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('University / Institution Name', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<UniversityData>(
-                              items: provider.universityList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.universityNameController,
-                              idController: provider.universityIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Passing Year', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<PassingYearData>(
-                              items: provider.passingYearList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.yearOfPassingNameController,
-                              idController: provider.yearOfPassingIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Additional Qualification(if any)', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.addQualiController,
-                                "Additional Qualification(if any)",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10)),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Skill Set / Domain Expertise",
-                              style: Styles.semiBoldTextStyle(
-                                  size: 14, color: kWhite),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Primary Domain Expertise',
-                                required: true),
-                          ),
-
-                          IgnorePointer(
-                            ignoring: false,
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child:
-                                buildSearchableDropdown<PrimaryDomainData>(
-                                  items: provider.primaryDomainList,
-                                  // ✅ MAP YOUR MODEL HERE
-                                  getId: (item) => item.dropID.toString(),
-                                  getName: (item) => item.name ?? "",
-
-                                  controller:
-                                  provider.primaryDomainNameController,
-                                  idController:
-                                  provider.primaryDomainIdController,
-                                  hintText: "--Select Option--",
-
-                                  onChanged: (value) async {
-                                    // await provider.degreeTypeApi(context, value.dropID.toString());
-                                    // setState(() {});
-                                  },
-                                )
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Certificate/ Course Name', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.certCourseController,
-                                "Certificate/ Course Name",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Issuing Organization', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.issuOrgController,
-                                "Issuing Organization",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Year of Completion', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<PassingYearData>(
-                              items: provider.passingYearList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.compYearNameController,
-                              idController: provider.compYearIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Language Proficiency', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<LanguageTypeData>(
-                              items: provider.languageKnownList
-                                  .where((item) => item.dropID == 1 || item.dropID == 2 || item.dropID == 3 || item.dropID == 4 || item.dropID == 5 || item.dropID == 6)
-                                  .toList(),
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.langProfNameController,
-                              idController: provider.langProfIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Counseling Medium', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<CounselingMediumData>(
-                              items: provider.counsMedList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.counsMedNameController,
-                              idController: provider.counsMedIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Technical Tools Proficiency', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<TechToolData>(
-                              items: provider.techToolList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.techToolNameController,
-                              idController: provider.techToolIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Years Of Experience in Counseling', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.yearExpController,
-                                "Years Of Experience in Counseling",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             child: labelWithStar(
-                              'Are you registered clinical psychologist?',
+                              'Are you willing to take free psychometric tests?',
                               required: false,
                             ),
                           ),
-
                           Row(
                             children: [
                               Row(
                                 children: [
                                   Radio<String>(
                                     value: 'Yes',
-                                    groupValue: provider.clinicalPsychologistController.text,
+                                    groupValue: provider
+                                        .psychometricTestController.text,
                                     onChanged: (val) => setState(() {
-                                      provider.clinicalPsychologistController.text = val ?? "";
+                                      provider.psychometricTestController.text =
+                                          val ?? "";
                                     }),
                                   ),
                                   const SizedBox(width: 4),
-                                  Text('Yes', style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
+                                  Text('Yes',
+                                      style: Styles.mediumTextStyle(
+                                          color: kBlackColor, size: 14)),
                                 ],
                               ),
                               const SizedBox(width: 12),
@@ -1275,284 +1449,241 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 children: [
                                   Radio<String>(
                                     value: 'No',
-                                    groupValue: provider.clinicalPsychologistController.text,
+                                    groupValue: provider
+                                        .psychometricTestController.text,
                                     onChanged: (val) => setState(() {
-                                      provider.clinicalPsychologistController.text = val ?? "";
+                                      provider.psychometricTestController.text =
+                                          val ?? "";
                                     }),
                                   ),
                                   const SizedBox(width: 4),
-                                  Text('No', style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
+                                  Text('No',
+                                      style: Styles.mediumTextStyle(
+                                          color: kBlackColor, size: 14)),
                                 ],
                               ),
                             ],
                           ),
-
-                          /// 👇 SHOW THIS ONLY WHEN YES SELECTED
-                          if (provider.clinicalPsychologistController.text == "Yes") ...[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: labelWithStar(
-                                'Are you willing to take free psychometric tests?',
-                                required: false,
-                              ),
-                            ),
-
-                            Row(
-                              children: [
-                                Row(
-                                  children: [
-                                    Radio<String>(
-                                      value: 'Yes',
-                                      groupValue: provider.psychometricTestController.text,
-                                      onChanged: (val) => setState(() {
-                                        provider.psychometricTestController.text = val ?? "";
-                                      }),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text('Yes',
-                                        style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
-                                  ],
-                                ),
-                                const SizedBox(width: 12),
-                                Row(
-                                  children: [
-                                    Radio<String>(
-                                      value: 'No',
-                                      groupValue: provider.psychometricTestController.text,
-                                      onChanged: (val) => setState(() {
-                                        provider.psychometricTestController.text = val ?? "";
-                                      }),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text('No',
-                                        style: Styles.mediumTextStyle(color: kBlackColor, size: 14)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ]
-
-                        ],
-                      ),
+                        ]
+                      ],
                     ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Additional Details (Optional)",
+                            style: Styles.semiBoldTextStyle(
+                                size: 14, color: kWhite),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Published Work / Articles',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.pubWorkArtController,
+                              "Published Work / Articles",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                        hSpace(4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('LinkedIn / Portfolio URL',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.linkPortController,
+                              "LinkedIn / Portfolio URL",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                        hSpace(4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Training / Workshop Conducted',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.trainWorkCondController,
+                              "Training / Workshop Conducted",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                        hSpace(4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar('Availability for Upskilling',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildTextWithBorderField(
+                              provider.availUpskillController,
+                              "Availability for Upskilling",
+                              MediaQuery.of(context).size.width,
+                              50,
+                              TextInputType.text),
+                        ),
+                        hSpace(4),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: labelWithStar(
+                              'Preferred Age Group for Counseling',
+                              required: true),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: buildSearchableDropdown<PreAgeGroupData>(
+                            items: provider.preAgeGroupCounsList,
 
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10)),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
+                            // ✅ MAP YOUR MODEL HERE
+                            getId: (item) => item.dropID.toString(),
+                            getName: (item) => item.name ?? "",
+
+                            controller: provider.preAgeGroupCounsNameController,
+                            idController: provider.preAgeGroupCounsIdController,
+                            hintText: "--Select Option--",
+                            // height: 50,
+                            // color: Colors.transparent,
+                            // borderRadius: BorderRadius.circular(8),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                        hSpace(4),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<CounselorOtrProvider>(
+                          builder: (context, provider, child) {
+                            return Checkbox(
+                              value: provider.isDeclarationAccepted,
+                              onChanged: (value) {
+                                provider.toggleDeclaration(value ?? false);
+                              },
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12),
                             child: Text(
-                              "Additional Details (Optional)",
+                              "I, hereby declare that the information given above is true to the best of my knowledge and belief and nothing has been concealed therein and I will provide online counseling services free-of-cost and I will not charge any fees for online counseling services.",
                               style: Styles.semiBoldTextStyle(
-                                  size: 14, color: kWhite),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Published Work / Articles', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.pubWorkArtController,
-                                "Published Work / Articles",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          hSpace(4),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('LinkedIn / Portfolio URL', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.linkPortController,
-                                "LinkedIn / Portfolio URL",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          hSpace(4),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Training / Workshop Conducted', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.trainWorkCondController,
-                                "Training / Workshop Conducted",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          hSpace(4),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Availability for Upskilling', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildTextWithBorderField(
-                                provider.availUpskillController,
-                                "Availability for Upskilling",
-                                MediaQuery.of(context).size.width,
-                                50,
-                                TextInputType.text
-                            ),
-                          ),
-
-                          hSpace(4),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: labelWithStar('Preferred Age Group for Counseling', required: true),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: buildSearchableDropdown<PreAgeGroupData>(
-                              items: provider.preAgeGroupCounsList,
-
-                              // ✅ MAP YOUR MODEL HERE
-                              getId: (item) => item.dropID.toString(),
-                              getName: (item) => item.name ?? "",
-
-                              controller: provider.preAgeGroupCounsNameController,
-                              idController: provider.preAgeGroupCounsIdController,
-                              hintText: "--Select Option--",
-                              // height: 50,
-                              // color: Colors.transparent,
-                              // borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {},
-                            ),
-                          ),
-
-                          hSpace(4),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Consumer<CounselorOtrProvider>(
-                            builder: (context, provider, child) {
-                              return Checkbox(
-                                value: provider.isDeclarationAccepted,
-                                onChanged: (value) {
-                                  provider.toggleDeclaration(value ?? false);
-                                },
-                              );
-                            },
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 12),
-                              child: Text(
-                                "I, hereby declare that the information given above is true to the best of my knowledge and belief and nothing has been concealed therein and I will provide online counseling services free-of-cost and I will not charge any fees for online counseling services.",
-                                style: Styles.semiBoldTextStyle(
-                                  color: kBlackColor,
-                                  size: 14,
-                                ),
+                                color: kBlackColor,
+                                size: 14,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Preview logic
-                              },
-                              child: Text("Preview"),
-                            ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Preview logic
+                            },
+                            child: Text("Preview"),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (validateCounsellorForm(context, provider)) {
-                                  confirmAlertDialog(
-                                    context,
-                                    "Confirm Submission",
-                                    "Are you sure you want to submit the form?",
-                                        (value) {
-                                      if (value.toString() == "success") {
-                                        provider.submitCounsellorFormApi(context, widget.feachJanAadhaarDataList, widget.janMemberId.toString(), widget.type, widget.subType);
-                                      }
-                                    },
-                                  );
-                                }
-                              },
-                              child: Text("Submit"),
-                            ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (validateCounsellorForm(
+                                  context, provider, widget.type)) {
+                                confirmAlertDialog(
+                                  context,
+                                  "Confirm Submission",
+                                  "Are you sure you want to submit the form?",
+                                  (value) {
+                                    if (value.toString() == "success") {
+                                      provider.submitCounsellorFormApi(
+                                          context,
+                                          widget.feachJanAadhaarDataList,
+                                          widget.janMemberId.toString(),
+                                          widget.type,
+                                          widget.subType);
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                            child: Text("Submit"),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                //_resetForm(context);
-                              },
-                              child: Text("Reset"),
-                            ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              //_resetForm(context);
+                            },
+                            child: Text("Reset"),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-               // ),
-
+                  ),
+                ],
+                // ),
               ),
             ),
           );
         }));
   }
-
 }
-bool validateCounsellorForm(BuildContext context, CounselorOtrProvider provider) {
 
+bool validateCounsellorForm(
+    BuildContext context, CounselorOtrProvider provider, type) {
   // ✅ PROFILE IMAGE
   if (provider.profileFile == null) {
     showAlertError("Please upload profile photo", context);
@@ -1601,46 +1732,47 @@ bool validateCounsellorForm(BuildContext context, CounselorOtrProvider provider)
   }
 
   // ✅ DEPARTMENT DETAILS
-  if (provider.adminDeptController.text.isEmpty) {
-    showAlertError("Please enter Administrative Department", context);
-    return false;
-  }
+  if (type == "govt") {
+    if (provider.adminDeptController.text.isEmpty) {
+      showAlertError("Please enter Administrative Department", context);
+      return false;
+    }
 
-  if (provider.empIdController.text.isEmpty) {
-    showAlertError("Please enter Employee ID", context);
-    return false;
-  }
+    if (provider.empIdController.text.isEmpty) {
+      showAlertError("Please enter Employee ID", context);
+      return false;
+    }
 
-  if (provider.sipfNoController.text.isEmpty) {
-    showAlertError("Please enter SIPF Number", context);
-    return false;
-  }
+    if (provider.sipfNoController.text.isEmpty) {
+      showAlertError("Please enter SIPF Number", context);
+      return false;
+    }
 
-  if (provider.designationController.text.isEmpty) {
-    showAlertError("Please enter Designation", context);
-    return false;
-  }
+    if (provider.designationController.text.isEmpty) {
+      showAlertError("Please enter Designation", context);
+      return false;
+    }
 
-  if (provider.dateOfJoinController.text.isEmpty) {
-    showAlertError("Please select Date of Joining", context);
-    return false;
-  }
+    if (provider.dateOfJoinController.text.isEmpty) {
+      showAlertError("Please select Date of Joining", context);
+      return false;
+    }
 
-  if (provider.dateOfRetireController.text.isEmpty) {
-    showAlertError("Please select Date of Retirement", context);
-    return false;
-  }
+    if (provider.dateOfRetireController.text.isEmpty) {
+      showAlertError("Please select Date of Retirement", context);
+      return false;
+    }
 
-  if (provider.proExpYearController.text.isEmpty) {
-    showAlertError("Please enter Professional Experience", context);
-    return false;
-  }
+    if (provider.proExpYearController.text.isEmpty) {
+      showAlertError("Please enter Professional Experience", context);
+      return false;
+    }
 
-  if (provider.postDeptController.text.isEmpty) {
-    showAlertError("Please enter Posted Department", context);
-    return false;
+    if (provider.postDeptController.text.isEmpty) {
+      showAlertError("Please enter Posted Department", context);
+      return false;
+    }
   }
-
   // ✅ EDUCATION DETAILS
   if (provider.educationLevelIdController.text.isEmpty) {
     showAlertError("Please select Highest Qualification", context);
@@ -1714,7 +1846,8 @@ bool validateCounsellorForm(BuildContext context, CounselorOtrProvider provider)
   }
 
   if (provider.clinicalPsychologistController.text.isEmpty) {
-    showAlertError("Please select if you are a registered clinical psychologist", context);
+    showAlertError(
+        "Please select if you are a registered clinical psychologist", context);
     return false;
   }
 

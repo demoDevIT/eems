@@ -179,6 +179,9 @@ class RoleScreenState extends State<RoleScreen> {
                                         userID: widget.userID,
                                         displayName: widget.displayName,
                                         mobileNo: widget.mobileNo,
+                                        type:"govt",
+                                        subType: "retired",
+                                        flowType: UserFlowType1.counselor,
                                       ),
                                     ),
                                   );
