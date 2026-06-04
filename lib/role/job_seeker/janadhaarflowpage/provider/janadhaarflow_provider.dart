@@ -552,7 +552,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             return smmm;
           }
         } else {
-         // addSaticData(context, memberId, ssoId, userID, displayName, mobileNo, type, subType, flowType);
+         // addStaticData(context, memberId, ssoId, userID, displayName, mobileNo, type, subType, flowType);
 
           notifyListeners();
           return FetchJanAdharModal(
@@ -572,7 +572,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
     }
   }
 
-  addSaticData(
+  addStaticData(
       BuildContext context, String memberId, String ssoId, String userID, String displayName, String mobileNo, String type, String subType, UserFlowType flowType) {
     feachJanAadhaarDataList.clear();
     feachJanAadhaarDataList.add(

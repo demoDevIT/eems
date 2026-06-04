@@ -43,7 +43,7 @@ class DistrictModal {
 class DistrictData {
   int? iD;
   String? name;
-  String? code;
+  int? code;
   // dynamic unit;
   // dynamic quantity;
   // int? typeID;
@@ -68,9 +68,9 @@ class DistrictData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {};
-    json['ID'] = iD;
-    json['Name'] = name;
-    json['Code'] = code;
+    json['DISTRICT_ID'] = iD;
+    json['DISTRICT_ENG'] = name;
+    json['DISTRICT_CODE'] = code;
     // json['Unit'] = unit;
     // json['Quantity'] = quantity;
     // json['TypeID'] = typeID;

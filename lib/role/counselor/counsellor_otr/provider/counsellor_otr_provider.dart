@@ -50,8 +50,10 @@ class CounselorOtrProvider extends ChangeNotifier {
   String? emailErrorText;
   final TextEditingController languageNameController = TextEditingController();
   final TextEditingController languageIdController = TextEditingController();
-  final TextEditingController specializationNameController = TextEditingController();
-  final TextEditingController specializationIdController = TextEditingController();
+  final TextEditingController specializationNameController =
+      TextEditingController();
+  final TextEditingController specializationIdController =
+      TextEditingController();
   final TextEditingController adminDeptController = TextEditingController();
   final TextEditingController empIdController = TextEditingController();
   final TextEditingController sipfNoController = TextEditingController();
@@ -64,32 +66,34 @@ class CounselorOtrProvider extends ChangeNotifier {
 
   List<EducationLevelData> educationLevelsList = [];
   final TextEditingController educationLevelIdController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController educationLevelNameController =
-  TextEditingController();
+      TextEditingController();
   List<GraduationTypeData> graduationTypeList = [];
   final TextEditingController graduationTypeIdController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController graduationTypeNameController =
-  TextEditingController();
-  final TextEditingController otherDegreeController =
-  TextEditingController();
+      TextEditingController();
+  final TextEditingController otherDegreeController = TextEditingController();
 
   List<UniversityData> universityList = [];
-  final TextEditingController universityIdController =
-  TextEditingController();
+  final TextEditingController universityIdController = TextEditingController();
   final TextEditingController universityNameController =
-  TextEditingController();
+      TextEditingController();
 
-  List<PassingYearData> passingYearList= [];
-  final TextEditingController yearOfPassingIdController = TextEditingController();
-  final TextEditingController yearOfPassingNameController = TextEditingController();
+  List<PassingYearData> passingYearList = [];
+  final TextEditingController yearOfPassingIdController =
+      TextEditingController();
+  final TextEditingController yearOfPassingNameController =
+      TextEditingController();
 
   final TextEditingController addQualiController = TextEditingController();
 
-  List<PrimaryDomainData> primaryDomainList= [];
-  final TextEditingController primaryDomainIdController = TextEditingController();
-  final TextEditingController primaryDomainNameController = TextEditingController();
+  List<PrimaryDomainData> primaryDomainList = [];
+  final TextEditingController primaryDomainIdController =
+      TextEditingController();
+  final TextEditingController primaryDomainNameController =
+      TextEditingController();
   final TextEditingController certCourseController = TextEditingController();
   final TextEditingController issuOrgController = TextEditingController();
   final TextEditingController compYearIdController = TextEditingController();
@@ -98,26 +102,30 @@ class CounselorOtrProvider extends ChangeNotifier {
   final TextEditingController langProfIdController = TextEditingController();
   final TextEditingController langProfNameController = TextEditingController();
 
-  List<CounselingMediumData> counsMedList= [];
+  List<CounselingMediumData> counsMedList = [];
   final TextEditingController counsMedIdController = TextEditingController();
   final TextEditingController counsMedNameController = TextEditingController();
 
-  List<TechToolData> techToolList= [];
+  List<TechToolData> techToolList = [];
   final TextEditingController techToolIdController = TextEditingController();
   final TextEditingController techToolNameController = TextEditingController();
 
   final TextEditingController yearExpController = TextEditingController();
-  final TextEditingController clinicalPsychologistController = TextEditingController();
-  final TextEditingController psychometricTestController = TextEditingController();
+  final TextEditingController clinicalPsychologistController =
+      TextEditingController();
+  final TextEditingController psychometricTestController =
+      TextEditingController();
 
   final TextEditingController pubWorkArtController = TextEditingController();
   final TextEditingController linkPortController = TextEditingController();
   final TextEditingController trainWorkCondController = TextEditingController();
   final TextEditingController availUpskillController = TextEditingController();
 
-  List<PreAgeGroupData> preAgeGroupCounsList= [];
-  final TextEditingController preAgeGroupCounsIdController = TextEditingController();
-  final TextEditingController preAgeGroupCounsNameController = TextEditingController();
+  List<PreAgeGroupData> preAgeGroupCounsList = [];
+  final TextEditingController preAgeGroupCounsIdController =
+      TextEditingController();
+  final TextEditingController preAgeGroupCounsNameController =
+      TextEditingController();
 
   bool isDeclarationAccepted = false;
 
@@ -149,27 +157,33 @@ class CounselorOtrProvider extends ChangeNotifier {
   }
 
   Future<void> getDistrictApi(String stateId) async {
-    isDistrictLoading = true;
-    notifyListeners();
+    try {
+     // isDistrictLoading = true;
+      notifyListeners();
 
-    // final res =
-    // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+      // final res =
+      // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
 
-    final res =
-    await commonRepo.get("Common/GetDistrict/$stateId");
+      final res = await commonRepo.get("Common/GetDistrict/$stateId");
 
-    if (res.response?.statusCode == 200) {
-      var data = res.response!.data;
-      if (data is String) data = jsonDecode(data);
+      if (res.response?.statusCode == 200) {
+        var data = res.response!.data;
+        if (data is String) data = jsonDecode(data);
 
-      districtList.clear();
-      for (var e in data['Data']) {
-        districtList.add(DistrictData.fromJson(e));
+        districtList.clear();
+        for (var e in data['Data']) {
+          districtList.add(DistrictData.fromJson(e));
+        }
+        print("District Count: ${districtList.length}");
+        print(jsonEncode(data));
       }
+    } catch (e, s) {
+      print("District API Error: $e");
+      print(s);
+    } finally {
+     // isDistrictLoading = false;
+      notifyListeners();
     }
-
-    isDistrictLoading = false;
-    notifyListeners();
   }
 
   Future<void> getCityApi(String districtId) async {
@@ -187,11 +201,13 @@ class CounselorOtrProvider extends ChangeNotifier {
     }
   }
 
-  void setJanAadhaarControllers(BuildContext context, FetchJanAdharResponseData data, String ssoID) {
+  void setJanAadhaarControllers(
+      BuildContext context, FetchJanAdharResponseData data, String ssoID) {
     // print("ssoIdaaaaaaaa-->" + ssoID);
     // print("data.dOB1111aaaaaaaaaa-->" + data.dOB);
     // //  print("data.district code-->" + data.dISTRICTCD);
-     debugPrint("kjhfksdjfsjdfhaaaaaaaaaaaaa" + jsonEncode(data.toJson()), wrapWidth: 1024);
+    debugPrint("kjhfksdjfsjdfhaaaaaaaaaaaaa" + jsonEncode(data.toJson()),
+        wrapWidth: 1024);
 
     ssoIDController.text = ssoID;
     nameController.text = data.nAMEEN ?? "";
@@ -202,8 +218,8 @@ class CounselorOtrProvider extends ChangeNotifier {
     genderController.text = data.gENDER == "MALE"
         ? "Male"
         : data.gENDER == "FEMALE"
-        ? "Female"
-        : "TransGender";
+            ? "Female"
+            : "TransGender";
     // print("dateOfBirthController.text22222-->" + dateOfBirthController.text);
     // fatherNameController.text = data.fATHERNAMEEN ?? "";
     // maritalStatusController.text = data.mARITALSTATUS ?? "";
@@ -266,7 +282,7 @@ class CounselorOtrProvider extends ChangeNotifier {
             return sm;
           } else {
             final smmm =
-            LanguageTypeModal(state: 0, message: sm.message.toString());
+                LanguageTypeModal(state: 0, message: sm.message.toString());
             showAlertError(
                 smmm.message.toString().isNotEmpty
                     ? smmm.message.toString()
@@ -315,7 +331,7 @@ class CounselorOtrProvider extends ChangeNotifier {
             return sm;
           } else {
             final smmm =
-            SpecializationModal(state: 0, message: sm.message.toString());
+                SpecializationModal(state: 0, message: sm.message.toString());
             showAlertError(
                 smmm.message.toString().isNotEmpty
                     ? smmm.message.toString()
@@ -341,7 +357,7 @@ class CounselorOtrProvider extends ChangeNotifier {
     }
   }
 
-    Future<UploadDocumentModal?> uploadDocumentApi(
+  Future<UploadDocumentModal?> uploadDocumentApi(
       BuildContext context, FormData inputText) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
@@ -363,7 +379,7 @@ class CounselorOtrProvider extends ChangeNotifier {
           return sm;
         } else {
           final sm =
-          UploadDocumentModal(state: 0, message: 'Something went wrong');
+              UploadDocumentModal(state: 0, message: 'Something went wrong');
           showAlertError(sm.message.toString(), context);
           return sm;
         }
@@ -384,7 +400,7 @@ class CounselorOtrProvider extends ChangeNotifier {
       try {
         //.showLoadingDialog(context);
         ApiResponse apiResponse =
-        await commonRepo.get("Common/GetQualificationList");
+            await commonRepo.get("Common/GetQualificationList");
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -415,7 +431,7 @@ class CounselorOtrProvider extends ChangeNotifier {
             return sm;
           } else {
             final smmm =
-            EducationLevelModal(state: 0, message: sm.message.toString());
+                EducationLevelModal(state: 0, message: sm.message.toString());
             showAlertError(
                 smmm.message.toString().isNotEmpty
                     ? smmm.message.toString()
@@ -459,14 +475,14 @@ class CounselorOtrProvider extends ChangeNotifier {
           final sm = GraduationTypeModal.fromJson(responseData);
 
           if (sm.state == 200) {
-              graduationTypeList.clear();
-              graduationTypeList.addAll(sm.data!);
+            graduationTypeList.clear();
+            graduationTypeList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
             final smmm =
-            GraduationTypeModal(state: 0, message: sm.message.toString());
+                GraduationTypeModal(state: 0, message: sm.message.toString());
             showAlertError(
                 smmm.message.toString().isNotEmpty
                     ? smmm.message.toString()
@@ -500,7 +516,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/Board_UniversityMaster/University";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -513,13 +530,19 @@ class CounselorOtrProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm = UniversityModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                UniversityModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return UniversityModal(state: 0, message: 'Something went wrong',
+          return UniversityModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -529,7 +552,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -541,27 +565,34 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/CommonMasterDataByCode/PassingYear/1";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = PassingYearModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             passingYearList.clear();
             passingYearList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = PassingYearModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                PassingYearModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return PassingYearModal(state: 0, message: 'Something went wrong',
+          return PassingYearModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -571,11 +602,13 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-  Future<PrimaryDomainModal?> primaryDomainModalApi(BuildContext context) async {
+  Future<PrimaryDomainModal?> primaryDomainModalApi(
+      BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -583,27 +616,34 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/CommonMasterDataByCode/PrimaryDomainExperties/0/0";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = PrimaryDomainModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             primaryDomainList.clear();
             primaryDomainList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = PrimaryDomainModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                PrimaryDomainModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return PrimaryDomainModal(state: 0, message: 'Something went wrong',
+          return PrimaryDomainModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -613,7 +653,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -625,27 +666,34 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/CommonMasterDataByCode/Counselling/0/0";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = CounselingMediumModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             counsMedList.clear();
             counsMedList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = CounselingMediumModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                CounselingMediumModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return CounselingMediumModal(state: 0, message: 'Something went wrong',
+          return CounselingMediumModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -655,7 +703,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -667,27 +716,34 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/CommonMasterDataByCode/TechnicalTools/0/0";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = TechToolModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             techToolList.clear();
             techToolList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = TechToolModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                TechToolModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return TechToolModal(state: 0, message: 'Something went wrong',
+          return TechToolModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -697,7 +753,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -709,27 +766,34 @@ class CounselorOtrProvider extends ChangeNotifier {
         String url = "Common/CommonMasterDataByCode/PrefferredAge/0/0";
         ApiResponse apiResponse = await commonRepo.get(url);
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = PreAgeGroupModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             preAgeGroupCounsList.clear();
             preAgeGroupCounsList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = PreAgeGroupModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                PreAgeGroupModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return PreAgeGroupModal(state: 0, message: 'Something went wrong',
+          return PreAgeGroupModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -739,7 +803,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -760,13 +825,18 @@ class CounselorOtrProvider extends ChangeNotifier {
   }
 
   Future<CounselorOTRDetailModal?> submitCounsellorFormApi(
-      BuildContext context,
-      List<FetchJanAdharResponseData> feachJanAadhaarDataList,
-      String memberId,
-      String empType,
-      String empSubType,
-      // String userID
-      ) async {
+    BuildContext context,
+    List<FetchJanAdharResponseData> feachJanAadhaarDataList,
+    String memberId,
+    String empType,
+    String empSubType,
+    // String userID
+  ) async {
+    print("function call");
+    print("dISTRICTCD=>");
+    print("dISTRICT=>");
+    print("dISTRICTNAMELL=>");
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -780,7 +850,6 @@ class CounselorOtrProvider extends ChangeNotifier {
         //   json.remove('dspeak');
         //   return json;
         // }).toList();
-
 
         // Map<String, dynamic> data =
         // {
@@ -880,8 +949,7 @@ class CounselorOtrProvider extends ChangeNotifier {
         //
         // };
 
-        Map<String, dynamic> data =
-        {
+        Map<String, dynamic> data = {
           //***********these value I got from Renu in teams
 
           "CounsellorID": 0,
@@ -937,7 +1005,7 @@ class CounselorOtrProvider extends ChangeNotifier {
           "CounselorID": 0, // static
           "UIDTypeID": 0, // static
           "UIDNumber": "", // blank
-          "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN,
+          "FatherName": feachJanAadhaarDataList[0].fATHERNAMEEN != '' ? feachJanAadhaarDataList[0].fATHERNAMEEN : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
           "EmploymentStatusID": 0, // static
           "QualificationID": 0, // static
           "OccupationName": "", // blank
@@ -950,12 +1018,13 @@ class CounselorOtrProvider extends ChangeNotifier {
           "EmployeeTypeID": 0, // static
           "PresentEmployeeID": 0, // static
           "EmployeeNumber": null, // ***************login se
-          "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR,
-          "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID,
-          "JanmenID": memberId,
-          "EnrID": feachJanAadhaarDataList[0].eNRID,
+          "JanAadhaarNo": feachJanAadhaarDataList[0].jANAADHAR != '' ? feachJanAadhaarDataList[0].jANAADHAR : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
+          "AadhaarNo": feachJanAadhaarDataList[0].aADHARREFID != '' ? feachJanAadhaarDataList[0].aADHARREFID : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
+          "JanmenID": memberId != '' ? memberId : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
+          "EnrID": feachJanAadhaarDataList[0].eNRID != '' ? feachJanAadhaarDataList[0].eNRID : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
           "RegistrationNo": "", // blank
-          "AdministrativedepartmentName": empType == "govt" ? adminDeptController.text : "",
+          "AdministrativedepartmentName":
+              empType == "govt" ? adminDeptController.text : "",
           "SIPFHRMSNumber": sipfNoController.text,
           "Dateofjoining": dateOfJoinController.text,
           "DateofRetirement": dateOfRetireController.text,
@@ -966,25 +1035,30 @@ class CounselorOtrProvider extends ChangeNotifier {
           "DivIsPresentGovtEmploye": empType == "govt" ? true : false,
           "DivIsPresentPrivateEmploye": empType == "private" ? true : false,
           "IsPresentGovtEmployee": empType == "govt" ? true : false,
-          "DistrictId": 0, //***********janadhar district code se district id nikalo
-          "category": feachJanAadhaarDataList[0].cATEGORYDESCENG,
-          "ClinicalPsychologist": clinicalPsychologistController.toString() == 'Yes' ? true : false,
-          "FreePsychometricTests": psychometricTestController.toString() == 'Yes' ? true : false,
+          "DistrictId": 0, //***********janadhar district code se district id // always static 0 as discussed with Pankaj Sir
+          "category": feachJanAadhaarDataList[0].cATEGORYDESCENG != "" ? feachJanAadhaarDataList[0].cATEGORYDESCENG : "", //blank on the case or non rajasthan as discussed with Pankaj Sir
+          "ClinicalPsychologist":
+              clinicalPsychologistController.toString() == 'Yes' ? true : false,
+          "FreePsychometricTests":
+              psychometricTestController.toString() == 'Yes' ? true : false,
           "ProfileImageUrl": fileName,
           "DegreeID": graduationTypeIdController.text,
           "UniversityID": universityIdController.text,
           "OtherDegreeName": otherDegreeController.text,
-          "PrivateDistrictID": 0, //************not residence rajasthan, open district dropdown
-          "PrivateStateID": 0,//***********not residence rajasthan, open state dropdown
-          "PrivateCityID": 0, // ***********not residence rajasthan, open state dropdown
+          "PrivateDistrictID": empSubType == 'nonRajasthan' ? stateIdController.text : 0,
+          "PrivateStateID": empSubType == 'nonRajasthan' ? districtIdController.text : 0,
+          "PrivateCityID": empSubType == 'nonRajasthan' ? cityIdController.text : 0,
         };
 
         print("printFullData -->");
         // printFullJson(data);
         print("========== counselor OTR SUBMIT API PAYLOAD ==========");
-        print(const JsonEncoder.withIndent('  ').convert(data));
+        debugPrint(
+          const JsonEncoder.withIndent('  ').convert(data),
+          wrapWidth: 1024,
+        );
         print("=========================================");
-return null;
+        //return null;
         String url = "Counselor/CounsellorRegSaveData";
         ProgressDialog.showLoadingDialog(context);
         // ApiResponse apiResponse = await commonRepo.postArray(url,body);
@@ -1002,13 +1076,13 @@ return null;
             successDialog(
               context,
               sm.message.toString(),
-                  (value) {
+              (value) {
                 if (value.toString() == "success") {
                   if (sm.data != null &&
                       sm.data![0].userId != null &&
                       sm.data![0].userId > 0) {
-                   // getBasicDetailsApi(context, sm.data![0].userId.toString(),
-                      //  sm.data![0].roleId);
+                    // getBasicDetailsApi(context, sm.data![0].userId.toString(),
+                    //  sm.data![0].roleId);
                   }
                 }
               },
@@ -1055,11 +1129,12 @@ return null;
     notifyListeners();
   }
 
-   void clearData() {
-     languageKnownList.clear();
-     specializationList.clear();
-   }
+  void clearData() {
+    languageKnownList.clear();
+    specializationList.clear();
+  }
 }
+
 extension EmailValidator on String {
   bool isValidEmail() {
     final trimmed = trim();
@@ -1074,10 +1149,10 @@ extension EmailValidator on String {
     return RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
         .hasMatch(trimmed);
   }
+
   void printFullJson(Map<String, dynamic> json) {
     const encoder = JsonEncoder.withIndent('  ');
     final prettyString = encoder.convert(json);
     prettyString.split('\n').forEach((line) => debugPrint(line));
   }
 }
-

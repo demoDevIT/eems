@@ -621,6 +621,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                               ),
                             ),
 
+              if (widget.subType.toLowerCase() == "nonRajasthan") ...[
                             /// ===== Dropdowns =====
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -645,8 +646,8 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                     // height: 50,
                                     // selectedValue: provider.selectedState,
                                     // getLabel: (e) => e.name ?? "",
-                                    onChanged: (value) {
-                                      provider.getDistrictApi(
+                                    onChanged: (value) async {
+                                      await provider.getDistrictApi(
                                           provider.stateIdController.text);
                                       setState(() {});
                                     },
@@ -658,10 +659,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                   horizontal: 10, vertical: 5),
                               child: labelWithStar('District', required: true),
                             ),
-                            provider.isDistrictLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : IgnorePointer(
+                            IgnorePointer(
                                     ignoring: false,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -720,6 +718,7 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                 ),
                               ),
                             )
+              ],
                           ],
                         ),
                         SizedBox(
@@ -1645,9 +1644,10 @@ class _CounselorOtrScreenState extends State<CounselorOtrScreen> {
                                   context,
                                   "Confirm Submission",
                                   "Are you sure you want to submit the form?",
-                                  (value) {
+                                  (value) async {
+                                    print("submitclick->$value");
                                     if (value.toString() == "success") {
-                                      provider.submitCounsellorFormApi(
+                                      await provider.submitCounsellorFormApi(
                                           context,
                                           widget.feachJanAadhaarDataList,
                                           widget.janMemberId.toString(),
@@ -1730,7 +1730,22 @@ bool validateCounsellorForm(
     showAlertError("Please select Specialization", context);
     return false;
   }
+  if (type != "govt") {
+    if (provider.stateIdController.text.isEmpty) {
+      showAlertError("Please select State", context);
+      return false;
+    }
 
+    if (provider.districtIdController.text.isEmpty) {
+      showAlertError("Please select District", context);
+      return false;
+    }
+
+    if (provider.cityIdController.text.isEmpty) {
+      showAlertError("Please select City", context);
+      return false;
+    }
+  }
   // ✅ DEPARTMENT DETAILS
   if (type == "govt") {
     if (provider.adminDeptController.text.isEmpty) {
