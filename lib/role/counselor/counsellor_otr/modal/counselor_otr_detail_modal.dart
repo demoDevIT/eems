@@ -38,6 +38,7 @@ class CounselorOTRDetailData {
   dynamic userId;
   dynamic roleId;
   dynamic registrationNo;
+  dynamic counselorID;
   dynamic response;
 
   CounselorOTRDetailData({this.userId, this.roleId, this.registrationNo, this.response});
@@ -46,6 +47,7 @@ class CounselorOTRDetailData {
     userId = json['UserId'];
     roleId = json['RoleId'];
     registrationNo = json['RegistrationNo'];
+    counselorID = json['CounsellorID'];
     response = json['Response'];
   }
 
@@ -54,6 +56,7 @@ class CounselorOTRDetailData {
     data['UserId'] = this.userId;
     data['RoleId'] = this.roleId;
     data['RegistrationNo'] = this.registrationNo;
+    data['CounsellorID'] = this.counselorID;
     data['Response'] = this.response;
     return data;
   }

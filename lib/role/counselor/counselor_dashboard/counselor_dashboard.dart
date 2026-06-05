@@ -115,34 +115,34 @@ class _CounselorDashboard extends State<CounselorDashboard> {
         children: [
 
           /// View Profile
-          _dashboardListTile(
-            title: "View Profile",
-            iconPath: "assets/images/profilee.svg",
-            color: const Color(0xFF6C63FF),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CounselorProfileScreen(isAppBarHide: false),
-                ),
-              );
-            },
-          ),
+          // _dashboardListTile(
+          //   title: "View Profile",
+          //   iconPath: "assets/images/profilee.svg",
+          //   color: const Color(0xFF6C63FF),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => CounselorProfileScreen(isAppBarHide: false),
+          //       ),
+          //     );
+          //   },
+          // ),
 
           /// Apply Job Fair (same as employer)
-          _dashboardListTile(
-            title: "Apply for Job Fair",
-            iconPath: "assets/images/aplyjobfair.svg",
-            color: const Color(0xFF2DBE8D),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JobFairScreen(),
-                ),
-              );
-            },
-          ),
+          // _dashboardListTile(
+          //   title: "Apply for Job Fair",
+          //   iconPath: "assets/images/aplyjobfair.svg",
+          //   color: const Color(0xFF2DBE8D),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const JobFairScreen(),
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
@@ -240,7 +240,7 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          UserData().model.value.displayName ?? "",
+                          UserData().model.value.firstName ?? "",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -250,13 +250,13 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                         GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ProfileScreen(isAppBarHide: true),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         ProfileScreen(isAppBarHide: true),
+                            //   ),
+                            // );
                           },
                           child: const Text(
                             "Update Profile",
@@ -286,30 +286,30 @@ class _CounselorDashboard extends State<CounselorDashboard> {
 
           const Divider(),
 
-          ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: const Text("Dashboard"),
-            onTap: () => Navigator.pop(context),
-          ),
-
-          const Divider(),
-
-          /// You can keep or remove extra menu items
-          ListTile(
-            leading: const Icon(Icons.event),
-            title: const Text("Job Fair"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JobFairScreen(),
-                ),
-              );
-            },
-          ),
-
-          const Divider(),
+          // ListTile(
+          //   leading: const Icon(Icons.dashboard),
+          //   title: const Text("Dashboard"),
+          //   onTap: () => Navigator.pop(context),
+          // ),
+          //
+          // const Divider(),
+          //
+          // /// You can keep or remove extra menu items
+          // ListTile(
+          //   leading: const Icon(Icons.event),
+          //   title: const Text("Job Fair"),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const JobFairScreen(),
+          //       ),
+          //     );
+          //   },
+          // ),
+          //
+          // const Divider(),
 
           /// Logout (same as employer)
           ListTile(

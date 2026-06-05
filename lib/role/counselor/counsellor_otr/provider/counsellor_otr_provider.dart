@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../counselor_dashboard/counselor_dashboard.dart';
+import '../modal/counsellor_info_modal.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/modal/specialization_modal.dart';
 import 'package:rajemployment/utils/global.dart';
 import '../../../../api_service/model/base/api_response.dart';
@@ -11,6 +13,7 @@ import '../../../../repo/common_repo.dart';
 import '../../../../utils/app_shared_prefrence.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
+import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
 import '../../../employer/empotr_form/modal/upload_document_modal.dart';
 import '../../../job_seeker/addeducationaldetail/modal/education_level_modal.dart';
@@ -837,6 +840,9 @@ class CounselorOtrProvider extends ChangeNotifier {
     print("dISTRICT=>");
     print("dISTRICTNAMELL=>");
 
+    // getCounsellorBasicDetailsApi(context, "16");
+    // return null;
+
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -1077,12 +1083,15 @@ class CounselorOtrProvider extends ChangeNotifier {
               context,
               sm.message.toString(),
               (value) {
+                print("Dialog callback fired");
+                print("value = $value");
                 if (value.toString() == "success") {
+                  print("Inside success");
                   if (sm.data != null &&
-                      sm.data![0].userId != null &&
-                      sm.data![0].userId > 0) {
-                    // getBasicDetailsApi(context, sm.data![0].userId.toString(),
-                    //  sm.data![0].roleId);
+                      sm.data![0].counselorID != null &&
+                      sm.data![0].counselorID > 0) {
+                    print("Calling API");
+                     getCounsellorBasicDetailsApi(context, sm.data![0].counselorID.toString());
                   }
                 }
               },
@@ -1115,6 +1124,96 @@ class CounselorOtrProvider extends ChangeNotifier {
           AppLocalizations.of(context)!.internet_connection, context);
     }
   }
+
+  Future<CounsellorInfoModal?> getCounsellorBasicDetailsApi(
+      BuildContext context, String counsellorId) async {
+    print("***************getCounsellorBasicDetailsApi***************");
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    if (isInternet) {
+      try {
+        Map<String, dynamic> body = {
+          "CounsellorID": counsellorId
+        };
+        print("***************1111***************");
+        ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse =
+        await commonRepo.post("Counselor/GetByIDCounsellorRegData", body);
+        print("***************2222***************");
+        ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
+          print("***************3333***************");
+          var responseData = apiResponse.response?.data;
+
+          print("aaaaaaaaa--------->${responseData['Data'].runtimeType}");
+          if (responseData is String) {
+            responseData = jsonDecode(responseData);
+          }
+
+          String? authToken =
+              apiResponse.response?.headers?['x-authtoken']?.first;
+          print(authToken);
+          final sm = CounsellorInfoModal.fromJson(responseData);
+          print("Response Data => $responseData");
+          print("sm.state => ${sm.state}");
+          print("sm.message => ${sm.message}");
+          print("sm.data => ${sm.data}");
+
+
+          if (sm.state == 200) {
+            final pref = AppSharedPref();
+            UserData().model.value.counsellorID = sm.data![0].counselorID;
+            UserData().model.value.firstName = sm.data![0].firstName;
+            UserData().model.value.isLogin = true;
+            UserData().model.value.username = "";
+            UserData().model.value.password = "";
+           // UserData().model.value.roleId = roleId; // counsellor role nahi h
+
+            pref.save('UserData', UserData().model.value);
+
+            Navigator.of(context).push(
+              RightToLeftRoute(
+                page: const CounselorDashboard(),
+                duration: const Duration(milliseconds: 500),
+                startOffset: const Offset(-1.0, 0.0),
+              ),
+            );
+            return sm;
+          } else {
+            final smmm = CounsellorInfoModal(
+                state: 0, message: sm.message.toString());
+
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
+            return smmm;
+          }
+        } else {
+          print("***************4444***************");
+          return CounsellorInfoModal(
+            state: 0,
+            message: 'Something went wrong',
+          );
+        }
+      }
+      // on Exception catch (err) {
+      //   ProgressDialog.closeLoadingDialog(context);
+      //   final sm = CounsellorInfoModal(state: 0, message: err.toString());
+      //   showAlertError(sm.message.toString(), context);
+      //   return sm;
+      // }
+      catch (err, stack) {
+        print("ERROR => $err");
+        print(stack);
+      }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
 
   void validateEmail(String value) {
     emailErrorText = null;

@@ -41,7 +41,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           elevation: 0,
           centerTitle: true,
           title: const Text(
-            "Department Dashboard",
+            "Dashboard",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -49,52 +49,51 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
             ),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.logout, color: Colors.black),
-              onPressed: () async {
-                showLogoutDialog(
-                  context,
-                  "Logout",
-                  "Are you sure want to Logout ?",
-                  "Thank you and see you again!",
-                      (value) async {
-                    if (value.toString() == "success") {
-                     // Provider.of<DepartmentDashboardProvider>(context, listen: false).reset();
+            PopupMenuButton<String>(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.black,
+              ),
+              onSelected: (value) {
+                switch (value) {
+                  case "profile":
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DeptProfileScreen(
+                          isAppBarHide: true,
+                        ),
+                      ),
+                    );
+                    break;
 
-                      final pref = AppSharedPref();
-
-                      // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
-                      // commonRepo.dioClient.clearAuthToken();
-                      // Clear login session only
-                      UserData().model.value.isLogin = false;
-                      UserData().model.value.userId = null;
-                      // UserData().model.value.postalAddress = null;
-                      // UserData().model.value.empNumber = null;
-                      await pref.remove('UserData');
-
-                      print("========== AFTER LOGOUT COMPLETE USER MODEL1 ==========");
-                      print(
-                        const JsonEncoder.withIndent('  ')
-                            .convert(UserData().model.value.toJson()),
-                      );
-                      print("=========================================");
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginScreen()),
-                            (route) => false,
-                      );
-
-                      // Navigator.of(context).pushAndRemoveUntil(
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) =>
-                      //     const LoginScreen(),
-                      //   ),
-                      //       (route) => false, // Clears all previous routes
-                      // );
-                    }
-                  },
-                );
+                  case "logout":
+                  // Your logout code
+                    break;
+                }
               },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: "Role1",
+                  child: Row(
+                    children: [
+                      //Icon(Icons.person_outline),
+                      SizedBox(width: 10),
+                      Text("Role 1"),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: "Role2",
+                  child: Row(
+                    children: [
+                      //Icon(Icons.logout),
+                      SizedBox(width: 10),
+                      Text("Role 2"),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
