@@ -129,18 +129,18 @@ class JanAadhaarFlowProvider with ChangeNotifier {
         } else {
           print("a4");
           currentStep = FlowStep.memberList;
-          fetchMemberList.addAll([
-            FetchMemberDataResponse(
-              mEMBERID: 45053402607,
-              nAMEEN: "D*e*a* K*m*r G*p*a",
-              mEMBERTYPE: "MEM",
-            ),
-            FetchMemberDataResponse(
-              mEMBERID: 32687381288,
-              nAMEEN: "J*o*i G*y*l",
-              mEMBERTYPE: "HOF",
-            ),
-          ]);
+          // fetchMemberList.addAll([
+          //   FetchMemberDataResponse(
+          //     mEMBERID: 45053402607,
+          //     nAMEEN: "D*e*a* K*m*r G*p*a",
+          //     mEMBERTYPE: "MEM",
+          //   ),
+          //   FetchMemberDataResponse(
+          //     mEMBERID: 32687381288,
+          //     nAMEEN: "J*o*i G*y*l",
+          //     mEMBERTYPE: "HOF",
+          //   ),
+          // ]);
           notifyListeners();
           return FetchMemberListModal(
             state: 0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
+import 'package:rajemployment/role/department/register_form/modal/exchange_name_modal.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
@@ -178,6 +179,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                           if (value?.iD != null) {
                             provider.getCityApi(context, value!.iD.toString());
                             provider.getBlockApi(context, value!.code!);
+                            provider.getExchangeApi(context, value!.name!);
 
                           }
 
@@ -398,6 +400,32 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                   },
                 ),
 
+                /// ===== Exchange NAME =====
+                _label("Exchange Name*"),
+                provider.isExchangeLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : buildSearchableDropdown<ExchangeNameData>(
+                  items: provider.exchangeNameList,
+
+                  // ✅ MAP YOUR MODEL HERE
+                  getId: (item) => item.officeId.toString(),
+                  getName: (item) => item.officeName ?? "",
+
+                  controller: provider.exchangeNameController,
+                  idController: provider.exchangeIdController,
+                  hintText: "--Select Exchange Name--",
+                  // height: 50,
+                  // selectedValue: provider.selectedExchangeName,
+                  // getLabel: (e) => e.nameEng ?? "",
+                  onChanged: (value) {
+                    provider.selectedExchangeName = value;
+                    provider.exchangeNameController.text =
+                        value?.officeName ?? "";
+                    provider.exchangeIdController.text =
+                        value?.officeId?.toString() ?? "";
+                    provider.notifyListeners();
+                  },
+                ),
                 // /// ===== OFFICE NAME =====
                 // _label("Office Name"),
                 // _field(provider.officeNameController, "Enter office name"),
@@ -621,6 +649,12 @@ bool validateBasicDetails(
   if (provider.selectedOffice == null ||
       provider.officeNameController.text.trim().isEmpty) {
     showAlertError("Please select Internship Office Name", context);
+    return false;
+  }
+
+  if (provider.selectedExchangeName == null ||
+      provider.exchangeNameController.text.trim().isEmpty) {
+    showAlertError("Please select Exchange Name", context);
     return false;
   }
 

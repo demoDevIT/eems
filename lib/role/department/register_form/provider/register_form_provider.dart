@@ -17,6 +17,7 @@ import '../modal/block_modal.dart';
 import '../modal/department_modal.dart';
 import '../modal/district_modal.dart';
 import '../modal/city_modal.dart';
+import '../modal/exchange_name_modal.dart';
 import '../modal/gp_modal.dart';
 import '../modal/office_modal.dart';
 import '../modal/village_modal.dart';
@@ -139,6 +140,13 @@ class RegisterFormProvider extends ChangeNotifier {
   TextEditingController();
   final TextEditingController officeNameController = TextEditingController();
 
+  bool isExchangeLoading = false;
+  List<ExchangeNameData> exchangeNameList = [];
+  ExchangeNameData? selectedExchangeName;
+
+  final TextEditingController exchangeIdController =
+  TextEditingController();
+  final TextEditingController exchangeNameController = TextEditingController();
 
   /// ======================
   /// FORM CONTROLLERS
@@ -438,6 +446,65 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getExchangeApi(BuildContext context, String dName) async {
+    isExchangeLoading = true;
+
+    selectedExchangeName = null;
+    exchangeNameController.clear();
+    exchangeIdController.clear();
+    exchangeNameList.clear();
+
+    notifyListeners();
+
+    try {
+
+      Map<String, dynamic> data = {
+        "DistrictName": dName,
+      };
+
+      print("========== exchange API PAYLOAD ==========");
+      print(const JsonEncoder.withIndent('  ').convert(data));
+      print("========================================");
+
+      /// ✅ CALL POST API
+      final apiResponse = await commonRepo.post(
+        "Common/GetExchangeNameOfficeListByDistrictName",
+        data,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response!.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        if (responseData['Data'] != null) {
+          exchangeNameList = (responseData['Data'] as List)
+              .map((e) => ExchangeNameData.fromJson(e))
+              .toList();
+
+          if (exchangeNameList.length == 1) {
+            selectedExchangeName = exchangeNameList.first;
+
+            exchangeNameController.text =
+                selectedExchangeName?.officeName ?? "";
+
+            exchangeIdController.text =
+                selectedExchangeName?.officeId?.toString() ?? "";
+          }
+        }
+
+      }
+    } catch (e) {
+      print("Office API Error: $e");
+      exchangeNameList.clear();
+    }
+
+    isExchangeLoading = false;
+    notifyListeners();
+  }
+
   Future<bool> loginHistoryMessagesApi(BuildContext context) async {
     try {
       Map<String, dynamic> body = {
@@ -703,7 +770,10 @@ class RegisterFormProvider extends ChangeNotifier {
         "PrivateWardCode": "0",
         "PrivateVillageCode": "0",
         "UserRequestType": "",
+        "OfficeID": exchangeIdController.text,
          "DeviceId": deviceId
+
+
         //
         // "DepartmentId": UserData().model.value.deptID,
         //
@@ -729,6 +799,7 @@ class RegisterFormProvider extends ChangeNotifier {
         // "OfficeName": officeNameController.text.trim(),
         // "AllotmentDeptId": officeIdController.text,
         // "OtherOfficeAllotedDept": "", //other key exist but don't send value as discussed with pankaj sir (don't create input box for other case)
+
 
 
 
