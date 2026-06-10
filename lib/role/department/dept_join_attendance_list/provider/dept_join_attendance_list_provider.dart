@@ -546,7 +546,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       if (!isWholeMonthAbsent) ...[
                         /// ABSENT FIELD
                         const Text(
-                          "No. of Absent Days",
+                          "No. of Absent Days (Other than Govt. Holidays)",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
 
