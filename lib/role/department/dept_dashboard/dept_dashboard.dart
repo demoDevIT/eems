@@ -18,6 +18,7 @@ import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../dept_join_pending_list/dept_join_pending_list.dart';
 import '../dept_profile/dept_profile.dart';
+import 'modal/role_modal.dart';
 import 'provider/dept_dashboard_provider.dart';
 
 class DepartmentDashboardPage extends StatefulWidget {
@@ -29,6 +30,16 @@ class DepartmentDashboardPage extends StatefulWidget {
 
 class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   //const DepartmentDashboardPage({super.key});
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DepartmentDashboardProvider>()
+          .getRoleApi(context, "");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,51 +60,62 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
             ),
           ),
           actions: [
-            PopupMenuButton<String>(
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
-              onSelected: (value) {
-                switch (value) {
-                  case "profile":
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => DeptProfileScreen(
-                          isAppBarHide: true,
-                        ),
-                      ),
-                    );
-                    break;
+            Consumer<DepartmentDashboardProvider>(
+              builder: (context, provider, _) {
+                return PopupMenuButton<RoleData>(
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
 
-                  case "logout":
-                  // Your logout code
-                    break;
-                }
+                  onSelected: (RoleData role) {
+                    provider.selectedRole = role;
+
+                    print("Selected Role: ${role.roleName}");
+                    print("Role ID: ${role.roleID}");
+
+                    provider.notifyListeners();
+                  },
+
+                  itemBuilder: (context) {
+                    return provider.roleList.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final role = entry.value;
+
+                      return PopupMenuItem<RoleData>(
+                        value: role,
+                        padding: EdgeInsets.zero,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              dense: true,
+                              leading: const Icon(
+                                Icons.work_outline,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                role.roleName ?? "",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                role.officeNameEn ?? "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+
+                            if (index != provider.roleList.length - 1)
+                              const Divider(height: 1),
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  },
+                );
               },
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: "Role1",
-                  child: Row(
-                    children: [
-                      //Icon(Icons.person_outline),
-                      SizedBox(width: 10),
-                      Text("Role 1"),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: "Role2",
-                  child: Row(
-                    children: [
-                      //Icon(Icons.logout),
-                      SizedBox(width: 10),
-                      Text("Role 2"),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ],
         ),

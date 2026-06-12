@@ -13,6 +13,7 @@ import '../../../utils/global.dart';
 import '../../../utils/images.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/user_new.dart';
+import '../../department/dept_dashboard/modal/role_modal.dart';
 import '../loginscreen/screen/login_screen.dart';
 import '../qr_scanner/qr_scanner_screen.dart';
 import 'candidate_attendance_screen.dart';
@@ -31,6 +32,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DashboardProvider>().getRoleApi(context, "");
+
       // Provider.of<DashboardProvider>(
       //   context,
       //   listen: false,
@@ -65,6 +68,72 @@ class _DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
+
+          actions: [
+            Consumer<DashboardProvider>(
+              builder: (context, provider, _) {
+                return PopupMenuButton<RoleData>(
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
+                  onSelected: (RoleData role) async {
+                    provider.selectedRole = role;
+
+                    provider.roleNameController.text = role.roleName ?? "";
+                    provider.roleIdController.text = role.roleID?.toString() ?? "";
+
+                    provider.notifyListeners();
+
+                    print("Selected Role : ${role.roleName}");
+                    print("Role Id : ${role.roleID}");
+
+                    await provider.GetSSOUserDetail(
+                      context,
+                      // switchRoleID: role.roleID!,
+                      // switchOfficeID: role.officeID!, // use your actual field name
+                    );
+                  },
+                  itemBuilder: (context) {
+                    return provider.roleList.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final role = entry.value;
+
+                      return PopupMenuItem<RoleData>(
+                        value: role,
+                        padding: EdgeInsets.zero,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              dense: true,
+                              leading: const Icon(
+                                Icons.work_outline,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                role.roleName ?? "",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                role.officeNameEn ?? "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (index != provider.roleList.length - 1)
+                              const Divider(height: 1),
+                          ],
+                        ),
+                      );
+                    }).toList();
+                  },
+                );
+              },
+            ),
+          ],
         ),
 
         body: SingleChildScrollView(

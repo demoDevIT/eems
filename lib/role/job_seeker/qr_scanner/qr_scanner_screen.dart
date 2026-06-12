@@ -172,6 +172,7 @@ var provider;
         print('UserIDDDDDDD ==> $userId');
         final String roleId = decoded[0]['Roleid'];
         final String eventId = decoded[0]['EventId'];
+        final String eventRegId = decoded[0]['EventRegistrationId'];
 
         final String encryptedLatitude = decoded[0]['Latitude'];
         final String encryptedLongitude = decoded[0]['Longitude'];
@@ -215,6 +216,7 @@ var provider;
           context,
           // userLatitude,
           // userLongitude,
+          eventRegId.toString(),
           roleId.toString(),
           userId.toString(),
           eventId,

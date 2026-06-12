@@ -191,40 +191,64 @@ class LoginProvider with ChangeNotifier {
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
               if (sm.data != null && sm.data!.userID != null &&
                   sm.data!.userID! > 0 && sm.data!.roleID > 0) {
-                //callbasicdetail API for department getDeptBasicDetails
-                UserData().model.value.officeID = sm.data!.officeID;
-                UserData().model.value.districtCode = sm.data!.districtCode;
-                UserData().model.value.deptID = sm.data!.deptID;
-                UserData().model.value.internshipDeptTypeID = sm.data!.internshipDeptTypeID;
-                UserData().model.value.NameAsjanAdhar = sm.data!.NameAsjanAdhar;
-                UserData().model.value.DistrictEn = sm.data!.DistrictEn;
-                // UserData().model.value.postalAddress = sm.data!.postalAddress;
-                // UserData().model.value.empNumber = sm.data!.employeeNumber;
-                print("PA1 = ${sm.data!.postalAddress}");
-                print("PA2 = ${sm.data!.postalAddress1}");
 
-                print("EMP1 = ${sm.data!.employeeNumber}");
-                print("EMP2 = ${sm.data!.empNumber}");
+                if (sm.data!.roleID == 22) {
 
-                final design11 = UserData().model.value.designation;
-                final design22 = sm.data!.designation;
+                  //callbasicdetail API for department getDeptBasicDetails
+                  UserData().model.value.officeID = sm.data!.officeID;
+                  UserData().model.value.districtCode = sm.data!.districtCode;
+                  UserData().model.value.deptID = sm.data!.deptID;
+                  UserData().model.value.internshipDeptTypeID =
+                      sm.data!.internshipDeptTypeID;
+                  UserData().model.value.NameAsjanAdhar =
+                      sm.data!.NameAsjanAdhar;
+                  UserData().model.value.DistrictEn = sm.data!.DistrictEn;
+                  // UserData().model.value.postalAddress = sm.data!.postalAddress;
+                  // UserData().model.value.empNumber = sm.data!.employeeNumber;
+                  print("PA1 = ${sm.data!.postalAddress}");
+                  print("PA2 = ${sm.data!.postalAddress1}");
 
-                print("design11->$design11");
-                print("design22->$design22");
+                  print("EMP1 = ${sm.data!.employeeNumber}");
+                  print("EMP2 = ${sm.data!.empNumber}");
 
-                UserData().model.value.designation = sm.data!.designation;
+                  final design11 = UserData().model.value.designation;
+                  final design22 = sm.data!.designation;
 
-                // UserData().model.value.mailPersonal = sm.data!.mailPersonal;
-                // UserData().model.value.mailOfficial = sm.data!.mailOfficial;
-                // UserData().model.value.postalAddress = sm.data!.postalAddress1;
-                // UserData().model.value.empNumber = sm.data!.employeeNumber;
-                // UserData().model.value.gENDER = sm.data!.gender;
+                  print("design11->$design11");
+                  print("design22->$design22");
+
+                  UserData().model.value.designation = sm.data!.designation;
+
+                  // UserData().model.value.mailPersonal = sm.data!.mailPersonal;
+                  // UserData().model.value.mailOfficial = sm.data!.mailOfficial;
+                  // UserData().model.value.postalAddress = sm.data!.postalAddress1;
+                  // UserData().model.value.empNumber = sm.data!.employeeNumber;
+                  // UserData().model.value.gENDER = sm.data!.gender;
 
 
-                await saveRememberMeData();
-                getDeptBasicDetails(
-                    context, sm.data!.userID.toString(), sm.data!.roleID,
-                    ssoId);
+                  await saveRememberMeData();
+                  getDeptBasicDetails(
+                      context, sm.data!.userID.toString(), sm.data!.roleID,
+                      ssoId);
+                } else { //earlier it was role 6 , currently 24, future any of role will be set
+                  // print("Redirecting to CandidateAttendanceScreen"); job fair login
+
+                  print("Redirecting to DashboardScreen");
+                  await saveRememberMeData();
+                  Navigator.of(context).push(
+                    RightToLeftRoute(
+                      page: ChangeNotifierProvider(
+                        create: (_) =>
+                            DashboardProvider(
+                              commonRepo: commonRepo, // ✅ FIX
+                            ),
+                        child: const DashboardScreen(),
+                      ),
+                      duration: const Duration(milliseconds: 500),
+                      startOffset: const Offset(-1.0, 0.0),
+                    ),
+                  );
+                }
               } else {
                 Navigator.of(context).push(
                   RightToLeftRoute(
@@ -256,24 +280,7 @@ class LoginProvider with ChangeNotifier {
                     sm.data!.userID! > 0 && sm.data!.roleID > 0) {
                   // getEmpBasicDetailsApi(context,"2261606",7);
                   // return null;
-                  if (sm.data!.roleID == 24) { //earlier it was role 6
-                    // print("Redirecting to CandidateAttendanceScreen");
-                    print("Redirecting to DashboardScreen");
-                    await saveRememberMeData();
-                    Navigator.of(context).push(
-                      RightToLeftRoute(
-                        page: ChangeNotifierProvider(
-                          create: (_) =>
-                              DashboardProvider(
-                                commonRepo: commonRepo, // ✅ FIX
-                              ),
-                          child: const DashboardScreen(),
-                        ),
-                        duration: const Duration(milliseconds: 500),
-                        startOffset: const Offset(-1.0, 0.0),
-                      ),
-                    );
-                  } else if (sm.data!.roleID == 4) { //jobseeker
+                  if (sm.data!.roleID == 4) { //jobseeker
                     await saveRememberMeData();
                     getBasicDetailsApi(
                         context, sm.data!.userID.toString(), sm.data!.roleID);

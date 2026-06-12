@@ -22,6 +22,7 @@ class QrScannerScreenProvider extends ChangeNotifier {
       BuildContext context,
       // double? currentLat,
       // double? currentLng,
+      String? eventRegID,
       String? roleId,
       String? userId,
       String? eventId,
@@ -39,6 +40,7 @@ class QrScannerScreenProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> body = {
         "ActionName": "MarkedAttendancebyQR",
+        "EventRegistrationId": eventRegID,
         "RoleId": roleId,
         "EventId": eventId,
         "userId": userId,

@@ -9,6 +9,7 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
 import '../../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../../dept_join_pending_list/dept_join_pending_list.dart';
+import '../modal/role_modal.dart';
 
 class DepartmentDashboardProvider extends ChangeNotifier {
    final CommonRepo commonRepo;
@@ -22,6 +23,15 @@ class DepartmentDashboardProvider extends ChangeNotifier {
   bool showResult = false;
 
   TextEditingController regNoController = TextEditingController();
+
+   ///role dropdown
+   bool isRoleLoading = false;
+
+   List<RoleData> roleList = [];
+   RoleData? selectedRole;
+
+   final TextEditingController roleNameController = TextEditingController();
+   final TextEditingController roleIdController = TextEditingController();
 
    Future<void> searchByRegistration(BuildContext context) async {
 
@@ -151,4 +161,40 @@ class DepartmentDashboardProvider extends ChangeNotifier {
     debugPrint("Pending list for department joining clicked");
     // TODO: Navigate to pending list page
   }
+
+   Future<void> getRoleApi(BuildContext context, String districtCode) async {
+     isRoleLoading = true;
+
+     selectedRole = null;
+     roleNameController.clear();
+     roleIdController.clear();
+     roleList.clear();
+
+     notifyListeners();
+
+     try {
+       final apiResponse =
+       // await commonRepo.get("Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6");
+       await commonRepo.get("Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6");
+
+       if (apiResponse.response?.statusCode == 200) {
+         dynamic responseData = apiResponse.response!.data;
+         if (responseData is String) {
+           responseData = jsonDecode(responseData);
+         }
+
+         if (responseData['Data'] != null) {
+           for (var e in responseData['Data']) {
+             roleList.add(RoleData.fromJson(e));
+           }
+         }
+         print(RoleData);
+       }
+     } catch (_) {
+       roleList.clear();
+     }
+
+     isRoleLoading = false;
+     notifyListeners();
+   }
 }
