@@ -237,9 +237,6 @@ class LoginProvider with ChangeNotifier {
                   print("Redirecting to DashboardScreen");
                   await saveRememberMeData();
 
-                  // getJobFairUserDetails(
-                  //     context, sm.data!);
-
                   UserData().model.value.userId = sm.data!.userID;
                   UserData().model.value.sso = sm.data!.sSOID;
                   UserData().model.value.roleId = sm.data!.roleID;
@@ -261,6 +258,9 @@ class LoginProvider with ChangeNotifier {
                       startOffset: const Offset(-1.0, 0.0),
                     ),
                   );
+
+                  // getJobFairUserDetails(
+                  //     context, sm.data!.userID.toString(), sm.data!.roleID, sm.data!.officeID, sm.data!.searchRecordID, ssoId);
 
                 }
               } else {
@@ -648,124 +648,115 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  // Future<JobFairModal?> getJobFairUserDetails(
-  //     BuildContext context, userData) async {
-  //   var isInternet = await UtilityClass.checkInternetConnectivity();
-  //   if (isInternet) {
-  //     try {
-  //       // Map<String, dynamic> body = {
-  //       //   "UserID": userId,
-  //       //   "SSOID": ssoID,
-  //       //   "RoleID": roleId, //22, //roleId
-  //       // };
-  //       // ProgressDialog.showLoadingDialog(context);
-  //       // ApiResponse apiResponse =
-  //       // await commonRepo.post("Common/GetInternshipDepartmentUserProfile", body);
-  //       // ProgressDialog.closeLoadingDialog(context);
-  //       // if (apiResponse.response != null &&
-  //       //     apiResponse.response?.statusCode == 200) {
-  //       //   var responseData = apiResponse.response?.data;
-  //       //   if (responseData is String) {
-  //       //     responseData = jsonDecode(responseData);
-  //       //   }
-  //       //   String? authToken =
-  //       //       apiResponse.response?.headers?['x-authtoken']?.first;
-  //       //   print(authToken);
-  //        // final sm = DeptInfoModal.fromJson(responseData);
-  //        //  if (sm.state == 200) {
-  //        //    if(isChecked){
-  //             final pref = AppSharedPref();
-  //             UserData().model.value.userId = JobFairModal().data![0].userID;
-  //             UserData().model.value.roleId = roleId;
-  //             UserData().model.value.name = sm.data![0].name;
-  //             UserData().model.value.mobileNo = sm.data![0].mobileNo;
-  //             UserData().model.value.userType = sm.data![0].userType;
-  //             UserData().model.value.office = sm.data![0].office;
-  //             UserData().model.value.empNumber = sm.data![0].empNumber;
-  //             UserData().model.value.firstName = sm.data![0].firstName;
-  //             UserData().model.value.lastName = sm.data![0].lastName;
-  //             UserData().model.value.postalAddress = sm.data![0].postalAddress;
-  //             UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
-  //             UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
-  //             UserData().model.value.gENDER = sm.data![0].gender;
-  //             UserData().model.value.territoryType = sm.data![0].territoryType;
-  //             UserData().model.value.village = sm.data![0].village;
-  //             UserData().model.value.gp = sm.data![0].gp;
-  //             UserData().model.value.block = sm.data![0].block;
-  //             UserData().model.value.city = sm.data![0].city;
-  //             UserData().model.value.sso = ssoID;
-  //             UserData().model.value.isLogin = true;
-  //             pref.save('UserData', UserData().model.value);
-  //           // }
-  //           // else{
-  //           //   final pref = AppSharedPref();
-  //           //   UserData().model.value.userId = sm.data![0].userID;
-  //           //   UserData().model.value.roleId = roleId;
-  //           //   UserData().model.value.name = sm.data![0].name;
-  //           //   UserData().model.value.mobileNo = sm.data![0].mobileNo;
-  //           //   UserData().model.value.userType = sm.data![0].userType;
-  //           //   UserData().model.value.office = sm.data![0].office;
-  //           //   UserData().model.value.empNumber = sm.data![0].empNumber;
-  //           //   UserData().model.value.firstName = sm.data![0].firstName;
-  //           //   UserData().model.value.lastName = sm.data![0].lastName;
-  //           //   UserData().model.value.postalAddress = sm.data![0].postalAddress;
-  //           //   UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
-  //           //   UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
-  //           //   UserData().model.value.gENDER = sm.data![0].gender;
-  //           //   UserData().model.value.territoryType = sm.data![0].territoryType;
-  //           //   UserData().model.value.village = sm.data![0].village;
-  //           //   UserData().model.value.gp = sm.data![0].gp;
-  //           //   UserData().model.value.block = sm.data![0].block;
-  //           //   UserData().model.value.city = sm.data![0].city;
-  //           //   UserData().model.value.sso = ssoID;
-  //           //   UserData().model.value.isLogin = true;
-  //           //   pref.save('UserData', UserData().model.value);
-  //           // }
-  //
-  //             Navigator.of(context).push(
-  //               RightToLeftRoute(
-  //                 page: ChangeNotifierProvider(
-  //                   create: (_) =>
-  //                       DashboardProvider(
-  //                         commonRepo: commonRepo, // ✅ FIX
-  //                       ),
-  //                   child: const DashboardScreen(),
-  //                 ),
-  //                 duration: const Duration(milliseconds: 500),
-  //                 startOffset: const Offset(-1.0, 0.0),
-  //               ),
-  //             );
-  //
-  //
-  //           return sm;
-  //         // } else {
-  //         //   final smmm = DeptInfoModal(
-  //         //       state: 0, message: sm.message.toString());
-  //         //
-  //         //   showAlertError(
-  //         //       smmm.message.toString().isNotEmpty
-  //         //           ? smmm.message.toString()
-  //         //           : "Invalid SSO ID and Password",
-  //         //       context);
-  //         //   return smmm;
-  //         // }
-  //       // } else {
-  //       //   return DeptInfoModal(
-  //       //     state: 0,
-  //       //     message: 'Something went wrong',
-  //       //   );
-  //       // }
-  //     } on Exception catch (err) {
-  //       ProgressDialog.closeLoadingDialog(context);
-  //       final sm = DeptInfoModal(state: 0, message: err.toString());
-  //       showAlertError(sm.message.toString(), context);
-  //       return sm;
-  //     }
-  //   } else {
-  //     showAlertError(
-  //         AppLocalizations.of(context)!.internet_connection, context);
-  //   }
-  // }
+//   Future<JobFairModal?> getJobFairUserDetails(
+//       BuildContext context, String userId, int? roleId, int? officeId, String searchRecId, String ssoID) async {
+//     var isInternet = await UtilityClass.checkInternetConnectivity();
+//     print("0000");
+//     if (isInternet) {
+//       try {
+//         Map<String, dynamic> body = {
+//           "SearchRecordID": searchRecId,
+//           "SwitchRoleID": roleId,
+//           "SwitchOfficeID": officeId
+//         };
+//         print("xxxxx");
+//         ProgressDialog.showLoadingDialog(context);
+//         ApiResponse apiResponse =
+//         await commonRepo.post("Authentication/GetSSOUserDetailsNew", body);
+//         ProgressDialog.closeLoadingDialog(context);
+//         print("vvvv");
+//         if (apiResponse.response != null &&
+//             apiResponse.response?.statusCode == 200) {
+//           print("sss");
+//           var responseData = apiResponse.response?.data;
+//           if (responseData is String) {
+//             responseData = jsonDecode(responseData);
+//           }
+//           String? authToken =
+//               apiResponse.response?.headers?['x-authtoken']?.first;
+//           print(authToken);
+//
+//           print("ffff");
+//           print(jsonEncode(responseData));
+//          final sm = JobFairModal.fromJson(responseData);
+//           print("1111");
+//           if (sm.state == 200) {
+//             if(isChecked){
+//               final pref = AppSharedPref();
+//               UserData().model.value.userId = sm.data!.userID;
+//               UserData().model.value.roleId = roleId;
+//               UserData().model.value.name = sm.data!.displayName;
+//               UserData().model.value.mobileNo = sm.data!.mobileno;
+//               UserData().model.value.userType = sm.data!.userType;
+//               UserData().model.value.empNumber = sm.data!.empNumber;
+//               UserData().model.value.firstName = sm.data!.firstName;
+//               UserData().model.value.lastName = sm.data!.lastName;
+//               UserData().model.value.postalAddress = sm.data!.postalAddress;
+//               UserData().model.value.mailPersonal = sm.data!.mailPersonal;
+//               UserData().model.value.mailOfficial = sm.data!.mailOfficial;
+//               UserData().model.value.gENDER = sm.data!.gender;
+//               UserData().model.value.sso = ssoID;
+//               UserData().model.value.isLogin = true;
+//               pref.save('UserData', UserData().model.value);
+//             }
+//             else{
+//               final pref = AppSharedPref();
+//               UserData().model.value.userId = sm.data!.userID;
+//               UserData().model.value.roleId = roleId;
+//               UserData().model.value.name = sm.data!.displayName;
+//               UserData().model.value.mobileNo = sm.data!.mobileno;
+//               UserData().model.value.userType = sm.data!.userType;
+//               UserData().model.value.empNumber = sm.data!.empNumber;
+//               UserData().model.value.firstName = sm.data!.firstName;
+//               UserData().model.value.lastName = sm.data!.lastName;
+//               UserData().model.value.postalAddress = sm.data!.postalAddress;
+//               UserData().model.value.mailPersonal = sm.data!.mailPersonal;
+//               UserData().model.value.mailOfficial = sm.data!.mailOfficial;
+//               UserData().model.value.gENDER = sm.data!.gender;
+//               UserData().model.value.sso = ssoID;
+//               UserData().model.value.isLogin = true;
+//               pref.save('UserData', UserData().model.value);
+//             }
+// print("2222");
+//               Navigator.of(context).push(
+//                 RightToLeftRoute(
+//                   page: const DashboardScreen(),
+//                   duration: const Duration(milliseconds: 500),
+//                   startOffset: const Offset(-1.0, 0.0),
+//                 ),
+//               );
+//
+//             print("3333");
+//
+//             return sm;
+//           } else {
+//             final smmm = JobFairModal(
+//                 state: 0, message: sm.message.toString());
+//             print("4444");
+//             showAlertError(
+//                 smmm.message.toString().isNotEmpty
+//                     ? smmm.message.toString()
+//                     : "Invalid SSO ID and Password",
+//                 context);
+//             return smmm;
+//           }
+//         } else {
+//           return JobFairModal(
+//             state: 0,
+//             message: 'Something went wrong',
+//           );
+//         }
+//       } catch (e, stackTrace) {
+//         ProgressDialog.closeLoadingDialog(context);
+//         print("Exception: $e");
+//         print(stackTrace);
+//         showAlertError(e.toString(), context);
+//       }
+//     } else {
+//       showAlertError(
+//           AppLocalizations.of(context)!.internet_connection, context);
+//     }
+//   }
 
     Future<void> callSSOAuthApi(BuildContext buildContext) async {
       Map<String, dynamic> body = {

@@ -178,7 +178,7 @@ class DashboardProvider extends ChangeNotifier {
           // UserData().model.value.deptID = sm.data!.deptID;
 
           print("userDATA-------->");
-          Navigator.of(context).push(
+          Navigator.of(context).pushAndRemoveUntil(
             RightToLeftRoute(
               page: ChangeNotifierProvider(
                 create: (_) =>
@@ -190,6 +190,7 @@ class DashboardProvider extends ChangeNotifier {
               duration: const Duration(milliseconds: 500),
               startOffset: const Offset(-1.0, 0.0),
             ),
+                (route) => false,
           );
         }
 
@@ -253,12 +254,13 @@ class DashboardProvider extends ChangeNotifier {
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
 
-            Navigator.of(context).push(
+            Navigator.of(context).pushAndRemoveUntil(
               RightToLeftRoute(
                 page: const DepartmentDashboardPage(),
                 duration: const Duration(milliseconds: 500),
                 startOffset: const Offset(-1.0, 0.0),
               ),
+                  (route) => false,
             );
             return sm;
           } else {

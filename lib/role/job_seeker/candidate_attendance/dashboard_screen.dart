@@ -73,9 +73,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Consumer<DashboardProvider>(
               builder: (context, provider, _) {
                 return PopupMenuButton<RoleData>(
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
+                  offset: const Offset(0, 10), // opens below button
+                  position: PopupMenuPosition.under,
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.95,
+                    maxWidth: MediaQuery.of(context).size.width * 0.95,
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.manage_accounts,
+                            color: Colors.white, size: 18),
+                        SizedBox(width: 6),
+                        Text(
+                          "Role",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(width: 4),
+                        Icon(Icons.keyboard_arrow_down,
+                            color: Colors.white),
+                      ],
+                    ),
                   ),
                   onSelected: (RoleData role) async {
                     provider.selectedRole = role;
@@ -105,30 +136,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return PopupMenuItem<RoleData>(
                         value: role,
                         padding: EdgeInsets.zero,
-                        child: Column(
-                          children: [
-                            ListTile(
-                              dense: true,
-                              leading: const Icon(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
                                 Icons.work_outline,
                                 color: Colors.blue,
                               ),
-                              title: Text(
-                                role.roleName ?? "",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      role.roleName ?? "",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    // const SizedBox(height: 4),
+                                    // Text(
+                                    //   role.officeNameEn ?? "",
+                                    //   style: TextStyle(
+                                    //     color: Colors.grey.shade600,
+                                    //     fontSize: 12,
+                                    //   ),
+                                    // ),
+                                  ],
                                 ),
                               ),
-                              // subtitle: Text(
-                              //   role.officeNameEn ?? "",
-                              //   maxLines: 1,
-                              //   overflow: TextOverflow.ellipsis,
-                              // ),
-                            ),
-                            if (index != provider.roleList.length - 1)
-                              const Divider(height: 1),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }).toList();
@@ -235,68 +279,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            /// Select Role Label
-            const Padding(
-              padding: EdgeInsets.only(left: 4),
-              child: Text(
-                "SELECT ROLE",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff7B849B),
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            /// Dropdown
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xffE7EBF3)),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<RoleData>(
-                  isExpanded: true,
-                  value: provider.selectedRole,
-                  hint: const Text(
-                    "Select Role",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                  items: provider.roleList.map((role) {
-                    return DropdownMenuItem<RoleData>(
-                      value: role,
-                      child: Text(
-                        role.roleName ?? "",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (role) async {
-
-                    if (role == null) return;
-
-                    provider.selectedRole = role;
-                    provider.notifyListeners();
-
-                    if (role.roleID != null && role.officeID != null) {
-                      await provider.GetSSOUserDetail(
-                        context,
-                        switchRoleID: role.roleID!,
-                        switchOfficeID: role.officeID!,
-                      );
-                    }
-                  },
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 14),
+            // /// Select Role Label
+            // const Padding(
+            //   padding: EdgeInsets.only(left: 4),
+            //   child: Text(
+            //     "SELECT ROLE",
+            //     style: TextStyle(
+            //       fontSize: 13,
+            //       fontWeight: FontWeight.w700,
+            //       color: Color(0xff7B849B),
+            //       letterSpacing: 0.5,
+            //     ),
+            //   ),
+            // ),
+            //
+            // const SizedBox(height: 10),
+            //
+            // /// Dropdown
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 14),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(14),
+            //     border: Border.all(color: const Color(0xffE7EBF3)),
+            //   ),
+            //   child: DropdownButtonHideUnderline(
+            //     child: DropdownButton<RoleData>(
+            //       isExpanded: true,
+            //       value: provider.selectedRole,
+            //       hint: const Text(
+            //         "Select Role",
+            //         style: TextStyle(fontSize: 15),
+            //       ),
+            //       icon: const Icon(Icons.keyboard_arrow_down_rounded),
+            //       items: provider.roleList.map((role) {
+            //         return DropdownMenuItem<RoleData>(
+            //           value: role,
+            //           child: Text(
+            //             role.roleName ?? "",
+            //             overflow: TextOverflow.ellipsis,
+            //           ),
+            //         );
+            //       }).toList(),
+            //       onChanged: (role) async {
+            //
+            //         if (role == null) return;
+            //
+            //         provider.selectedRole = role;
+            //         provider.notifyListeners();
+            //
+            //         if (role.roleID != null && role.officeID != null) {
+            //           await provider.GetSSOUserDetail(
+            //             context,
+            //             switchRoleID: role.roleID!,
+            //             switchOfficeID: role.officeID!,
+            //           );
+            //         }
+            //       },
+            //     ),
+            //   ),
+            // ),
+            //
+            // const SizedBox(height: 14),
 
             /// Department & Office Card
             Container(

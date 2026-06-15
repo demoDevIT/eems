@@ -3,7 +3,7 @@ class JobFairModal {
   bool? status;
   String? message;
   dynamic errorMessage;
-  List<JobFairData>? data;
+  JobFairData? data;
 
   JobFairModal(
       {this.state, this.status, this.message, this.errorMessage, this.data});
@@ -13,23 +13,24 @@ class JobFairModal {
     status = json['Status'];
     message = json['Message'];
     errorMessage = json['ErrorMessage'];
+
     if (json['Data'] != null) {
-      data = <JobFairData>[];
-      json['Data'].forEach((v) {
-        data!.add(new JobFairData.fromJson(v));
-      });
+      data = JobFairData.fromJson(json['Data']);
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['State'] = this.state;
-    data['Status'] = this.status;
-    data['Message'] = this.message;
-    data['ErrorMessage'] = this.errorMessage;
+    final Map<String, dynamic> data = {};
+
+    data['State'] = state;
+    data['Status'] = status;
+    data['Message'] = message;
+    data['ErrorMessage'] = errorMessage;
+
     if (this.data != null) {
-      data['Data'] = this.data!.map((v) => v.toJson()).toList();
+      data['Data'] = this.data!.toJson();
     }
+
     return data;
   }
 }
