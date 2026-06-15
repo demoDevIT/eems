@@ -1,16 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../../api_service/model/base/api_response.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/app_shared_prefrence.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
+import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../department/dept_dashboard/dept_dashboard.dart';
 import '../../../department/dept_dashboard/modal/dept_info_modal.dart';
 import '../../../department/dept_dashboard/modal/role_modal.dart';
+import '../dashboard_screen.dart';
+import 'package:provider/provider.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -41,9 +47,14 @@ class DashboardProvider extends ChangeNotifier {
 
     notifyListeners();
 
+    final userSSO = UserData().model.value.sso;
+    final deptId = UserData().model.value.deptID;
+    final roleId = UserData().model.value.roleId;
+
     try {
       final apiResponse = await commonRepo.get(
-        "Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6",
+        // "Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6",
+        "Authentication/GetUserRoleList/$userSSO/$deptId/false/$roleId",
       );
 
       if (apiResponse.response?.statusCode == 200) {
@@ -68,8 +79,12 @@ class DashboardProvider extends ChangeNotifier {
   }
 
 
-  Future<void> GetSSOUserDetail(BuildContext context) async {
+  Future<void> GetSSOUserDetail(BuildContext context, {
+    required int switchRoleID,
+    required int switchOfficeID,
+  }) async {
 
+    print("GetSSOUserDetail function call");
     var isInternet = await UtilityClass.checkInternetConnectivity();
 
     if (!isInternet) {
@@ -82,9 +97,9 @@ class DashboardProvider extends ChangeNotifier {
       ProgressDialog.showLoadingDialog(context);
 
       Map<String, dynamic> body = {
-        "SearchRecordID": "fdca10cd-f2f3-4d2e-a31d-fcc1500670f4",
-        "SwitchRoleID": 6,
-        "SwitchOfficeID": 24
+        "SearchRecordID": UserData().model.value.searchRecID,
+        "SwitchRoleID": switchRoleID,
+        "SwitchOfficeID": switchOfficeID
       };
 
       print("API Request Body: $body");
@@ -119,13 +134,14 @@ class DashboardProvider extends ChangeNotifier {
 
         int userID = responseData['Data']['UserID'];
         int roleID = responseData['Data']['RoleID'];
-        int SSOID = responseData['Data']['SSOID'];
+        String SSOID = responseData['Data']['SSOID'];
 
         print("userID: $userID");
         print("roleID: $roleID");
         print("SSOID: $SSOID");
 
         if(roleID == 22){
+          print("role ID 22");
           //redirect to dept dashboard
           //callbasicdetail API for department getDeptBasicDetails
           UserData().model.value.officeID = responseData['Data']['OfficeID'];
@@ -137,24 +153,47 @@ class DashboardProvider extends ChangeNotifier {
           responseData['Data']['NameAsjanAdhar'];
           UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
           UserData().model.value.designation = responseData['Data']['Designation'];
+          // UserData().model.value.departmentName = responseData['Data']['Designation'];
 
           getDeptBasicDetails(
               context, userID.toString(), roleID, SSOID.toString());
         }else{
+          print("role ID other=> $roleID");
           //redirect to job fair (dashboard page)
+
+          UserData().model.value.officeID = responseData['Data']['OfficeID'];
+          UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
+          UserData().model.value.deptID = responseData['Data']['DepartmentID'];
+          UserData().model.value.internshipDeptTypeID =
+          responseData['Data']['InternshipDeptTypeID'];
+          UserData().model.value.NameAsjanAdhar =
+          responseData['Data']['NameAsjanAdhar'];
+          UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
+          UserData().model.value.designation = responseData['Data']['Designation'];
+          UserData().model.value.userId = userID;
+          UserData().model.value.sso = SSOID;
+          UserData().model.value.roleId = roleID;
+          UserData().model.value.name = responseData['Data']['Name'];
+          // UserData().model.value.searchRecID = sm.data!.searchRecordID;
+          // UserData().model.value.deptID = sm.data!.deptID;
+
+          print("userDATA-------->");
+          Navigator.of(context).push(
+            RightToLeftRoute(
+              page: ChangeNotifierProvider(
+                create: (_) =>
+                    DashboardProvider(
+                      commonRepo: commonRepo, // ✅ FIX
+                    ),
+                child: const DashboardScreen(),
+              ),
+              duration: const Duration(milliseconds: 500),
+              startOffset: const Offset(-1.0, 0.0),
+            ),
+          );
         }
 
 
-        // Navigator.push( // send to dashboard according to usertype
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (_) => DeptJoinAttendanceListScreen(
-        //       registrationNumber: regNoController.text,
-        //       jobSeekerId: null,
-        //       userId: null,
-        //     ),
-        //   ),
-        // );
 
       } else {
         showAlertError("Something went wrong", context);
@@ -191,7 +230,6 @@ class DashboardProvider extends ChangeNotifier {
           print(authToken);
           final sm = DeptInfoModal.fromJson(responseData);
           if (sm.state == 200) {
-            if(isChecked){
               final pref = AppSharedPref();
               UserData().model.value.userId = sm.data![0].userID;
               UserData().model.value.roleId = roleId;
@@ -199,7 +237,6 @@ class DashboardProvider extends ChangeNotifier {
               UserData().model.value.mobileNo = sm.data![0].mobileNo;
               UserData().model.value.userType = sm.data![0].userType;
               UserData().model.value.office = sm.data![0].office;
-
               UserData().model.value.empNumber = sm.data![0].empNumber;
               UserData().model.value.firstName = sm.data![0].firstName;
               UserData().model.value.lastName = sm.data![0].lastName;
@@ -207,65 +244,14 @@ class DashboardProvider extends ChangeNotifier {
               UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
               UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
               UserData().model.value.gENDER = sm.data![0].gender;
-
-
-              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
-
-              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
-              // final des11 = UserData().model.value.designation;
-              // final des22 = sm.data![0].designation;
-              // print("des11->$des11");
-              // print("des22->$des22");
-              //
-              // UserData().model.value.designation = sm.data![0].designation;
               UserData().model.value.territoryType = sm.data![0].territoryType;
               UserData().model.value.village = sm.data![0].village;
               UserData().model.value.gp = sm.data![0].gp;
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
               UserData().model.value.sso = ssoID;
-              // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
-              // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
-              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
-              // UserData().model.value.empNumber = sm.data![0].empNumber;
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
-            }else{
-              final pref = AppSharedPref();
-              UserData().model.value.userId = sm.data![0].userID;
-              UserData().model.value.roleId = roleId;
-              UserData().model.value.name = sm.data![0].name;
-              UserData().model.value.mobileNo = sm.data![0].mobileNo;
-              UserData().model.value.userType = sm.data![0].userType;
-              UserData().model.value.office = sm.data![0].office;
-
-              UserData().model.value.empNumber = sm.data![0].empNumber;
-              UserData().model.value.firstName = sm.data![0].firstName;
-              UserData().model.value.lastName = sm.data![0].lastName;
-              UserData().model.value.postalAddress = sm.data![0].postalAddress;
-              UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
-              UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
-              UserData().model.value.gENDER = sm.data![0].gender;
-
-              // final des33 = UserData().model.value.designation;
-              // final des44 = sm.data![0].designation;
-              // print("des33->$des33");
-              // print("des44->$des44");
-              //
-              // UserData().model.value.designation = sm.data![0].designation;
-              UserData().model.value.territoryType = sm.data![0].territoryType;
-              UserData().model.value.village = sm.data![0].village;
-              UserData().model.value.gp = sm.data![0].gp;
-              UserData().model.value.block = sm.data![0].block;
-              UserData().model.value.city = sm.data![0].city;
-              UserData().model.value.sso = ssoID;
-              // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
-              // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
-              // UserData().model.value.postalAddress = sm.data![0].postalAddress;
-              // UserData().model.value.empNumber = sm.data![0].empNumber;
-              UserData().model.value.isLogin = true;
-              pref.save('UserData', UserData().model.value);
-            }
 
             Navigator.of(context).push(
               RightToLeftRoute(

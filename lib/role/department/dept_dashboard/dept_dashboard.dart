@@ -68,13 +68,25 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     color: Colors.black,
                   ),
 
-                  onSelected: (RoleData role) {
+                  onSelected: (RoleData role) async {
                     provider.selectedRole = role;
 
-                    print("Selected Role: ${role.roleName}");
-                    print("Role ID: ${role.roleID}");
+                    provider.roleNameController.text = role.roleName ?? "";
+                    provider.roleIdController.text = role.roleID?.toString() ?? "";
 
                     provider.notifyListeners();
+
+                    print("Selected Role : ${role.roleName}");
+                    print("Role Id : ${role.roleID}");
+
+                    final roleID = role.roleID;
+                    final officeID = role.officeID;
+
+                    await provider.GetSSOUserDetail(
+                      context,
+                      switchRoleID: roleID!,
+                      switchOfficeID: officeID!, // use your actual field name
+                    );
                   },
 
                   itemBuilder: (context) {
@@ -125,6 +137,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+
+                  _buildRoleSection(),
+
+                  const SizedBox(height: 18),
+
                   /// Search Buttons
                   Row(
                     children: [
@@ -308,6 +325,154 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           },
         ),
       );
+  }
+
+  Widget _buildRoleSection() {
+    return Consumer<DepartmentDashboardProvider>(
+      builder: (context, provider, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            /// Select Role Label
+            const Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Text(
+                "SELECT ROLE",
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff7B849B),
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// Dropdown
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xffE7EBF3)),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<RoleData>(
+                  isExpanded: true,
+                  value: provider.selectedRole,
+                  hint: const Text(
+                    "Select Role",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  items: provider.roleList.map((role) {
+                    return DropdownMenuItem<RoleData>(
+                      value: role,
+                      child: Text(
+                        role.roleName ?? "",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (role) async {
+                    if (role == null) return;
+
+                    provider.selectedRole = role;
+                    provider.notifyListeners();
+
+                    if (role.roleID != null && role.officeID != null) {
+                      await provider.GetSSOUserDetail(
+                        context,
+                        switchRoleID: role.roleID!,
+                        switchOfficeID: role.officeID!,
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            /// Department & Office Card
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: const Color(0xffE7EBF3),
+                ),
+              ),
+              child: Column(
+                children: [
+
+                  Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(
+                          flex: 3,
+                          child: Text(
+                            "Role :-",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff344054),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Text(
+                            UserData().model.value.role ?? "",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const Divider(height: 1),
+
+                  Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(
+                          flex: 3,
+                          child: Text(
+                            "Office Name :-",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff344054),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Text(
+                            UserData().model.value.office ?? "",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Side Drawer

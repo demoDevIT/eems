@@ -26,6 +26,7 @@ import '../../../department/register_form/register_form.dart';
 import '../../../employer/emp_profile/modal/emp_info_modal.dart';
 import '../../candidate_attendance/candidate_attendance_screen.dart';
 import '../../candidate_attendance/dashboard_screen.dart';
+import '../../candidate_attendance/modal/job_fair_modal.dart';
 import '../../candidate_attendance/provider/candidate_attendance_provider.dart';
 import '../../candidate_attendance/provider/dashboard_provider.dart';
 import '../../jobseekerdashboard/job_seeker_dashboard.dart';
@@ -235,6 +236,18 @@ class LoginProvider with ChangeNotifier {
 
                   print("Redirecting to DashboardScreen");
                   await saveRememberMeData();
+
+                  // getJobFairUserDetails(
+                  //     context, sm.data!);
+
+                  UserData().model.value.userId = sm.data!.userID;
+                  UserData().model.value.sso = sm.data!.sSOID;
+                  UserData().model.value.roleId = sm.data!.roleID;
+                  UserData().model.value.name = sm.data!.displayName;
+                  UserData().model.value.searchRecID = sm.data!.searchRecordID;
+                  UserData().model.value.deptID = sm.data!.deptID;
+                  UserData().model.value.officeID = sm.data!.officeID;
+
                   Navigator.of(context).push(
                     RightToLeftRoute(
                       page: ChangeNotifierProvider(
@@ -248,6 +261,7 @@ class LoginProvider with ChangeNotifier {
                       startOffset: const Offset(-1.0, 0.0),
                     ),
                   );
+
                 }
               } else {
                 Navigator.of(context).push(
@@ -503,6 +517,8 @@ class LoginProvider with ChangeNotifier {
           "UserID": userId,
           "SSOID": ssoID,
           "RoleID": roleId, //22, //roleId
+          // "districtCode": "",
+          // "officeID": ""
         };
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse =
@@ -631,6 +647,125 @@ class LoginProvider with ChangeNotifier {
           AppLocalizations.of(context)!.internet_connection, context);
     }
   }
+
+  // Future<JobFairModal?> getJobFairUserDetails(
+  //     BuildContext context, userData) async {
+  //   var isInternet = await UtilityClass.checkInternetConnectivity();
+  //   if (isInternet) {
+  //     try {
+  //       // Map<String, dynamic> body = {
+  //       //   "UserID": userId,
+  //       //   "SSOID": ssoID,
+  //       //   "RoleID": roleId, //22, //roleId
+  //       // };
+  //       // ProgressDialog.showLoadingDialog(context);
+  //       // ApiResponse apiResponse =
+  //       // await commonRepo.post("Common/GetInternshipDepartmentUserProfile", body);
+  //       // ProgressDialog.closeLoadingDialog(context);
+  //       // if (apiResponse.response != null &&
+  //       //     apiResponse.response?.statusCode == 200) {
+  //       //   var responseData = apiResponse.response?.data;
+  //       //   if (responseData is String) {
+  //       //     responseData = jsonDecode(responseData);
+  //       //   }
+  //       //   String? authToken =
+  //       //       apiResponse.response?.headers?['x-authtoken']?.first;
+  //       //   print(authToken);
+  //        // final sm = DeptInfoModal.fromJson(responseData);
+  //        //  if (sm.state == 200) {
+  //        //    if(isChecked){
+  //             final pref = AppSharedPref();
+  //             UserData().model.value.userId = JobFairModal().data![0].userID;
+  //             UserData().model.value.roleId = roleId;
+  //             UserData().model.value.name = sm.data![0].name;
+  //             UserData().model.value.mobileNo = sm.data![0].mobileNo;
+  //             UserData().model.value.userType = sm.data![0].userType;
+  //             UserData().model.value.office = sm.data![0].office;
+  //             UserData().model.value.empNumber = sm.data![0].empNumber;
+  //             UserData().model.value.firstName = sm.data![0].firstName;
+  //             UserData().model.value.lastName = sm.data![0].lastName;
+  //             UserData().model.value.postalAddress = sm.data![0].postalAddress;
+  //             UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+  //             UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+  //             UserData().model.value.gENDER = sm.data![0].gender;
+  //             UserData().model.value.territoryType = sm.data![0].territoryType;
+  //             UserData().model.value.village = sm.data![0].village;
+  //             UserData().model.value.gp = sm.data![0].gp;
+  //             UserData().model.value.block = sm.data![0].block;
+  //             UserData().model.value.city = sm.data![0].city;
+  //             UserData().model.value.sso = ssoID;
+  //             UserData().model.value.isLogin = true;
+  //             pref.save('UserData', UserData().model.value);
+  //           // }
+  //           // else{
+  //           //   final pref = AppSharedPref();
+  //           //   UserData().model.value.userId = sm.data![0].userID;
+  //           //   UserData().model.value.roleId = roleId;
+  //           //   UserData().model.value.name = sm.data![0].name;
+  //           //   UserData().model.value.mobileNo = sm.data![0].mobileNo;
+  //           //   UserData().model.value.userType = sm.data![0].userType;
+  //           //   UserData().model.value.office = sm.data![0].office;
+  //           //   UserData().model.value.empNumber = sm.data![0].empNumber;
+  //           //   UserData().model.value.firstName = sm.data![0].firstName;
+  //           //   UserData().model.value.lastName = sm.data![0].lastName;
+  //           //   UserData().model.value.postalAddress = sm.data![0].postalAddress;
+  //           //   UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
+  //           //   UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
+  //           //   UserData().model.value.gENDER = sm.data![0].gender;
+  //           //   UserData().model.value.territoryType = sm.data![0].territoryType;
+  //           //   UserData().model.value.village = sm.data![0].village;
+  //           //   UserData().model.value.gp = sm.data![0].gp;
+  //           //   UserData().model.value.block = sm.data![0].block;
+  //           //   UserData().model.value.city = sm.data![0].city;
+  //           //   UserData().model.value.sso = ssoID;
+  //           //   UserData().model.value.isLogin = true;
+  //           //   pref.save('UserData', UserData().model.value);
+  //           // }
+  //
+  //             Navigator.of(context).push(
+  //               RightToLeftRoute(
+  //                 page: ChangeNotifierProvider(
+  //                   create: (_) =>
+  //                       DashboardProvider(
+  //                         commonRepo: commonRepo, // ✅ FIX
+  //                       ),
+  //                   child: const DashboardScreen(),
+  //                 ),
+  //                 duration: const Duration(milliseconds: 500),
+  //                 startOffset: const Offset(-1.0, 0.0),
+  //               ),
+  //             );
+  //
+  //
+  //           return sm;
+  //         // } else {
+  //         //   final smmm = DeptInfoModal(
+  //         //       state: 0, message: sm.message.toString());
+  //         //
+  //         //   showAlertError(
+  //         //       smmm.message.toString().isNotEmpty
+  //         //           ? smmm.message.toString()
+  //         //           : "Invalid SSO ID and Password",
+  //         //       context);
+  //         //   return smmm;
+  //         // }
+  //       // } else {
+  //       //   return DeptInfoModal(
+  //       //     state: 0,
+  //       //     message: 'Something went wrong',
+  //       //   );
+  //       // }
+  //     } on Exception catch (err) {
+  //       ProgressDialog.closeLoadingDialog(context);
+  //       final sm = DeptInfoModal(state: 0, message: err.toString());
+  //       showAlertError(sm.message.toString(), context);
+  //       return sm;
+  //     }
+  //   } else {
+  //     showAlertError(
+  //         AppLocalizations.of(context)!.internet_connection, context);
+  //   }
+  // }
 
     Future<void> callSSOAuthApi(BuildContext buildContext) async {
       Map<String, dynamic> body = {
