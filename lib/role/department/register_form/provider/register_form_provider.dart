@@ -507,6 +507,7 @@ class RegisterFormProvider extends ChangeNotifier {
 
   Future<bool> loginHistoryMessagesApi(BuildContext context) async {
     try {
+      String? deviceId = await UtilityClass.getDeviceId();
       Map<String, dynamic> body = {
         "SMSCategoryType": "LoginOTPHistory",
         "TemplateID": "",
@@ -522,7 +523,8 @@ class RegisterFormProvider extends ChangeNotifier {
         "CreatedBy_IPv6": "",
         "Action": "Insert",
         "uniqueId": "EMPLOYMENT_SMS",
-        "isManualDeveloperLogin": 0
+        "isManualDeveloperLogin": 0,
+        "DeviceId": deviceId
       };
 
       print("========== LOGIN HISTORY API ==========");
@@ -640,6 +642,7 @@ class RegisterFormProvider extends ChangeNotifier {
       String otp,
       ) async {
     try {
+      String? deviceId = await UtilityClass.getDeviceId();
       Map<String, dynamic> body = {
         "SMSCategoryType": "LoginOTPHistory",
         "TemplateID": "1407170730552013237",
@@ -666,6 +669,7 @@ class RegisterFormProvider extends ChangeNotifier {
 
         "IsLocal": true,
         "isManualDeveloperLogin": 1,
+        "DeviceId": deviceId
       };
 
       print("========== VERIFY OTP REQUEST ==========");

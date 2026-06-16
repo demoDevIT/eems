@@ -54,6 +54,11 @@ class LoginProvider with ChangeNotifier {
   TextEditingController _SSOIDController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  String? otpResponseId;
+  String? otpResponseCode;
+  String? otpRequestJson;
+  String? otpResponseJson;
+
   //comment this part when test with other credentials
   login_provider() {
     // 👇 Set default test values
@@ -227,10 +232,55 @@ class LoginProvider with ChangeNotifier {
                   // UserData().model.value.gENDER = sm.data!.gender;
 
 
+                  // await saveRememberMeData();
+                  // getDeptBasicDetails(
+                  //     context, sm.data!.userID.toString(), sm.data!.roleID,
+                  //     ssoId);
+
                   await saveRememberMeData();
-                  getDeptBasicDetails(
-                      context, sm.data!.userID.toString(), sm.data!.roleID,
-                      ssoId);
+
+                  bool otpSent = await loginHistoryMessagesApi(
+                    context,
+                    sm.data!.mobileno,
+                    sm.data!.userID,
+                    sm.data!.roleID,
+                  );
+
+                  if (!otpSent) {
+                    showAlertError("Failed to send OTP", context);
+                    return null;
+                  }
+
+                  showOtpDialog(
+                    context,
+                    sm.data!.mobileno,
+                    onSubmit: (otp) async {
+                      bool verified = await verifyOtpApi(
+                        context,
+                        sm.data!.mobileno,
+                        otp,
+                      );
+
+                      if (!verified) {
+                        showAlertError(
+                          "Invalid OTP. Please try again.",
+                          context,
+                        );
+                        return;
+                      }
+
+                      await getDeptBasicDetails(
+                        context,
+                        sm.data!.userID.toString(),
+                        sm.data!.roleID,
+                        ssoId,
+                      );
+                    },
+                  );
+
+                  return sm;
+
+
                 } else { //earlier it was role 6 , currently 24, future any of role will be set
                   // print("Redirecting to CandidateAttendanceScreen"); job fair login
 
@@ -245,22 +295,62 @@ class LoginProvider with ChangeNotifier {
                   UserData().model.value.deptID = sm.data!.deptID;
                   UserData().model.value.officeID = sm.data!.officeID;
 
-                  Navigator.of(context).push(
-                    RightToLeftRoute(
-                      page: ChangeNotifierProvider(
-                        create: (_) =>
-                            DashboardProvider(
-                              commonRepo: commonRepo, // ✅ FIX
-                            ),
-                        child: const DashboardScreen(),
-                      ),
-                      duration: const Duration(milliseconds: 500),
-                      startOffset: const Offset(-1.0, 0.0),
-                    ),
+                  // Navigator.of(context).push(
+                  //   RightToLeftRoute(
+                  //     page: ChangeNotifierProvider(
+                  //       create: (_) =>
+                  //           DashboardProvider(
+                  //             commonRepo: commonRepo, // ✅ FIX
+                  //           ),
+                  //       child: const DashboardScreen(),
+                  //     ),
+                  //     duration: const Duration(milliseconds: 500),
+                  //     startOffset: const Offset(-1.0, 0.0),
+                  //   ),
+                  // );
+
+                  bool otpSent = await loginHistoryMessagesApi(
+                    context,
+                    sm.data!.mobileno,
+                    sm.data!.userID,
+                    sm.data!.roleID,
                   );
 
+                  if (!otpSent) {
+                    showAlertError("Failed to send OTP", context);
+                    return null;
+                  }
+
+                  showOtpDialog(
+                    context,
+                      sm.data!.mobileno,
+                    onSubmit: (otp) async {
+
+                      bool verified = await verifyOtpApi(
+                        context,
+                        sm.data!.mobileno,
+                        otp,
+                      );
+
+                      if (!verified) {
+                        showAlertError(
+                          "Invalid OTP. Please try again.",
+                          context,
+                        );
+                        return;
+                      }
+
+                      await getJobFairUserDetails(
+                        context,
+                        switchRoleID: sm.data!.roleID,
+                        switchOfficeID: sm.data!.officeID,
+                      );
+                    },
+                  );
+
+                  // loginHistoryMessagesApi(context, sm.data!.mobileno, sm.data!.userID, sm.data!.roleID);
                   // getJobFairUserDetails(
-                  //     context, sm.data!.userID.toString(), sm.data!.roleID, sm.data!.officeID, sm.data!.searchRecordID, ssoId);
+                  //     context, switchRoleID: sm.data!.roleID, switchOfficeID: sm.data!.officeID);
 
                 }
               } else {
@@ -386,7 +476,208 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> loginHistoryMessagesApi(BuildContext context, mobileNo, userID, roleID) async {
+    try {
+      String? deviceId = await UtilityClass.getDeviceId();
+      Map<String, dynamic> body = {
+        "SMSCategoryType": "LoginOTPHistory",
+        "TemplateID": "",
+        "MobileNo": mobileNo,
+        "Request_Status": "",
+        "RequestJson": "",
+        "ResponseJson": "",
+        "TransactionId": "",
+        "OTP": "",
+        "UserID": userID ?? "0",
+        "RoleID": roleID ?? "0",
+        "CreatedBy_IP": "",
+        "CreatedBy_IPv6": "",
+        "Action": "Insert",
+        "uniqueId": "EMPLOYMENT_SMS",
+        "isManualDeveloperLogin": 0,
+        "DeviceId": deviceId
+      };
 
+      print("========== LOGIN HISTORY API ==========");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+
+      final apiResponse = await commonRepo.post(
+        "Common/LoginHistoryMessages",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final responseDataMap = responseData["Data"];
+
+        otpResponseId = responseDataMap["ResponseId"];
+        otpResponseCode = responseDataMap["ResponseCode"];
+        otpRequestJson = responseDataMap["RequestJson"];
+        otpResponseJson = responseDataMap["ResponseJson"];
+
+        print("========== LOGIN HISTORY RESPONSE login page ==========");
+        print(const JsonEncoder.withIndent('  ').convert(responseData));
+
+        if (responseData["State"] == 200) {
+          return true;
+
+        }
+      }
+
+      return false;
+    } catch (e) {
+      print("LoginHistoryMessages Error : $e");
+      return false;
+    }
+  }
+
+  Future<void> showOtpDialog(
+      BuildContext context, mobileno, {
+        required Function(String otp) onSubmit,
+      }) async {
+    final TextEditingController otpController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: const Text(
+            "OTP Verification",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "OTP has been sent to $mobileno",
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Please enter OTP",
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                maxLength: 6,
+                decoration: const InputDecoration(
+                  hintText: "Enter OTP",
+                  border: OutlineInputBorder(),
+                  counterText: "",
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (otpController.text.trim().isEmpty) {
+                  showAlertError(
+                    "Please enter OTP",
+                    context,
+                  );
+                  return;
+                }
+
+                Navigator.pop(context);
+
+                onSubmit(
+                  otpController.text.trim(),
+                );
+              },
+              child: const Text("Submit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> verifyOtpApi(
+      BuildContext context,
+  mobileno,
+      String otp,
+      ) async {
+    try {
+      String? deviceId = await UtilityClass.getDeviceId();
+      Map<String, dynamic> body = {
+        "SMSCategoryType": "LoginOTPHistory",
+        "TemplateID": "1407170730552013237",
+
+        "MobileNo": mobileno,
+
+        "Request_Status": "SUCCESS",
+
+        "RequestJson": otpRequestJson ?? "",
+        "ResponseJson": otpResponseJson ?? "",
+
+        "OTP": otp,
+
+        "TransactionId": otpResponseId ?? "",
+
+        "MessageBody": "",
+        "Key": "",
+        "OrginPath": "",
+        "smsResponse": "",
+        "uniqueId": "",
+
+        "UserID": UserData().model.value.userId ?? "",
+        "RoleID": UserData().model.value.roleId ?? "",
+
+        "IsLocal": true,
+        "isManualDeveloperLogin": 1,
+        "DeviceId": deviceId
+      };
+
+      print("========== VERIFY OTP REQUEST ==========");
+      print(const JsonEncoder.withIndent('  ').convert(body));
+
+      final apiResponse = await commonRepo.post(
+        "Common/LoginVerifyOTP",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        print("========== VERIFY OTP RESPONSE ==========");
+        print(const JsonEncoder.withIndent('  ').convert(responseData));
+
+        if (responseData["State"] == 200 &&
+            responseData["Data"] != null &&
+            responseData["Data"] is List &&
+            responseData["Data"].isNotEmpty &&
+            responseData["Data"][0]["res"] == 1) {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      print("Verify OTP Error : $e");
+      return false;
+    }
+  }
 
 //   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
 //
@@ -568,6 +859,11 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
               UserData().model.value.sso = ssoID;
+              UserData().model.value.roleName = sm.data![0].role;
+              UserData().model.value.exchangeName = sm.data![0].office;
+             // UserData().model.value.name = sm.data![0].name;
+
+
               // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
               // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
               // UserData().model.value.postalAddress = sm.data![0].postalAddress;
@@ -603,6 +899,10 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.block = sm.data![0].block;
               UserData().model.value.city = sm.data![0].city;
               UserData().model.value.sso = ssoID;
+              UserData().model.value.roleName = sm.data![0].role;
+              UserData().model.value.exchangeName = sm.data![0].office;
+              //UserData().model.value.name = sm.data![0].name;
+
               // UserData().model.value.mailPersonal = sm.data![0].mailPersonal;
               // UserData().model.value.mailOfficial = sm.data![0].mailOfficial;
               // UserData().model.value.postalAddress = sm.data![0].postalAddress;
@@ -648,161 +948,180 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-//   Future<JobFairModal?> getJobFairUserDetails(
-//       BuildContext context, String userId, int? roleId, int? officeId, String searchRecId, String ssoID) async {
-//     var isInternet = await UtilityClass.checkInternetConnectivity();
-//     print("0000");
-//     if (isInternet) {
-//       try {
-//         Map<String, dynamic> body = {
-//           "SearchRecordID": searchRecId,
-//           "SwitchRoleID": roleId,
-//           "SwitchOfficeID": officeId
-//         };
-//         print("xxxxx");
-//         ProgressDialog.showLoadingDialog(context);
-//         ApiResponse apiResponse =
-//         await commonRepo.post("Authentication/GetSSOUserDetailsNew", body);
-//         ProgressDialog.closeLoadingDialog(context);
-//         print("vvvv");
-//         if (apiResponse.response != null &&
-//             apiResponse.response?.statusCode == 200) {
-//           print("sss");
-//           var responseData = apiResponse.response?.data;
-//           if (responseData is String) {
-//             responseData = jsonDecode(responseData);
-//           }
-//           String? authToken =
-//               apiResponse.response?.headers?['x-authtoken']?.first;
-//           print(authToken);
-//
-//           print("ffff");
-//           print(jsonEncode(responseData));
-//          final sm = JobFairModal.fromJson(responseData);
-//           print("1111");
-//           if (sm.state == 200) {
-//             if(isChecked){
-//               final pref = AppSharedPref();
-//               UserData().model.value.userId = sm.data!.userID;
-//               UserData().model.value.roleId = roleId;
-//               UserData().model.value.name = sm.data!.displayName;
-//               UserData().model.value.mobileNo = sm.data!.mobileno;
-//               UserData().model.value.userType = sm.data!.userType;
-//               UserData().model.value.empNumber = sm.data!.empNumber;
-//               UserData().model.value.firstName = sm.data!.firstName;
-//               UserData().model.value.lastName = sm.data!.lastName;
-//               UserData().model.value.postalAddress = sm.data!.postalAddress;
-//               UserData().model.value.mailPersonal = sm.data!.mailPersonal;
-//               UserData().model.value.mailOfficial = sm.data!.mailOfficial;
-//               UserData().model.value.gENDER = sm.data!.gender;
-//               UserData().model.value.sso = ssoID;
-//               UserData().model.value.isLogin = true;
-//               pref.save('UserData', UserData().model.value);
-//             }
-//             else{
-//               final pref = AppSharedPref();
-//               UserData().model.value.userId = sm.data!.userID;
-//               UserData().model.value.roleId = roleId;
-//               UserData().model.value.name = sm.data!.displayName;
-//               UserData().model.value.mobileNo = sm.data!.mobileno;
-//               UserData().model.value.userType = sm.data!.userType;
-//               UserData().model.value.empNumber = sm.data!.empNumber;
-//               UserData().model.value.firstName = sm.data!.firstName;
-//               UserData().model.value.lastName = sm.data!.lastName;
-//               UserData().model.value.postalAddress = sm.data!.postalAddress;
-//               UserData().model.value.mailPersonal = sm.data!.mailPersonal;
-//               UserData().model.value.mailOfficial = sm.data!.mailOfficial;
-//               UserData().model.value.gENDER = sm.data!.gender;
-//               UserData().model.value.sso = ssoID;
-//               UserData().model.value.isLogin = true;
-//               pref.save('UserData', UserData().model.value);
-//             }
-// print("2222");
-//               Navigator.of(context).push(
-//                 RightToLeftRoute(
-//                   page: const DashboardScreen(),
-//                   duration: const Duration(milliseconds: 500),
-//                   startOffset: const Offset(-1.0, 0.0),
-//                 ),
-//               );
-//
-//             print("3333");
-//
-//             return sm;
-//           } else {
-//             final smmm = JobFairModal(
-//                 state: 0, message: sm.message.toString());
-//             print("4444");
-//             showAlertError(
-//                 smmm.message.toString().isNotEmpty
-//                     ? smmm.message.toString()
-//                     : "Invalid SSO ID and Password",
-//                 context);
-//             return smmm;
-//           }
-//         } else {
-//           return JobFairModal(
-//             state: 0,
-//             message: 'Something went wrong',
-//           );
-//         }
-//       } catch (e, stackTrace) {
-//         ProgressDialog.closeLoadingDialog(context);
-//         print("Exception: $e");
-//         print(stackTrace);
-//         showAlertError(e.toString(), context);
-//       }
-//     } else {
-//       showAlertError(
-//           AppLocalizations.of(context)!.internet_connection, context);
-//     }
-//   }
-
-    Future<void> callSSOAuthApi(BuildContext buildContext) async {
-      Map<String, dynamic> body = {
-        "usrnm": "rgavp",
-        "psw": "rgavp@123", // Placeholder encrypted password
-        "srvnm": "RGAVPLogin",
-        "srvmethodnm": "SSOAuthentication",
-        "srvparam": json.encode({
-          "sso_id": SSOIDController.text,
-          "password": passwordController.text
-        }),
-      };
-
-      print("body => $body");
-
+  Future<JobFairModal?> getJobFairUserDetails(
+      BuildContext context, {
+        required int switchRoleID,
+        required int switchOfficeID,
+      }) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
+    print("0000");
+    if (isInternet) {
       try {
-        ApiResponse apiResponse = await commonRepo.post("https://rajeevika.devitsandbox.com/Service/AppService",body);
+        Map<String, dynamic> body = {
+          "SearchRecordID": UserData().model.value.searchRecID,
+          "SwitchRoleID": switchRoleID,
+          "SwitchOfficeID": switchOfficeID
+        };
+        print("login API Request Body: $body");
+        ProgressDialog.showLoadingDialog(context);
+        ApiResponse apiResponse = await commonRepo.post(
+          "Authentication/GetSSOUserDetailsNew",
+          body,
+        );
+        ProgressDialog.closeLoadingDialog(context);
+        print("vvvv");
+        if (apiResponse.response?.statusCode == 200) {
 
-        ProgressDialog.closeLoadingDialog(buildContext);
-        if (apiResponse.response != null &&
-            apiResponse.response?.statusCode == 200) {
+          dynamic responseData = apiResponse.response!.data;
 
-          var responseData = apiResponse.response!.data;
-
-          // ✅ Decode ONLY if it's String
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
-          print("Full response => $responseData");
-          final List<dynamic> jsonArray = responseData;
-          final Map<String, dynamic> result = jsonArray[0];
 
-          print("Status => ${result['Status']}");
-          print("IsSuccess => ${result['IsSuccess']}");
-          print("Message => ${result['Message']}");
+          print("API Response userdata for switch user : $responseData");
+
+          /// ✅ CHECK API STATE FIRST
+          if (responseData['State'] != 200 || responseData['Data'] == null) {
+
+            String errorMsg = responseData['ErrorMessage'] ??
+                responseData['Message'] ??
+                "Something went wrong";
+
+            showAlertError(errorMsg, context);
+
+          }
+
+          int userID = responseData['Data']['UserID'];
+          int roleID = responseData['Data']['RoleID'];
+          String SSOID = responseData['Data']['SSOID'];
+
+          print("userID: $userID");
+          print("roleID: $roleID");
+          print("SSOID: $SSOID");
+
+          if(roleID == 22){
+            print("role ID 22");
+            //redirect to dept dashboard
+            //callbasicdetail API for department getDeptBasicDetails
+            UserData().model.value.officeID = responseData['Data']['OfficeID'];
+            UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
+            UserData().model.value.deptID = responseData['Data']['DepartmentID'];
+            UserData().model.value.internshipDeptTypeID =
+            responseData['Data']['InternshipDeptTypeID'];
+            UserData().model.value.NameAsjanAdhar =
+            responseData['Data']['NameAsjanAdhar'];
+            UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
+            UserData().model.value.designation = responseData['Data']['Designation'];
+            UserData().model.value.roleName = responseData['Data']['RoleName'];
+            UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
+            UserData().model.value.displayName = responseData['Data']['DisplayName'];
+            UserData().model.value.name = responseData['Data']['DisplayName'];
+
+            getDeptBasicDetails(
+                context, userID.toString(), roleID, SSOID.toString());
+          }else{
+            print("role ID other=> $roleID");
+            //redirect to job fair (dashboard page)
+
+            UserData().model.value.officeID = responseData['Data']['OfficeID'];
+            UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
+            UserData().model.value.deptID = responseData['Data']['DepartmentID'];
+            UserData().model.value.internshipDeptTypeID =
+            responseData['Data']['InternshipDeptTypeID'];
+            UserData().model.value.NameAsjanAdhar =
+            responseData['Data']['NameAsjanAdhar'];
+            UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
+            UserData().model.value.designation = responseData['Data']['Designation'];
+            UserData().model.value.userId = userID;
+            UserData().model.value.sso = SSOID;
+            UserData().model.value.roleId = roleID;
+            UserData().model.value.name = responseData['Data']['Name'];
+            UserData().model.value.roleName = responseData['Data']['RoleName'];
+            UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
+            UserData().model.value.displayName = responseData['Data']['DisplayName'];
+            UserData().model.value.name = responseData['Data']['DisplayName'];
+            // UserData().model.value.searchRecID = sm.data!.searchRecordID;
+            // UserData().model.value.deptID = sm.data!.deptID;
+
+            print("userDATA-------->");
+            Navigator.of(context).pushAndRemoveUntil(
+              RightToLeftRoute(
+                page: ChangeNotifierProvider(
+                  create: (_) =>
+                      DashboardProvider(
+                        commonRepo: commonRepo, // ✅ FIX
+                      ),
+                  child: const DashboardScreen(),
+                ),
+                duration: const Duration(milliseconds: 500),
+                startOffset: const Offset(-1.0, 0.0),
+              ),
+                  (route) => false,
+            );
+          }
+
+
 
         } else {
-          print("elseeee");
+          showAlertError("Something went wrong", context);
         }
-
-      } catch (e) {
-        print("Login error: $e");
-        UtilityClass.showSnackBar(
-            buildContext, "Login failed. Please try again.", Colors.red);
+      } catch (e, stackTrace) {
+        ProgressDialog.closeLoadingDialog(context);
+        print("Exception: $e");
+        print(stackTrace);
+        showAlertError(e.toString(), context);
       }
+    } else {
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
+  }
+
+    // Future<void> callSSOAuthApi(BuildContext buildContext) async {
+    //   Map<String, dynamic> body = {
+    //     "usrnm": "rgavp",
+    //     "psw": "rgavp@123", // Placeholder encrypted password
+    //     "srvnm": "RGAVPLogin",
+    //     "srvmethodnm": "SSOAuthentication",
+    //     "srvparam": json.encode({
+    //       "sso_id": SSOIDController.text,
+    //       "password": passwordController.text
+    //     }),
+    //   };
+    //
+    //   print("body => $body");
+    //
+    //   try {
+    //     ApiResponse apiResponse = await commonRepo.post("https://rajeevika.devitsandbox.com/Service/AppService",body);
+    //
+    //     ProgressDialog.closeLoadingDialog(buildContext);
+    //     if (apiResponse.response != null &&
+    //         apiResponse.response?.statusCode == 200) {
+    //
+    //       var responseData = apiResponse.response!.data;
+    //
+    //       // ✅ Decode ONLY if it's String
+    //       if (responseData is String) {
+    //         responseData = jsonDecode(responseData);
+    //       }
+    //       print("Full response => $responseData");
+    //       final List<dynamic> jsonArray = responseData;
+    //       final Map<String, dynamic> result = jsonArray[0];
+    //
+    //       print("Status => ${result['Status']}");
+    //       print("IsSuccess => ${result['IsSuccess']}");
+    //       print("Message => ${result['Message']}");
+    //
+    //     } else {
+    //       print("elseeee");
+    //     }
+    //
+    //   } catch (e) {
+    //     print("Login error: $e");
+    //     UtilityClass.showSnackBar(
+    //         buildContext, "Login failed. Please try again.", Colors.red);
+    //   }
+    // }
 
   Future<JobseekerBasicInfoModal?> getBasicDetailsApi(BuildContext context,String userId,int? roleId) async {
     print("44");

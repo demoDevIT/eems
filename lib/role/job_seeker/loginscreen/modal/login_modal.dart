@@ -175,6 +175,8 @@ class LoginData {
 
   //job fair atendance
   dynamic searchRecID;
+  // dynamic officeName;
+  dynamic roleName;
 
   LoginData({
     this.userId,
@@ -317,7 +319,8 @@ class LoginData {
     this.counsellorID,
 
     //job fair atendance
-    this.searchRecID
+    this.searchRecID,
+    this.roleName
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -459,6 +462,7 @@ class LoginData {
 
     //job fair atendance
     searchRecID = json['SearchRecordID'];
+    roleName = json['RoleName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -601,6 +605,7 @@ class LoginData {
 
     //job fair atendance
     data['SearchRecordID'] = this.searchRecID;
+    data['RoleName'] = this.roleName;
 
     return data;
   }

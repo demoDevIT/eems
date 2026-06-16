@@ -106,7 +106,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                     provider.notifyListeners();
 
-                    print("Selected Role : ${role.roleName}");
+                    print("dept dashboard Selected Role : ${role.roleName}");
                     print("Role Id : ${role.roleID}");
 
                     final roleID = role.roleID;
@@ -469,7 +469,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.role ?? "",
+                            UserData().model.value.roleName ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -499,7 +499,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.office ?? "",
+                            UserData().model.value.exchangeName ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),

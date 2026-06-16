@@ -116,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     provider.notifyListeners();
 
-                    print("Selected Role : ${role.roleName}");
+                    print("dashboard Selected Role : ${role.roleName}");
                     print("Role Id : ${role.roleID}");
 
                     final roleID = role.roleID;
@@ -363,7 +363,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         const Expanded(
                           flex: 3,
                           child: Text(
-                            "Department Name :-",
+                            "Role Name :-",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -373,7 +373,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.departmentName ?? "",
+                            UserData().model.value.roleName ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -403,7 +403,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.office ?? "",
+                            UserData().model.value.exchangeName ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -512,7 +512,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Container(
                             width :MediaQuery.of(context).size.width * 0.20,
                             child:  Text(
-                              "Demo User",
+                              // "Demo User",
+                              UserData().model.value.displayName ?? "",
+                             // UserData().model.value.name ?? "",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 16,

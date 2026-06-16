@@ -285,6 +285,8 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            responseData['Data']['NameAsjanAdhar'];
            UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
            UserData().model.value.designation = responseData['Data']['Designation'];
+           UserData().model.value.roleName = responseData['Data']['RoleName'];
+           UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
 
            getDeptBasicDetails(
                context, userID.toString(), roleID, SSOID.toString());
@@ -305,11 +307,13 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            UserData().model.value.sso = SSOID;
            UserData().model.value.roleId = roleID;
            UserData().model.value.name = responseData['Data']['Name'];
+           UserData().model.value.roleName = responseData['Data']['RoleName'];
+           UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
            // UserData().model.value.searchRecID = sm.data!.searchRecordID;
            // UserData().model.value.deptID = sm.data!.deptID;
 
            print("userDATA-------->");
-           Navigator.of(context).pushAndRemoveUntil(
+           Navigator.of(context).push(
              RightToLeftRoute(
                page: ChangeNotifierProvider(
                  create: (_) =>
@@ -320,8 +324,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
                ),
                duration: const Duration(milliseconds: 500),
                startOffset: const Offset(-1.0, 0.0),
-             ),
-                 (route) => false,
+             )
            );
          }
 
@@ -385,13 +388,12 @@ class DepartmentDashboardProvider extends ChangeNotifier {
              UserData().model.value.isLogin = true;
              pref.save('UserData', UserData().model.value);
 
-             Navigator.of(context).pushAndRemoveUntil(
+             Navigator.of(context).push(
                RightToLeftRoute(
                  page: const DepartmentDashboardPage(),
                  duration: const Duration(milliseconds: 500),
                  startOffset: const Offset(-1.0, 0.0),
-               ),
-                   (route) => false,
+               )
              );
              return sm;
            } else {
