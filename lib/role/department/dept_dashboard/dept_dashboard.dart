@@ -35,6 +35,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   void initState() {
     super.initState();
 
+    print("========== deptttt DASHBOARD USER DATA ==========");
+    print(const JsonEncoder.withIndent('  ')
+        .convert(UserData().model.value.toJson()));
+    print("========================================");
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DepartmentDashboardProvider>()
           .getRoleApi(context, "");

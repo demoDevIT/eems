@@ -334,6 +334,21 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   getUserData() async {
+
+    // Clear saved login every time app starts
+    await sharedPref.remove("UserData");
+    await sharedPref.remove("authToken");
+
+    UserData().model.value.isLogin = false;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(),
+      ),
+          (route) => false,
+    );
+
     ids = await sharedPref.read('UserData');
     if (ids == '') {
       UserData().model.value.username = "";

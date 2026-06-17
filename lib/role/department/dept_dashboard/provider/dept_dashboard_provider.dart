@@ -388,12 +388,26 @@ class DepartmentDashboardProvider extends ChangeNotifier {
              UserData().model.value.isLogin = true;
              pref.save('UserData', UserData().model.value);
 
+             // Navigator.of(context).push(
+             //   RightToLeftRoute(
+             //     page: const DepartmentDashboardPage(),
+             //     duration: const Duration(milliseconds: 500),
+             //     startOffset: const Offset(-1.0, 0.0),
+             //   )
+             // );
+
              Navigator.of(context).push(
-               RightToLeftRoute(
-                 page: const DepartmentDashboardPage(),
-                 duration: const Duration(milliseconds: 500),
-                 startOffset: const Offset(-1.0, 0.0),
-               )
+                 RightToLeftRoute(
+                   page: ChangeNotifierProvider(
+                     create: (_) =>
+                         DepartmentDashboardProvider(
+                           commonRepo: commonRepo, // ✅ FIX
+                         ),
+                     child: const DepartmentDashboardPage(),
+                   ),
+                   duration: const Duration(milliseconds: 500),
+                   startOffset: const Offset(-1.0, 0.0),
+                 )
              );
              return sm;
            } else {

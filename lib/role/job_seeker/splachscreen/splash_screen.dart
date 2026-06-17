@@ -3,8 +3,10 @@ import 'package:rajemployment/utils/gradient_scaffold.dart';
 import 'package:rajemployment/onboarding_screen.dart';
 import 'package:rajemployment/utils/pref_util.dart';
 
+import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/images.dart';
 import '../../../utils/right_to_left_route.dart';
+import '../loginscreen/screen/login_screen.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -25,11 +27,27 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  Future checkLoginStatus() async {
-    Navigator.pushAndRemoveUntil<dynamic>(context,
-        MaterialPageRoute<dynamic>(builder: (BuildContext context) => const OnboardingScreen()),
-            (route) => false);
+  // Future checkLoginStatus() async {
+  //   Navigator.pushAndRemoveUntil<dynamic>(context,
+  //       MaterialPageRoute<dynamic>(builder: (BuildContext context) => const OnboardingScreen()),
+  //           (route) => false);
+  //
+  // }
 
+  Future checkLoginStatus() async {
+
+    final pref = AppSharedPref();
+
+    await pref.remove("UserData");
+    await pref.remove("authToken");
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+          (route) => false,
+    );
   }
 
   @override

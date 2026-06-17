@@ -2487,43 +2487,45 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           //   ),
                           // ],
 
-                          (provider.educationLevelIdController.text == "5" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "31") ||
-                                  (provider.educationLevelIdController.text ==
-                                          "6" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "90") ||
-                                  (provider.educationLevelIdController.text ==
-                                          "8" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "127")
-                              ? Padding(
+                          // (provider.educationLevelIdController.text == "5" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "31") ||
+                          //         (provider.educationLevelIdController.text ==
+                          //                 "6" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "90") ||
+                          //         (provider.educationLevelIdController.text ==
+                          //                 "8" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "127")
+                          //     ?
+                          Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: labelWithStar('Other Graduation Type',
                                       required: true),
-                                )
-                              : SizedBox(),
+                                ),
+                            //  : SizedBox(),
 
-                          (provider.educationLevelIdController.text == "5" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "31") ||
-                                  (provider.educationLevelIdController.text ==
-                                          "6" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "90") ||
-                                  (provider.educationLevelIdController.text ==
-                                          "8" &&
-                                      provider.graduationTypeIdController
-                                              .text ==
-                                          "127")
-                              ? Padding(
+                          // (provider.educationLevelIdController.text == "5" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "31") ||
+                          //         (provider.educationLevelIdController.text ==
+                          //                 "6" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "90") ||
+                          //         (provider.educationLevelIdController.text ==
+                          //                 "8" &&
+                          //             provider.graduationTypeIdController
+                          //                     .text ==
+                          //                 "127")
+                          //     ?
+                          Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
@@ -2533,8 +2535,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     50,
                                     TextInputType.text,
                                   ),
-                                )
-                              : SizedBox(),
+                                ),
+                            //  : SizedBox(),
 
                           // stream Type for under graduate/graduate/post graduation
                           provider.educationLevelIdController.text == "5" ||

@@ -147,7 +147,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
-            "BypassSSO": true // for everytime while live or sandbox for this sso 'EEMSJobFairEvent'
+           "BypassSSO": true // for everytime while live or sandbox for this sso 'EEMSJobFairEvent'
           };
         }else{
           body = {
@@ -827,6 +827,7 @@ class LoginProvider with ChangeNotifier {
           final sm = DeptInfoModal.fromJson(responseData);
           if (sm.state == 200) {
             if(isChecked){
+              print("111111222222");
               final pref = AppSharedPref();
               UserData().model.value.userId = sm.data![0].userID;
               UserData().model.value.roleId = roleId;
@@ -871,6 +872,7 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }else{
+              print("3333334444444");
               final pref = AppSharedPref();
               UserData().model.value.userId = sm.data![0].userID;
               UserData().model.value.roleId = roleId;
@@ -910,6 +912,11 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
             }
+
+            print("========== DEPTTTTT USER DATA ==========");
+            print(const JsonEncoder.withIndent('  ')
+                .convert(UserData().model.value.toJson()));
+            print("================================");
 
             Navigator.of(context).push(
               RightToLeftRoute(

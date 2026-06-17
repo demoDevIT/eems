@@ -15,6 +15,7 @@ import '../../../../utils/utility_class.dart';
 import '../../../department/dept_dashboard/dept_dashboard.dart';
 import '../../../department/dept_dashboard/modal/dept_info_modal.dart';
 import '../../../department/dept_dashboard/modal/role_modal.dart';
+import '../../../department/dept_dashboard/provider/dept_dashboard_provider.dart';
 import '../dashboard_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -260,13 +261,28 @@ class DashboardProvider extends ChangeNotifier {
               UserData().model.value.isLogin = true;
               pref.save('UserData', UserData().model.value);
 
-            Navigator.of(context).push(
-              RightToLeftRoute(
-                page: const DepartmentDashboardPage(),
-                duration: const Duration(milliseconds: 500),
-                startOffset: const Offset(-1.0, 0.0),
-              )
-            );
+            // Navigator.of(context).push(
+            //   RightToLeftRoute(
+            //     page: const DepartmentDashboardPage(),
+            //     duration: const Duration(milliseconds: 500),
+            //     startOffset: const Offset(-1.0, 0.0),
+            //   )
+            // );
+
+              Navigator.of(context).push(
+                  RightToLeftRoute(
+                    page: ChangeNotifierProvider(
+                      create: (_) =>
+                          DepartmentDashboardProvider(
+                            commonRepo: commonRepo, // ✅ FIX
+                          ),
+                      child: const DepartmentDashboardPage(),
+                    ),
+                    duration: const Duration(milliseconds: 500),
+                    startOffset: const Offset(-1.0, 0.0),
+                  )
+              );
+
             return sm;
           } else {
             final smmm = DeptInfoModal(

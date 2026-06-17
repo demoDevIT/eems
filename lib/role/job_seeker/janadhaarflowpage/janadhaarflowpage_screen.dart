@@ -576,8 +576,8 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
                     showAlertError("Please enter otp", context);
                   }
                   else {
-                    provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
-                    // provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
+                    //provider.validateOTPApi(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
+                     provider.validateOTPApiMock(context,provider.memberID,provider.tid,provider.otpController.text,ssoId,userID,displayName,mobileNo,type,subType,flowType);
 
                   }
                 },
