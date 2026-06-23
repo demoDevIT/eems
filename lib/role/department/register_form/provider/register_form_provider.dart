@@ -908,14 +908,16 @@ class RegisterFormProvider extends ChangeNotifier {
   }
 
   Future<DeptInfoModal?> getDeptBasicDetails(
-      BuildContext context, String userId, int? roleId, String ssoID) async {
+      BuildContext context, String userId, int? roleId, String ssoID, int? intDeptID, int? intDeptTypeID) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
         Map<String, dynamic> body = {
           "UserID": userId,
           "SSOID": ssoID,
-          "RoleID": roleId
+          "RoleID": roleId,
+          "InternshipDeptTypeID": intDeptTypeID,
+          "InternshipDeptID": intDeptID
         };
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse =

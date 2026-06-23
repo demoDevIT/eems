@@ -46,6 +46,8 @@ class RoleData {
   String? roleName;
   bool? isMainRole;
   String? enumRoleName;
+  int? internshipDeptTypeID;
+  int? internshipDeptID;
   int? userID;
   String? officeNameEn;
 
@@ -55,6 +57,8 @@ class RoleData {
     this.roleName,
     this.isMainRole,
     this.enumRoleName,
+    this.internshipDeptTypeID,
+    this.internshipDeptID,
     this.userID,
     this.officeNameEn,
   });
@@ -66,6 +70,8 @@ class RoleData {
       roleName: json['RoleName'],
       isMainRole: json['IsMainRole'],
       enumRoleName: json['EnumRoleName'],
+      internshipDeptTypeID: json['InternshipDeptTypeID'],
+      internshipDeptID: json['InternshipDeptID'],
       userID: json['UserID'],
       officeNameEn: json['OfficeNameEn'],
     );
@@ -78,6 +84,8 @@ class RoleData {
     json['RoleName'] = roleName;
     json['IsMainRole'] = isMainRole;
     json['EnumRoleName'] = enumRoleName;
+    json['InternshipDeptTypeID'] = internshipDeptTypeID;
+    json['InternshipDeptID'] = internshipDeptID;
     json['UserID'] = userID;
     json['OfficeNameEn'] = officeNameEn;
     return json;

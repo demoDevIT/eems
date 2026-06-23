@@ -121,11 +121,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     final roleID = role.roleID;
                     final officeID = role.officeID;
+                    final internDeptTypeID = role.internshipDeptTypeID;
+                    final internDeptID = role.internshipDeptID;
+
 
                     await provider.GetSSOUserDetail(
                       context,
                        switchRoleID: roleID!,
                        switchOfficeID: officeID!, // use your actual field name
+                      intDeptTypeID: internDeptTypeID!, // use your actual field name
+                      intDeptID: internDeptID!, // use your actual field name
                     );
                   },
                   itemBuilder: (context) {

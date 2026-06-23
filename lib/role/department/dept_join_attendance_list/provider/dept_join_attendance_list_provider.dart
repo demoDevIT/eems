@@ -977,7 +977,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       final year = item.year.toString();
 
       final monthName = selectedMonthObj?.name ?? "";
-
+      String? deviceId = await UtilityClass.getDeviceId();
       /// 🔥 STEP 2: FINAL PAYLOAD
       Map<String, dynamic> data = {
         "UserID": UserData().model.value.userId,
@@ -1011,6 +1011,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "OtherDocument": "",
         "AttendanceReasonID": 0,
         "BaseUrl": "http://localhost:5000/",
+        "DeviceID": deviceId
       };
 
       print("========== FINAL INSERT PAYLOAD ==========");

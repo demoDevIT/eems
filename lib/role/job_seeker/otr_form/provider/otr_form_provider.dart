@@ -1998,7 +1998,7 @@ class OtrFormProvider extends ChangeNotifier {
 
           "MaritalStatus": formatCase(maritalStatusController.text),
           "Category": castController.text,
-
+          "SpouseName": feachJanAadhaarDataList[0].sPOUCENAMEEN.toString(),
           "AadharNo": aadhaarRefNOController.text,
 
           //"Religion": regionIdController.text == "135" ? religionOtherNameController.text :  regionIdController.text,

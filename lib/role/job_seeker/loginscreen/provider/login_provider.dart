@@ -274,6 +274,8 @@ class LoginProvider with ChangeNotifier {
                         sm.data!.userID.toString(),
                         sm.data!.roleID,
                         ssoId,
+                        sm.data!.internshipDeptID,
+                        sm.data!.internshipDeptTypeID,
                       );
                     },
                   );
@@ -344,6 +346,8 @@ class LoginProvider with ChangeNotifier {
                         context,
                         switchRoleID: sm.data!.roleID,
                         switchOfficeID: sm.data!.officeID,
+                        intDeptTypeID: sm.data!.internshipDeptTypeID,
+                        intDeptID: sm.data!.internshipDeptID,
                       );
                     },
                   );
@@ -800,7 +804,7 @@ class LoginProvider with ChangeNotifier {
 //   }
 
   Future<DeptInfoModal?> getDeptBasicDetails(
-      BuildContext context, String userId, int? roleId, String ssoID) async {
+      BuildContext context, String userId, int? roleId, String ssoID, int? intDeptID, int? intDeptTypeID) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -808,6 +812,8 @@ class LoginProvider with ChangeNotifier {
           "UserID": userId,
           "SSOID": ssoID,
           "RoleID": roleId, //22, //roleId
+          "InternshipDeptTypeID": intDeptTypeID,
+          "InternshipDeptID": intDeptID
           // "districtCode": "",
           // "officeID": ""
         };
@@ -959,6 +965,8 @@ class LoginProvider with ChangeNotifier {
       BuildContext context, {
         required int switchRoleID,
         required int switchOfficeID,
+        required int intDeptTypeID,
+        required int intDeptID,
       }) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     print("0000");
@@ -967,7 +975,9 @@ class LoginProvider with ChangeNotifier {
         Map<String, dynamic> body = {
           "SearchRecordID": UserData().model.value.searchRecID,
           "SwitchRoleID": switchRoleID,
-          "SwitchOfficeID": switchOfficeID
+          "SwitchOfficeID": switchOfficeID,
+          "InternshipDeptTypeID": intDeptTypeID,
+          "InternshipDeptID": intDeptID,
         };
         print("login API Request Body: $body");
         ProgressDialog.showLoadingDialog(context);
@@ -1001,6 +1011,8 @@ class LoginProvider with ChangeNotifier {
           int userID = responseData['Data']['UserID'];
           int roleID = responseData['Data']['RoleID'];
           String SSOID = responseData['Data']['SSOID'];
+          int internshipDeptID = responseData['Data']['InternshipDeptID'];
+          int internshipDeptTypeID = responseData['Data']['InternshipDeptTypeID'];
 
           print("userID: $userID");
           print("roleID: $roleID");
@@ -1025,7 +1037,7 @@ class LoginProvider with ChangeNotifier {
             UserData().model.value.name = responseData['Data']['DisplayName'];
 
             getDeptBasicDetails(
-                context, userID.toString(), roleID, SSOID.toString());
+                context, userID.toString(), roleID, SSOID.toString(), internshipDeptID, internshipDeptTypeID);
           }else{
             print("role ID other=> $roleID");
             //redirect to job fair (dashboard page)

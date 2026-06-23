@@ -214,6 +214,8 @@ class DepartmentDashboardProvider extends ChangeNotifier {
    Future<void> GetSSOUserDetail(BuildContext context, {
      required int switchRoleID,
      required int switchOfficeID,
+     required int intDeptTypeID,
+     required int intDeptID,
    }) async {
 
      print("GetSSOUserDetail function call");
@@ -231,7 +233,9 @@ class DepartmentDashboardProvider extends ChangeNotifier {
        Map<String, dynamic> body = {
          "SearchRecordID": UserData().model.value.searchRecID,
          "SwitchRoleID": switchRoleID,
-         "SwitchOfficeID": switchOfficeID
+         "SwitchOfficeID": switchOfficeID,
+         "InternshipDeptTypeID": intDeptTypeID,
+         "InternshipDeptID": intDeptID,
        };
 
        print("API Request Body: $body");
@@ -267,6 +271,8 @@ class DepartmentDashboardProvider extends ChangeNotifier {
          int userID = responseData['Data']['UserID'];
          int roleID = responseData['Data']['RoleID'];
          String SSOID = responseData['Data']['SSOID'];
+         int internshipDeptID = responseData['Data']['InternshipDeptID'];
+         int internshipDeptTypeID = responseData['Data']['InternshipDeptTypeID'];
 
          print("userID: $userID");
          print("roleID: $roleID");
@@ -276,6 +282,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            print("role ID 22");
            //redirect to dept dashboard
            //callbasicdetail API for department getDeptBasicDetails
+           UserData().model.value.roleId = responseData['Data']['RoleID'];
            UserData().model.value.officeID = responseData['Data']['OfficeID'];
            UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
            UserData().model.value.deptID = responseData['Data']['DepartmentID'];
@@ -287,13 +294,15 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            UserData().model.value.designation = responseData['Data']['Designation'];
            UserData().model.value.roleName = responseData['Data']['RoleName'];
            UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
+           UserData().model.value.deptNameEn = responseData['Data']['DepartmentNameEn'];
+           UserData().model.value.allotDeptName = responseData['Data']['AllotmentDeptName'];
 
            getDeptBasicDetails(
-               context, userID.toString(), roleID, SSOID.toString());
+               context, userID.toString(), roleID, SSOID.toString(), internshipDeptID, internshipDeptTypeID);
          }else{
            print("role ID other=> $roleID");
            //redirect to job fair (dashboard page)
-
+           UserData().model.value.roleId = responseData['Data']['RoleID'];
            UserData().model.value.officeID = responseData['Data']['OfficeID'];
            UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
            UserData().model.value.deptID = responseData['Data']['DepartmentID'];
@@ -341,7 +350,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
    }
 
    Future<DeptInfoModal?> getDeptBasicDetails(
-       BuildContext context, String userId, int? roleId, String ssoID) async {
+       BuildContext context, String userId, int? roleId, String ssoID, int? intDeptID, int? intDeptTypeID) async {
      var isInternet = await UtilityClass.checkInternetConnectivity();
      if (isInternet) {
        try {
@@ -349,6 +358,8 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            "UserID": userId,
            "SSOID": ssoID,
            "RoleID": roleId, //22, //roleId
+           "InternshipDeptTypeID": intDeptTypeID,
+           "InternshipDeptID": intDeptID
          };
          ProgressDialog.showLoadingDialog(context);
          ApiResponse apiResponse =

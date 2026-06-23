@@ -116,11 +116,15 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                     final roleID = role.roleID;
                     final officeID = role.officeID;
+                    final internDeptTypeID = role.internshipDeptTypeID;
+                    final internDeptID = role.internshipDeptID;
 
                     await provider.GetSSOUserDetail(
                       context,
                       switchRoleID: roleID!,
                       switchOfficeID: officeID!, // use your actual field name
+                      intDeptTypeID: internDeptTypeID!, // use your actual field name
+                      intDeptID: internDeptID!, // use your actual field name
                     );
                   },
 
@@ -504,11 +508,14 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.exchangeName ?? "",
+                            UserData().model.value.roleId == 22
+                                ? "${UserData().model.value.allotDeptName ?? ""} "
+                                "(${UserData().model.value.deptNameEn ?? ""})"
+                                : (UserData().model.value.exchangeName ?? ""),
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
-                          ),
+                          )
                         ),
                       ],
                     ),

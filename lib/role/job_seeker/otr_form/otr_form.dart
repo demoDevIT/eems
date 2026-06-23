@@ -109,6 +109,10 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
     });
   }
 
+  String getOtherGraduationTypeLabel() {
+    return "Other ${getGraduationTypeLabel()}";
+  }
+
   @override
   Widget build(BuildContext context) {
     // Small device padding / sizing
@@ -2207,6 +2211,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   hintText: "--Select Option--",
 
                                       onChanged: (value) async {
+
+                                        // Clear graduation type data
+                                        provider.graduationTypeNameController.clear();
+                                        provider.graduationTypeIdController.clear();
+                                        provider.otherGraduationTypeController.clear();
+
+                                        setState(() {});
+
                                         if (value.dropID == 2 ||
                                             value.dropID == 5 ||
                                             value.dropID == 6 ||
@@ -2426,6 +2438,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
                                     onChanged: (value) {
+                                      provider.otherGraduationTypeController.clear();
+
                                       if (provider.educationLevelIdController.text == "9") {
                                         provider.onSelectItiItem(context, value, 0);
                                       } else {
@@ -2502,12 +2516,12 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           //                     .text ==
                           //                 "127")
                           //     ?
-                          Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Other Graduation Type',
-                                      required: true),
-                                ),
+                          // Padding(
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 10, vertical: 5),
+                          //         child: labelWithStar('Other Graduation Type',
+                          //             required: true),
+                          //       ),
                             //  : SizedBox(),
 
                           // (provider.educationLevelIdController.text == "5" &&
@@ -2525,19 +2539,31 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           //                     .text ==
                           //                 "127")
                           //     ?
-                          Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
+                          Visibility(
+                            visible: provider.graduationTypeNameController.text == "Other",
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  child: labelWithStar(
+                                    "Other ${getGraduationTypeLabel()}",
+                                    required: true,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.otherGraduationTypeController,
-                                    "Enter Other Graduation Type*",
+                                    "Enter Other ${getGraduationTypeLabel()}",
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
                                   ),
                                 ),
-                            //  : SizedBox(),
-
+                              ],
+                            ),
+                          ),
                           // stream Type for under graduate/graduate/post graduation
                           provider.educationLevelIdController.text == "5" ||
                                   provider.educationLevelIdController.text ==

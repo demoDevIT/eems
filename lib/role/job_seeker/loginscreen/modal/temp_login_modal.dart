@@ -86,6 +86,7 @@ class TempLoginData {
   dynamic officeID;
   dynamic districtCode;
   dynamic deptID;
+  dynamic internshipDeptID;
   dynamic internshipDeptTypeID;
   dynamic NameAsjanAdhar;
   dynamic DistrictEn;
@@ -148,6 +149,7 @@ class TempLoginData {
         this.officeID,
         this.districtCode,
         this.deptID,
+        this.internshipDeptID,
         this.internshipDeptTypeID,
         this.NameAsjanAdhar,
         this.DistrictEn,
@@ -211,6 +213,7 @@ class TempLoginData {
     officeID = json['OfficeID'];
     districtCode = json['DistrictCode'];
     deptID = json['DepartmentID'];
+    internshipDeptID = json['InternshipDeptID'];
     internshipDeptTypeID = json['InternshipDeptTypeID'];
     NameAsjanAdhar = json['NameAsjanAdhar'];
     DistrictEn = json['DistrictEn'];
@@ -276,6 +279,7 @@ class TempLoginData {
     data['OfficeID'] = this.officeID;
     data['DistrictCode'] = this.districtCode;
     data['DepartmentID'] = this.deptID;
+    data['InternshipDeptID'] = this.internshipDeptID;
     data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
     data['NameAsjanAdhar'] = this.NameAsjanAdhar;
     data['DistrictEn'] = this.DistrictEn;
