@@ -939,31 +939,54 @@ class AddJobProvider extends ChangeNotifier {
         .replaceAll(" ", "")
         .toUpperCase();
 
-    // ✅ HANDLE "ABOVE" CASE
-    if (cleaned.contains("ABOVE")) {
-      final value = cleaned.replaceAll("ABOVE", "").replaceAll("K", "");
-
-      int start = int.tryParse(value) ?? 0;
-      start = start * 1000;
-
-      return [start, 999999999]; // max limit
+    if (cleaned.isEmpty ||
+        cleaned.contains("SELECTOPTION")) {
+      return [0, 0];
     }
 
-    // ✅ NORMAL RANGE CASE (e.g. 10K-20K)
-    List<String> parts = cleaned.split('-');
+    if (cleaned.startsWith("BELOW")) {
+      final value = cleaned
+          .replaceAll("BELOW", "")
+          .replaceAll("K", "");
 
-    int start = int.tryParse(parts[0].replaceAll('K', '')) ?? 0;
-    int end = int.tryParse(parts[1].replaceAll('K', '')) ?? 0;
+      final end = (int.tryParse(value) ?? 0) * 1000;
 
-    return [start * 1000, end * 1000];
+      return [0, end];
+    }
+
+    if (cleaned.contains("ABOVE")) {
+      final value = cleaned
+          .replaceAll("ABOVE", "")
+          .replaceAll("K", "");
+
+      final start = (int.tryParse(value) ?? 0) * 1000;
+
+      return [start, 999999999];
+    }
+
+    final parts = cleaned.split('-');
+
+    if (parts.length != 2) {
+      return [0, 0];
+    }
+
+    final start =
+        (int.tryParse(parts[0].replaceAll('K', '')) ?? 0) * 1000;
+
+    final end =
+        (int.tryParse(parts[1].replaceAll('K', '')) ?? 0) * 1000;
+
+    return [start, end];
   }
 
   Future<SaveJobPostModal?> saveJobDetailApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
+    print("saveJobFetailAPI");
     if (isInternet) {
 
       try {
         String ? IpAddress =  await UtilityClass.getIpAddress();
+        print("IP fetched: $IpAddress");
         int male = 0;
         int female = 0;
         int trans = 0;
@@ -982,11 +1005,15 @@ class AddJobProvider extends ChangeNotifier {
           total = male + female + trans;
         }
 
+        print("Gender calculation done");
+
         List<int> salaryLimit =
         getSalaryLimit(salaryRangeController.text);
-
+        print("Salary limit: $salaryLimit");
         String? deviceId = await UtilityClass.getDeviceId();
+        print("Device ID: $deviceId");
 
+        print("Creating body");
         Map<String, dynamic> bodyy =
         {
           "ActionName": "Insert",
@@ -1012,7 +1039,8 @@ class AddJobProvider extends ChangeNotifier {
           "NoofVacancyOther": trans,
           "TotalVacancy": total,
           "SkillCatId": skills
-              .map((e) => e.category)
+              // .map((e) => e.category)
+              .map((e) => int.tryParse(e.categoryId) ?? 0)
               .toSet()
               .join(","),
           "SkillSubCatId": skills

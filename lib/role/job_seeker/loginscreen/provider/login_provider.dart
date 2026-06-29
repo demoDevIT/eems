@@ -236,49 +236,49 @@ class LoginProvider with ChangeNotifier {
                   // getDeptBasicDetails(
                   //     context, sm.data!.userID.toString(), sm.data!.roleID,
                   //     ssoId);
-
-                  await saveRememberMeData();
-
-                  bool otpSent = await loginHistoryMessagesApi(
-                    context,
-                    sm.data!.mobileno,
-                    sm.data!.userID,
-                    sm.data!.roleID,
-                  );
-
-                  if (!otpSent) {
-                    showAlertError("Failed to send OTP", context);
-                    return null;
-                  }
-
-                  showOtpDialog(
-                    context,
-                    sm.data!.mobileno,
-                    onSubmit: (otp) async {
-                      bool verified = await verifyOtpApi(
-                        context,
-                        sm.data!.mobileno,
-                        otp,
-                      );
-
-                      if (!verified) {
-                        showAlertError(
-                          "Invalid OTP. Please try again.",
-                          context,
-                        );
-                        return;
-                      }
-
-                      await getDeptBasicDetails(
-                        context,
-                        sm.data!.userID.toString(),
-                        sm.data!.roleID,
-                        ssoId,
-                        sm.data!.internshipDeptID,
-                        sm.data!.internshipDeptTypeID,
-                      );
-                    },
-                  );
+                  //
+                  // await saveRememberMeData();
+                  //
+                  // bool otpSent = await loginHistoryMessagesApi(
+                  //   context,
+                  //   sm.data!.mobileno,
+                  //   sm.data!.userID,
+                  //   sm.data!.roleID,
+                  // );
+                  //
+                  // if (!otpSent) {
+                  //   showAlertError("Failed to send OTP", context);
+                  //   return null;
+                  // }
+                  //
+                  // showOtpDialog(
+                  //   context,
+                  //   sm.data!.mobileno,
+                  //   onSubmit: (otp) async {
+                  //     bool verified = await verifyOtpApi(
+                  //       context,
+                  //       sm.data!.mobileno,
+                  //       otp,
+                  //     );
+                  //
+                  //     if (!verified) {
+                  //       showAlertError(
+                  //         "Invalid OTP. Please try again.",
+                  //         context,
+                  //       );
+                  //       return;
+                  //     }
+                  //
+                  //     await getDeptBasicDetails(
+                  //       context,
+                  //       sm.data!.userID.toString(),
+                  //       sm.data!.roleID,
+                  //       ssoId,
+                  //       sm.data!.internshipDeptID,
+                  //       sm.data!.internshipDeptTypeID,
+                  //     );
+                  //   },
+                  // );
 
                   return sm;
 
@@ -311,46 +311,54 @@ class LoginProvider with ChangeNotifier {
                   //   ),
                   // );
 
-                  bool otpSent = await loginHistoryMessagesApi(
+                  await getJobFairUserDetails(
                     context,
-                    sm.data!.mobileno,
-                    sm.data!.userID,
-                    sm.data!.roleID,
+                    switchRoleID: sm.data!.roleID,
+                    switchOfficeID: sm.data!.officeID,
+                    intDeptTypeID: sm.data!.internshipDeptTypeID,
+                    intDeptID: sm.data!.internshipDeptID,
                   );
 
-                  if (!otpSent) {
-                    showAlertError("Failed to send OTP", context);
-                    return null;
-                  }
-
-                  showOtpDialog(
-                    context,
-                      sm.data!.mobileno,
-                    onSubmit: (otp) async {
-
-                      bool verified = await verifyOtpApi(
-                        context,
-                        sm.data!.mobileno,
-                        otp,
-                      );
-
-                      if (!verified) {
-                        showAlertError(
-                          "Invalid OTP. Please try again.",
-                          context,
-                        );
-                        return;
-                      }
-
-                      await getJobFairUserDetails(
-                        context,
-                        switchRoleID: sm.data!.roleID,
-                        switchOfficeID: sm.data!.officeID,
-                        intDeptTypeID: sm.data!.internshipDeptTypeID,
-                        intDeptID: sm.data!.internshipDeptID,
-                      );
-                    },
-                  );
+                  // bool otpSent = await loginHistoryMessagesApi(
+                  //   context,
+                  //   sm.data!.mobileno,
+                  //   sm.data!.userID,
+                  //   sm.data!.roleID,
+                  // );
+                  //
+                  // if (!otpSent) {
+                  //   showAlertError("Failed to send OTP", context);
+                  //   return null;
+                  // }
+                  //
+                  // showOtpDialog(
+                  //   context,
+                  //     sm.data!.mobileno,
+                  //   onSubmit: (otp) async {
+                  //
+                  //     bool verified = await verifyOtpApi(
+                  //       context,
+                  //       sm.data!.mobileno,
+                  //       otp,
+                  //     );
+                  //
+                  //     if (!verified) {
+                  //       showAlertError(
+                  //         "Invalid OTP. Please try again.",
+                  //         context,
+                  //       );
+                  //       return;
+                  //     }
+                  //
+                  //     await getJobFairUserDetails(
+                  //       context,
+                  //       switchRoleID: sm.data!.roleID,
+                  //       switchOfficeID: sm.data!.officeID,
+                  //       intDeptTypeID: sm.data!.internshipDeptTypeID,
+                  //       intDeptID: sm.data!.internshipDeptID,
+                  //     );
+                  //   },
+                  // );
 
                   // loginHistoryMessagesApi(context, sm.data!.mobileno, sm.data!.userID, sm.data!.roleID);
                   // getJobFairUserDetails(

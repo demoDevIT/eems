@@ -401,7 +401,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 ),
 
                 /// ===== Exchange NAME =====
-                _label("Exchange Name*"),
+                _label("District Employment Office*"), //Exchange Name
                 provider.isExchangeLoading
                     ? const Center(child: CircularProgressIndicator())
                     : buildSearchableDropdown<ExchangeNameData>(
@@ -413,7 +413,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
 
                   controller: provider.exchangeNameController,
                   idController: provider.exchangeIdController,
-                  hintText: "--Select Exchange Name--",
+                  hintText: "--Select District Employment Office--",
                   // height: 50,
                   // selectedValue: provider.selectedExchangeName,
                   // getLabel: (e) => e.nameEng ?? "",

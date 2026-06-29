@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/provider/counsellor_otr_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_dashboard/counselor_dashboard.dart';
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
@@ -293,6 +294,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     _controller.forward();
     // _controller.addStatusListener((status) {
@@ -307,9 +309,31 @@ class _MyHomePageState extends State<MyHomePage>
 
         await Future.delayed(const Duration(seconds: 2));
 
-        getUserData();
+        await _checkForUpdate();
+        //getUserData();
       }
     });
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final updateInfo = await InAppUpdate.checkForUpdate();
+
+      debugPrint("Availability: ${updateInfo.updateAvailability}");
+      debugPrint("Available Version Code: ${updateInfo.availableVersionCode}");
+      debugPrint("Immediate Allowed: ${updateInfo.immediateUpdateAllowed}");
+      debugPrint("Flexible Allowed: ${updateInfo.flexibleUpdateAllowed}");
+
+      if (updateInfo.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        await InAppUpdate.performImmediateUpdate();
+      } else {
+        getUserData();
+      }
+    } catch (e) {
+      debugPrint("Update check failed: $e");
+      getUserData();
+    }
   }
 
   @override

@@ -6,11 +6,13 @@ import 'package:rajemployment/role/job_seeker/job_details/provider/job_details_p
 import 'package:rajemployment/role/job_seeker/job_fair_event/provider/job_fair_event_details_provider.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
+import '../../../constants/constants.dart';
 import '../../../utils/button.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
 import '../loginscreen/provider/locale_provider.dart';
 import 'modal/running_event_modal.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JobFairEventDetailsScreen extends StatefulWidget {
   RunningEventData runningEventData;
@@ -472,7 +474,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          customButton2(() async {
+                          customButton2(() async  {
                             Navigator.of(context).pop();
                           }, "Back",
                               '',
@@ -691,7 +693,12 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     eventId);
 
                 if (success) {
-                  annualDistrictDialog(context, (value) {});
+                //  annualDistrictDialog(context, (value) {});
+                  registrationResultDialog(
+                    context,
+                    provider.apiMessage,
+                    provider.encEventId,
+                  );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -710,6 +717,63 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
     );
   }
 
+  Future<void> registrationResultDialog(
+      BuildContext context,
+      String message,
+      String encEventId,
+      ) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Job Fair Registration"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 15),
+
+              InkWell(
+                onTap: () async {
+
+                  final Uri url = Uri.parse(
+                    // "https://eems.devitsandbox.com/JobFair/JFPass?EventId=$encEventId",
+                    "${Constants.showPassUrl}$encEventId",
+                  );
+
+
+                  await launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
+                child: const Text(
+                  "Click here to download your pass",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 

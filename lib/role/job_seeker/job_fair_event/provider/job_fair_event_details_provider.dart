@@ -8,6 +8,7 @@ import 'package:rajemployment/utils/user_new.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/utility_class.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JobFairEventDetailsProvider extends ChangeNotifier {
   final CommonRepo commonRepo;
@@ -18,12 +19,18 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
 
   String apiMessage = "";
 
+  //String apiMessage = "";
+  String encEventId = "";
+  bool isRegisteredOrAlreadyRegistered = false;
+
   Future<bool> registerJobFairEvent(
       BuildContext context,
       int eventId,
       ) async {
 
     apiMessage = "";
+    encEventId = "";
+    isRegisteredOrAlreadyRegistered = false;
     isLoading = true;
     notifyListeners();
 
@@ -36,13 +43,20 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
       UserData().model.value.roleId.toString();
       String? deviceId = await UtilityClass.getDeviceId();
 
+      Map<String, dynamic> body = {
+        "UserId": userId,
+        "RoleId": roleId,
+        "EventId": eventId,
+        "DeviceId": deviceId
+      };
+
       /// ✅ Dynamic URL
       String url =
-          "JobFairEvent/JobFairEventRegistration/"
-          "$userId/$roleId/$eventId/$deviceId";
+          "JobFairEvent/JobFairEventRegistration/";
+        //  "$userId/$roleId/$eventId/$deviceId";
 
       ApiResponse apiResponse =
-      await commonRepo.post(url, {});
+      await commonRepo.post(url, body);
 
       if (apiResponse.response?.statusCode == 200) {
 
@@ -53,12 +67,34 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
           responseData = jsonDecode(responseData);
         }
 
+        // bool status = responseData["Status"] ?? false;
+        //
+        // apiMessage = responseData["Message"] ?? "";
+        //
+        // isLoading = false;
+        // notifyListeners();
+        // return true;
+
         bool status = responseData["Status"] ?? false;
 
-        apiMessage = responseData["Message"] ?? "";
+        if (responseData["Data"] != null &&
+            responseData["Data"] is List &&
+            responseData["Data"].isNotEmpty) {
+
+          apiMessage =
+              responseData["Data"][0]["MSG"]?.toString() ?? "";
+
+          encEventId =
+              responseData["Data"][0]["EncEventId"]?.toString() ?? "";
+
+          isRegisteredOrAlreadyRegistered = true;
+        } else {
+          apiMessage = responseData["Message"] ?? "";
+        }
 
         isLoading = false;
         notifyListeners();
+
         return true;
 
       } else { // if response is -2 than msg will be 'already registered'
@@ -74,5 +110,6 @@ class JobFairEventDetailsProvider extends ChangeNotifier {
     notifyListeners();
     return false;
   }
+
 
 }

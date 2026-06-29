@@ -140,15 +140,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-   // return PopScope(
-    return UpgradeAlert(
-    upgrader: Upgrader(
-   // debugDisplayAlways: true,
-    debugLogging: true,
-    ),
-    showIgnore: false,
-    showLater: false,
-    child: PopScope(
+   return PopScope(
+   //  return UpgradeAlert(
+   //  upgrader: Upgrader(
+   // // debugDisplayAlways: true,
+   //  debugLogging: true,
+   //  ),
+   //  showIgnore: false,
+   //  showLater: false,
+   //  child: PopScope(
       canPop: true,
       child: Scaffold(
         key: _scaffoldKey,
@@ -420,7 +420,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    ),
+    //),
     );
   }
 }

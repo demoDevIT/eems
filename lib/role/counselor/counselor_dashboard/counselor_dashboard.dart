@@ -130,19 +130,19 @@ class _CounselorDashboard extends State<CounselorDashboard> {
           // ),
 
           /// Apply Job Fair (same as employer)
-          // _dashboardListTile(
-          //   title: "Apply for Job Fair",
-          //   iconPath: "assets/images/aplyjobfair.svg",
-          //   color: const Color(0xFF2DBE8D),
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => const JobFairScreen(),
-          //       ),
-          //     );
-          //   },
-          // ),
+          _dashboardListTile(
+            title: "Apply for Job Fair",
+            iconPath: "assets/images/aplyjobfair.svg",
+            color: const Color(0xFF2DBE8D),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const JobFairScreen(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

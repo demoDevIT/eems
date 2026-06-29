@@ -187,14 +187,14 @@ class _HomeScreenState extends State<HomeScreen> {
                MaterialPageRoute(builder: (_) => GrievanceScreen()));
          },
        ),
-       _DashboardItem(
-         title: "Video Profile",
-         iconPath: "assets/images/videoProfile.svg",
-         onTap: () {
-           Navigator.push(context,
-               MaterialPageRoute(builder: (_) => VideoprofileScreen()));
-         },
-       ),
+       // _DashboardItem(
+       //   title: "Video Profile",
+       //   iconPath: "assets/images/videoProfile.svg",
+       //   onTap: () {
+       //     Navigator.push(context,
+       //         MaterialPageRoute(builder: (_) => VideoprofileScreen()));
+       //   },
+       // ),
        _DashboardItem(
          title: "Self Assessment",
          iconPath: "assets/images/selfAssessment.svg",
