@@ -2,14 +2,14 @@ abstract class Constants {
 
   // url devit staging:
       //sandbox
-      // static const baseurl ="https://eems.devitsandbox.com/mobileapi/api/";
-      // static const uploadBaseUrl = "https://eems.devitsandbox.com/mobileapi/Uploads/";
-      // static const showPassUrl = "https://eems.devitsandbox.com/JobFair/JFPass?EventId=";
+      static const baseurl ="https://eems.devitsandbox.com/mobileapi/api/";
+      static const uploadBaseUrl = "https://eems.devitsandbox.com/mobileapi/Uploads/";
+      static const showPassUrl = "https://eems.devitsandbox.com/JobFair/JFPass?EventId=";
 
       //live
-      static const baseurl ="https://rajemploymentapi.rajasthan.gov.in/mobileapi/api/"; //new live URL
-      static const uploadBaseUrl = "https://rajemployment.rajasthan.gov.in/mobileapi/Uploads/"; //live
-      static const showPassUrl = "https://rajemployment.rajasthan.gov.in/JobFair/JFPass?EventId=";
+      // static const baseurl ="https://rajemploymentapi.rajasthan.gov.in/mobileapi/api/"; //new live URL
+      // static const uploadBaseUrl = "https://rajemployment.rajasthan.gov.in/mobileapi/Uploads/"; //live
+      // static const showPassUrl = "https://rajemployment.rajasthan.gov.in/JobFair/JFPass?EventId=";
 
       static const janAadhaarBaseUrl ="https://rajemployment.rajasthan.gov.in/api/api/"; //live URL
 

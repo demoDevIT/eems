@@ -41,7 +41,7 @@ class _DeptJoinPendingListScreenState
       provider.clearData();
       provider.getDeptJoinPendingListApi(
         context,
-        registrationNumber: widget.registrationNumber,
+        registrationNumber: "", //widget.registrationNumber,
         jobSeekerId: widget.jobSeekerId,
         userId: widget.userId,
       );
@@ -198,32 +198,37 @@ class _DeptJoinPendingListScreenState
               "Alloted Department",
               "${item.allottedDeptName ?? "-"} (${item.departmentNameEn ?? "-"})",
             ),
+            _row(
+              "Joining Status",
+              item.internJoined == 0 ? "No" : "Yes",
+            ),
+            // if "yes" - view button for joining letter
 
             const Divider(height: 20),
 
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () =>
-                        provider.generateAndOpenInternshipPdf(
-                          context,
-                          item.jobSeekerUserId ?? 0,
-                        ),
-                    child: const Text("View Joining Letter"),
+            if ((item.internJoined == 0) && (item.esign == 0))
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => provider.generateAndOpenInternshipPdf(
+                        context,
+                        item.jobSeekerUserId ?? 0,
+                      ),
+                      child: const Text("View Joining Letter"),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      provider.openApproveJoiningPopup(context, item);
-                    },
-                    child: const Text("Approve Joining"),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        provider.openApproveJoiningPopup(context, item);
+                      },
+                      child: const Text("Approve Joining"),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),

@@ -269,9 +269,13 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
 
     /// Save parameters for future refresh
-    this.registrationNumber = registrationNumber ?? this.registrationNumber;
-    this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
-    this.userId = userId ?? this.userId;
+    // this.registrationNumber = registrationNumber ?? this.registrationNumber;
+    // this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
+    // this.userId = userId ?? this.userId;
+
+    this.registrationNumber = registrationNumber ?? "";
+    this.jobSeekerId = jobSeekerId ?? "";
+    this.userId = userId ?? "";
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
@@ -284,12 +288,14 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
       Map<String, dynamic> body = {
         "ActionName": "PendingList",
         "DepartmentID": UserData().model.value.deptID,
-        "RegistrationNumber": this.registrationNumber, //this.regNoController.text, //this.regNoController.text, //"22092120948", //this.registrationNumber,
+        "RegistrationNumber": this.registrationNumber ?? "", //this.regNoController.text, //this.regNoController.text, //"22092120948", //this.registrationNumber,
         "JobSeekerID": this.jobSeekerId,
         "UserId": UserData().model.value.userId, //"2261663", //UserData().model.value.userId,
         "RoleId": UserData().model.value.roleId,
         "intenjoinned": null,
-        "AllotmentDeptId": null
+        "AllotmentDeptId": null,
+        "InternshipDeptTypeID": UserData().model.value.internshipDeptTypeID,
+        "InternshipDeptID": UserData().model.value.internshipDeptID
       };
 
       isPendingListLoading = true;
@@ -794,6 +800,11 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
     /// clear list
     regNoController.clear();
+
+    registrationNumber = "";
+    jobSeekerId = null;
+    userId = null;
+
     pendingList.clear();
 
     notifyListeners();

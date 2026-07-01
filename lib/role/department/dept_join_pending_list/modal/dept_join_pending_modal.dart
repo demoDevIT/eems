@@ -61,6 +61,9 @@ class DeptJoinPendingItem {
     String? deptAllotmentDate;
     String? departmentNameEn;
     String? allotmentDeptName;
+    int? internJoined;
+    String? internshipPdfPath;
+    int? esign;
 
     // String? areaType;
     // String? privateDistrictCode;
@@ -99,7 +102,10 @@ class DeptJoinPendingItem {
     this.lastActionDate,
     this.deptAllotmentDate,
     this.departmentNameEn,
-    this.allotmentDeptName
+    this.allotmentDeptName,
+    this.internJoined,
+    this.internshipPdfPath,
+    this.esign
 
     // this.areaType,
     // this.privateDistrictCode,
@@ -141,6 +147,9 @@ class DeptJoinPendingItem {
       deptAllotmentDate: json['DeptAllotmentDate_DDMMYYYY'],
       departmentNameEn: json['DepartmentNameEn'],
       allotmentDeptName: json['AllotmentDeptName'],
+      internJoined: json['InternJoined'],
+      internshipPdfPath: json['InternshipPdfPath'],
+      esign: json['Esign'],
 
       // areaType: json['AreaType'],
       // privateDistrictCode: json['PrivateDistrictCode'],

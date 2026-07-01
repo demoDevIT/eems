@@ -154,6 +154,7 @@ class LoginData {
   dynamic officeID;
   dynamic deptID;
   dynamic internshipDeptTypeID;
+  dynamic internshipDeptID;
   dynamic NameAsjanAdhar;
   dynamic DistrictEn;
   // dynamic district; already exist
@@ -300,6 +301,7 @@ class LoginData {
     this.officeID,
     this.deptID,
     this.internshipDeptTypeID,
+    this.internshipDeptID,
     this.NameAsjanAdhar,
     this.DistrictEn,
 
@@ -448,6 +450,7 @@ class LoginData {
     officeID = json['OfficeID'];
     deptID = json['DepartmentID'];
     internshipDeptTypeID = json['InternshipDeptTypeID'];
+    internshipDeptID = json['InternshipDeptID'];
     NameAsjanAdhar = json['NameAsjanAdhar'];
     DistrictEn = json['DistrictEn'];
 
@@ -596,6 +599,7 @@ class LoginData {
     data['OfficeID'] = this.officeID;
     data['DepartmentID'] = this.deptID;
     data['InternshipDeptTypeID'] = this.internshipDeptTypeID;
+    data['InternshipDeptID'] = this.internshipDeptID;
     data['NameAsjanAdhar'] = this.NameAsjanAdhar;
     data['DistrictEn'] = this.DistrictEn;
 
