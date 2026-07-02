@@ -155,10 +155,9 @@ class DashboardProvider extends ChangeNotifier {
           UserData().model.value.officeID = responseData['Data']['OfficeID'];
           UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
           UserData().model.value.deptID = responseData['Data']['DepartmentID'];
-          UserData().model.value.internshipDeptTypeID =
-          responseData['Data']['InternshipDeptTypeID'];
-          UserData().model.value.NameAsjanAdhar =
-          responseData['Data']['NameAsjanAdhar'];
+          UserData().model.value.internshipDeptID = responseData['Data']['InternshipDeptID'];
+          UserData().model.value.internshipDeptTypeID = responseData['Data']['InternshipDeptTypeID'];
+          UserData().model.value.NameAsjanAdhar = responseData['Data']['NameAsjanAdhar'];
           UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
           UserData().model.value.designation = responseData['Data']['Designation'];
          // UserData().model.value.officeName = responseData['Data']['Office'];
@@ -177,10 +176,9 @@ class DashboardProvider extends ChangeNotifier {
           UserData().model.value.officeID = responseData['Data']['OfficeID'];
           UserData().model.value.districtCode = responseData['Data']['DistrictCode'];
           UserData().model.value.deptID = responseData['Data']['DepartmentID'];
-          UserData().model.value.internshipDeptTypeID =
-          responseData['Data']['InternshipDeptTypeID'];
-          UserData().model.value.NameAsjanAdhar =
-          responseData['Data']['NameAsjanAdhar'];
+          UserData().model.value.internshipDeptID = responseData['Data']['InternshipDeptID'];
+          UserData().model.value.internshipDeptTypeID = responseData['Data']['InternshipDeptTypeID'];
+          UserData().model.value.NameAsjanAdhar = responseData['Data']['NameAsjanAdhar'];
           UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
           UserData().model.value.designation = responseData['Data']['Designation'];
           UserData().model.value.userId = userID;

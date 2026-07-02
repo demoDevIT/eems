@@ -1000,6 +1000,8 @@ class EmpOTRFormProvider with ChangeNotifier {
       //   "EmployerDocumentList": employerDocs,
       // };
 
+      String? deviceId = await UtilityClass.getDeviceId();
+
       // NEW parameters get from Amit Tripathi which is also working and give successfull message
       /// 🔹 MAIN REQUEST BODY
       Map<String, dynamic> data = {
@@ -1121,6 +1123,7 @@ class EmpOTRFormProvider with ChangeNotifier {
         "Contact_PAN_No": contactPanController.text,
         "IsActive": true,
         "EmployerDocumentList": employerDocs,
+        "DeviceID": deviceId
       };
 
       printFullJson(data);

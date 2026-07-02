@@ -801,10 +801,6 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     /// clear list
     regNoController.clear();
 
-    registrationNumber = "";
-    jobSeekerId = null;
-    userId = null;
-
     pendingList.clear();
 
     notifyListeners();

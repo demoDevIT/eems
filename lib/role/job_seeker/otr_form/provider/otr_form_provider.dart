@@ -1852,6 +1852,9 @@ class OtrFormProvider extends ChangeNotifier {
           json.remove('dspeak');
           return json;
         }).toList();
+
+        String? deviceId = await UtilityClass.getDeviceId();
+
         Map<String, dynamic> data =
             /*  {
           "SSOID": ssoIDController.text,
@@ -2135,7 +2138,8 @@ class OtrFormProvider extends ChangeNotifier {
 
           "SameAsAddress": sameAsAbove == true ? 'Y' : 'N',
 
-          "Languages": jsonList
+          "Languages": jsonList,
+              "DeviceID": deviceId
         };
         print("printFullData -->");
         printFullJson(data);

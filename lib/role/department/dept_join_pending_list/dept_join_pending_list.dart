@@ -39,9 +39,13 @@ class _DeptJoinPendingListScreenState
       Provider.of<DeptJoinPendingListProvider>(context, listen: false);
 
       provider.clearData();
+
+      // Show searched registration number in the textbox
+      provider.regNoController.text = widget.registrationNumber ?? "";
+
       provider.getDeptJoinPendingListApi(
         context,
-        registrationNumber: "", //widget.registrationNumber,
+        registrationNumber: widget.registrationNumber ?? "", //widget.registrationNumber,
         jobSeekerId: widget.jobSeekerId,
         userId: widget.userId,
       );

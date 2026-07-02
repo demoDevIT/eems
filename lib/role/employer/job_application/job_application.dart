@@ -16,6 +16,12 @@ import '../../department/dept_join_attendance_list/modal/financial_year_modal.da
 import '../emp_QR_scan/emp_QR_scan.dart';
 import 'provider/job_application_provider.dart';
 
+enum SearchType {
+  mobile,
+  regNo,
+  applicantName,
+}
+
 class JobApplicationScreen extends StatefulWidget {
   const JobApplicationScreen({super.key});
 
@@ -28,9 +34,13 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
   String? selectedEvent;
   String? selectedJobPostID;
 
+  SearchType? selectedSearchType;
+
   @override
   void initState() {
     super.initState();
+
+    selectedSearchType = SearchType.mobile;
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<JobApplicationProvider>(context, listen: false);
@@ -157,32 +167,105 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             const SizedBox(height: 10),
 
                             /// Mobile
-                            labelWithStar('Mobile Number', required: false),
+                            // labelWithStar('Mobile Number', required: false),
+                            //
+                            // TextFormField(
+                            //   controller: provider.mobileController,
+                            //   keyboardType: TextInputType.phone,
+                            //   decoration: _inputDecoration("Enter Mobile Number"),
+                            // ),
+                            //
+                            // const SizedBox(height: 10),
+                            //
+                            // /// Registration
+                            // labelWithStar('Event Registration Number', required: false),
+                            //
+                            // TextFormField(
+                            //   controller: provider.registrationController,
+                            //   decoration: _inputDecoration("Enter Registration Number"),
+                            // ),
+                            //
+                            // const SizedBox(height: 10),
+                            //
+                            // /// Applicant Name
+                            // labelWithStar('Name of Applicant', required: false),
+                            //
+                            // TextFormField(
+                            //   controller: provider.applicantNameController,
+                            //   decoration: _inputDecoration("Enter Applicant Name"),
+                            // ),
 
-                            TextFormField(
-                              controller: provider.mobileController,
-                              keyboardType: TextInputType.phone,
-                              decoration: _inputDecoration("Enter Mobile Number"),
-                            ),
+                            labelWithStar("Search By", required: false),
 
-                            const SizedBox(height: 10),
+                            Column(
+                              children: [
 
-                            /// Registration
-                            labelWithStar('Event Registration Number', required: false),
+                                RadioListTile<SearchType>(
+                                  title: const Text("Mobile"),
+                                  value: SearchType.mobile,
+                                  groupValue: selectedSearchType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedSearchType = value;
 
-                            TextFormField(
-                              controller: provider.registrationController,
-                              decoration: _inputDecoration("Enter Registration Number"),
-                            ),
+                                      provider.mobileController.clear();
+                                      provider.registrationController.clear();
+                                      provider.applicantNameController.clear();
+                                    });
+                                  },
+                                ),
 
-                            const SizedBox(height: 10),
+                                RadioListTile<SearchType>(
+                                  title: const Text("Registration No"),
+                                  value: SearchType.regNo,
+                                  groupValue: selectedSearchType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedSearchType = value;
 
-                            /// Applicant Name
-                            labelWithStar('Name of Applicant', required: false),
+                                      provider.mobileController.clear();
+                                      provider.registrationController.clear();
+                                      provider.applicantNameController.clear();
+                                    });
+                                  },
+                                ),
 
-                            TextFormField(
-                              controller: provider.applicantNameController,
-                              decoration: _inputDecoration("Enter Applicant Name"),
+                                RadioListTile<SearchType>(
+                                  title: const Text("Name of Applicant"),
+                                  value: SearchType.applicantName,
+                                  groupValue: selectedSearchType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedSearchType = value;
+
+                                      provider.mobileController.clear();
+                                      provider.registrationController.clear();
+                                      provider.applicantNameController.clear();
+                                    });
+                                  },
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                if (selectedSearchType == SearchType.mobile)
+                                  TextFormField(
+                                    controller: provider.mobileController,
+                                    keyboardType: TextInputType.phone,
+                                    decoration: _inputDecoration("Enter Mobile Number"),
+                                  ),
+
+                                if (selectedSearchType == SearchType.regNo)
+                                  TextFormField(
+                                    controller: provider.registrationController,
+                                    decoration: _inputDecoration("Enter Registration Number"),
+                                  ),
+
+                                if (selectedSearchType == SearchType.applicantName)
+                                  TextFormField(
+                                    controller: provider.applicantNameController,
+                                    decoration: _inputDecoration("Enter Applicant Name"),
+                                  ),
+                              ],
                             ),
 
                             const SizedBox(height: 10),
@@ -192,6 +275,46 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
+
+                                  /// Financial Year
+                                  if (provider.selectedFinancialYear == null) {
+                                    showAlertError("Please select Financial Year", context);
+                                    return;
+                                  }
+
+                                  /// Event
+                                  if (provider.eventIdController.text.trim().isEmpty) {
+                                    showAlertError("Please select Event Name", context);
+                                    return;
+                                  }
+
+                                  /// Job Post
+                                  if (selectedJobPostID == null || selectedJobPostID!.isEmpty) {
+                                    showAlertError("Please select Job Post", context);
+                                    return;
+                                  }
+
+                                  /// Mobile
+                                  if (selectedSearchType == SearchType.mobile &&
+                                      provider.mobileController.text.trim().isEmpty) {
+                                    showAlertError("Please enter Mobile Number", context);
+                                    return;
+                                  }
+
+                                  /// Registration No
+                                  if (selectedSearchType == SearchType.regNo &&
+                                      provider.registrationController.text.trim().isEmpty) {
+                                    showAlertError("Please enter Registration Number", context);
+                                    return;
+                                  }
+
+                                  /// Applicant Name
+                                  if (selectedSearchType == SearchType.applicantName &&
+                                      provider.applicantNameController.text.trim().isEmpty) {
+                                    showAlertError("Please enter Applicant Name", context);
+                                    return;
+                                  }
+
                                   provider.getJobApplicationList(
                                     context,
                                     yearId: provider.selectedFinancialYear?.financialYearID,

@@ -40,9 +40,13 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         .convert(UserData().model.value.toJson()));
     print("========================================");
 
+
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DepartmentDashboardProvider>()
           .getRoleApi(context, "");
+      final provider = context.read<DepartmentDashboardProvider>();
+      provider.clearData();
     });
   }
 
@@ -133,6 +137,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       final index = entry.key;
                       final role = entry.value;
 
+                      final bool isSelected =
+                          role.roleID == UserData().model.value.roleId &&
+                              role.officeID == UserData().model.value.officeID &&
+                              role.internshipDeptID == UserData().model.value.internshipDeptID;
+
                       return PopupMenuItem<RoleData>(
                         value: role,
                         padding: EdgeInsets.zero,
@@ -140,6 +149,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected ? Colors.blue.shade50 : Colors.white,
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,

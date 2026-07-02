@@ -955,6 +955,8 @@ class CounselorOtrProvider extends ChangeNotifier {
         //
         // };
 
+        String? deviceId = await UtilityClass.getDeviceId();
+
         Map<String, dynamic> data = {
           //***********these value I got from Renu in teams
 
@@ -1054,6 +1056,7 @@ class CounselorOtrProvider extends ChangeNotifier {
           "PrivateDistrictID": empSubType == 'nonRajasthan' ? stateIdController.text : 0,
           "PrivateStateID": empSubType == 'nonRajasthan' ? districtIdController.text : 0,
           "PrivateCityID": empSubType == 'nonRajasthan' ? cityIdController.text : 0,
+          "DeviceID": deviceId
         };
 
         print("printFullData -->");
