@@ -181,6 +181,8 @@ class LoginData {
   dynamic deptNameEn;
   dynamic allotDeptName;
 
+  dynamic isJobFairEventLogin;
+
   LoginData({
     this.userId,
     this.roleId,
@@ -328,6 +330,7 @@ class LoginData {
     //job fair atendance
     this.searchRecID,
     this.roleName,
+    this.isJobFairEventLogin,
 
   });
 
@@ -476,6 +479,8 @@ class LoginData {
     deptNameEn = json['DepartmentNameEn'];
     allotDeptName = json['AllotmentDeptName'];
 
+    isJobFairEventLogin = json['isJobFairEventLogin'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -623,6 +628,8 @@ class LoginData {
 
     data['DepartmentNameEn'] = this.deptNameEn;
     data['AllotmentDeptName'] = this.allotDeptName;
+
+    data['isJobFairEventLogin'] = this.isJobFairEventLogin;
 
     return data;
   }

@@ -154,7 +154,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
-            "BypassSSO": true //true for sandbox, remove for live
+           // "BypassSSO": true //true for sandbox, remove for live
           };
         }
 
@@ -197,7 +197,7 @@ class LoginProvider with ChangeNotifier {
             if (sm.data!.userType.trim().toLowerCase() == 'govt') {
               if (sm.data != null && sm.data!.userID != null &&
                   sm.data!.userID! > 0 && sm.data!.roleID > 0) {
-
+                print("pppp");
                 if (sm.data!.roleID == 22) {
 
                   //callbasicdetail API for department getDeptBasicDetails
@@ -289,6 +289,28 @@ class LoginProvider with ChangeNotifier {
                 } else { //earlier it was role 6 , currently 24, future any of role will be set
                   // print("Redirecting to CandidateAttendanceScreen"); job fair login
 
+                  print("donew");
+                  if (ssoId == "EEMSJobFairEvent") {
+
+                    UserData().model.value.sso = ssoId;
+                    UserData().model.value.isJobFairEventLogin = true;
+
+                    Navigator.of(context).push(
+                      RightToLeftRoute(
+                        page: ChangeNotifierProvider(
+                          create: (_) =>
+                              DashboardProvider(
+                                commonRepo: commonRepo, // ✅ FIX
+                              ),
+                          child: const DashboardScreen(),
+                        ),
+                        duration: const Duration(milliseconds: 500),
+                        startOffset: const Offset(-1.0, 0.0),
+                      ),
+                    );
+                  } else {
+
+
                   print("Redirecting to DashboardScreen");
                   await saveRememberMeData();
 
@@ -336,9 +358,8 @@ class LoginProvider with ChangeNotifier {
 
                   showOtpDialog(
                     context,
-                      sm.data!.mobileno,
+                    sm.data!.mobileno,
                     onSubmit: (otp) async {
-
                       bool verified = await verifyOtpApi(
                         context,
                         sm.data!.mobileno,
@@ -362,7 +383,7 @@ class LoginProvider with ChangeNotifier {
                       );
                     },
                   );
-
+                }
                   // loginHistoryMessagesApi(context, sm.data!.mobileno, sm.data!.userID, sm.data!.roleID);
                   // getJobFairUserDetails(
                   //     context, switchRoleID: sm.data!.roleID, switchOfficeID: sm.data!.officeID);

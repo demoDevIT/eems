@@ -43,6 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool hideRoleSection =
+        UserData().model.value.sso == "EEMSJobFairEvent";
+
     return WillPopScope(
       onWillPop: () async {
         showExitDialog(
@@ -70,7 +73,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           iconTheme: const IconThemeData(color: Colors.black),
 
           actions: [
-            Consumer<DashboardProvider>(
+            if (!hideRoleSection)
+              Consumer<DashboardProvider>(
               builder: (context, provider, _) {
                 return PopupMenuButton<RoleData>(
                   offset: const Offset(0, 10), // opens below button
@@ -205,7 +209,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 _welcomeCard(),
                 const SizedBox(height: 18),
 
-                _buildRoleSection(),
+                if (!hideRoleSection) ...[
+                  _buildRoleSection(),
+                  const SizedBox(height: 18),
+                ],
 
                 const SizedBox(height: 18),
 
