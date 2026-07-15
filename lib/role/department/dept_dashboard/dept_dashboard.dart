@@ -393,6 +393,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   Widget _buildRoleSection() {
     return Consumer<DepartmentDashboardProvider>(
       builder: (context, provider, _) {
+        final officeName = UserData().model.value.roleId == 22
+            ? "${UserData().model.value.office ?? ""} "
+            "${UserData().model.value.deptNameEn ?? ""}"
+            : (UserData().model.value.exchangeName ?? "");
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -520,10 +524,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.roleId == 22
-                                ? "${UserData().model.value.allotDeptName ?? ""} "
-                                "(${UserData().model.value.deptNameEn ?? ""})"
-                                : (UserData().model.value.exchangeName ?? ""),
+                            officeName,
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),

@@ -21,6 +21,8 @@ import '../../../../utils/utility_class.dart';
 import '../../../counselor/counselor_dashboard/counselor_dashboard.dart';
 import '../../../department/dept_dashboard/dept_dashboard.dart';
 import '../../../department/dept_dashboard/modal/dept_info_modal.dart';
+import '../../../department/register_form/modal/approval_data_modal.dart';
+import '../../../department/register_form/modal/check_user_status_model.dart';
 import '../../../department/register_form/provider/register_form_provider.dart';
 import '../../../department/register_form/register_form.dart';
 import '../../../employer/emp_profile/modal/emp_info_modal.dart';
@@ -154,7 +156,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
-           // "BypassSSO": true //true for sandbox, remove for live
+            "BypassSSO": true //true for sandbox, remove for live
           };
         }
 
@@ -227,6 +229,7 @@ class LoginProvider with ChangeNotifier {
 
                   UserData().model.value.designation = sm.data!.designation;
                   UserData().model.value.searchRecID = sm.data!.searchRecordID;
+                  UserData().model.value.office = sm.data!.allotmentDeptName;
 
                   // UserData().model.value.mailPersonal = sm.data!.mailPersonal;
                   // UserData().model.value.mailOfficial = sm.data!.mailOfficial;
@@ -291,6 +294,7 @@ class LoginProvider with ChangeNotifier {
 
                   print("donew");
                   if (ssoId == "EEMSJobFairEvent") {
+                    UserData().model.value.office = sm.data!.allotmentDeptName;
 
                     UserData().model.value.sso = ssoId;
                     UserData().model.value.isJobFairEventLogin = true;
@@ -389,29 +393,135 @@ class LoginProvider with ChangeNotifier {
                   //     context, switchRoleID: sm.data!.roleID, switchOfficeID: sm.data!.officeID);
 
                 }
-              } else {
-                Navigator.of(context).push(
-                  RightToLeftRoute(
-                    page: ChangeNotifierProvider(
-                      create: (_) =>
-                          RegisterFormProvider(
+              }
+              else {
+
+                if (sm.data!.userID > 0 && sm.data!.roleID == 0) {
+
+                  final status = await checkInternshipDeptUserStatus(
+                    context,
+                    sm.data!.userID,
+                  );
+
+                  if (status == null) {
+                    return sm;
+                  }
+
+                  // Pending
+                  if (status.isApproved == 0) {
+                    await showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          title: const Row(
+                            children: [
+                              Icon(
+                                Icons.hourglass_top,
+                                color: Colors.orange,
+                              ),
+                              SizedBox(width: 8),
+                              Text("Request Status"),
+                            ],
+                          ),
+                          content: Text(
+                            status.msg ?? "Your request is still pending.",
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    return sm;
+                  }
+
+                  // Rejected
+                  if (status.isApproved == 2) {
+                    Navigator.of(context).push(
+                      RightToLeftRoute(
+                        page: ChangeNotifierProvider(
+                          create: (_) => RegisterFormProvider(
                             commonRepo: commonRepo,
                           ),
-                      child: RegisterFormScreen(
-                        ssoId: sm.data!.sSOID ??
-                            SSOIDController.text, // ✅ pass SSO
+                          child: RegisterFormScreen(
+                            ssoId: sm.data!.sSOID ?? SSOIDController.text,
+                            displayName: sm.data!.displayName ?? "",
+                            mobileNo: sm.data!.mobileno ?? "",
+                            designation: sm.data!.designation ?? "",
+                            deptName: sm.data!.departmentName ?? "",
+                            rejectMessage: status.msg,
+                          ),
+                        ),
+                        duration: const Duration(milliseconds: 500),
+                        startOffset: const Offset(-1.0, 0.0),
+                      ),
+                    );
+
+                    return sm;
+                  }
+
+                  return sm;
+                }
+                // else if (sm.data!.userID == 0 && sm.data!.roleID == 0) {
+                //
+                //   Navigator.of(context).push(
+                //     RightToLeftRoute(
+                //       page: ChangeNotifierProvider(
+                //         create: (_) => RegisterFormProvider(
+                //           commonRepo: commonRepo,
+                //         ),
+                //         child: RegisterFormScreen(
+                //           ssoId: sm.data!.sSOID ?? SSOIDController.text,
+                //           displayName: sm.data!.displayName ?? "",
+                //           mobileNo: sm.data!.mobileno ?? "",
+                //           designation: sm.data!.designation ?? "",
+                //           deptName: sm.data!.departmentName ?? "",
+                //         ),
+                //       ),
+                //       duration: const Duration(milliseconds: 500),
+                //       startOffset: const Offset(-1.0, 0.0),
+                //     ),
+                //   );
+                //
+                //   return sm;
+                // }
+                else {
+
+                  // Active user -> Open registration form normally
+                  Navigator.of(context).push(
+                    RightToLeftRoute(
+                      page: ChangeNotifierProvider(
+                        create: (_) => RegisterFormProvider(
+                          commonRepo: commonRepo,
+                        ),
+                        child: RegisterFormScreen(
+                          ssoId: sm.data!.sSOID ?? SSOIDController.text,
                           displayName: sm.data!.displayName ?? "",
                           mobileNo: sm.data!.mobileno ?? "",
                           designation: sm.data!.designation ?? "",
-                          deptName: sm.data!.departmentName ?? ""
+                          deptName: sm.data!.departmentName ?? "",
+                        ),
                       ),
+                      duration: const Duration(milliseconds: 500),
+                      startOffset: const Offset(-1.0, 0.0),
                     ),
-                    duration: const Duration(milliseconds: 500),
-                    startOffset: const Offset(-1.0, 0.0),
-                  ),
-                );
+                  );
+
+                  return sm;
+                }
               }
-              return sm;
+             // return sm;
             }
 
             else {
@@ -511,6 +621,85 @@ class LoginProvider with ChangeNotifier {
       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
     }
   }
+
+  Future<CheckUserStatusModel?> checkInternshipDeptUserStatus(
+      BuildContext context,
+      int userId,
+      ) async {
+
+    try {
+
+      Map<String, dynamic> body = {
+        "ActionName": "CheckInternshipDeptUserStatus",
+        "UserID": userId,
+        "RoleID": 0,
+        "para1": "",
+        "para2": "",
+        "para3": "",
+      };
+
+      ApiResponse apiResponse = await commonRepo.post(
+        "Common/GetCommanDetailsByAction",
+        body,
+      );
+
+      if (apiResponse.response?.statusCode == 200) {
+
+        var response = apiResponse.response!.data;
+
+        if (response is String) {
+          response = jsonDecode(response);
+        }
+
+        if (response["Data"] != null &&
+            (response["Data"] as List).isNotEmpty) {
+
+          return CheckUserStatusModel.fromJson(response["Data"][0]);
+        }
+      }
+
+      return null;
+
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  // Future<ApprovalData?> getApprovalList(
+  //     BuildContext context,
+  //     TempLoginData loginData,
+  //     ) async {
+  //
+  //   Map<String, dynamic> body = {
+  //     "ActionName": "DepartmentUserInfo",
+  //     "RoleId": loginData.roleID,
+  //     "UserID": loginData.userID,
+  //     "OfficeID": loginData.officeID,
+  //     "DistrictCode": loginData.districtCode,
+  //   };
+  //
+  //   ApiResponse response =
+  //   await commonRepo.post("Common/GetApprovalList", body);
+  //
+  //   if (response.response?.statusCode == 200) {
+  //
+  //     var data = response.response!.data;
+  //
+  //     if (data is String) {
+  //       data = jsonDecode(data);
+  //     }
+  //
+  //     if (data["State"] == 200 &&
+  //         data["Data"] != null &&
+  //         data["Data"].isNotEmpty) {
+  //
+  //       return ApprovalData.fromJson(data["Data"][0]);
+  //     }
+  //   }
+  //
+  //   return null;
+  // }
 
   Future<bool> loginHistoryMessagesApi(BuildContext context, mobileNo, userID, roleID) async {
     try {

@@ -13,6 +13,7 @@ import '../../../../utils/right_to_left_route.dart';
 import '../../../../utils/utility_class.dart';
 import '../../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../../dept_dashboard/modal/dept_info_modal.dart';
+import '../modal/approval_data_modal.dart';
 import '../modal/block_modal.dart';
 import '../modal/department_modal.dart';
 import '../modal/district_modal.dart';
@@ -987,12 +988,42 @@ class RegisterFormProvider extends ChangeNotifier {
     }
   }
 
-  void init(String ssoId, String displayName, String mobileNo, String designation, String deptName) {
-    ssoIdController.text = ssoId; // disabled field
-    displayNameController.text = displayName; // disabled field
-    mobileController.text = mobileNo; // disabled field
-    designationController.text = designation; // disabled field
-    adminDeptNameController.text = deptName; // disabled field
+  void init(
+      String sso,
+      String name,
+      String mobile,
+      String designation,
+      String dept,
+      ApprovalData? approval,
+      ) {
+
+    ssoIdController.text = sso;
+    displayNameController.text = name;
+    mobileController.text = mobile;
+
+    if (approval != null) {
+
+      nameAAdhaarController.text =
+          approval.nameAsPerAadhar ?? "";
+
+      designationController.text =
+          approval.designationName ?? "";
+
+      adminDeptNameController.text =
+          approval.administrationDepartmentName ?? "";
+
+      departmentNameController.text =
+          approval.departmentName ?? "";
+
+      officeNameController.text =
+          approval.allotedDepartmentName ?? "";
+
+      districtController.text =
+          approval.districtName ?? "";
+
+      districtIdController.text =
+          approval.districtCode ?? "";
+    }
   }
 
   void clearData() {

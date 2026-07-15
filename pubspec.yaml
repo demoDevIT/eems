@@ -76,6 +76,7 @@ dependencies:
   upgrader: ^11.5.0
   url_launcher: ^6.3.0
   in_app_update: any
+
 #  dotted_border: ^3.1.0
 
 dev_dependencies:

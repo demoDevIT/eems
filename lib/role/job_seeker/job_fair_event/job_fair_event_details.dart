@@ -48,7 +48,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     Container(
                         width:MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(10),
-                        child: Image(image:  AssetImage(Images.job_fair_event),width: MediaQuery.of(context).size.width,height:  MediaQuery.of(context).size.width / 2,)),
+                        child: Image(image:  AssetImage(Images.job_fair_event_detail),width: MediaQuery.of(context).size.width,height:  MediaQuery.of(context).size.width / 2,)),
                     hSpace(10),
                     Text(localeProvider.currentLanguage == "en" ? "${runningEventData.eventNameENG} (${runningEventData.eventId})": runningEventData.eventNameHI.toString(),
                         style: Styles.semiBoldTextStyle(size: 10,color: fontGrayColor)
@@ -205,132 +205,132 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                               mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Name",
-                                          // Normal text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                        TextSpan(
-                                          text: ' :-', // Asterisk text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .start, // Align text to the start
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.mediumTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "${user?.value.nAMEENG ?? ""}",
-                                          style: Styles.regularTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.end, // Align text to the start
-                                  ),
-                                ),
+                                // Container(
+                                //   padding: EdgeInsets.symmetric(
+                                //       horizontal: 10, vertical: 5),
+                                //   width: MediaQuery.of(context).size.width *
+                                //       0.40,
+                                //   child: RichText(
+                                //     text: TextSpan(
+                                //       style: Styles.mediumTextStyle(
+                                //         size: 12,
+                                //         color: kBlackColor, // Default text color
+                                //       ),
+                                //       children: [
+                                //         TextSpan(
+                                //           text: "Name",
+                                //           // Normal text
+                                //           style: Styles.semiBoldTextStyle(
+                                //               size: 12,
+                                //               color:
+                                //               kBlackColor),
+                                //         ),
+                                //         TextSpan(
+                                //           text: ' :-', // Asterisk text
+                                //           style: Styles.semiBoldTextStyle(
+                                //               size: 12,
+                                //               color:
+                                //               kBlackColor),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     textAlign: TextAlign
+                                //         .start, // Align text to the start
+                                //   ),
+                                // ),
+                                // Container(
+                                //   alignment: Alignment.centerRight,
+                                //   padding: EdgeInsets.symmetric(
+                                //       horizontal: 10, vertical: 5),
+                                //   width: MediaQuery.of(context).size.width *
+                                //       0.40,
+                                //   child: RichText(
+                                //     text: TextSpan(
+                                //       style: Styles.mediumTextStyle(
+                                //         size: 12,
+                                //         color: kBlackColor, // Default text color
+                                //       ),
+                                //       children: [
+                                //         TextSpan(
+                                //           text: "${user?.value.nAMEENG ?? ""}",
+                                //           style: Styles.regularTextStyle(
+                                //               size: 12,
+                                //               color:
+                                //               kBlackColor),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     textAlign: TextAlign.end, // Align text to the start
+                                //   ),
+                                // ),
                               ],
                             ),
-                            hSpace(10),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.semiBoldTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Mobile No.",
-                                          // Normal text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                        TextSpan(
-                                          text: ' :-', // Asterisk text
-                                          style: Styles.semiBoldTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign
-                                        .start, // Align text to the start
-                                  ),
-                                ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  width: MediaQuery.of(context).size.width *
-                                      0.40,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Styles.regularTextStyle(
-                                        size: 12,
-                                        color: kBlackColor, // Default text color
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "+91 ${user?.value.mOBILENO ?? ""}",
-                                          style: Styles.regularTextStyle(
-                                              size: 12,
-                                              color:
-                                              kBlackColor),
-                                        ),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.end, // Align text to the start
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // hSpace(10),
+                            // Row(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   mainAxisAlignment:
+                            //   MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Container(
+                            //       padding: EdgeInsets.symmetric(
+                            //           horizontal: 10, vertical: 5),
+                            //       width: MediaQuery.of(context).size.width *
+                            //           0.40,
+                            //       child: RichText(
+                            //         text: TextSpan(
+                            //           style: Styles.semiBoldTextStyle(
+                            //             size: 12,
+                            //             color: kBlackColor, // Default text color
+                            //           ),
+                            //           children: [
+                            //             TextSpan(
+                            //               text: "Mobile No.",
+                            //               // Normal text
+                            //               style: Styles.semiBoldTextStyle(
+                            //                   size: 12,
+                            //                   color:
+                            //                   kBlackColor),
+                            //             ),
+                            //             TextSpan(
+                            //               text: ' :-', // Asterisk text
+                            //               style: Styles.semiBoldTextStyle(
+                            //                   size: 12,
+                            //                   color:
+                            //                   kBlackColor),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         textAlign: TextAlign
+                            //             .start, // Align text to the start
+                            //       ),
+                            //     ),
+                            //     Container(
+                            //       alignment: Alignment.centerRight,
+                            //       padding: EdgeInsets.symmetric(
+                            //           horizontal: 10, vertical: 5),
+                            //       width: MediaQuery.of(context).size.width *
+                            //           0.40,
+                            //       child: RichText(
+                            //         text: TextSpan(
+                            //           style: Styles.regularTextStyle(
+                            //             size: 12,
+                            //             color: kBlackColor, // Default text color
+                            //           ),
+                            //           children: [
+                            //             TextSpan(
+                            //               text: "+91 ${user?.value.mOBILENO ?? ""}",
+                            //               style: Styles.regularTextStyle(
+                            //                   size: 12,
+                            //                   color:
+                            //                   kBlackColor),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         textAlign: TextAlign.end, // Align text to the start
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             hSpace(10),
 
                             Row(
@@ -486,14 +486,16 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                               borderColor:purpal455CDCColor ),
 
                           customButton(() async {
-                            Navigator.of(context).pop(); // close first dialog
+                            final screenContext = this.context;
+
+                            Navigator.of(context).pop();
 
                             final provider =
                             Provider.of<JobFairEventDetailsProvider>(
-                                context,
+                                screenContext,
                                 listen: false);
 
-                            confirmRegistrationDialog(context, provider);
+                            confirmRegistrationDialog(screenContext, provider);
 
                           }, "Confirm",
                               '',
@@ -654,7 +656,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
       JobFairEventDetailsProvider provider) {
     return showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -676,36 +678,34 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                Navigator.pop(context); // close confirmation dialog
 
-                final provider =
-                Provider.of<JobFairEventDetailsProvider>(
-                    context,
-                    listen: false);
+                Navigator.pop(dialogContext);
 
                 int eventId =
-                    int.tryParse(
-                        runningEventData.jobEventDetailId.toString()) ?? 0;
+                    int.tryParse(runningEventData.jobEventDetailId.toString()) ?? 0;
 
                 bool success =
                 await provider.registerJobFairEvent(
                     context,
                     eventId);
 
+                if (!mounted) return;
+
                 if (success) {
-                //  annualDistrictDialog(context, (value) {});
-                  registrationResultDialog(
-                    context,
+                  await registrationResultDialog(
+                    this.context,
                     provider.apiMessage,
                     provider.encEventId,
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  ScaffoldMessenger.of(this.context).showSnackBar(
                     SnackBar(
-                        content: Text(
-                            provider.apiMessage.isNotEmpty
-                                ? provider.apiMessage
-                                : "Registration Failed")),
+                      content: Text(
+                        provider.apiMessage.isNotEmpty
+                            ? provider.apiMessage
+                            : "Registration Failed",
+                      ),
+                    ),
                   );
                 }
               },
@@ -724,6 +724,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
       ) {
     return showDialog(
       context: context,
+      useRootNavigator: true,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(

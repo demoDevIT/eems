@@ -6,6 +6,7 @@ import 'package:rajemployment/utils/textstyles.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import 'modal/approval_data_modal.dart';
 import 'modal/block_modal.dart';
 import 'modal/department_modal.dart';
 import 'modal/gp_modal.dart';
@@ -23,6 +24,8 @@ class RegisterFormScreen extends StatefulWidget {
   final String mobileNo;
   final String designation;
   final String deptName;
+  final ApprovalData? approvalData;
+  final String? rejectMessage;
 
   const RegisterFormScreen({
     super.key,
@@ -30,7 +33,9 @@ class RegisterFormScreen extends StatefulWidget {
     required this.displayName,
     required this.mobileNo,
     required this.designation,
-    required this.deptName
+    required this.deptName,
+    this.approvalData,
+    this.rejectMessage,
   });
 
   @override
@@ -44,7 +49,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     final provider =
     Provider.of<RegisterFormProvider>(context, listen: false);
 
-    provider.init(widget.ssoId, widget.displayName, widget.mobileNo, widget.designation, widget.deptName);   // ✅ dynamic
+    provider.init(widget.ssoId, widget.displayName, widget.mobileNo, widget.designation, widget.deptName, widget.approvalData);   // ✅ dynamic
     SchedulerBinding.instance.addPostFrameCallback((_) {
       provider.getDistrictApi(context, 6);
       provider.getDepartmentApi(context);
@@ -80,6 +85,51 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (widget.rejectMessage != null &&
+                    widget.rejectMessage!.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "Reason for Rejection",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      border: Border.all(color: Colors.red),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      widget.rejectMessage!,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      "Kindly re-submit the registration form with the correct details.",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
                 /// ===== SSO ID (DISABLED) =====
                 _label("Officer's SSO ID*"),
                 _field(
@@ -619,8 +669,21 @@ bool validateBasicDetails(
   RegisterFormProvider provider,
 ) {
 
-  if (provider.nameAAdhaarController.text.trim().isEmpty) {
+  final aadhaarName = provider.nameAAdhaarController.text.trim();
+
+  if (aadhaarName.isEmpty) {
     showAlertError("Please enter Name (As per Aadhaar)", context);
+    return false;
+  }
+
+// Allow only alphabets and spaces
+  final nameRegex = RegExp(r'^[a-zA-Z ]+$');
+
+  if (!nameRegex.hasMatch(aadhaarName)) {
+    showAlertError(
+      "Name (As per Aadhaar) should contain only alphabets.",
+      context,
+    );
     return false;
   }
 

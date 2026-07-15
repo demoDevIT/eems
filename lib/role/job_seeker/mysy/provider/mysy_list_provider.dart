@@ -18,7 +18,7 @@ class MysyListProvider extends ChangeNotifier {
     isLoading = true;
     mysyList.clear();
     notifyListeners();
-    final userId = "6995"; // UserData().model.value.userId;
+    final userId = UserData().model.value.userId; //"6995"; // UserData().model.value.userId;
 
     final apiResponse = await commonRepo.get(
         "Common/FetchPendingApplicationsListNew/FetchSambalApplicatoinListByJobSeelerId/$userId/0/0");

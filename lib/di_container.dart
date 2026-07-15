@@ -27,6 +27,7 @@ import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_p
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_applicant_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/head_office_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/uploaded_documents_provider.dart';
+import 'package:rajemployment/role/employer/employerdashboard/provider/employer_dash_provider.dart';
 import 'package:rajemployment/role/employer/empotr_form/provider/empotr_form_provider.dart';
 import 'package:rajemployment/role/employer/job_application/provider/job_application_provider.dart';
 import 'package:rajemployment/role/employer/job_post/provider/add_job_provider.dart';
@@ -179,6 +180,7 @@ Future<void> init() async {
   sl.registerFactory(() => CounselorHighestEduProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptProfileProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptBasicDetailsProvider(commonRepo: sl()));
+  sl.registerFactory(() => EmployerDashProvider(commonRepo: sl()));
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
   sl.registerFactory(() => ChatProvider(commonRepo: sl()));

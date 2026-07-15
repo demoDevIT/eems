@@ -41,6 +41,7 @@ class JobApplicationData {
   dynamic fullName;
   dynamic jobPositionTitle;
   dynamic eventId;
+  dynamic eventRegId;
   dynamic isEventStarted;
   dynamic jobSeekerId;
   dynamic flag;
@@ -55,6 +56,7 @@ class JobApplicationData {
         this.fullName,
         this.jobPositionTitle,
         this.eventId,
+        this.eventRegId,
         this.isEventStarted,
         this.jobSeekerId,
         this.flag,
@@ -70,6 +72,7 @@ class JobApplicationData {
     fullName = json['FullName'];
     jobPositionTitle = json['JobPositionTitle_ENG'];
     eventId = json['EventId'];
+    eventRegId = json['EventRegistrationId'];
     isEventStarted = json['IsEventStarted'];
     jobSeekerId = json['JobSeekerId'];
     flag = json['Flag'];
@@ -86,6 +89,7 @@ class JobApplicationData {
     data['FullName'] = this.fullName;
     data['JobPositionTitle_ENG'] = this.jobPositionTitle;
     data['EventId'] = this.eventId;
+    data['EventRegistrationId'] = this.eventRegId;
     data['IsEventStarted'] = this.isEventStarted;
     data['JobSeekerId'] = this.jobSeekerId;
     data['Flag'] = this.flag;

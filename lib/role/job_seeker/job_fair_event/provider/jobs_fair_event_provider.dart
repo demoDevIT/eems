@@ -17,7 +17,7 @@ class JobsFairEventProvider extends ChangeNotifier {
 
   JobsFairEventProvider({required this.commonRepo});
 
-  bool tab = true;
+  //bool tab = true;
 
   final List<Map<String, String>> jobFairList = [
     {
@@ -97,7 +97,7 @@ class JobsFairEventProvider extends ChangeNotifier {
 
 
   List<RunningEventData> currentEventList = [];
-  List<RunningEventData> upcomingList = [];
+ // List<RunningEventData> upcomingList = [];
 
 
 
@@ -109,7 +109,8 @@ class JobsFairEventProvider extends ChangeNotifier {
     }
 
     try {
-      String actionName = tab ? "Running_Events" : "Upcoming_Events";
+     // String actionName = tab ? "Running_Events" : "Upcoming_Events";
+      String actionName = "Running_Events";
 
       String userId = UserData().model.value.userId.toString();
       String roleId = UserData().model.value.roleId.toString();
@@ -144,14 +145,14 @@ class JobsFairEventProvider extends ChangeNotifier {
         final sm = RunningEventModal.fromJson(responseData);
 
         currentEventList.clear();
-        upcomingList.clear();
+      //  upcomingList.clear();
 
         if (responseData["State"] == 200) {
-          if (tab) {
+          // if (tab) {
             currentEventList.addAll(sm.data ?? []);
-          } else {
-            upcomingList.addAll(sm.data ?? []);
-          }
+          // } else {
+          //   upcomingList.addAll(sm.data ?? []);
+          // }
 
           notifyListeners();
           return sm;
@@ -175,7 +176,7 @@ class JobsFairEventProvider extends ChangeNotifier {
 
   clearData(){
     currentEventList.clear();
-    upcomingList.clear();
+   // upcomingList.clear();
     notifyListeners();
 
   }

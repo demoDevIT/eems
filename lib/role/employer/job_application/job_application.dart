@@ -101,25 +101,25 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                         child: Column(
                           children: [
 
-                            /// Financial Year
-                            labelWithStar('Financial Year', required: false),
-
-                            DropdownButtonFormField<FinancialYearData>(
-                              value: provider.selectedFinancialYear,
-                              decoration: _inputDecoration("--Select Financial Year--"),
-                              items: provider.financialYearList
-                                  .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.financialYearName ?? ""),
-                              ))
-                                  .toList(),
-                              onChanged: (value) {
-                                provider.selectedFinancialYear = value;
-                                provider.notifyListeners();
-                              },
-                            ),
-
-                            const SizedBox(height: 10),
+                            // /// Financial Year
+                            // labelWithStar('Financial Year', required: false),
+                            //
+                            // DropdownButtonFormField<FinancialYearData>(
+                            //   value: provider.selectedFinancialYear,
+                            //   decoration: _inputDecoration("--Select Financial Year--"),
+                            //   items: provider.financialYearList
+                            //       .map((e) => DropdownMenuItem(
+                            //     value: e,
+                            //     child: Text(e.financialYearName ?? ""),
+                            //   ))
+                            //       .toList(),
+                            //   onChanged: (value) {
+                            //     provider.selectedFinancialYear = value;
+                            //     provider.notifyListeners();
+                            //   },
+                            // ),
+                            //
+                            // const SizedBox(height: 10),
 
                             /// Event Name
                             labelWithStar('Event Name', required: false),
@@ -276,11 +276,11 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                               child: ElevatedButton(
                                 onPressed: () {
 
-                                  /// Financial Year
-                                  if (provider.selectedFinancialYear == null) {
-                                    showAlertError("Please select Financial Year", context);
-                                    return;
-                                  }
+                                  // /// Financial Year
+                                  // if (provider.selectedFinancialYear == null) {
+                                  //   showAlertError("Please select Financial Year", context);
+                                  //   return;
+                                  // }
 
                                   /// Event
                                   if (provider.eventIdController.text.trim().isEmpty) {

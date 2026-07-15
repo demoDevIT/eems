@@ -357,14 +357,18 @@ class JobApplicationProvider extends ChangeNotifier {
       int? userId = UserData().model.value.userId;
       int? roleId = UserData().model.value.roleId;
 
+      String? deviceId = await UtilityClass.getDeviceId();
+
       Map<String, dynamic> body = {
         "ActionName": "CandidateStatuseNew",
         "UserId": userId,
         "RoleId": roleId,
         "EventId": data.eventId,
-        "ApplicantID": 0,
+        "EventRegistrationId": data.eventRegId,
+        "ApplicantID": data.appPKID ?? 0,
         "JobPostID": data.jobPostId,
-        "JobSeekerId": data.jobSeekerId,
+        // "JobSeekerId": data.jobSeekerId == null ? 0 : data.jobSeekerId,
+        "JobSeekerId": 0,
         "Flag": data.flag,
 
         /// REQUIRED CASES
@@ -390,11 +394,12 @@ class JobApplicationProvider extends ChangeNotifier {
         "FinyearId": 0,
         "FromDate": null,
         "ToDate": null,
+        "DeviceId": deviceId,
       };
 
       print("SAVE BODY => $body");
       printFullJson(body);
-
+// return null;
       ApiResponse apiResponse =
       await commonRepo.post("JobFairEvent/SaveApproveCandidateDetail", body);
 

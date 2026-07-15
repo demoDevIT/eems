@@ -23,5 +23,5 @@ class Images {
   static const String session = 'assets/icons/session.svg';
   static const String job_recommended = 'assets/icons/job_recommended.svg';
   static const String arrow_flying = 'assets/icons/arrow_flying.svg';
-
+  static const String job_fair_event_detail = 'assets/images/job-fair-vactor.png';
 }

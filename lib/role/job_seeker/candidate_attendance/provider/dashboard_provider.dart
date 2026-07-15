@@ -160,14 +160,14 @@ class DashboardProvider extends ChangeNotifier {
           UserData().model.value.NameAsjanAdhar = responseData['Data']['NameAsjanAdhar'];
           UserData().model.value.DistrictEn = responseData['Data']['DistrictEn'];
           UserData().model.value.designation = responseData['Data']['Designation'];
-         // UserData().model.value.officeName = responseData['Data']['Office'];
+          UserData().model.value.office = responseData['Data']['Office'];
           UserData().model.value.roleName = responseData['Data']['RoleName'];
           UserData().model.value.exchangeName = responseData['Data']['ExchangeName'];
           UserData().model.value.deptNameEn = responseData['Data']['DepartmentNameEn'];
           UserData().model.value.allotDeptName = responseData['Data']['AllotmentDeptName'];
           // UserData().model.value.departmentName = responseData['Data']['Designation'];
 
-          getDeptBasicDetails(
+         await  getDeptBasicDetails(
               context, userID.toString(), roleID, SSOID.toString(), internshipDeptID, internshipDeptTypeID);
         }else{
           print("role ID other=> $roleID");
@@ -291,7 +291,7 @@ class DashboardProvider extends ChangeNotifier {
                     startOffset: const Offset(-1.0, 0.0),
                   )
               );
-
+              notifyListeners();
             return sm;
           } else {
             final smmm = DeptInfoModal(
@@ -304,6 +304,7 @@ class DashboardProvider extends ChangeNotifier {
                 context);
             return smmm;
           }
+
         } else {
           return DeptInfoModal(
             state: 0,

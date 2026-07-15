@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:rajemployment/role/employer/employerdashboard/provider/employer_dash_provider.dart';
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
@@ -9,6 +10,7 @@ import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
 import '../../job_seeker/grievance/grievance_list.dart';
+import '../../job_seeker/job_fair_event/modal/running_event_modal.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../emp_profile/profile_screen.dart';
 import '../job_application/job_application.dart';
@@ -24,6 +26,20 @@ class EmployerDashboard extends StatefulWidget {
 
 class _EmployerDashboardState extends State<EmployerDashboard> {
   int _currentIndex = 0;
+
+  final PageController _pageController = PageController(
+    viewportFraction: 0.92,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<EmployerDashProvider>(context, listen: false)
+          .getCurrentEvents(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,80 +63,442 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
     );
   }
 
+  // Widget _buildDashboardGrid() {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       children: [
+  //         _dashboardListTile(
+  //           title: "View Profile",
+  //           iconPath: "assets/images/profilee.svg",
+  //           color: const Color(0xFF6C63FF),
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => const EmployerProfileScreen(),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //
+  //         _dashboardListTile(
+  //           title: "Job Fair Registration",
+  //           iconPath: "assets/images/aplyjobfair.svg",
+  //           color: const Color(0xFF2DBE8D),
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => const JobFairScreen(),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //
+  //         _dashboardListTile(
+  //           title: "Post Jobs in Job Fair",
+  //           iconPath: "assets/images/postJob.svg",
+  //           color: const Color(0xFFFF7A59),
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => const JobPostScreen(),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //
+  //
+  //
+  //         _dashboardListTile(
+  //           title: "Job Fair Applications",
+  //           iconPath: "assets/images/jobapp.svg",
+  //           color: const Color(0xFF6C63FF),
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => const JobApplicationScreen(),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //
+  //         _dashboardListTile(
+  //           title: "Grievances",
+  //           iconPath: "assets/images/grievances.svg",
+  //           color: const Color(0xFFFF7A59),
+  //           onTap: () async {
+  //             await Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => GrievanceScreen(),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildDashboardGrid() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    final items = [
+      _DashboardItem(
+        title: "View Profile",
+        iconPath: "assets/images/profilee.svg",
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const EmployerProfileScreen(),
+            ),
+          );
+        },
+      ),
+
+      _DashboardItem(
+        title: "Job Fair Registration",
+        iconPath: "assets/images/aplyjobfair.svg",
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const JobFairScreen(),
+            ),
+          );
+        },
+      ),
+
+      // _DashboardItem(
+      //   title: "Post Jobs in Job Fair",
+      //   iconPath: "assets/images/postJob.svg",
+      //   onTap: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (_) => const JobPostScreen(),
+      //       ),
+      //     );
+      //   },
+      // ),
+      //
+      // _DashboardItem(
+      //   title: "Job Fair Applications",
+      //   iconPath: "assets/images/jobapp.svg",
+      //   onTap: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (_) => const JobApplicationScreen(),
+      //       ),
+      //     );
+      //   },
+      // ),
+
+      _DashboardItem(
+        title: "Grievances",
+        iconPath: "assets/images/grievances.svg",
+        onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GrievanceScreen(),
+            ),
+          );
+        },
+      ),
+    ];
+
+    // return Padding(
+    //   padding: const EdgeInsets.all(12),
+    //   child: GridView.builder(
+    //     shrinkWrap: true,
+    //     physics: const NeverScrollableScrollPhysics(),
+    //     itemCount: items.length,
+    //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //       crossAxisCount: 2,
+    //       mainAxisSpacing: 10,
+    //       crossAxisSpacing: 10,
+    //       childAspectRatio: 1.38,
+    //     ),
+    //     itemBuilder: (context, index) {
+    //       final item = items[index];
+    //
+    //       return GestureDetector(
+    //         onTap: item.onTap,
+    //         child: Container(
+    //           padding: const EdgeInsets.symmetric(
+    //             vertical: 12,
+    //             horizontal: 8,
+    //           ),
+    //           decoration: BoxDecoration(
+    //             color: Colors.white,
+    //             borderRadius: BorderRadius.circular(16),
+    //             boxShadow: [
+    //               BoxShadow(
+    //                 color: Colors.black.withOpacity(0.05),
+    //                 blurRadius: 6,
+    //                 offset: const Offset(0, 2),
+    //               ),
+    //             ],
+    //           ),
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               SvgPicture.asset(
+    //                 item.iconPath,
+    //                 width: 50,
+    //                 height: 50,
+    //               ),
+    //               const SizedBox(height: 10),
+    //               Text(
+    //                 item.title,
+    //                 textAlign: TextAlign.center,
+    //                 style: const TextStyle(
+    //                   fontSize: 13.5,
+    //                   fontWeight: FontWeight.w500,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          _dashboardListTile(
-            title: "View Profile",
-            iconPath: "assets/images/profilee.svg",
-            color: const Color(0xFF6C63FF),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EmployerProfileScreen(),
+
+          _buildEventSlider(),
+
+          const SizedBox(height: 15),
+
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: items.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.38,
+            ),
+            itemBuilder: (context, index) {
+              final item = items[index];
+
+              return GestureDetector(
+                onTap: item.onTap,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        item.iconPath,
+                        width: 50,
+                        height: 50,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        item.title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           ),
+        ],
+      ),
+    );
+  }
 
-          _dashboardListTile(
-            title: "Post Job in Job Fair",
-            iconPath: "assets/images/postJob.svg",
-            color: const Color(0xFFFF7A59),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JobPostScreen(),
-                ),
+  Widget _buildEventSlider() {
+    return Consumer<EmployerDashProvider>(
+      builder: (context, provider, child) {
+
+        if (provider.currentEventList.isEmpty) {
+          return const SizedBox(
+            height: 200,
+            child: Center(
+              child: Text("No Running Events"),
+            ),
+          );
+        }
+
+        return SizedBox(
+          height: 200,
+          child: PageView.builder(
+            controller: _pageController,
+            padEnds: false,
+            itemCount: provider.currentEventList.length,
+            itemBuilder: (context, index) {
+
+              final event = provider.currentEventList[index];
+
+              return Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: _eventCard(event),
               );
             },
           ),
+        );
+      },
+    );
+  }
 
-          _dashboardListTile(
-            title: "Apply for Job Fair",
-            iconPath: "assets/images/aplyjobfair.svg",
-            color: const Color(0xFF2DBE8D),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JobFairScreen(),
-                ),
-              );
-            },
+  Widget _eventCard(RunningEventData event) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.06),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: const BoxDecoration(
+              color: Color(0xFF0D8AA8),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18),
+                bottomLeft: Radius.circular(18),
+              ),
+            ),
           ),
 
-          _dashboardListTile(
-            title: "Job Fair Job Applications",
-            iconPath: "assets/images/jobapp.svg",
-            color: const Color(0xFF6C63FF),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const JobApplicationScreen(),
-                ),
-              );
-            },
-          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-          _dashboardListTile(
-            title: "Grievances",
-            iconPath: "assets/images/grievances.svg",
-            color: const Color(0xFFFF7A59),
-            onTap: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GrievanceScreen(),
-                ),
-              );
-            },
+                  Text(
+                    event.eventNameENG ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF9C1F1F),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    event.eventDescription ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          event.venue ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          "${getFormattedDate(event.startDate ?? "")} - ${getFormattedDate(event.endDate ?? "")}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const Spacer(),
+
+                  SizedBox(
+                    height: 36,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF0D8AA8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Navigate to Job Fair Registration or Details
+                      },
+                      child: const Text(
+                        "Apply Now",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -423,4 +801,15 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       ),
     );
   }
+}
+class _DashboardItem {
+  final String title;
+  final String iconPath;
+  final VoidCallback onTap;
+
+  _DashboardItem({
+    required this.title,
+    required this.iconPath,
+    required this.onTap,
+  });
 }

@@ -247,12 +247,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   },
                 ),
 
+
                 const SizedBox(height: 14),
 
                 _actionCard(
                   iconPath: "assets/images/eventRegsvg.svg",
-                  title: "Event Reg. No.",
-                  subTitle: "Enter your registration number to find details",
+                  title: "Event Reg. No. / Mobile No.",
+                  subTitle: "Enter your Registration No./Mobile No. to find details",
                   iconBg: const Color(0xff8D4AF2),
                   onTap: () {
                     Navigator.of(context).push(
@@ -265,23 +266,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   },
                 ),
 
-                const SizedBox(height: 14),
-
-                _actionCard(
-                  iconPath: "assets/images/mobSvg.svg",
-                  title: "Mobile Number",
-                  subTitle: "Look up your event pass using phone number",
-                  iconBg: const Color(0xff19B9D8),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      RightToLeftRoute(
-                        page: const CandidateAttendanceScreen(),
-                        duration: const Duration(milliseconds: 500),
-                        startOffset: const Offset(-1.0, 0.0),
-                      ),
-                    );
-                  },
-                ),
+                // const SizedBox(height: 14),
+                //
+                // _actionCard(
+                //   iconPath: "assets/images/mobSvg.svg",
+                //   title: "Mobile Number",
+                //   subTitle: "Look up your event pass using phone number",
+                //   iconBg: const Color(0xff19B9D8),
+                //   onTap: () {
+                //     Navigator.of(context).push(
+                //       RightToLeftRoute(
+                //         page: const CandidateAttendanceScreen(),
+                //         duration: const Duration(milliseconds: 500),
+                //         startOffset: const Offset(-1.0, 0.0),
+                //       ),
+                //     );
+                //   },
+                // ),
 
               ],
             ),
@@ -423,7 +424,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.exchangeName ?? "",
+                            UserData().model.value.office ?? "",
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:get_ip_address/get_ip_address.dart';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -231,7 +233,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "MonthId": filterSelectedMonthNumber, //2
         "RoleId": UserData().model.value.roleId,
         "FromDate":null,
-        "ToDate":null
+        "ToDate":null,
+        "PrivateDepartmentID": UserData().model.value.internshipDeptTypeID,
+        "AllotmentDeptId": UserData().model.value.internshipDeptID
       };
 
       isAttendanceLoading = true;
@@ -705,7 +709,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   Future<void> downloadAndOpenPdf(String url) async {
     try {
       const baseUrl =
-          "https://rajemploymentapi.rajasthan.gov.in/webAPI";
+          "https://rajemploymentapi.rajasthan.gov.in";
 
       // Concatenate base URL with relative PDF path
       final fullUrl = "$baseUrl$url";
@@ -724,6 +728,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
         await OpenFile.open(filePath);
       }
+      notifyListeners();
     } catch (e) {
       debugPrint("PDF download error: $e");
     }
@@ -971,14 +976,12 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         showAlertError("Unable to fetch basic details", context);
         return;
       }
-
-      /// 🔥 FORMAT MONTH
+      DateTime date = DateFormat("dd-MM-yyyy HH:mm:ss:SSS").parse(basicData.joiningDate.toString());
+      String joiningDate = DateFormat("yyyy-MM-dd").format(date);
       final monthNumber = item.monthId!.toString().padLeft(2, '0');
       final year = item.year.toString();
-
       final monthName = selectedMonthObj?.name ?? "";
       String? deviceId = await UtilityClass.getDeviceId();
-      /// 🔥 STEP 2: FINAL PAYLOAD
       Map<String, dynamic> data = {
         "UserID": UserData().model.value.userId,
         "RoleID": UserData().model.value.roleId,
@@ -997,7 +1000,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "RegistrationNo": basicData.registrationNo,
         "applicantName": basicData.applicantName,
         "fatherName": basicData.fatherName,
-        "joiningDate": basicData.joiningDate,
+       // "joiningDate": basicData.joiningDate,
+         "joiningDate": joiningDate,
         "departmentName": basicData.departmentName,
         "Address": basicData.address,
         "Assembly": "",
@@ -1147,6 +1151,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
             //   jobSeekerId: null,
             //   userId: null,
             // );
+            notifyListeners();
           }
 
         } else {

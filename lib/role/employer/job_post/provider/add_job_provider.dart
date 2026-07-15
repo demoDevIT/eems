@@ -1087,7 +1087,7 @@ class AddJobProvider extends ChangeNotifier {
           "InternshipDuration": "string",
           "OfferStipend": false,
           "StipendAmount": 0,
-          "DeviceID": deviceId
+          "DeviceId": deviceId
         };
 
 

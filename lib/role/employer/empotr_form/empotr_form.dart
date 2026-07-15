@@ -2566,13 +2566,15 @@ bool validateEmpOTRBasicAndOfficeDetails(
 
   if (provider.areaType == 'Rural' &&
       provider.villageController.text.trim().isEmpty) {
-    showAlertError("Please enter Village", context);
-    return false;
+    provider.villageController.text = 'salumbar';
+    // showAlertError("Please enter Village", context);
+    // return false;
   }
 
   if (provider.localBodyController.text.trim().isEmpty) {
-    showAlertError("Please enter Local Body", context);
-    return false;
+    provider.localBodyController.text = 'salumbar';
+    // showAlertError("Please enter Local Body", context);
+    // return false;
   }
 
   if (provider.areaType == 'Urban' &&

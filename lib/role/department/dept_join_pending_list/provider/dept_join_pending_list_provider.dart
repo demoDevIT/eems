@@ -9,6 +9,7 @@ import 'package:rajemployment/role/job_seeker/loginscreen/modal/temp_login_modal
 import 'package:rajemployment/utils/user_new.dart';
 
 import '../../../../api_service/model/base/api_response.dart';
+import '../../../../constants/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/global.dart';
@@ -294,8 +295,8 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         "RoleId": UserData().model.value.roleId,
         "intenjoinned": null,
         "AllotmentDeptId": null,
-        "InternshipDeptTypeID": UserData().model.value.internshipDeptTypeID,
-        "InternshipDeptID": UserData().model.value.internshipDeptID
+        "InternshipDeptTypeID": UserData().model.value.internshipDeptTypeID, //PrivateDepartmentID
+        "InternshipDeptID": UserData().model.value.internshipDeptID //AllotmentDeptId
       };
 
       isPendingListLoading = true;
@@ -398,7 +399,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
   Future<void> downloadAndOpenPdf(String url) async {
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(Constants.showPdfUrl+url));
 
       if (response.statusCode == 200) {
         final dir = await getApplicationDocumentsDirectory();

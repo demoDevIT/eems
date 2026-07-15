@@ -174,10 +174,16 @@ class _HomeScreenState extends State<HomeScreen> {
          },
        ),
        _DashboardItem(
-         title: "Departmental Schemes",
+         title: "MYSY Status", //"Departmental Schemes",
          iconPath: "assets/images/deptScheme.svg",
          showArrow: true,
-         onTap: () => _showDepartmentSchemePopup(),
+         // onTap: () => _showDepartmentSchemePopup(),
+         onTap: () {
+           Navigator.push(
+             context,
+             MaterialPageRoute(builder: (_) => MysyListScreen()),
+           );
+         }
        ),
        _DashboardItem(
          title: "Grievance/Feedback",
@@ -528,15 +534,15 @@ class _HomeScreenState extends State<HomeScreen> {
                  height: 16,
                ),
 
-               _popupRow(
-                 title: "Job Apply",
-                 iconPath: "assets/images/jobApply.svg",
-                 onTap: () {
-                   Navigator.pop(context);
-                   Navigator.push(context,
-                       MaterialPageRoute(builder: (_) => SelectCompanyPage()));
-                 },
-               ),
+               // _popupRow(
+               //   title: "Job Apply",
+               //   iconPath: "assets/images/jobApply.svg",
+               //   onTap: () {
+               //     Navigator.pop(context);
+               //     Navigator.push(context,
+               //         MaterialPageRoute(builder: (_) => SelectCompanyPage()));
+               //   },
+               // ),
              ],
            ),
          );
