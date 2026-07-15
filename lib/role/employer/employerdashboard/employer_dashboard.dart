@@ -7,9 +7,11 @@ import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
+import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
 import '../../job_seeker/grievance/grievance_list.dart';
+import '../../job_seeker/job_fair_event/job_fair_event_details.dart';
 import '../../job_seeker/job_fair_event/modal/running_event_modal.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../emp_profile/profile_screen.dart';
@@ -352,7 +354,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
         }
 
         return SizedBox(
-          height: 200,
+          height: 230,
           child: PageView.builder(
             controller: _pageController,
             padEnds: false,
@@ -488,7 +490,15 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                         ),
                       ),
                       onPressed: () {
-                        // Navigate to Job Fair Registration or Details
+                        Navigator.of(context).push(
+                          RightToLeftRoute(
+                            page: JobFairEventDetailsScreen(
+                              runningEventData: event,
+                            ),
+                            duration: const Duration(milliseconds: 500),
+                            startOffset: const Offset(-1.0, 0.0),
+                          ),
+                        );
                       },
                       child: const Text(
                         "Apply Now",
@@ -623,71 +633,83 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
         children: [
           // ===== Header =====
           Container(
-            padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 16,
+              right: 16,
+              bottom: 20,
+            ),
             color: Colors.white,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        UserData().model.value.latestPhotoPath.toString(),
+
+                /// Profile Image
+                ClipOval(
+                  child: Image.network(
+                    UserData().model.value.latestPhotoPath.toString(),
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) {
+                      return Image.asset(
+                        "assets/images/placeholder.png",
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          UserData().model.value.branchName.toString(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const ProfileScreen(isAppBarHide: true),
-                            //   ),
-                            // );
-                          },
-                          child: const Text(
-                            "Update Profile",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: kViewAllColor,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    'assets/icons/close.svg',
-                    width: 25,
-                    height: 25,
+
+                const SizedBox(width: 12),
+
+                /// Name + Update Profile
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        UserData().model.value.branchName.toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Update Profile",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: kViewAllColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                /// Close Icon
+                SizedBox(
+                  width: 30,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(
+                      "assets/icons/close.svg",
+                      width: 20,
+                      height: 20,
+                    ),
                   ),
                 ),
               ],

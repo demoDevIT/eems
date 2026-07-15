@@ -417,6 +417,72 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
+                                          text: "Location",
+                                          // Normal text
+                                          style: Styles.semiBoldTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                        TextSpan(
+                                          text: ' :-', // Asterisk text
+                                          style: Styles.semiBoldTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign
+                                        .start, // Align text to the start
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.40,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Styles.regularTextStyle(
+                                        size: 12,
+                                        color: kBlackColor, // Default text color
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: eventData.venue ?? "",
+                                          style: Styles.regularTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.end, // Align text to the start
+                                  ),
+                                ),
+                              ],
+                            ),
+                            hSpace(10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.40,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Styles.semiBoldTextStyle(
+                                        size: 12,
+                                        color: kBlackColor, // Default text color
+                                      ),
+                                      children: [
+                                        TextSpan(
                                           text: "Event ID",
                                           // Normal text
                                           style: Styles.semiBoldTextStyle(
@@ -452,6 +518,72 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       children: [
                                         TextSpan(
                                           text: eventData.eventId?.toString() ?? "",
+                                          style: Styles.regularTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign.end, // Align text to the start
+                                  ),
+                                ),
+                              ],
+                            ),
+                            hSpace(10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.40,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Styles.semiBoldTextStyle(
+                                        size: 12,
+                                        color: kBlackColor, // Default text color
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "Date",
+                                          // Normal text
+                                          style: Styles.semiBoldTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                        TextSpan(
+                                          text: ' :-', // Asterisk text
+                                          style: Styles.semiBoldTextStyle(
+                                              size: 12,
+                                              color:
+                                              kBlackColor),
+                                        ),
+                                      ],
+                                    ),
+                                    textAlign: TextAlign
+                                        .start, // Align text to the start
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.40,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Styles.regularTextStyle(
+                                        size: 12,
+                                        color: kBlackColor, // Default text color
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text:  "${getFormattedDate(eventData.startDate ?? '')} - ${getFormattedDate(eventData.endDate ?? '')}",
                                           style: Styles.regularTextStyle(
                                               size: 12,
                                               color:

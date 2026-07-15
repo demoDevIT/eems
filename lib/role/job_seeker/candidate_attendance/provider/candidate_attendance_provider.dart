@@ -23,8 +23,12 @@ class CandidateAttendanceProvider extends ChangeNotifier {
   JobSeekerModel? jobSeeker;
   List<JobPreferenceModel> jobPreferences = [];
 
-  List<EventModel> eventList = [];
-  EventModel? selectedEvent;
+  List<EventData> eventList = [];
+  EventData? selectedEvent;
+
+  final TextEditingController  eventIdController = TextEditingController();
+  final TextEditingController  eventNameController = TextEditingController();
+
 
 
   Future<bool> getJobSeekerByRegOrMobile({
@@ -68,6 +72,7 @@ class CandidateAttendanceProvider extends ChangeNotifier {
         await getJobPreferences(
           context: context,
           userId: jobSeeker!.userId,
+          eventRegID: jobSeeker!.eventRegId,
         );
 
         isLoading = false;
@@ -94,10 +99,12 @@ class CandidateAttendanceProvider extends ChangeNotifier {
   Future<void> getJobPreferences({
     required BuildContext context,
     required String userId,
+    required String eventRegID,
   }) async {
     final body = {
       "ActionKey": "GetJobPrefered",
       "UserId": userId, //2023
+      "EventRegistrationID": eventRegID
     };
 
     apiLog("REQUEST → GetJobPreferedbyJobSeekerId", body);
@@ -151,8 +158,12 @@ class CandidateAttendanceProvider extends ChangeNotifier {
         if (data is String) data = jsonDecode(data);
 
         if (data['State'] == 200 && data['Data'] != null) {
+          // eventList = (data['Data'] as List)
+          //     .map((e) => EventModel.fromJson(e))
+          //     .toList();
+
           eventList = (data['Data'] as List)
-              .map((e) => EventModel.fromJson(e))
+              .map((e) => EventData.fromJson(e))
               .toList();
 
           notifyListeners();

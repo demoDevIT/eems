@@ -7,6 +7,7 @@ class JobSeekerModel {
   final String userId;
   final String roleId;
   final String eventId;
+  final String eventRegId;
 
   JobSeekerModel({
     required this.jobSeekerName,
@@ -17,6 +18,7 @@ class JobSeekerModel {
     required this.userId,
     required this.roleId,
     required this.eventId,
+    required this.eventRegId,
   });
 
   factory JobSeekerModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class JobSeekerModel {
       userId: json['UserId']?.toString() ?? '',
       roleId: json['RoleId']?.toString() ?? '',
       eventId: json['EventId']?.toString() ?? '',
+      eventRegId: json['EventRegistrationId']?.toString() ?? '',
     );
   }
 }

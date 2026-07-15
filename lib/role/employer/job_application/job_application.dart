@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
+import 'package:rajemployment/utils/user_new.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
@@ -45,7 +46,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<JobApplicationProvider>(context, listen: false);
       provider.clearData();
-      provider.getFinancialYearApi(context);
+      // provider.getFinancialYearApi(context);
       provider.getEventNameListApi(context);
     });
   }
@@ -138,7 +139,8 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
 
                                   provider.jobPostListApi(
                                       context,
-                                      eventId: selectedEvent
+                                      eventId: selectedEvent,
+                                      userId: UserData().model.value.userId
                                   );
                                 });
                               },
@@ -425,10 +427,14 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
     Function(String?)? onChanged,
     BorderRadius? borderRadius,
   }) {
+    // String? selectedValue =
+    // items.any((item) => item.dropID.toString() == idController.text)
+    //     ? idController.text
+    //     : null;
+
     String? selectedValue =
-    items.any((item) => item.dropID.toString() == idController.text)
-        ? idController.text
-        : null;
+    idController.text.isEmpty ? "" : idController.text;
+
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return  Container(
@@ -456,20 +462,47 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                   size: 14, color: kBlackColor),
               underline: const SizedBox(),
               // Removes the default underline
-              items: items.map((dynamic item) {
-                return DropdownMenuItem<String>(
-                  value: item.dropID.toString(), // ✅ ID
-                  child: Text(item.name ?? ""),
-                );
-              }).toList(),
+              // items: items.map((dynamic item) {
+              //   return DropdownMenuItem<String>(
+              //     value: item.dropID.toString(), // ✅ ID
+              //     child: Text(item.name ?? ""),
+              //   );
+              // }).toList(),
+              items: [
+                const DropdownMenuItem<String>(
+                  value: "",
+                  child: Text("--Select Option--"),
+                ),
+                ...items.map((dynamic item) {
+                  return DropdownMenuItem<String>(
+                    value: item.dropID.toString(),
+                    child: Text(item.name ?? ""),
+                  );
+                }).toList(),
+              ],
               onChanged: (String? newValue) {
                 setState(() {
+
+                  if (newValue == "") {
+                    selectedValue = "";
+                    controller.clear();
+                    idController.clear();
+
+                    if (onChanged != null) {
+                      onChanged(newValue);
+                    }
+                    return;
+                  }
+
                   selectedValue = newValue;
+
                   final selectedItem = items.firstWhere(
-                          (item) => item.dropID.toString() == newValue
+                        (item) => item.dropID.toString() == newValue,
                   );
+
                   controller.text = selectedItem.name ?? "";
                   idController.text = selectedItem.dropID.toString();
+
                   if (onChanged != null) {
                     onChanged(newValue);
                   }

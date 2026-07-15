@@ -94,7 +94,7 @@ class JobApplicationProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("MobileProfile/EventDetails/${UserData().model.value.userId.toString()}/${UserData().model.value.roleId.toString()}/2025");
+        ApiResponse apiResponse = await commonRepo.get("MobileProfile/EventDetails/${UserData().model.value.userId.toString()}/${UserData().model.value.roleId.toString()}/2026");
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -130,11 +130,11 @@ class JobApplicationProvider extends ChangeNotifier {
   }
 
   Future<JobPostListModal?> jobPostListApi(BuildContext context,
-      {String? eventId}) async {
+      {String? eventId, int? userId}) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        ApiResponse apiResponse = await commonRepo.get("JobFairEvent/GetJobPostList/GetJobPostList/$eventId");
+        ApiResponse apiResponse = await commonRepo.get("JobFairEvent/GetJobPostList/GetJobPostList/$eventId/$userId");
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

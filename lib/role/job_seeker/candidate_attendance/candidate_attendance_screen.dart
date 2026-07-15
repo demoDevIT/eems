@@ -13,6 +13,7 @@ import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
+import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
 import '../../../utils/progress_dialog.dart';
@@ -38,13 +39,27 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CandidateAttendanceProvider>(
+      // Provider.of<CandidateAttendanceProvider>(
+      //   context,
+      //   listen: false,
+      // ).getEventList(context);
+
+      final provider = Provider.of<CandidateAttendanceProvider>(
         context,
         listen: false,
-      ).getEventList(context);
+      );
+
+      // Reset dropdown
+      provider.selectedEvent = null;
+      provider.eventIdController.clear();
+      provider.eventNameController.clear();
+
+      provider.getEventList(context);
+
     });
   }
 
+  String? selectedEvent;
 
   int _currentIndex = 0;
 
@@ -200,7 +215,11 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
 
                 if (_showUserDetails) _userDetailsCard(),
 
-                if (_showUserDetails) ...[
+                if (_showUserDetails &&
+                    Provider.of<CandidateAttendanceProvider>(
+                      context,
+                      listen: false,
+                    ).jobPreferences.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   _sectionHeader("Applied Jobs"),
                   _jobAppliedList(),
@@ -293,36 +312,57 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
       builder: (context, provider, _) {
         if (provider.eventList.isEmpty) return const SizedBox();
 
-        return DropdownButtonFormField<EventModel>(
-          value: provider.selectedEvent,
-          isExpanded: true, // ⭐ VERY IMPORTANT
-          hint: const Text(
-            "Select Event",
-            overflow: TextOverflow.ellipsis,
-          ),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
-            ),
-          ),
-          items: provider.eventList.map((event) {
-            return DropdownMenuItem<EventModel>(
-              value: event,
-              child: Text(
-                event.eventNameEng,
-                maxLines: 1, // ⭐ prevent wrap
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 14),
-              ),
-            );
-          }).toList(),
+        // return DropdownButtonFormField<EventModel>(
+        //   value: provider.selectedEvent,
+        //   isExpanded: true, // ⭐ VERY IMPORTANT
+        //   hint: const Text(
+        //     "Select Event",
+        //     overflow: TextOverflow.ellipsis,
+        //   ),
+        //   decoration: InputDecoration(
+        //     filled: true,
+        //     fillColor: Colors.white,
+        //     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        //     border: OutlineInputBorder(
+        //       borderRadius: BorderRadius.circular(12),
+        //       borderSide: BorderSide.none,
+        //     ),
+        //   ),
+        //   items: provider.eventList.map((event) {
+        //     return DropdownMenuItem<EventModel>(
+        //       value: event,
+        //       child: Text(
+        //         event.eventNameEng,
+        //         maxLines: 1, // ⭐ prevent wrap
+        //         overflow: TextOverflow.ellipsis,
+        //         style: const TextStyle(fontSize: 14),
+        //       ),
+        //     );
+        //   }).toList(),
+        //   onChanged: (value) {
+        //     provider.selectedEvent = value;
+        //     debugPrint("✅ Selected Event ID: ${value?.eventId}");
+        //     provider.notifyListeners();
+        //   },
+        // );
+
+        return buildSearchableDropdown<EventData>(
+          items: provider.eventList,
+          // ✅ MAP YOUR MODEL HERE
+          getId: (item) => item.eventId.toString(),
+          getName: (item) => item.eventNameEng ?? "",
+
+          controller: provider.eventNameController,
+          idController: provider.eventIdController,
+
+          hintText: "--Select Option--",
+
           onChanged: (value) {
             provider.selectedEvent = value;
-            debugPrint("✅ Selected Event ID: ${value?.eventId}");
+            setState(() {
+              selectedEvent = value?.eventId.toString();
+            });
+
             provider.notifyListeners();
           },
         );
@@ -458,7 +498,7 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
       return;
     }
 
-    debugPrint("🎯 Event ID Used: ${provider.selectedEvent!.eventId}");
+   // debugPrint("🎯 Event ID Used: ${provider.selectedEvent!.eventId}");
 
 
     debugPrint("🟨 SEARCH TYPE: $_searchType");
@@ -469,7 +509,8 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
 
       final success = await provider.getJobSeekerByRegOrMobile(
         context: context,
-        eventId: provider.selectedEvent!.eventId, // ✅ FROM DROPDOWN
+        //eventId: provider.selectedEvent!.eventId, // ✅ FROM DROPDOWN
+        eventId: int.parse(provider.eventIdController.text),
         mobileNo: _searchType == AttendanceSearchType.mobile
             ? _mobileController.text
             : '',
@@ -572,7 +613,8 @@ class _CandidateAttendanceScreenState extends State<CandidateAttendanceScreen> {
 
                 provider.markAttendance(
                   context,
-                  eventId: provider.selectedEvent!.eventId,
+                  // eventId: provider.selectedEvent!.eventId,
+                  eventId: int.parse(provider.eventIdController.text),
                 );
               },
               child: Row(
