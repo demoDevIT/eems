@@ -461,6 +461,11 @@ class JobApplicationProvider extends ChangeNotifier {
     eventNameController.clear();
     eventIdController.clear();
 
+    // Reset Job Post dropdown
+    postList.clear();
+    postNameController.clear();
+    postIdController.clear();
+
     selectedDocumentFile= null;
 
     mobileController.clear();

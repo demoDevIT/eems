@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rajemployment/role/counselor/counselor_dashboard/provider/counselor_dash_provider.dart';
 import 'package:rajemployment/role/counselor/create_session/screen/create_session_info.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import '../../../l10n/app_localizations.dart';
@@ -14,6 +15,8 @@ import '../../../utils/size_config.dart';
 import '../../../utils/user_new.dart';
 import '../../employer/job_fair/job_fair.dart';
 import '../../job_seeker/homescreen/home_screen.dart';
+import '../../job_seeker/job_fair_event/job_fair_event_details.dart';
+import '../../job_seeker/job_fair_event/modal/running_event_modal.dart';
 import '../../job_seeker/jobs/jobs_list.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../../job_seeker/profile/profile.dart';
@@ -31,6 +34,22 @@ class CounselorDashboard extends StatefulWidget {
 }
 
 class _CounselorDashboard extends State<CounselorDashboard> {
+
+  final PageController _pageController =
+  PageController(viewportFraction: 0.92);
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CounselorDashProvider>(
+        context,
+        listen: false,
+      ).getCurrentEvents(context);
+    });
+  }
+
   //int _currentIndex = 0;
 
   // final List<Widget> _pages = [
@@ -83,7 +102,18 @@ class _CounselorDashboard extends State<CounselorDashboard> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       backgroundColor: const Color(0xFFF2F4F8),
-      body: _buildDashboardList(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            _buildEventSlider(),
+
+            const SizedBox(height: 15),
+
+            _buildDashboardList(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -109,9 +139,7 @@ class _CounselorDashboard extends State<CounselorDashboard> {
 
   /// ✅ Dashboard (ONLY 2 ITEMS)
   Widget _buildDashboardList() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
+    return Column(
         children: [
 
           /// View Profile
@@ -142,6 +170,175 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                 ),
               );
             },
+          ),
+        ],
+      );
+  }
+
+  Widget _buildEventSlider() {
+    return Consumer<CounselorDashProvider>(
+      builder: (context, provider, child) {
+
+        if (provider.currentEventList.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return SizedBox(
+          height: 230,
+          child: PageView.builder(
+            controller: _pageController,
+            padEnds: false,
+            itemCount: provider.currentEventList.length,
+            itemBuilder: (context, index) {
+
+              final event = provider.currentEventList[index];
+
+              return Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: _eventCard(event),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _eventCard(RunningEventData event) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.06),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: const BoxDecoration(
+              color: Color(0xFF0D8AA8),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18),
+                bottomLeft: Radius.circular(18),
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    event.eventNameENG ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF9C1F1F),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    event.eventDescription ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          event.venue ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          "${getFormattedDate(event.startDate ?? "")} - ${getFormattedDate(event.endDate ?? "")}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const Spacer(),
+
+                  SizedBox(
+                    height: 36,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF0D8AA8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          RightToLeftRoute(
+                            page: JobFairEventDetailsScreen(
+                              runningEventData: event,
+                            ),
+                            duration: const Duration(milliseconds: 500),
+                            startOffset: const Offset(-1.0, 0.0),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Apply Now",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),

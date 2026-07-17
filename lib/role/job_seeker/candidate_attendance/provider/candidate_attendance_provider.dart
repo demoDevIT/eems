@@ -220,6 +220,8 @@ class CandidateAttendanceProvider extends ChangeNotifier {
       print("🎯 EventId USED --> $eventId");
       print("🔐 Encrypted EventId --> $encryptedEventId");
 
+      final eventRegId = jobSeeker!.encEventRegId.toString();
+
       final result = await attendanceApi(
         context,
         // userLatitude,
@@ -227,7 +229,8 @@ class CandidateAttendanceProvider extends ChangeNotifier {
         encryptedRoleId,
         encryptedUserId,
         encryptedEventId,
-        encryptedDeviceId,
+        eventRegId,
+        deviceId,
       );
 
       ProgressDialog.closeLoadingDialog(context);
@@ -257,6 +260,7 @@ class CandidateAttendanceProvider extends ChangeNotifier {
       String? roleId,
       String? userId,
       String? eventId,
+      String? eventRegID,
       String? deviceId,
       ) async {
 
@@ -274,6 +278,7 @@ class CandidateAttendanceProvider extends ChangeNotifier {
 
       Map<String, dynamic> body = {
         "ActionName": "MarkedAttendancebyQR",
+        "EventRegistrationId": eventRegID,
         "RoleId": roleId,
         "EventId": eventId,
         "userId": userId,

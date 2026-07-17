@@ -162,7 +162,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       ),
 
       _DashboardItem(
-        title: "Job Fair Registration",
+        title: "Job Fair",
         iconPath: "assets/images/aplyjobfair.svg",
         onTap: () {
           Navigator.push(

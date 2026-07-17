@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/provider/counsellor_otr_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_dashboard/counselor_dashboard.dart';
+import 'package:rajemployment/role/counselor/counselor_dashboard/provider/counselor_dash_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_jobs_list_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_profile/provider/counselor_basic_detail_provider.dart';
@@ -74,6 +75,10 @@ import 'package:rajemployment/role/job_seeker/languageandskill/provider/language
 import 'package:rajemployment/role/job_seeker/loginscreen/modal/login_modal.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/login_provider.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/screen/login_screen.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/allot_dept_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/attendance_log_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/document_log_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/join_log_provider.dart';
 import 'package:rajemployment/role/job_seeker/mysy/provider/mysy_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/otr_form.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/provider/otr_form_provider.dart';
@@ -208,6 +213,11 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<DeptProfileProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<DeptBasicDetailsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<EmployerDashProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<CounselorDashProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<AllotDeptProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<JoinLogProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<AttendanceLogProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<DocumentLogProvider>()),
           //farid code
           ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),

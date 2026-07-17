@@ -12,11 +12,14 @@ import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
 import '../applied_jobs/applied_jobs.dart';
 import '../cv_builder/cv_list.dart';
 import '../grievance/grievance_list.dart';
+import '../job_fair_event/job_fair_event_details.dart';
+import '../job_fair_event/modal/running_event_modal.dart';
 import '../job_fair_event/registered_event_list.dart';
 import '../jobs/jobs_list.dart';
 import '../jobseekerdashboard/job_based_profile.dart';
@@ -40,6 +43,8 @@ import '../videoprofile/videoprofile_screen.dart';
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  final PageController _pageController =
+  PageController(viewportFraction: 0.92);
 
    @override
   void initState() {
@@ -49,9 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
     //  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
       final provider = Provider.of<HomeScreenProvider>(context, listen: false);
       provider.clearData();
+      provider.getCurrentEvents(context);
       provider.getAllJobFairEventsListApi(context);
       provider.jobListApi(context);
       provider.companyListApi(context);
+
     /*
       */
     });
@@ -78,7 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           _buildGreetingCard(),
 
                           const SizedBox(height: 16),
+                          _buildEventSlider(),
 
+                          const SizedBox(height: 16),
                           /// 🔹 Grid Menu
                           _buildDashboardGrid(),
 
@@ -93,6 +102,175 @@ class _HomeScreenState extends State<HomeScreen> {
           })));
 
 
+  }
+
+  Widget _eventCard(RunningEventData event) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.06),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: const BoxDecoration(
+              color: Color(0xFF0D8AA8),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18),
+                bottomLeft: Radius.circular(18),
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    event.eventNameENG ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF9C1F1F),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    event.eventDescription ?? "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          event.venue ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today_outlined,
+                        color: Color(0xFF0D8AA8),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          "${getFormattedDate(event.startDate ?? "")} - ${getFormattedDate(event.endDate ?? "")}",
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const Spacer(),
+
+                  SizedBox(
+                    height: 36,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF0D8AA8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          RightToLeftRoute(
+                            page: JobFairEventDetailsScreen(
+                              runningEventData: event,
+                            ),
+                            duration: const Duration(milliseconds: 500),
+                            startOffset: const Offset(-1.0, 0.0),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Apply Now",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEventSlider() {
+    return Consumer<HomeScreenProvider>(
+      builder: (context, provider, child) {
+
+        if (provider.currentEventList.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return SizedBox(
+          height: 230,
+          child: PageView.builder(
+            controller: _pageController,
+            padEnds: false,
+            itemCount: provider.currentEventList.length,
+            itemBuilder: (context, index) {
+              final event = provider.currentEventList[index];
+
+              return Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: _eventCard(event),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 
    Widget _buildGreetingCard() {

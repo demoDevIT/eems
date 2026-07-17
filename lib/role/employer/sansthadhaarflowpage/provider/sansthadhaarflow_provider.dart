@@ -20,12 +20,12 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
   TextEditingController();
 
   /// BRN Radio
-  bool? hasBrn = true;
-
-  void setHasBrn(bool? value) {
-    hasBrn = value;
-    notifyListeners();
-  }
+  // bool? hasBrn = true;
+  //
+  // void setHasBrn(bool? value) {
+  //   hasBrn = value;
+  //   notifyListeners();
+  // }
 
   /// ===============================
   /// SUBMIT SANSTHA AADHAAR / BRN API
@@ -40,29 +40,29 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
     /// ==========================
     /// CASE 1: NO BRN SELECTED
     /// ==========================
-    if (hasBrn == false) {
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => EmpOTRFormScreen(
-            ssoId: ssoId,
-            userID: userID,
-            isFreshForm: true,
-          ),
-        ),
-      );
-      return;
-    }
-
-    if (hasBrn == null) {
-      showAlertError("Please select Yes or No", context);
-      return;
-    }
+    // if (hasBrn == false) {
+    //
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (_) => EmpOTRFormScreen(
+    //         ssoId: ssoId,
+    //         userID: userID,
+    //         isFreshForm: true,
+    //       ),
+    //     ),
+    //   );
+    //   return;
+    // }
+    //
+    // if (hasBrn == null) {
+    //   showAlertError("Please select Yes or No", context);
+    //   return;
+    // }
     /// ==========================
     /// CASE 2: YES → VALIDATION
     /// ==========================
-    if (sansthaAadhaarController.text.isEmpty) {
+    if (sansthaAadhaarController.text.trim().isEmpty) {
       showAlertError(
         "Please enter Sanstha Aadhaar number",
         context,
@@ -204,7 +204,7 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
   /// ===============================
   void clearData() {
     sansthaAadhaarController.clear();
-    hasBrn = null;
+   // hasBrn = null;
     notifyListeners();
   }
 }

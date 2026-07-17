@@ -10,6 +10,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/utility_class.dart';
+import '../../job_fair_event/modal/running_event_modal.dart';
 import '../modal/all_job_fair_events_list_modal.dart';
 import '../modal/company_list_modal.dart';
 import '../modal/job_list_modal.dart';
@@ -22,6 +23,7 @@ class HomeScreenProvider extends ChangeNotifier {
   List<JobListData>  jobBasedList = [];
   List<CompanyListData>  companyList = [];
 
+  List<RunningEventData> currentEventList = [];
 
 
   Future<AllJobFairEventsListModal?> getAllJobFairEventsListApi(BuildContext context) async {
@@ -155,7 +157,54 @@ class HomeScreenProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> getCurrentEvents(BuildContext context) async {
+    var isInternet = await UtilityClass.checkInternetConnectivity();
 
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return;
+    }
+
+    try {
+      Map<String, dynamic> body = {
+        "ActionName": "Running_Events",
+        "UserId": UserData().model.value.userId.toString(),
+        "RoleId": UserData().model.value.roleId.toString(),
+        "FromDate": "",
+        "EndDate": "",
+        "FinancialYearID": 0
+      };
+
+      ApiResponse response = await commonRepo.post(
+        "JobFairEvent/GetAllJobFairEventsList",
+        body,
+      );
+
+      if (response.response?.statusCode == 200) {
+        var data = response.response?.data;
+
+        if (data is String) {
+          data = jsonDecode(data);
+        }
+
+        RunningEventModal modal =
+        RunningEventModal.fromJson(data);
+
+        currentEventList.clear();
+
+        if (modal.state == 200) {
+          currentEventList.addAll(modal.data ?? []);
+        }
+
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
 
 

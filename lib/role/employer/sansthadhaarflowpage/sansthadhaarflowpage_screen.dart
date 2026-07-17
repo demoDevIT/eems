@@ -91,47 +91,47 @@ class _SansthaAadhaarFlowPageState extends State<SansthaAadhaarFlowPage> {
                           SizedBox(height: SizeConfig.screenHeight! * 0.03),
 
                           /// Radio Question
-                          Text(
-                            "Do you have a BRN Number?",
-                            style: UtilityClass.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-
-                          Row(
-                            children: [
-                              Radio<bool>(
-                                value: true,
-                                groupValue: provider.hasBrn,
-                                onChanged: (value) {
-                                  provider.setHasBrn(value!);
-                                },
-                              ),
-                              const Text("Yes"),
-                              Radio<bool>(
-                                value: false,
-                                groupValue: provider.hasBrn,
-                                onChanged: (value) {
-                                  // provider.setHasBrn(value!);
-                                  provider.clearData();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => EmpOTRFormScreen(
-                                        ssoId: widget.ssoId,
-                                        userID: widget.userID,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              const Text("No"),
-                            ],
-                          ),
-
-                          SizedBox(height: SizeConfig.screenHeight! * 0.02),
+                          // Text(
+                          //   "Do you have a BRN Number?",
+                          //   style: UtilityClass.poppins(
+                          //     fontSize: 14,
+                          //     fontWeight: FontWeight.w500,
+                          //     color: Colors.black,
+                          //   ),
+                          // ),
+                          //
+                          // Row(
+                          //   children: [
+                          //     Radio<bool>(
+                          //       value: true,
+                          //       groupValue: provider.hasBrn,
+                          //       onChanged: (value) {
+                          //         provider.setHasBrn(value!);
+                          //       },
+                          //     ),
+                          //     const Text("Yes"),
+                          //     Radio<bool>(
+                          //       value: false,
+                          //       groupValue: provider.hasBrn,
+                          //       onChanged: (value) {
+                          //         // provider.setHasBrn(value!);
+                          //         provider.clearData();
+                          //         Navigator.push(
+                          //           context,
+                          //           MaterialPageRoute(
+                          //             builder: (_) => EmpOTRFormScreen(
+                          //               ssoId: widget.ssoId,
+                          //               userID: widget.userID,
+                          //             ),
+                          //           ),
+                          //         );
+                          //       },
+                          //     ),
+                          //     const Text("No"),
+                          //   ],
+                          // ),
+                          //
+                          // SizedBox(height: SizeConfig.screenHeight! * 0.02),
 
                           /// Input Field
                           buildTextWithBorderField(

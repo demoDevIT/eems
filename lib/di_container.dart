@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rajemployment/repo/common_repo.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/provider/counsellor_otr_provider.dart';
+import 'package:rajemployment/role/counselor/counselor_dashboard/provider/counselor_dash_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_job_details/provider/counselor_job_details_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_jobs/provider/counselor_jobs_list_provider.dart';
 import 'package:rajemployment/role/counselor/counselor_profile/provider/counselor_basic_detail_provider.dart';
@@ -64,6 +65,10 @@ import 'package:rajemployment/role/job_seeker/jobs/provider/jobs_list_provider.d
 import 'package:rajemployment/role/job_seeker/languageandskill/provider/language_and_skill_provider.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:rajemployment/role/job_seeker/loginscreen/provider/login_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/allot_dept_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/attendance_log_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/document_log_provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/provider/join_log_provider.dart';
 import 'package:rajemployment/role/job_seeker/mysy/provider/mysy_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/provider/otr_form_provider.dart';
 import 'package:rajemployment/role/job_seeker/physicalattribute/provider/physicalattribute_provider.dart';
@@ -181,6 +186,11 @@ Future<void> init() async {
   sl.registerFactory(() => DeptProfileProvider(commonRepo: sl()));
   sl.registerFactory(() => DeptBasicDetailsProvider(commonRepo: sl()));
   sl.registerFactory(() => EmployerDashProvider(commonRepo: sl()));
+  sl.registerFactory(() => CounselorDashProvider(commonRepo: sl()));
+  sl.registerFactory(() => AllotDeptProvider(commonRepo: sl()));
+  sl.registerFactory(() => JoinLogProvider(commonRepo: sl()));
+  sl.registerFactory(() => AttendanceLogProvider(commonRepo: sl()));
+  sl.registerFactory(() => DocumentLogProvider(commonRepo: sl()));
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));
   sl.registerFactory(() => ChatProvider(commonRepo: sl()));

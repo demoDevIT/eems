@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rajemployment/role/job_seeker/mysy/payment_logs.dart';
+import 'allot_dept_mysy.dart';
+import 'attendance_logs.dart';
+import 'document_logs.dart';
+import 'join_logs.dart';
+import 'msg_logs.dart';
 import 'provider/mysy_list_provider.dart';
 
 class MysyListScreen extends StatefulWidget {
@@ -32,7 +38,11 @@ class _MysyListScreenState extends State<MysyListScreen> {
             elevation: 0,
             foregroundColor: Colors.black,
           ),
-          body: Padding(
+          body: provider.isLoading
+              ? const Center(
+            child: CircularProgressIndicator(),
+          )
+              : Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,14 +51,14 @@ class _MysyListScreenState extends State<MysyListScreen> {
                 /// ===========================
                 /// HEADING WITH COUNT
                 /// ===========================
-                Text(
-                  "MYSY Application List (${provider.mysyList.length})",
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-
-                const SizedBox(height: 20),
+                // Text(
+                //   "MYSY Application List (${provider.mysyList.length})",
+                //   style: const TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold),
+                // ),
+                //
+                // const SizedBox(height: 20),
 
                 /// ===========================
                 /// LIST VIEW
@@ -58,6 +68,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                     itemCount: provider.mysyList.length,
                     itemBuilder: (context, index) {
                       final item = provider.mysyList[index];
+                      final info = item.applicationInfo!;
 
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
@@ -72,59 +83,134 @@ class _MysyListScreenState extends State<MysyListScreen> {
                           CrossAxisAlignment.start,
                           children: [
 
-                            _row("Sr. No", (index + 1).toString()),
-                            _row("Application No", item.applicationNo ?? ""),
-                            _row("Father's Name", item.fatherName ?? ""),
-                            _row("Scheme Name", item.schemeName ?? ""),
-                            _row("Aadhar No", item.aadharNo ?? ""),
-                            _row("Gender", item.gender ?? ""),
-                            _row("Category", item.category ?? ""),
-                            _row("DOB", item.dob ?? ""),
-                            _row("Receiving Date", item.createdOn ?? ""),
+                            _row("Applicant Name", info.fullName ?? ""),
+                            _row("Father Name", info.fatherName ?? ""),
+                            _row("Date of Birth", info.dob ?? ""),
+                            _row("Mobile", info.mobileNo ?? ""),
+                            _row("Registration Number", info.applicationNo ?? ""),
+                            _row("RegistrationDate", info.regDate ?? ""),
+                            _row("Gender", info.gender ?? ""),
+                            _row("Category", info.category ?? ""),
+                            _row("Scheme", info.schemeName ?? ""),
+                            _row("Apply Date", info.applyDate ?? ""),
+                            _row("Approve Date", info.approveDate ?? ""),
+                            _row("Stopped Date", info.stopDate ?? ""),
 
                             const SizedBox(height: 8),
 
                             /// Status Badge
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: item.schemeStatus == "Approved"
-                                    ? Colors.green.shade100
-                                    : item.schemeStatus == "Hold"
-                                    ? Colors.orange.shade100
-                                    : Colors.blue.shade100,
-                                borderRadius:
-                                BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                item.schemeStatus ?? "",
-                                style: TextStyle(
-                                  color: item.schemeStatus == "Approved"
-                                      ? Colors.green
-                                      : item.schemeStatus == "Hold"
-                                      ? Colors.orange
-                                      : Colors.blue,
-                                  fontWeight:
-                                  FontWeight.w500,
+                            // Container(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       horizontal: 10, vertical: 6),
+                            //   decoration: BoxDecoration(
+                            //     color: item.schemeStatus == "Approved"
+                            //         ? Colors.green.shade100
+                            //         : item.schemeStatus == "Hold"
+                            //         ? Colors.orange.shade100
+                            //         : Colors.blue.shade100,
+                            //     borderRadius:
+                            //     BorderRadius.circular(6),
+                            //   ),
+                            //   child: Text(
+                            //     item.schemeStatus ?? "",
+                            //     style: TextStyle(
+                            //       color: item.schemeStatus == "Approved"
+                            //           ? Colors.green
+                            //           : item.schemeStatus == "Hold"
+                            //           ? Colors.orange
+                            //           : Colors.blue,
+                            //       fontWeight:
+                            //       FontWeight.w500,
+                            //     ),
+                            //   ),
+                            // ),
+
+                            const SizedBox(height: 15),
+
+                        _buildButton(
+                          "View Allotted Department",
+                              () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AllotDeptMysy(
+                                  data: item.allottedDepartments,
                                 ),
                               ),
-                            ),
+                            );
+                          },
+                        ),
 
-                           // const SizedBox(height: 10),
-                            //
-                            // /// Action Button
-                            // Align(
-                            //   alignment:
-                            //   Alignment.centerRight,
-                            //   child: TextButton(
-                            //     onPressed: () {
-                            //       // later navigation
-                            //     },
-                            //     child:
-                            //     const Text("View Details"),
-                            //   ),
-                            // )
+                        _buildButton(
+                          "View Message Log",
+                              () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MsgLogs(
+                                  data: item.messageLogs,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        _buildButton(
+                        "View Joining Log",
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => JoinLogs(
+                                data: item.joiningLogs,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      _buildButton(
+                        "View Attendance Log",
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => AttendanceLogs(
+                                data: item.attendanceLogs,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      _buildButton(
+                        "View Document Log",
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DocumentLogs(
+                                data: item.documentLogs,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      _buildButton(
+                        "View Payment Log",
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PaymentLogs(
+                                data: item.paymentLogs,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+
                           ],
                         ),
                       );
@@ -136,6 +222,22 @@ class _MysyListScreenState extends State<MysyListScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildButton(
+      String title,
+      VoidCallback onTap,
+      ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onTap,
+          child: Text(title),
+        ),
+      ),
     );
   }
 
@@ -151,7 +253,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
             child: Text(
               "$title:",
               style: const TextStyle(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   fontSize: 13),
             ),
           ),
