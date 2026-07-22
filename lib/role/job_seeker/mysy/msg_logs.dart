@@ -29,26 +29,113 @@ class MsgLogs extends StatelessWidget {
         itemBuilder: (_, index) {
           final item = data[index];
 
+          // return Card(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(15),
+          //     child: Column(
+          //       children: [
+          //         _row("Sr. No.", "${index + 1}"),
+          //         _row(
+          //           "Action Status",
+          //           item.applicationStatus ?? "",
+          //         ),
+          //         _row(
+          //           "Reason",
+          //           item.message ?? "",
+          //         ),
+          //         _row(
+          //           "Action Date",
+          //           item.sentOn ?? "",
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // );
+
           return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  _row("Sr. No.", "${index + 1}"),
-                  _row(
-                    "Action Status",
-                    item.applicationStatus ?? "",
+            elevation: 5,
+            margin: const EdgeInsets.only(bottom: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+
+                /// Header
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(11),
+                  decoration: const BoxDecoration(
+                    color: Color(0xff4F46E5),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
                   ),
-                  _row(
-                    "Reason",
-                    item.message ?? "",
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.message,
+                          color: Color(0xff4F46E5),
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Expanded(
+                        child: Text(
+                          "Message Log #${index + 1}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  _row(
-                    "Action Date",
-                    item.sentOn ?? "",
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+
+                      _row(
+                        "Action Status",
+                        item.applicationStatus ?? "",
+                      ),
+
+                      _row(
+                        "Reason",
+                        item.message ?? "",
+                      ),
+
+                      _row(
+                        "Action Date",
+                        item.sentOn ?? "",
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: Chip(
+                      //     avatar: const Icon(
+                      //       Icons.access_time,
+                      //       size: 18,
+                      //     ),
+                      //     label: Text(
+                      //       item.sentOn ?? "",
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

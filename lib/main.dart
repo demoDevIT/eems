@@ -52,6 +52,7 @@ import 'package:rajemployment/role/job_seeker/applied_jobs/provider/applied_jobs
 import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_details_provider.dart';
 import 'package:rajemployment/role/job_seeker/camera/provider/comera_provider.dart';
 import 'package:rajemployment/role/job_seeker/candidate_attendance/provider/candidate_attendance_provider.dart';
+import 'package:rajemployment/role/job_seeker/candidate_attendance/provider/job_fair_reg_provider.dart';
 import 'package:rajemployment/role/job_seeker/cv_builder/provider/cv_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/departmental_schemes/provider/mysy_pending_list_provider.dart';
 import 'package:rajemployment/role/job_seeker/educationdetail/provider/education_details_provider.dart';
@@ -218,6 +219,7 @@ Future<void> main() async {
           ChangeNotifierProvider(create: (context) => di.sl<JoinLogProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<AttendanceLogProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<DocumentLogProvider>()),
+          ChangeNotifierProvider(create: (context) => di.sl<JobFairRegistrationProvider>()),
           //farid code
           ChangeNotifierProvider(create: (context) => di.sl<FaqsProvider>()),
           ChangeNotifierProvider(create: (context) => di.sl<ChatProvider>()),

@@ -344,13 +344,17 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
     return Consumer<EmployerDashProvider>(
       builder: (context, provider, child) {
 
+        // if (provider.currentEventList.isEmpty) {
+        //   return const SizedBox(
+        //     height: 200,
+        //     child: Center(
+        //       child: Text("No Running Events"),
+        //     ),
+        //   );
+        // }
+
         if (provider.currentEventList.isEmpty) {
-          return const SizedBox(
-            height: 200,
-            child: Center(
-              child: Text("No Running Events"),
-            ),
-          );
+          return const SizedBox.shrink();
         }
 
         return SizedBox(

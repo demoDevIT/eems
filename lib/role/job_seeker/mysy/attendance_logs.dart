@@ -37,69 +37,213 @@ class AttendanceLogs extends StatelessWidget {
         itemBuilder: (_, index) {
           final item = data[index];
 
+          // return Card(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(15),
+          //     child: Column(
+          //       children: [
+          //         _row("Sr. No.", "${index + 1}"),
+          //         _row(
+          //           "Joining Date",
+          //           item.joiningDate ?? "",
+          //         ),
+          //         _row(
+          //           "Attendance Status",
+          //           item.currentStatus ?? "",
+          //         ),
+          //         _row(
+          //           "Attendance Month/Year",
+          //           item.attendanceMonthYear ?? "",
+          //         ),
+          //         _row(
+          //           "Remarks",
+          //           item.remarks ?? "",
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(bottom: 8),
+          //           child: Row(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: [
+          //               const SizedBox(
+          //                 width: 150,
+          //                 child: Text(
+          //                   "Last Uploaded Letter :",
+          //                   style: TextStyle(
+          //                     fontWeight: FontWeight.bold,
+          //                   ),
+          //                 ),
+          //               ),
+          //               IconButton(
+          //                 icon: Icon(
+          //                   Icons.remove_red_eye,
+          //                   color: (item.lastUploadedLetter != null &&
+          //                       item.lastUploadedLetter!.isNotEmpty)
+          //                       ? Colors.blue
+          //                       : Colors.grey,
+          //                 ),
+          //                 onPressed: (item.lastUploadedLetter != null &&
+          //                     item.lastUploadedLetter!.isNotEmpty)
+          //                     ? () {
+          //                   provider.downloadAndOpenPdf(
+          //                     Constants.showPdfUrl +
+          //                         item.lastUploadedLetter!,
+          //                   );
+          //                 }
+          //                     : null,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         _row(
+          //           "Attendance Action Date & Time",
+          //           item.actionDate ?? "",
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // );
+
           return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  _row("Sr. No.", "${index + 1}"),
-                  _row(
-                    "Joining Date",
-                    item.joiningDate ?? "",
-                  ),
-                  _row(
-                    "Attendance Status",
-                    item.currentStatus ?? "",
-                  ),
-                  _row(
-                    "Attendance Month/Year",
-                    item.attendanceMonthYear ?? "",
-                  ),
-                  _row(
-                    "Remarks",
-                    item.remarks ?? "",
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          width: 150,
-                          child: Text(
-                            "Last Uploaded Letter :",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.remove_red_eye,
-                            color: (item.lastUploadedLetter != null &&
-                                item.lastUploadedLetter!.isNotEmpty)
-                                ? Colors.blue
-                                : Colors.grey,
-                          ),
-                          onPressed: (item.lastUploadedLetter != null &&
-                              item.lastUploadedLetter!.isNotEmpty)
-                              ? () {
-                            provider.downloadAndOpenPdf(
-                              Constants.showPdfUrl +
-                                  item.lastUploadedLetter!,
-                            );
-                          }
-                              : null,
-                        ),
-                      ],
+            elevation: 5,
+            margin: const EdgeInsets.only(bottom: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+
+                /// Header
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: Color(0xff4F46E5),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
-                  _row(
-                    "Attendance Action Date & Time",
-                    item.actionDate ?? "",
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.calendar_month,
+                          color: Color(0xff4F46E5),
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Expanded(
+                        child: Text(
+                          "Attendance Log #${index + 1}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                      Chip(
+                        label: Text(
+                          item.currentStatus ?? "N/A",
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+
+                      _row(
+                        "Joining Date",
+                        item.joiningDate ?? "",
+                      ),
+
+                      _row(
+                        "Attendance Status",
+                        item.currentStatus ?? "",
+                      ),
+
+                      _row(
+                        "Month/Year",
+                        item.attendanceMonthYear ?? "",
+                      ),
+
+                      _row(
+                        "Remarks",
+                        item.remarks ?? "",
+                      ),
+
+                      _row(
+                        "Action Date",
+                        item.actionDate ?? "",
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius:
+                          BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+
+                            const Icon(
+                              Icons.picture_as_pdf,
+                              color: Colors.red,
+                            ),
+
+                            const SizedBox(width: 10),
+
+                            const Expanded(
+                              child: Text(
+                                "Last Uploaded Letter",
+                                style: TextStyle(
+                                  fontWeight:
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ),
+
+                            ElevatedButton.icon(
+                              onPressed:
+                              (item.lastUploadedLetter !=
+                                  null &&
+                                  item.lastUploadedLetter!
+                                      .isNotEmpty)
+                                  ? () {
+                                provider
+                                    .downloadAndOpenPdf(
+                                  Constants
+                                      .showPdfUrl +
+                                      item
+                                          .lastUploadedLetter!,
+                                );
+                              }
+                                  : null,
+                              icon: const Icon(
+                                Icons.visibility,
+                              ),
+                              label: const Text(
+                                "View",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           );
         },

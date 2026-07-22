@@ -37,70 +37,212 @@ class JoinLogs extends StatelessWidget {
             itemBuilder: (_, index) {
               final item = data[index];
 
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    children: [
-                      _row("Sr. No.", "${index + 1}"),
-                      _row(
-                        "Registration No",
-                        item.regNo ?? "",
-                      ),
+              // return Card(
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(15),
+              //     child: Column(
+              //       children: [
+              //         _row("Sr. No.", "${index + 1}"),
+              //         _row(
+              //           "Registration No",
+              //           item.regNo ?? "",
+              //         ),
+              //
+              //         Padding(
+              //           padding: const EdgeInsets.only(bottom: 8),
+              //           child: Row(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               const SizedBox(
+              //                 width: 150,
+              //                 child: Text(
+              //                   "Joining Letter :",
+              //                   style: TextStyle(
+              //                     fontWeight: FontWeight.bold,
+              //                   ),
+              //                 ),
+              //               ),
+              //               IconButton(
+              //                 icon: Icon(
+              //                   Icons.remove_red_eye,
+              //                   color: (item.lastLetter != null &&
+              //                       item.lastLetter!.isNotEmpty)
+              //                       ? Colors.blue
+              //                       : Colors.grey,
+              //                 ),
+              //                 onPressed: (item.lastLetter != null &&
+              //                     item.lastLetter!.isNotEmpty)
+              //                     ? () {
+              //                   provider.downloadAndOpenPdf(
+              //                     Constants.showPdfUrl + item.lastLetter!,
+              //                   );
+              //                 }
+              //                     : null,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //
+              //         _row(
+              //           "Remarks",
+              //           item.remarks ?? "",
+              //         ),
+              //         _row(
+              //           "Status",
+              //           item.currentStatus ?? "",
+              //         ),
+              //         _row(
+              //           "Joining Date",
+              //           item.joiningDate ?? "",
+              //         ),
+              //         _row(
+              //           "Action Date",
+              //           item.actionDate ?? "",
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // );
 
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              width: 150,
-                              child: Text(
-                                "Joining Letter :",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.remove_red_eye,
-                                color: (item.lastLetter != null &&
-                                    item.lastLetter!.isNotEmpty)
-                                    ? Colors.blue
-                                    : Colors.grey,
-                              ),
-                              onPressed: (item.lastLetter != null &&
-                                  item.lastLetter!.isNotEmpty)
-                                  ? () {
-                                provider.downloadAndOpenPdf(
-                                  Constants.showPdfUrl + item.lastLetter!,
-                                );
-                              }
-                                  : null,
-                            ),
-                          ],
+              return Card(
+                elevation: 5,
+                margin: const EdgeInsets.only(bottom: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+
+                    /// Header
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Color(0xff4F46E5),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
                       ),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.login,
+                              color: Color(0xff4F46E5),
+                            ),
+                          ),
 
-                      _row(
-                        "Remarks",
-                        item.remarks ?? "",
+                          const SizedBox(width: 10),
+
+                          Expanded(
+                            child: Text(
+                              "Joining Log #${index + 1}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+
+                          Chip(
+                            label: Text(
+                              item.currentStatus ?? "N/A",
+                            ),
+                          ),
+                        ],
                       ),
-                      _row(
-                        "Status",
-                        item.currentStatus ?? "",
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+
+                          _row(
+                            "Registration No",
+                            item.regNo ?? "",
+                          ),
+
+                          _row(
+                            "Remarks",
+                            item.remarks ?? "",
+                          ),
+
+                          _row(
+                            "Status",
+                            item.currentStatus ?? "",
+                          ),
+
+                          _row(
+                            "Joining Date",
+                            item.joiningDate ?? "",
+                          ),
+
+                          _row(
+                            "Action Date",
+                            item.actionDate ?? "",
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius:
+                              BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+
+                                const Icon(
+                                  Icons.picture_as_pdf,
+                                  color: Colors.red,
+                                ),
+
+                                const SizedBox(width: 10),
+
+                                const Expanded(
+                                  child: Text(
+                                    "Joining Letter",
+                                    style: TextStyle(
+                                      fontWeight:
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+
+                                ElevatedButton.icon(
+                                  onPressed:
+                                  (item.lastLetter != null &&
+                                      item.lastLetter!
+                                          .isNotEmpty)
+                                      ? () {
+                                    provider
+                                        .downloadAndOpenPdf(
+                                      Constants
+                                          .showPdfUrl +
+                                          item.lastLetter!,
+                                    );
+                                  }
+                                      : null,
+                                  icon: const Icon(
+                                    Icons.visibility,
+                                  ),
+                                  label: const Text(
+                                    "View",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      _row(
-                        "Joining Date",
-                        item.joiningDate ?? "",
-                      ),
-                      _row(
-                        "Action Date",
-                        item.actionDate ?? "",
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },
@@ -112,21 +254,29 @@ class JoinLogs extends StatelessWidget {
 
   Widget _row(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+        CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 150,
+            width: 130,
             child: Text(
               "$title :",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
               ),
             ),
           ),
           Expanded(
-            child: Text(value),
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+              ),
+            ),
           ),
         ],
       ),

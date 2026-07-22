@@ -32,26 +32,163 @@ class PaymentLogs extends StatelessWidget {
         itemBuilder: (_, index) {
           final item = data[index];
 
+          // return Card(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(15),
+          //     child: Column(
+          //       children: [
+          //         _row("Sr. No.", "${index + 1}"),
+          //         _row(
+          //           "Applicant Name",
+          //           item.jobSeekerName ?? "",
+          //         ),
+          //         _row(
+          //           "Payment Month/Year",
+          //           item.paymentMonthYear ?? "",
+          //         ),
+          //         _row(
+          //           "Amount",
+          //           "₹${item.amount}",
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // );
+
           return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  _row("Sr. No.", "${index + 1}"),
-                  _row(
-                    "Applicant Name",
-                    item.jobSeekerName ?? "",
+            elevation: 5,
+            margin: const EdgeInsets.only(bottom: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+
+                /// Header
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    color: Color(0xff4F46E5),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
                   ),
-                  _row(
-                    "Payment Month/Year",
-                    item.paymentMonthYear ?? "",
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.payments,
+                          color: Color(0xff4F46E5),
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Payment Log #${index + 1}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            Text(
+                              item.jobSeekerName ?? "",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                          BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          "₹${item.amount ?? 0}",
+                          style: const TextStyle(
+                            color: Color(0xff4F46E5),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  _row(
-                    "Amount",
-                    "₹${item.amount}",
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+
+                      _row(
+                        "Applicant Name",
+                        item.jobSeekerName ?? "",
+                      ),
+
+                      _row(
+                        "Payment Month/Year",
+                        item.paymentMonthYear ?? "",
+                      ),
+
+                      _row(
+                        "Amount",
+                        "₹${item.amount}",
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius:
+                          BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+
+                            const Icon(
+                              Icons.account_balance_wallet,
+                              color: Colors.green,
+                            ),
+
+                            const SizedBox(width: 10),
+
+                            Expanded(
+                              child: Text(
+                                "Payment of ₹${item.amount} received for ${item.paymentMonthYear}",
+                                style: const TextStyle(
+                                  fontWeight:
+                                  FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
@@ -61,21 +198,29 @@ class PaymentLogs extends StatelessWidget {
 
   Widget _row(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+        CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 150,
+            width: 130,
             child: Text(
               "$title :",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
               ),
             ),
           ),
           Expanded(
-            child: Text(value),
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+              ),
+            ),
           ),
         ],
       ),

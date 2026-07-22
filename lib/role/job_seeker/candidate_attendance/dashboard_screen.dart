@@ -17,6 +17,7 @@ import '../../department/dept_dashboard/modal/role_modal.dart';
 import '../loginscreen/screen/login_screen.dart';
 import '../qr_scanner/qr_scanner_screen.dart';
 import 'candidate_attendance_screen.dart';
+import 'job_fair_registration.dart';
 import 'provider/dashboard_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -259,6 +260,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Navigator.of(context).push(
                       RightToLeftRoute(
                         page: const CandidateAttendanceScreen(),
+                        duration: const Duration(milliseconds: 500),
+                        startOffset: const Offset(-1.0, 0.0),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 14),
+
+                _actionCard(
+                  iconPath: "assets/images/BackgroundPlus.svg",
+                  title: "New Registration",
+                  subTitle: "Register a new candidate for the event",
+                  iconBg: const Color(0xff8D4AF2),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      RightToLeftRoute(
+                        page: const JobFairRegistrationScreen(),
                         duration: const Duration(milliseconds: 500),
                         startOffset: const Offset(-1.0, 0.0),
                       ),
