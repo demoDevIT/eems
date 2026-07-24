@@ -149,11 +149,26 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   void setCurrentYearMonth() {
     final now = DateTime.now();
 
+    // Previous month logic
+    final previousMonthDate = DateTime(now.year, now.month - 1);
+
     /// SET YEAR
+    // try {
+    //   selectedYearObj = yearListApi.firstWhere(
+    //         (y) => y.name == now.year.toString(),
+    //     orElse: () => yearListApi.isNotEmpty ? yearListApi.first : null!,
+    //   );
+    //
+    //   filterSelectedYear = selectedYearObj?.dropID;
+    // } catch (e) {
+    //   selectedYearObj = null;
+    //   filterSelectedYear = null;
+    // }
+
     try {
       selectedYearObj = yearListApi.firstWhere(
-            (y) => y.name == now.year.toString(),
-        orElse: () => yearListApi.isNotEmpty ? yearListApi.first : null!,
+            (y) => y.name == previousMonthDate.year.toString(),
+        orElse: () => yearListApi.first,
       );
 
       filterSelectedYear = selectedYearObj?.dropID;
@@ -163,10 +178,22 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
 
     /// SET MONTH
+    // try {
+    //   selectedMonthObj = monthListApi.firstWhere(
+    //         (m) => m.dropID == now.month,
+    //     orElse: () => monthListApi.isNotEmpty ? monthListApi.first : null!,
+    //   );
+    //
+    //   filterSelectedMonthNumber = selectedMonthObj?.dropID;
+    // } catch (e) {
+    //   selectedMonthObj = null;
+    //   filterSelectedMonthNumber = null;
+    // }
+
     try {
       selectedMonthObj = monthListApi.firstWhere(
-            (m) => m.dropID == now.month,
-        orElse: () => monthListApi.isNotEmpty ? monthListApi.first : null!,
+            (m) => m.dropID == previousMonthDate.month,
+        orElse: () => monthListApi.first,
       );
 
       filterSelectedMonthNumber = selectedMonthObj?.dropID;

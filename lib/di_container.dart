@@ -19,6 +19,7 @@ import 'package:rajemployment/role/department/dept_join_pending_list/provider/de
 import 'package:rajemployment/role/department/dept_profile/provider/dept_basic_detail_provider.dart';
 import 'package:rajemployment/role/department/dept_profile/provider/dept_profile_provider.dart';
 import 'package:rajemployment/role/department/register_form/provider/register_form_provider.dart';
+import 'package:rajemployment/role/department/request_map/provider/request_map_provider.dart';
 import 'package:rajemployment/role/employer/emp_QR_scan/provider/emp_QR_scan_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/branch_office_detail_provider.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/contact_person_detail_provider.dart';
@@ -193,6 +194,7 @@ Future<void> init() async {
   sl.registerFactory(() => AttendanceLogProvider(commonRepo: sl()));
   sl.registerFactory(() => DocumentLogProvider(commonRepo: sl()));
   sl.registerFactory(() => JobFairRegistrationProvider(commonRepo: sl()));
+  sl.registerFactory(() => RequestMapProvider(commonRepo: sl()));
 
 //farid code
   sl.registerFactory(() => FaqsProvider(commonRepo: sl()));

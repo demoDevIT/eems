@@ -317,13 +317,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: Styles.mediumTextStyle(size: 12),
                               ),
                               const Spacer(),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  AppLocalizations.of(context)!.forgetpass,
-                                  style: Styles.mediumTextStyle(size: 12,color: kbuttonColor),
-                                ),
-                              ),
+                              // TextButton(
+                              //   onPressed: () {},
+                              //   child: Text(
+                              //     AppLocalizations.of(context)!.forgetpass,
+                              //     style: Styles.mediumTextStyle(size: 12,color: kbuttonColor),
+                              //   ),
+                              // ),
                             ],
                           ),
 

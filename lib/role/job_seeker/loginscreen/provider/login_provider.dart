@@ -213,6 +213,11 @@ class LoginProvider with ChangeNotifier {
                   UserData().model.value.NameAsjanAdhar =
                       sm.data!.NameAsjanAdhar;
                   UserData().model.value.DistrictEn = sm.data!.DistrictEn;
+                  UserData().model.value.displayName = sm.data!.displayName;
+
+                  UserData().model.value.nameAsPerAadhar = sm.data!.nameAsPerAadhar;
+                  UserData().model.value.userRoleRightID = sm.data!.userRoleRightID;
+
                   // UserData().model.value.postalAddress = sm.data!.postalAddress;
                   // UserData().model.value.empNumber = sm.data!.employeeNumber;
                   print("PA1 = ${sm.data!.postalAddress}");
@@ -241,8 +246,8 @@ class LoginProvider with ChangeNotifier {
                   // await saveRememberMeData();
                   // getDeptBasicDetails(
                   //     context, sm.data!.userID.toString(), sm.data!.roleID,
-                  //     ssoId);
-                  //
+                  //     ssoId, sm.data!.internshipDeptID, sm.data!.internshipDeptTypeID);
+
                   await saveRememberMeData();
 
                   bool otpSent = await loginHistoryMessagesApi(
@@ -1090,6 +1095,7 @@ class LoginProvider with ChangeNotifier {
               UserData().model.value.sso = ssoID;
               UserData().model.value.roleName = sm.data![0].role;
               UserData().model.value.exchangeName = sm.data![0].office;
+              UserData().model.value.deptNameEn = sm.data![0].deptNameEn;
              // UserData().model.value.name = sm.data![0].name;
 
 

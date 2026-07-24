@@ -58,6 +58,7 @@ class DeptInfoData {
   dynamic firstName;
   dynamic lastName;
   dynamic gender;
+  dynamic deptNameEn;
 
   DeptInfoData(
       {this.userID,
@@ -81,7 +82,8 @@ class DeptInfoData {
         this.empNumber,
         this.firstName,
         this.lastName,
-        this.gender
+        this.gender,
+        this.deptNameEn
       });
 
   DeptInfoData.fromJson(Map<String, dynamic> json) {
@@ -108,6 +110,7 @@ class DeptInfoData {
     firstName = json['FirstName'];
     lastName = json['LastName'];
     gender = json['Gender'];
+    deptNameEn = json['DepartmentNameEn'];
   }
 
   Map<String, dynamic> toJson() {
@@ -135,6 +138,7 @@ class DeptInfoData {
     data['FirstName'] = this.firstName;
     data['LastName'] = this.lastName;
     data['Gender'] = this.gender;
+    data['DepartmentNameEn'] = this.deptNameEn;
     return data;
   }
 }

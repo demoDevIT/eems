@@ -92,6 +92,10 @@ class TempLoginData {
   dynamic DistrictEn;
   dynamic empNumber;
   dynamic allotmentDeptName;
+
+  dynamic nameAsPerAadhar;
+  dynamic userRoleRightID;
+
   int? isApproved;
   int? isActive;
   int? isDeleted;
@@ -161,7 +165,9 @@ class TempLoginData {
         this.allotmentDeptName,
         this.isApproved,
         this.isActive,
-        this.isDeleted
+        this.isDeleted,
+        this.nameAsPerAadhar,
+        this.userRoleRightID
       });
 
   TempLoginData.fromJson(Map<String, dynamic> json) {
@@ -229,6 +235,8 @@ class TempLoginData {
     isApproved = json['IsApproved'];
     isActive = json['IsActive'];
     isDeleted = json['IsDeleted'];
+    nameAsPerAadhar = json['NameAsPerAadhar'];
+    userRoleRightID = json['UserRoleRightID'];
     //empNumber = json['EmployeeNumber'];
 
   }
@@ -299,6 +307,10 @@ class TempLoginData {
     data['IsApproved'] = this.isApproved;
     data['IsActive'] = this.isActive;
     data['IsDeleted'] = this.isDeleted;
+    data['NameAsPerAadhar'] = this.nameAsPerAadhar;
+    data['UserRoleRightID'] = this.userRoleRightID;
+
+
    // data['EmployeeNumber'] = this.empNumber;
 
     return data;

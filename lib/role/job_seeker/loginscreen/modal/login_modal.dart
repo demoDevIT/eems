@@ -158,6 +158,8 @@ class LoginData {
   dynamic NameAsjanAdhar;
   dynamic DistrictEn;
   // dynamic district; already exist
+  dynamic nameAsPerAadhar;
+  dynamic userRoleRightID;
 
   //for counselor
   dynamic displayName;
@@ -332,6 +334,9 @@ class LoginData {
     this.roleName,
     this.isJobFairEventLogin,
 
+    this.nameAsPerAadhar,
+    this.userRoleRightID
+
   });
 
   LoginData.fromJson(Map<String, dynamic> json) {
@@ -481,6 +486,9 @@ class LoginData {
 
     isJobFairEventLogin = json['isJobFairEventLogin'];
 
+    nameAsPerAadhar = json['NameAsPerAadhar'];
+    userRoleRightID = json['UserRoleRightID'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -607,6 +615,9 @@ class LoginData {
     data['InternshipDeptID'] = this.internshipDeptID;
     data['NameAsjanAdhar'] = this.NameAsjanAdhar;
     data['DistrictEn'] = this.DistrictEn;
+
+    data['NameAsPerAadhar'] = this.nameAsPerAadhar;
+    data['UserRoleRightID'] = this.userRoleRightID;
 
     //counselor
     data['DisplayName'] = this.displayName;

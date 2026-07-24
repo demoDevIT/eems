@@ -18,6 +18,7 @@ import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../dept_join_pending_list/dept_join_pending_list.dart';
 import '../dept_profile/dept_profile.dart';
+import '../request_map/request_map.dart';
 import 'modal/role_modal.dart';
 import 'provider/dept_dashboard_provider.dart';
 
@@ -627,7 +628,22 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               Navigator.pop(context); // Already on dashboard
             },
           ),
-
+          ListTile(
+            leading: const Icon(Icons.request_page),
+            title: const Text("Request for DMap", style: TextStyle(fontSize: 14)),
+            // onTap: () {
+            //   Navigator.pop(context); // Already on dashboard
+            // },
+            onTap: () async {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  const RequestMapScreen(),
+                ),
+              );
+            },
+          ),
           Container(
             margin: const EdgeInsets.only(left: 50),
             child: const Divider(height: 1, color: E3E5F9Color),
