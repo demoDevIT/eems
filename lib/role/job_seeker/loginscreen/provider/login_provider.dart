@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:rajemployment/constants/static_variables.dart';
 import 'package:rajemployment/role/counselor/counsellor_otr/counsellor_otr_screen.dart';
 import 'package:rajemployment/role/department/dept_dashboard/provider/dept_dashboard_provider.dart';
@@ -90,6 +91,22 @@ class LoginProvider with ChangeNotifier {
     return null;
   }
 
+  Future<String> getPublicIp() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.ipify.org'),
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print("IP Error: $e");
+    }
+
+    return "";
+  }
+
   Future<TempLoginModal?> ssoLoginWithIDPassApi(BuildContext context) async {
     // temporary, because APIs are not working
     // Navigator.of(context).push(
@@ -141,6 +158,7 @@ class LoginProvider with ChangeNotifier {
         String ssoId = SSOIDController.text;
         String pass = passwordController.text;
         String? deviceId = await UtilityClass.getDeviceId();
+        String ipAddress = await getPublicIp();
 
         Map<String, dynamic> body;
 
@@ -149,6 +167,7 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
+            "IPv4": ipAddress,
            "BypassSSO": true // for everytime while live or sandbox for this sso 'EEMSJobFairEvent'
           };
         }else{
@@ -156,9 +175,12 @@ class LoginProvider with ChangeNotifier {
             "SSOID": ssoId,
             "Password": pass,
             "DeviceID": deviceId,
+            "IPv4": ipAddress,
             "BypassSSO": true //true for sandbox, remove for live
           };
         }
+
+        print("LOGIN PAYLOAD => $body");
 
         // if (ssoId == "employer1") {
         //   getEmpBasicDetailsApi(context, "2261606", 7);

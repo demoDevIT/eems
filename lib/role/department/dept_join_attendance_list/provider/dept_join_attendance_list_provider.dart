@@ -960,6 +960,22 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     }
   }
 
+  Future<String> getPublicIp() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.ipify.org'),
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print("IP Error: $e");
+    }
+
+    return "";
+  }
+
   Future<void> _submitAttendance(
     BuildContext context,
     DeptJoinAttendanceItem item,
@@ -1009,6 +1025,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       final year = item.year.toString();
       final monthName = selectedMonthObj?.name ?? "";
       String? deviceId = await UtilityClass.getDeviceId();
+      String ipAddress = await getPublicIp();
+
       Map<String, dynamic> data = {
         "UserID": UserData().model.value.userId,
         "RoleID": UserData().model.value.roleId,
@@ -1042,6 +1060,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "OtherDocument": "",
         "AttendanceReasonID": 0,
         "BaseUrl": "http://localhost:5000/",
+        "IPv4": ipAddress,
         "DeviceID": deviceId
       };
 

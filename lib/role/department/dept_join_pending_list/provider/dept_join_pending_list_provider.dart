@@ -429,6 +429,22 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     // open PDF / WebView
   }
 
+  Future<String> getPublicIp() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.ipify.org'),
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+    } catch (e) {
+      print("IP Error: $e");
+    }
+
+    return "";
+  }
+
   Future<void> approveJoining(
       BuildContext context,
       DeptJoinPendingItem item,
@@ -444,6 +460,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
     }
 
     String? deviceId = await UtilityClass.getDeviceId();
+    String ipAddress = await getPublicIp();
 
     try {
       Map<String, dynamic> data = {
@@ -457,6 +474,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
         "DeptName": "",
         "Location": UserData().model.value.DistrictEn, //"Barmer",
         "InternshipPdfPath": "",
+        "IPv4": ipAddress,
         "JoiningDate": DateTime(
           joiningDate.year,
           joiningDate.month,
