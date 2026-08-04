@@ -51,8 +51,12 @@ class SelectCompanyPageProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "MobileProfile/SectorData";
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // String url = "MobileProfile/SectorData";
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/SectorData",body);
+
         print("sector statusCode => ${apiResponse.response?.statusCode}");
         print("sector RAW RESPONSE => ${apiResponse.response?.data}");
 
@@ -116,7 +120,7 @@ class SelectCompanyPageProvider extends ChangeNotifier {
             return smmm;
           }
         } else {
-          return AllJobTitleListModal(state: 0, message: 'Somethingg went wrong',
+          return AllJobTitleListModal(state: 0, message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {

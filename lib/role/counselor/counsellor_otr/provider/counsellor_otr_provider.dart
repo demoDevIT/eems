@@ -150,7 +150,11 @@ class CounselorOtrProvider extends ChangeNotifier {
 
   Future<void> getStateApi() async {
     print("getState===========>");
-    final res = await commonRepo.get("Common/GetStateMaster");
+   // final res = await commonRepo.get("Common/GetStateMaster")
+
+    Map<String, dynamic> body = {};
+    ApiResponse res = await commonRepo.post("Common/GetStateMaster",body);
+
     if (res.response?.statusCode == 200) {
       var data = res.response!.data;
       if (data is String) data = jsonDecode(data);
@@ -190,7 +194,21 @@ class CounselorOtrProvider extends ChangeNotifier {
   }
 
   Future<void> getCityApi(String districtId) async {
-    final res = await commonRepo.get("Common/GetCityMaster/$districtId");
+   // final res = await commonRepo.get("Common/GetCityMaster/$districtId");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": "",
+      "DistrictId": districtId,
+      "GPId": ""
+    };
+    ApiResponse res = await commonRepo.post("Common/GetCityMaster",body);
 
     if (res.response?.statusCode == 200) {
       var data = res.response!.data;
@@ -315,9 +333,24 @@ class CounselorOtrProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/Specialization/0/0";
+        // String url = "Common/CommonMasterDataByCode/Specialization/0/0";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "Specialization",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         print("specializationList ${apiResponse.response}");
         if (apiResponse.response != null &&
@@ -402,8 +435,12 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetQualificationList");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetQualificationList");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -565,8 +602,21 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/PassingYear/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+      //  String url = "Common/CommonMasterDataByCode/PassingYear/1";
+       // ApiResponse apiResponse = await commonRepo.get(url);
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PassingYear",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -616,8 +666,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/PrimaryDomainExperties/0/0";
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // String url = "Common/CommonMasterDataByCode/PrimaryDomainExperties/0/0";
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PrimaryDomainExperties",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -666,8 +731,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/Counselling/0/0";
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // String url = "Common/CommonMasterDataByCode/Counselling/0/0";
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "Counselling",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -716,8 +796,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/TechnicalTools/0/0";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //String url = "Common/CommonMasterDataByCode/TechnicalTools/0/0";
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "TechnicalTools",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -766,8 +861,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/PrefferredAge/0/0";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //String url = "Common/CommonMasterDataByCode/PrefferredAge/0/0";
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PrefferredAge",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

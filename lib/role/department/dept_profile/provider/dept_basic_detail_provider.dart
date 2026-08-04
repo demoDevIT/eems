@@ -240,9 +240,12 @@ class DeptBasicDetailsProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse = await commonRepo.get(
-        "Common/DepartmentMasterList",
-      );
+      // final apiResponse = await commonRepo.get(
+      //   "Common/DepartmentMasterList",
+      // );
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("Common/DepartmentMasterList",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

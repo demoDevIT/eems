@@ -136,7 +136,11 @@ class AddWorkExperienceProvider extends ChangeNotifier {
 
     try {
       ProgressDialog.showLoadingDialog(context);
-      ApiResponse apiResponse = await commonRepo.get("Common/GetStateMaster");
+     // ApiResponse apiResponse = await commonRepo.get("Common/GetStateMaster");
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("Common/GetStateMaster",body);
+
       ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
@@ -223,8 +227,23 @@ class AddWorkExperienceProvider extends ChangeNotifier {
 
   Future<void> getCityApi(BuildContext context, String districtCode) async {
     try {
-      final apiResponse =
-          await commonRepo.get("Common/GetCityMaster/$districtCode");
+      // final apiResponse =
+      //     await commonRepo.get("Common/GetCityMaster/$districtCode");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": districtCode,
+        "GPId": ""
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/GetCityMaster",body);
+
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -258,7 +277,11 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+       // ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -309,8 +332,12 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetEmploymenType");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetEmploymenType");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetEmploymenType",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -373,8 +400,23 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo
-            .get("Common/CommonMasterDataByCode/DesiredJobType/0/0");
+        // ApiResponse apiResponse = await commonRepo
+        //     .get("Common/CommonMasterDataByCode/DesiredJobType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "DesiredJobType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -426,8 +468,23 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo
-            .get("Common/CommonMasterDataByCode/CourseNature/0/0");
+        // ApiResponse apiResponse = await commonRepo
+        //     .get("Common/CommonMasterDataByCode/CourseNature/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "CourseNature",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

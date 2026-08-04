@@ -59,9 +59,12 @@ class JobApplicationProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse = await commonRepo.get(
-        "Common/GetFinancialYear",
-      );
+      // final apiResponse = await commonRepo.get(
+      //   "Common/GetFinancialYear",
+      // );
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("Common/GetFinancialYear",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

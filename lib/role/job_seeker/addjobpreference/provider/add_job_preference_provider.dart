@@ -77,9 +77,24 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     }
 
     try {
-      String url = "Common/CommonMasterDataByCode/SalaryRangeJC/1/0";
+     // String url = "Common/CommonMasterDataByCode/SalaryRangeJC/1/0";
       ProgressDialog.showLoadingDialog(context);
-      ApiResponse apiResponse = await commonRepo.get(url);
+      //ApiResponse apiResponse = await commonRepo.get(url);
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "SalaryRangeJC",
+        "UserID": 0,
+        "DepartmentID": 1, //first argument
+        "RoleID": 0, //second argument
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": 0,
+        "DistrictId": 0,
+        "GPId": 0
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
       ProgressDialog.closeLoadingDialog(context);
 
       if (apiResponse.response?.statusCode == 200) {
@@ -126,7 +141,11 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
          ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+       // ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+         Map<String, dynamic> body = {};
+         ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+
          ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -290,9 +309,24 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/PreferredLocationType/0/0";
+      //  String url = "Common/CommonMasterDataByCode/PreferredLocationType/0/0";
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PreferredLocationType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -333,9 +367,24 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/DesiredJobType/0/0";
+      //  String url = "Common/CommonMasterDataByCode/DesiredJobType/0/0";
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "DesiredJobType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -377,9 +426,24 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/ShiftType/0/0";
+       // String url = "Common/CommonMasterDataByCode/ShiftType/0/0";
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "ShiftType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -419,9 +483,24 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/Region/0/0";
+        //String url = "Common/CommonMasterDataByCode/Region/0/0";
        ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+       Map<String, dynamic> body = {
+         "ActionName": "",
+         "MasterCode": "Region",
+         "UserID": 0,
+         "DepartmentID": 0, //first argument
+         "RoleID": 0, //second argument
+         "SchemeId": 0,
+         "CityId": 0,
+         "BlockId": 0,
+         "DistrictId": 0,
+         "GPId": 0
+       };
+       ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -501,10 +580,25 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        Map<String, dynamic> body = {};
-        String url = "Common/CommonMasterDataByCode/CourseNature/0/0";
+        //Map<String, dynamic> body = {};
+        //String url = "Common/CommonMasterDataByCode/CourseNature/0/0";
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "CourseNature",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
          ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

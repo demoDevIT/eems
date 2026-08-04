@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
+import '../../../../utils/encryption_helper.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/user_new.dart';
@@ -211,6 +212,12 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         String? jobSeekerId,
         String? userId,
       }) async {
+
+    //example to check encryption
+    // EncryptionHelper helper = EncryptionHelper();
+    // print("encryptDTAAA====> ${helper.encryptData("ABCDE1234F")}");
+    // print("encryptDTAAA====> ${helper.encryptData("WERTY7789O")}");
+    // print("encryptDTAAA====> ${helper.encryptData("WERT23456T")}");
 
     /// Save parameters for future refresh
     this.registrationNumber = registrationNumber ?? this.registrationNumber;

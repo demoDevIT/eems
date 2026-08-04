@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/user_new.dart';
 import '../../empotr_form/modal/actEstablishment_modal.dart';
@@ -115,9 +116,23 @@ class ExchangeMarketInfoProvider extends ChangeNotifier {
   }
 
   Future<void> actEstablishmentApi(BuildContext context) async {
-    final apiResponse = await commonRepo.get(
-      "Common/GetActEstablishmentMaster",
-    );
+    // final apiResponse = await commonRepo.get(
+    //   "Common/GetActEstablishmentMaster",
+    // );
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": 0,
+      "DistrictId": 0,
+      "GPId": 0
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/GetActEstablishmentMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;
@@ -148,8 +163,11 @@ class ExchangeMarketInfoProvider extends ChangeNotifier {
   }
 
   Future<void> sectorApi(BuildContext context) async {
-    final apiResponse =
-    await commonRepo.get("MobileProfile/SectorData");
+    // final apiResponse =
+    // await commonRepo.get("MobileProfile/SectorData");
+
+    Map<String, dynamic> body = {};
+    ApiResponse apiResponse = await commonRepo.post("MobileProfile/SectorData",body);
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;

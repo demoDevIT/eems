@@ -218,10 +218,14 @@ class JobFairRegistrationProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo
-            .get("Common/GetDistrictMaster")
-            .timeout(const Duration(seconds: 30));
+        // ApiResponse apiResponse =
+        // await commonRepo
+        //     .get("Common/GetDistrictMaster")
+        //     .timeout(const Duration(seconds: 30));
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetDistrictMaster",body);
+
        // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -348,10 +352,15 @@ class JobFairRegistrationProvider extends ChangeNotifier {
       try {
        // ProgressDialog.showLoadingDialog(context);
        //  ApiResponse apiResponse = await commonRepo.get("Common/GetQualificationList");
-        ApiResponse apiResponse =
-        await commonRepo
-            .get("Common/GetQualificationList")
-            .timeout(const Duration(seconds: 30));
+
+       //  ApiResponse apiResponse =
+       //  await commonRepo
+       //      .get("Common/GetQualificationList")
+       //      .timeout(const Duration(seconds: 30));
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+
       //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -520,8 +529,23 @@ class JobFairRegistrationProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/StreamType/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/StreamType/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "StreamType",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

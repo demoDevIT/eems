@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../../../../api_service/model/base/api_response.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/user_new.dart';
 import '../../empotr_form/modal/city_modal.dart';
@@ -75,7 +76,11 @@ class ContactPersonDetailProvider extends ChangeNotifier {
   /// =========================
   Future<void> getStateApi() async {
     print("getState===========>");
-    final res = await commonRepo.get("Common/GetStateMaster");
+   // final res = await commonRepo.get("Common/GetStateMaster");
+
+    Map<String, dynamic> body = {};
+    ApiResponse res = await commonRepo.post("Common/GetStateMaster",body);
+
     if (res.response?.statusCode == 200) {
       var data = res.response!.data;
       if (data is String) data = jsonDecode(data);
@@ -106,7 +111,21 @@ class ContactPersonDetailProvider extends ChangeNotifier {
   }
 
   Future<void> getCityApi(String districtId) async {
-    final res = await commonRepo.get("Common/GetCityMaster/$districtId");
+   // final res = await commonRepo.get("Common/GetCityMaster/$districtId");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": "",
+      "DistrictId": districtId,
+      "GPId": ""
+    };
+    ApiResponse res = await commonRepo.post("Common/GetCityMaster",body);
 
     if (res.response?.statusCode == 200) {
       var data = res.response!.data;

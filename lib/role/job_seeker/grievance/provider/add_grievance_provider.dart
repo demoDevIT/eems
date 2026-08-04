@@ -64,7 +64,22 @@ class AddGrievanceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
          ProgressDialog.showLoadingDialog(context);
-         ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/ModuleList_Grievance/0/4"); //4 - jobseeker
+        // ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/ModuleList_Grievance/0/4"); //4 - jobseeker
+
+         Map<String, dynamic> body = {
+           "ActionName": "",
+           "MasterCode": "ModuleList_Grievance",
+           "UserID": 0,
+           "DepartmentID": 0, //first argument
+           "RoleID": 4, //second argument
+           "SchemeId": 0,
+           "CityId": 0,
+           "BlockId": 0,
+           "DistrictId": 0,
+           "GPId": 0
+         };
+         ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
            ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -103,7 +118,22 @@ class AddGrievanceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/SubModuleList_Grievance/0/4");
+       // ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/SubModuleList_Grievance/0/4");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "SubModuleList_Grievance",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 4, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

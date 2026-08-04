@@ -84,10 +84,14 @@ class SansthaAadhaarFlowProvider with ChangeNotifier {
       /// 🔹 Dynamic BRN number
       String brnNumber = sansthaAadhaarController.text.trim();
       /// 🔹 API URL
-      String url =
-          "https://rajemployment.rajasthan.gov.in/mobileapi/api/OTRJanAadharDetail/BRNMembersList/$brnNumber";
-      Map<String, dynamic> body = {};
-      ApiResponse apiResponse = await commonRepo.post(url,body);
+      // String url =
+      //     "https://rajemployment.rajasthan.gov.in/mobileapi/api/OTRJanAadharDetail/BRNMembersList";
+      // Map<String, dynamic> body = {};
+
+      Map<String, dynamic> body = {
+        "SanstaAdharNumber": brnNumber
+      };
+      ApiResponse apiResponse = await commonRepo.post("OTRJanAadharDetail/BRNMembersList",body);
 
       ProgressDialog.closeLoadingDialog(context);
 

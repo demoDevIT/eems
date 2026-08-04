@@ -213,8 +213,23 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse =
-      await commonRepo.get("Common/GetCityMaster/$districtCode");
+      // final apiResponse =
+      // await commonRepo.get("Common/GetCityMaster/$districtCode");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": districtCode,
+        "GPId": ""
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/GetCityMaster",body);
+
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -248,9 +263,23 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse = await commonRepo.get(
-        "Common/GetWardMaster/$cityCode",
-      );
+      // final apiResponse = await commonRepo.get(
+      //   "Common/GetWardMaster/$cityCode",
+      // );
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": cityCode,
+        "BlockId": 0,
+        "DistrictId": 0,
+        "GPId": 0
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/GetWardMaster",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -282,8 +311,22 @@ class RegisterFormProvider extends ChangeNotifier {
 
     notifyListeners();
 
-    final apiResponse =
-    await commonRepo.get("Common/GetBlockMaster/$districtCode");
+    // final apiResponse =
+    // await commonRepo.get("Common/GetBlockMaster/$districtCode");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": "",
+      "DistrictId": "",
+      "GPId": districtCode
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/GetBlockMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       dynamic data = apiResponse.response!.data;
@@ -308,8 +351,22 @@ class RegisterFormProvider extends ChangeNotifier {
 
     notifyListeners();
 
-    final apiResponse =
-    await commonRepo.get("Common/GetGrampanchyatMaster/$blockCode");
+    // final apiResponse =
+    // await commonRepo.get("Common/GetGrampanchyatMaster/$blockCode");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": blockCode,
+      "DistrictId": 0,
+      "GPId": 0
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/GetGrampanchyatMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       dynamic data = apiResponse.response!.data;
@@ -334,8 +391,22 @@ class RegisterFormProvider extends ChangeNotifier {
 
     notifyListeners();
 
-    final apiResponse =
-    await commonRepo.get("Common/GetVillageMaster/$gpCode");
+    // final apiResponse =
+    // await commonRepo.get("Common/GetVillageMaster/$gpCode");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": "",
+      "DistrictId": "",
+      "GPId": gpCode
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/GetVillageMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       dynamic data = apiResponse.response!.data;
@@ -362,9 +433,12 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse = await commonRepo.get(
-        "Common/DepartmentMasterList",
-      );
+      // final apiResponse = await commonRepo.get(
+      //   "Common/DepartmentMasterList",
+      // );
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("Common/DepartmentMasterList",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

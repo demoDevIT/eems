@@ -4,8 +4,11 @@ import 'dart:typed_data';
 
 class EncryptionHelper {
 
-  final String key = "8080808080808080";
-  final String iv = "8080808080808080";
+  // final String key = "8080808080808080";
+  // final String iv = "8080808080808080";
+
+  final String key = "1234567890123456";
+  final String iv = "1234567890123456";
 
   String encryptData(String plainText) {
     final aesKey = encrypt.Key(Uint8List.fromList(utf8.encode(key)));

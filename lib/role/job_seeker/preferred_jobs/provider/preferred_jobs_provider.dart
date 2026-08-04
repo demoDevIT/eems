@@ -51,8 +51,11 @@ class PreferredJobsProvider extends ChangeNotifier {
     }
 
     try {
-      ApiResponse apiResponse =
-      await commonRepo.get("MobileProfile/SectorData");
+      // ApiResponse apiResponse =
+      // await commonRepo.get("MobileProfile/SectorData");
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("MobileProfile/SectorData",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

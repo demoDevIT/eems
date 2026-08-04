@@ -9,6 +9,7 @@ import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/app_shared_prefrence.dart';
+import '../../../../utils/encryption_helper.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
@@ -305,7 +306,10 @@ class EmpOTRFormProvider with ChangeNotifier {
   }
 
   Future<void> stateApi(BuildContext context) async {
-    final apiResponse = await commonRepo.get("Common/GetStateMaster");
+    // final apiResponse = await commonRepo.get("Common/GetStateMaster");
+
+    Map<String, dynamic> body = {};
+    ApiResponse apiResponse = await commonRepo.post("Common/GetStateMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;
@@ -360,8 +364,22 @@ class EmpOTRFormProvider with ChangeNotifier {
 
   Future<void> getCityApi(BuildContext context, String districtCode) async {
     try {
-      final apiResponse =
-      await commonRepo.get("Common/GetCityMaster/$districtCode");
+      // final apiResponse =
+      // await commonRepo.get("Common/GetCityMaster/$districtCode");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": districtCode,
+        "GPId": ""
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/GetCityMaster",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -387,9 +405,23 @@ class EmpOTRFormProvider with ChangeNotifier {
   }
 
   Future<void> actEstablishmentApi(BuildContext context) async {
-    final apiResponse = await commonRepo.get(
-      "Common/GetActEstablishmentMaster",
-    );
+    // final apiResponse = await commonRepo.get(
+    //   "Common/GetActEstablishmentMaster",
+    // );
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": 0,
+      "DistrictId": 0,
+      "GPId": 0
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/GetActEstablishmentMaster",body);
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;
@@ -420,8 +452,12 @@ class EmpOTRFormProvider with ChangeNotifier {
   }
 
   Future<void> sectorApi(BuildContext context) async {
-    final apiResponse =
-    await commonRepo.get("MobileProfile/SectorData");
+    // final apiResponse =
+    // await commonRepo.get("MobileProfile/SectorData");
+
+    Map<String, dynamic> body = {};
+    ApiResponse apiResponse = await commonRepo.post("MobileProfile/SectorData",body);
+
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;
@@ -564,8 +600,22 @@ class EmpOTRFormProvider with ChangeNotifier {
   Map<int, String?> documentUploadedPathMap = {};
 
   Future<void> fetchDocumentMastersApi(BuildContext context) async {
-    final apiResponse =
-    await commonRepo.get("Common/FetchDocumentMastersByScheme/0");
+    // final apiResponse =
+    // await commonRepo.get("Common/FetchDocumentMastersByScheme/0");
+
+    Map<String, dynamic> body = {
+      "ActionName": "",
+      "MasterCode": "",
+      "UserID": 0,
+      "DepartmentID": 0,
+      "RoleID": 0,
+      "SchemeId": 0,
+      "CityId": 0,
+      "BlockId": 0,
+      "DistrictId": 0,
+      "GPId": 0
+    };
+    ApiResponse apiResponse = await commonRepo.post("Common/FetchDocumentMastersByScheme",body);
 
     if (apiResponse.response?.statusCode == 200) {
       var responseData = apiResponse.response?.data;
@@ -1002,6 +1052,10 @@ class EmpOTRFormProvider with ChangeNotifier {
 
       String? deviceId = await UtilityClass.getDeviceId();
 
+      EncryptionHelper helper = EncryptionHelper();
+      //print("encryptDTAAA====> ${helper.encryptData("ABCDE1234F")}");
+
+
       // NEW parameters get from Amit Tripathi which is also working and give successfull message
       /// 🔹 MAIN REQUEST BODY
       Map<String, dynamic> data = {
@@ -1042,7 +1096,7 @@ class EmpOTRFormProvider with ChangeNotifier {
         "ROAddress": "",
         "DocPANNumber": "",
         "DocTANNumber": "",
-        "DocGSTNumber": "27ABCDE1234F1Z2",
+        "DocGSTNumber": helper.encryptData(gstController.text), //"27ABCDE1234F1Z2",
         "DocEPFNumber": "",
         "DocESINumber": "",
         "DocRegNumber": "",
@@ -1055,9 +1109,9 @@ class EmpOTRFormProvider with ChangeNotifier {
         "Branch_Locality": localityController.text,
         "Branch_Email": emailController.text,
         "Branch_PANHolder": panHolderController.text,
-        "Branch_TANNumber": tanController.text,
+        "Branch_TANNumber": helper.encryptData(tanController.text),
         "Branch_Pincode": pinCodeController.text,
-        "Branch_PANVerified": panVerifiedController.text,
+        "Branch_PANVerified": helper.encryptData(panVerifiedController.text),
         "Head_Name": hoCompanyNameController.text,
         "Head_HouseNumber": hoHouseNoController.text,
         "Head_Lane": hoLaneController.text,
@@ -1111,16 +1165,16 @@ class EmpOTRFormProvider with ChangeNotifier {
         "IndustryType": industryType ?? "",
         "EMIP_Sector": "",
         "RegistrationNumber": "",
-        "ActAuthorityRegNo": actAuthorityRegController.text,
-        "HO_PanNo": hoPanController.text,
-        "HO_TanNo": tanNoController.text,
+        "ActAuthorityRegNo": helper.encryptData(actAuthorityRegController.text),
+        "HO_PanNo": helper.encryptData(hoPanController.text),
+        "HO_TanNo": helper.encryptData(tanNoController.text),
         "BO_TelNo": telNoController.text,
         "LogofileName": logoFileName,
         "HO_ApplicationEmail": applicantEmailController.text,
         "HOStateId": int.tryParse(stateIdController.text) ?? 0,
         "HODistrictId": int.tryParse(districtIdController.text) ?? 0,
         "HOCityId": int.tryParse(cityIdController.text) ?? 0,
-        "Contact_PAN_No": contactPanController.text,
+        "Contact_PAN_No": helper.encryptData(contactPanController.text),
         "IsActive": true,
         "EmployerDocumentList": employerDocs,
         "DeviceID": deviceId

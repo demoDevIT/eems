@@ -6,6 +6,7 @@ import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
 import '../../../../utils/app_shared_prefrence.dart';
+import '../../../../utils/encryption_helper.dart';
 import '../../../../utils/global.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/right_to_left_route.dart';
@@ -186,9 +187,17 @@ class DepartmentDashboardProvider extends ChangeNotifier {
      final roleId = UserData().model.value.roleId;
 
      try {
-       final apiResponse =
-       // await commonRepo.get("Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6");
-       await commonRepo.get("Authentication/GetUserRoleList/$userSSO/$deptId/false/$roleId");
+       // final apiResponse =
+       // // await commonRepo.get("Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6");
+       // await commonRepo.get("Authentication/GetUserRoleList/$userSSO/$deptId/false/$roleId");
+
+       Map<String, dynamic> body = {
+         "SSOID": userSSO,
+         "DepartmentID": deptId,
+         "IsWeb": false,
+         "RoleID": roleId
+       };
+       ApiResponse apiResponse = await commonRepo.post("Authentication/GetUserRoleList",body);
 
        if (apiResponse.response?.statusCode == 200) {
          dynamic responseData = apiResponse.response!.data;

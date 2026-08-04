@@ -32,10 +32,24 @@ class JobPreferenceProvider extends ChangeNotifier {
 
     try {
       String userId = UserData().model.value.userId.toString();
-      String url =
-          "Common/JobSeekerJobStatus/InternationalJobs/$userId";
+      // String url =
+      //     "Common/JobSeekerJobStatus/InternationalJobs/$userId";
+      //
+      // ApiResponse apiResponse = await commonRepo.get(url);
 
-      ApiResponse apiResponse = await commonRepo.get(url);
+      Map<String, dynamic> body = {
+        "ActionName": "InternationalJobs",
+        "MasterCode": "",
+        "UserID": userId,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": 0,
+        "DistrictId": 0,
+        "GPId": 0
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/JobSeekerJobStatus",body);
 
       if (apiResponse.response != null &&
           apiResponse.response?.statusCode == 200) {

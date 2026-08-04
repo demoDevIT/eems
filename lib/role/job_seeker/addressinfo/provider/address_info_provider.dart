@@ -70,8 +70,12 @@ class AddressInfoProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetDistrictMaster");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetDistrictMaster");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetDistrictMaster",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -123,9 +127,24 @@ class AddressInfoProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/GetCityMaster/$districtId";
+        // String url = "Common/GetCityMaster/$districtId";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": districtId,
+          "GPId": ""
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetCityMaster",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -177,9 +196,24 @@ class AddressInfoProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/GetWardMaster/$cityId";
+       // String url = "Common/GetWardMaster/$cityId";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": cityId,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetWardMaster",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

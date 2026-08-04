@@ -58,8 +58,12 @@ class CounselorHighestEduProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo.get("Common/GetQualificationList");
+        // ApiResponse apiResponse =
+        // await commonRepo.get("Common/GetQualificationList");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

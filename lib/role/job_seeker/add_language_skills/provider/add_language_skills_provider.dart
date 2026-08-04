@@ -74,7 +74,11 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
     if (isInternet) {
       try {
          ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+        // ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+         Map<String, dynamic> body = {};
+         ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+
          ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -118,7 +122,11 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
     if (isInternet) {
       try {
        // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+       //  ApiResponse apiResponse = await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/GetCategoryTypeDetails",body);
+
      //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -215,7 +223,22 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/AcquiredType/0/0");
+        // ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/AcquiredType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "AcquiredType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -259,7 +282,22 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/ProficiencyType/0/0");
+        //ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/ProficiencyType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "ProficiencyType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

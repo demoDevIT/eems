@@ -383,6 +383,30 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       ),
                     ],
                   ),
+
+                  const SizedBox(height: 16),
+
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade100,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.orange,
+                        width: 1,
+                      ),
+                    ),
+                    child: const Text(
+                      "For any queries related to Internship Joining, Attendance, or E-Sign, please contact your concerned District Employment Officer for assistance.",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );

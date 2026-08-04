@@ -290,9 +290,24 @@ class OtrFormProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/Religion/0";
+       // String url = "Common/CommonMasterDataByCode/Religion/0";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "Religion",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         print("religionList ${apiResponse.response}");
         if (apiResponse.response != null &&
@@ -339,9 +354,24 @@ class OtrFormProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/DisabilityType/0/0";
+        //String url = "Common/CommonMasterDataByCode/DisabilityType/0/0";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "DisabilityType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         print("disabilityTypeList ${apiResponse.response}");
         if (apiResponse.response != null &&
@@ -388,9 +418,24 @@ class OtrFormProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/UIDType/0";
+        //String url = "Common/CommonMasterDataByCode/UIDType/0";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "UIDType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         print("uidTypeApi ${apiResponse.response}");
         if (apiResponse.response != null &&
@@ -437,8 +482,12 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetDistrictMaster");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetDistrictMaster");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetDistrictMaster",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -490,7 +539,22 @@ class OtrFormProvider extends ChangeNotifier {
       try {
         String url = "Common/GetCityMaster/$districtId";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": districtId,
+          "GPId": ""
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetCityMaster",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -542,9 +606,24 @@ class OtrFormProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/GetWardMaster/$cityId";
+       // String url = "Common/GetWardMaster/$cityId";
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+        //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": cityId,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetWardMaster",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -829,8 +908,12 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetQualificationList");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetQualificationList");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -892,7 +975,11 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+       // ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1188,8 +1275,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/StreamType/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/StreamType/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "StreamType",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1287,8 +1389,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/MediumType/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/MediumType/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "MediumType",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1338,8 +1455,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/CourseNature/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/CourseNature/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "CourseNature",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1388,8 +1520,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/PassingYear/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/PassingYear/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PassingYear",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1438,8 +1585,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/CommonMasterDataByCode/GradeType/1";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/CommonMasterDataByCode/GradeType/1";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "GradeType",
+          "UserID": 0,
+          "DepartmentID": 1, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1488,8 +1650,12 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("Common/GetEmploymenType");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("Common/GetEmploymenType");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetEmploymenType",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1552,8 +1718,12 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-            await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+        // ApiResponse apiResponse =
+        //     await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/GetCategoryTypeDetails",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1657,9 +1827,24 @@ class OtrFormProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/CommonMasterDataByCode/Region/0/0";
+        //String url = "Common/CommonMasterDataByCode/Region/0/0";
         //ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       //ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "Region",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -1724,8 +1909,23 @@ class OtrFormProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo
-            .get("Common/CommonMasterDataByCode/ProficiencyType/0/0");
+        // ApiResponse apiResponse = await commonRepo
+        //     .get("Common/CommonMasterDataByCode/ProficiencyType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "ProficiencyType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

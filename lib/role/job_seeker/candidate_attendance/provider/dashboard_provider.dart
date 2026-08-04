@@ -53,10 +53,18 @@ class DashboardProvider extends ChangeNotifier {
     final roleId = UserData().model.value.roleId;
 
     try {
-      final apiResponse = await commonRepo.get(
-        // "Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6",
-        "Authentication/GetUserRoleList/$userSSO/$deptId/false/$roleId",
-      );
+      // final apiResponse = await commonRepo.get(
+      //   // "Authentication/GetUserRoleList/VIVEKBHARDWAJ/1/false/6",
+      //   "Authentication/GetUserRoleList/$userSSO/$deptId/false/$roleId",
+      // );
+
+      Map<String, dynamic> body = {
+        "SSOID": userSSO,
+        "DepartmentID": deptId,
+        "IsWeb": false,
+        "RoleID": roleId
+      };
+      ApiResponse apiResponse = await commonRepo.post("Authentication/GetUserRoleList",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

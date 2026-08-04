@@ -377,7 +377,12 @@ class AddJobProvider extends ChangeNotifier {
         // ProgressDialog.showLoadingDialog(context);
         // Map<String, dynamic> body = {};
         // ApiResponse apiResponse = await commonRepo.post(url,body);
-        ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+        //ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -557,8 +562,23 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
 
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/PreferredLocation/0/0");
+       // ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/PreferredLocation/0/0");
         //ProgressDialog.closeLoadingDialog(context);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "PreferredLocation",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
@@ -598,7 +618,22 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
 
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/EmploymentType/0/0");
+      //  ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/EmploymentType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "EmploymentType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -639,7 +674,22 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
 
-        ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/DesiredJobType/0/0");
+       // ApiResponse apiResponse = await commonRepo.get("Common/CommonMasterDataByCode/DesiredJobType/0/0");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "DesiredJobType",
+          "UserID": 0,
+          "DepartmentID": 0, //first argument
+          "RoleID": 0, //second argument
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": 0,
+          "DistrictId": 0,
+          "GPId": 0
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -728,8 +778,12 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+        // ApiResponse apiResponse =
+        // await commonRepo.get("MobileProfile/GetCategoryTypeDetails");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/GetCategoryTypeDetails",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -834,8 +888,12 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo.get("Common/GetQualificationList");
+        // ApiResponse apiResponse =
+        // await commonRepo.get("Common/GetQualificationList");
+
+        Map<String, dynamic> body = {};
+        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
