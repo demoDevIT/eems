@@ -944,8 +944,14 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo.get("Common/GetGraduationType/$id");
+        // ApiResponse apiResponse =
+        // await commonRepo.get("Common/GetGraduationType/$id");
+
+        Map<String, dynamic> body = {
+          "QualificationID": id
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

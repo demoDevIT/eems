@@ -417,8 +417,14 @@ class JobFairRegistrationProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //  ProgressDialog.showLoadingDialog(context);
-        String url = "Common/GetGraduationType/$id";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/GetGraduationType/$id";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "QualificationID": id
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -487,8 +493,23 @@ class JobFairRegistrationProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        String url = "Common/Board_UniversityMaster/Board";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/Board_UniversityMaster/Board";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "Board",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": "",
+          "GPId": ""
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/Board_UniversityMaster",body);
+
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;

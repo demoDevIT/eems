@@ -79,8 +79,11 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse =
-      await commonRepo.get("Common/getMonth");
+      // final apiResponse =
+      // await commonRepo.get("Common/getMonth");
+
+      Map<String, dynamic> body = {};
+      ApiResponse apiResponse = await commonRepo.post("Common/getMonth",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

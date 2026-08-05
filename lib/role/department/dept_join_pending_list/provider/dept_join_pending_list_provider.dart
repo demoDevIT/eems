@@ -354,7 +354,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
   Future<void> generateAndOpenInternshipPdf(
       BuildContext context,
-      int internshipId,
+      int jobseekerUserId,
       ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
@@ -368,7 +368,7 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
 
       /// 🔹 Call GET API
       ApiResponse apiResponse = await commonRepo.get(
-        "Common/GetOrGenerateInternshipCertificatePdf/$internshipId",
+        "Common/GetOrGenerateInternshipCertificatePdf/$jobseekerUserId",
       );
 
       ProgressDialog.closeLoadingDialog(context);

@@ -171,7 +171,25 @@ class CounselorOtrProvider extends ChangeNotifier {
       // final res =
       // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
 
-      final res = await commonRepo.get("Common/GetDistrict/$stateId");
+      //final res = await commonRepo.get("Common/GetDistrict/$stateId");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": "",
+        "GPId": "",
+        "sectorId": 0,
+        "AssemblyId": 0,
+        "StateId": stateId
+      };
+
+      ApiResponse res = await commonRepo.post("Common/GetDistrict",body);
 
       if (res.response?.statusCode == 200) {
         var data = res.response!.data;
@@ -503,8 +521,14 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //  ProgressDialog.showLoadingDialog(context);
-        String url = "Common/GetGraduationType/$id";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/GetGraduationType/$id";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "QualificationID": id
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -553,8 +577,23 @@ class CounselorOtrProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-        String url = "Common/Board_UniversityMaster/University";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/Board_UniversityMaster/University";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "University",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": "",
+          "GPId": ""
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/Board_UniversityMaster",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

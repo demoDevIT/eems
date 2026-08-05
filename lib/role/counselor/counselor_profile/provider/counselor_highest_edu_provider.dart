@@ -140,8 +140,14 @@ class CounselorHighestEduProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         //  ProgressDialog.showLoadingDialog(context);
-        String url = "Common/GetGraduationType/$id";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "Common/GetGraduationType/$id";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "QualificationID": id
+        };
+        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
