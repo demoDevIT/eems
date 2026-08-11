@@ -147,9 +147,19 @@ class CandidateAttendanceProvider extends ChangeNotifier {
     try {
       ProgressDialog.showLoadingDialog(context);
 
-      final response = await commonRepo.get(
-        "MobileProfile/EventDetails/0/0/0",
-      );
+      // final response = await commonRepo.get(
+      //   "MobileProfile/EventDetails/0/0/0",
+      // );
+
+      Map<String, dynamic> body = {
+        "ActionKey": "",
+        "UserId": 0,
+        "Page": 0,
+        "PageSize": 0,
+        "RoleId": 0,
+        "FYID": 0
+      };
+      ApiResponse response = await commonRepo.post("MobileProfile/EventDetails",body);
 
       ProgressDialog.closeLoadingDialog(context);
 

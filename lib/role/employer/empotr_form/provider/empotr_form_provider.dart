@@ -333,8 +333,29 @@ class EmpOTRFormProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse =
-      await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+      // final apiResponse =
+      // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": "",
+        "GPId": "",
+        "sectorId": 0,
+        "AssemblyId": 0,
+        "StateId": stateId, //pass this
+        "Id": 0,
+        "JobSectorId": 0,
+        "categoryId": 0
+      };
+
+      ApiResponse apiResponse = await commonRepo.post("Common/DistrictMaster_StateIDWise",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;

@@ -202,7 +202,18 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get("MobileProfile/EventDetails/${UserData().model.value.userId.toString()}/${UserData().model.value.roleId.toString()}/2025");
+        // ApiResponse apiResponse = await commonRepo.get("MobileProfile/EventDetails/${UserData().model.value.userId.toString()}/${UserData().model.value.roleId.toString()}/2025");
+
+        Map<String, dynamic> body = {
+          "ActionKey": "",
+          "UserId": UserData().model.value.userId.toString(),
+          "Page": 0,
+          "PageSize": 0,
+          "RoleId": UserData().model.value.roleId.toString(),
+          "FYID": 2025
+        };
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/EventDetails",body);
+
         // ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
@@ -834,8 +845,30 @@ class AddJobProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         // ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse =
-        await commonRepo.get("MobileProfile/GetSubCategoryTypeDetails/$id");
+        // ApiResponse apiResponse =
+        // await commonRepo.get("MobileProfile/GetSubCategoryTypeDetails/$id");
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": "",
+          "GPId": "",
+          "sectorId": 0,
+          "AssemblyId": 0,
+          "StateId": "",
+          "Id": 0,
+          "JobSectorId": 0,
+          "categoryId": id
+        };
+
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/GetSubCategoryTypeDetails",body);
+
         //   ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {

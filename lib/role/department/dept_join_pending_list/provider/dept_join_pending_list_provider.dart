@@ -367,9 +367,15 @@ class DeptJoinPendingListProvider extends ChangeNotifier {
       ProgressDialog.showLoadingDialog(context);
 
       /// 🔹 Call GET API
-      ApiResponse apiResponse = await commonRepo.get(
-        "Common/GetOrGenerateInternshipCertificatePdf/$jobseekerUserId",
-      );
+      // ApiResponse apiResponse = await commonRepo.get(
+      //   "Common/GetOrGenerateInternshipCertificatePdf/$jobseekerUserId",
+      // );
+
+      Map<String, dynamic> body =
+      {
+        "JobSeekerUserId": jobseekerUserId
+      };
+      ApiResponse apiResponse = await commonRepo.post("Common/GetOrGenerateInternshipCertificatePdf",body);
 
       ProgressDialog.closeLoadingDialog(context);
 

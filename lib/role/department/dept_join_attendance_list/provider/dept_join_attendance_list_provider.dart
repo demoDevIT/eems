@@ -51,6 +51,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   List<int> yearList = [];
   List<int> monthList = List.generate(12, (index) => index + 1);
+
   // ********popup variables*********
 
   bool isAttendanceLoading = false;
@@ -83,7 +84,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       // await commonRepo.get("Common/getMonth");
 
       Map<String, dynamic> body = {};
-      ApiResponse apiResponse = await commonRepo.post("Common/getMonth",body);
+      ApiResponse apiResponse = await commonRepo.post("Common/getMonth", body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -116,11 +117,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       // final apiResponse =
       // await commonRepo.get("Common/GetYear");
 
-      Map<String, dynamic> body = {
+      Map<String, dynamic> body = {};
 
-      };
-
-     // notifyListeners();
+      // notifyListeners();
 
       ApiResponse apiResponse = await commonRepo.post(
         "Common/GetYear",
@@ -171,7 +170,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     try {
       selectedYearObj = yearListApi.firstWhere(
-            (y) => y.name == previousMonthDate.year.toString(),
+        (y) => y.name == previousMonthDate.year.toString(),
         orElse: () => yearListApi.first,
       );
 
@@ -196,7 +195,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     try {
       selectedMonthObj = monthListApi.firstWhere(
-            (m) => m.dropID == previousMonthDate.month,
+        (m) => m.dropID == previousMonthDate.month,
         orElse: () => monthListApi.first,
       );
 
@@ -210,12 +209,11 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<DeptJoinAttendanceModal?> getDeptJoinAttendanceListApi(
-      BuildContext context, {
-        String? registrationNumber,
-        String? jobSeekerId,
-        String? userId,
-      }) async {
-
+    BuildContext context, {
+    String? registrationNumber,
+    String? jobSeekerId,
+    String? userId,
+  }) async {
     //example to check encryption
     // EncryptionHelper helper = EncryptionHelper();
     // print("encryptDTAAA====> ${helper.encryptData("ABCDE1234F")}");
@@ -260,17 +258,22 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       print("UserData().model.value.districtCode==>$districtcode");
       Map<String, dynamic> body = {
         "ActionName": "PendingAttendanceByDistrict",
-        "DistrictCode": UserData().model.value.districtCode, //"108", //UserData().model.value.district, //108,
-        "UserID": UserData().model.value.userId, //2261663, //UserData().model.value.userId,
+        "DistrictCode": UserData().model.value.districtCode,
+        //"108", //UserData().model.value.district, //108,
+        "UserID": UserData().model.value.userId,
+        //2261663, //UserData().model.value.userId,
         "RegistrationNumber": this.registrationNumber,
-        "OfficeId": UserData().model.value.officeID, //24,
+        "OfficeId": UserData().model.value.officeID,
+        //24,
         "StateId": 0,
         "DepartmentID": UserData().model.value.deptID,
-        "FYID": selectedYearObj?.name, //filterSelectedYear, //2026
-        "MonthId": filterSelectedMonthNumber, //2
+        "FYID": selectedYearObj?.name,
+        //filterSelectedYear, //2026
+        "MonthId": filterSelectedMonthNumber,
+        //2
         "RoleId": UserData().model.value.roleId,
-        "FromDate":null,
-        "ToDate":null,
+        "FromDate": null,
+        "ToDate": null,
         "PrivateDepartmentID": UserData().model.value.internshipDeptTypeID,
         "AllotmentDeptId": UserData().model.value.internshipDeptID
       };
@@ -591,10 +594,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
 
-                        const Text(
-                          "(Other than Govt. holidays & from Joining Date)",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
+                        // const Text(
+                        //   "(Other than Govt. holidays & from Joining Date)",
+                        //   style: TextStyle(fontWeight: FontWeight.w600),
+                        // ),
 
                         const SizedBox(height: 8),
 
@@ -625,6 +628,69 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                             setStateDialog(() {});
                           },
                         ),
+                        ],
+                        const SizedBox(height: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Note:",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "• ",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "यदि आवेदक/ Job Seeker पूरे माह में एक भी दिन उपस्थित नहीं हुआ है, तो 'पूरे माह अनुपस्थित (Whole Month)' वाले चेक बॉक्स पर क्लिक करें।",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "• ",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "यदि आवेदक/ Job Seeker माह में एक या अधिक दिन उपस्थित हुआ है, तो सरकारी अवकाशों (Government Holidays) को छोड़कर शेष अनुपस्थित दिनों की संख्या दर्ज करें।",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
 
                         // const SizedBox(height: 20),
                         //
@@ -645,7 +711,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         // ),
 
                         const SizedBox(height: 26),
-                      ],
+                     // ],
 
                       /// SUBMIT BUTTON
                       SizedBox(
@@ -692,7 +758,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
       Map<String, dynamic> body = {
         "JobSeekerID": item.jobSeekerUserId,
-       // "JoiningID": item.joiningID,
+        // "JoiningID": item.joiningID,
         "AttendanceMonthID": item.monthId,
         "WorkingYear": item.year,
       };
@@ -745,8 +811,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
   Future<void> downloadAndOpenPdf(String url) async {
     try {
-      const baseUrl =
-          "https://rajemploymentapi.rajasthan.gov.in";
+      const baseUrl = "https://rajemploymentapi.rajasthan.gov.in";
 
       // Concatenate base URL with relative PDF path
       final fullUrl = "$baseUrl$url";
@@ -789,7 +854,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
       Map<String, dynamic> body = {
         "JobSeekerID": item.jobSeekerUserId,
-       // "JoiningID": item.joiningID,
+        // "JoiningID": item.joiningID,
         "AttendanceMonthID": item.monthId,
         "WorkingYear": item.year,
       };
@@ -928,9 +993,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<MarkAttendanceBasicDetails?> getMarkAttendanceBasicDetails(
-      BuildContext context,
-      DeptJoinAttendanceItem item,
-      ) async {
+    BuildContext context,
+    DeptJoinAttendanceItem item,
+  ) async {
     try {
       final month = item.monthId!.toString().padLeft(2, '0');
       final year = item.year.toString();
@@ -958,7 +1023,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           data = jsonDecode(data);
         }
 
-        if (data["State"] == 200 && data["Data"] != null && data["Data"].isNotEmpty) {
+        if (data["State"] == 200 &&
+            data["Data"] != null &&
+            data["Data"].isNotEmpty) {
           return MarkAttendanceBasicDetails.fromJson(data["Data"][0]);
         }
       }
@@ -1029,7 +1096,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         showAlertError("Unable to fetch basic details", context);
         return;
       }
-      DateTime date = DateFormat("dd-MM-yyyy HH:mm:ss:SSS").parse(basicData.joiningDate.toString());
+      DateTime date = DateFormat("dd-MM-yyyy HH:mm:ss:SSS")
+          .parse(basicData.joiningDate.toString());
       String joiningDate = DateFormat("yyyy-MM-dd").format(date);
       final monthNumber = item.monthId!.toString().padLeft(2, '0');
       final year = item.year.toString();
@@ -1055,17 +1123,19 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "RegistrationNo": basicData.registrationNo,
         "applicantName": basicData.applicantName,
         "fatherName": basicData.fatherName,
-       // "joiningDate": basicData.joiningDate,
-         "joiningDate": joiningDate,
+        // "joiningDate": basicData.joiningDate,
+        "joiningDate": joiningDate,
         "departmentName": basicData.departmentName,
         "Address": basicData.address,
         "Assembly": "",
-        "DistrictName": UserData().model.value.DistrictEn, //basicData.districtName,
+        "DistrictName": UserData().model.value.DistrictEn,
+        //basicData.districtName,
         "Designation": UserData().model.value.designation,
         "NameAsAdhar": UserData().model.value.NameAsjanAdhar,
 
         "AttendanceLetter": "",
-        "attendanceMonth": "$year-$monthNumber", // 🔥 2026-02
+        "attendanceMonth": "$year-$monthNumber",
+        // 🔥 2026-02
         "MonthName": monthName,
         "OtherDocument": "",
         "AttendanceReasonID": 0,
@@ -1078,7 +1148,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       print(const JsonEncoder.withIndent('  ').convert(data));
       print("==========================================");
 
-     // return null;
+      // return null;
       // Map<String, dynamic> data = {
       //   "JobSeekerID": item.jobSeekerUserId, // 8253
       //   //"JoiningID": item.joiningID, // static
@@ -1104,7 +1174,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       print(const JsonEncoder.withIndent('  ').convert(data));
       print("==========================================");
 
-     // return null;
+      // return null;
       /// 🔥 STEP 3: CALL FINAL API
       ApiResponse apiResponse = await commonRepo.post(
         "Common/InsertAttendance",
@@ -1134,7 +1204,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
         /// ✅ Directly read JSON
         if (responseData["State"] == 200) {
-
           // final staticEsignResponse = {
           //   "status": "SUCCESS",
           //   "message": responseData["Message"],
@@ -1174,6 +1243,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         """;
 
           Navigator.pop(context);
+
           /// ✅ STEP 4: OPEN WEBVIEW
           final result = await Navigator.push(
             context,
@@ -1209,7 +1279,6 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
             // );
             notifyListeners();
           }
-
         } else {
           showAlertError(
             responseData["Message"] ?? "Something went wrong",

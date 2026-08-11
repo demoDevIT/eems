@@ -84,8 +84,28 @@ class AssessmentTestProvider extends ChangeNotifier {
       questionList = [];
       notifyListeners();
 
-      final apiResponse = await commonRepo.get(
-          "Assessment/GetJobseekerAssessmentTestQuestion/$categoryId");
+      // final apiResponse = await commonRepo.get(
+      //     "Assessment/GetJobseekerAssessmentTestQuestion/$categoryId");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": "",
+        "GPId": "",
+        "sectorId": 0,
+        "AssemblyId": 0,
+        "StateId": "",
+        "Id": categoryId,
+        "JobSectorId": 0
+      };
+
+      ApiResponse apiResponse = await commonRepo.post("Assessment/GetJobseekerAssessmentTestQuestion",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic data = apiResponse.response!.data;

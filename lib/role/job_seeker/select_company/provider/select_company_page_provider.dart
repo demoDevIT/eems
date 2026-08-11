@@ -99,8 +99,29 @@ class SelectCompanyPageProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "MobileProfile/JobTitleDetails/$sectorId";
-        ApiResponse apiResponse = await commonRepo.get(url);
+        // String url = "MobileProfile/JobTitleDetails/$sectorId";
+        // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": "",
+          "GPId": "",
+          "sectorId": 0,
+          "AssemblyId": 0,
+          "StateId": "",
+          "Id": 0,
+          "JobSectorId": sectorId
+        };
+
+        ApiResponse apiResponse = await commonRepo.post("MobileProfile/JobTitleDetails",body);
+
         print("aaa=>${apiResponse.response?.statusCode}");
 
         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {

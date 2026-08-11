@@ -176,8 +176,29 @@ class RegisterFormProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final apiResponse =
-      await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+      // final apiResponse =
+      // await commonRepo.get("Common/DistrictMaster_StateIDWise/$stateId");
+
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": "",
+        "GPId": "",
+        "sectorId": 0,
+        "AssemblyId": 0,
+        "StateId": stateId, //pass this
+        "Id": 0,
+        "JobSectorId": 0,
+        "categoryId": 0
+      };
+
+      ApiResponse apiResponse = await commonRepo.post("Common/DistrictMaster_StateIDWise",body);
 
       if (apiResponse.response?.statusCode == 200) {
         dynamic responseData = apiResponse.response!.data;
@@ -486,6 +507,7 @@ class RegisterFormProvider extends ChangeNotifier {
         "PrivateGPCode": "0",
         "PrivateWardCode": "0",
         "PrivateVillageCode": "0",
+        "AllotmentDeptId": 0 //added this on "11Aug26"
       };
 
       /// ✅ DEBUG PRINT (recommended)
@@ -495,7 +517,8 @@ class RegisterFormProvider extends ChangeNotifier {
 
       /// ✅ CALL POST API
       final apiResponse = await commonRepo.post(
-        "Common/GetIntershipDeptListbyDeptTypeID_WIthModelNew",
+       // "Common/GetIntershipDeptListbyDeptTypeID_WIthModelNew", //earlier this API, changed this on "11Aug26"
+        "Common/GetInternshipOfficeList_CurrentlyNotMapped",
         data,
       );
 

@@ -261,9 +261,31 @@ class AddressInfoProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/GetAssemblyListByDistrictID/$districtId";
+       // String url = "Common/GetAssemblyListByDistrictID/$districtId";
         //ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": districtId,  //pass only this
+          "GPId": "",
+          "sectorId": 0,
+          "AssemblyId": 0,
+          "StateId": "",
+          "Id": 0,
+          "JobSectorId": 0,
+          "categoryId": 0
+        };
+
+        ApiResponse apiResponse = await commonRepo.post("Common/GetAssemblyListByDistrictID",body);
+
         //ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
@@ -311,9 +333,31 @@ class AddressInfoProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-        String url = "Common/GetParliamentByAssemblyId/$assemblyId/$districtId";
+       // String url = "Common/GetParliamentByAssemblyId/$assemblyId/$districtId";
         ProgressDialog.showLoadingDialog(context);
-        ApiResponse apiResponse = await commonRepo.get(url);
+       // ApiResponse apiResponse = await commonRepo.get(url);
+
+        Map<String, dynamic> body = {
+          "ActionName": "",
+          "MasterCode": "",
+          "UserID": 0,
+          "DepartmentID": 0,
+          "RoleID": 0,
+          "SchemeId": 0,
+          "CityId": 0,
+          "BlockId": "",
+          "DistrictId": districtId,
+          "GPId": "",
+          "sectorId": 0,
+          "AssemblyId": assemblyId,
+          "StateId": "",
+          "Id": 0,
+          "JobSectorId": 0,
+          "categoryId": 0
+        };
+
+        ApiResponse apiResponse = await commonRepo.post("Common/GetParliamentByAssemblyId",body);
+
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
             apiResponse.response?.statusCode == 200) {
