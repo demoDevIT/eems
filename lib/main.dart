@@ -319,16 +319,19 @@ class _MyHomePageState extends State<MyHomePage>
     //     getUserData();
     //   }
     // });
-    _controller.addStatusListener((status) async {
-      if (status == AnimationStatus.completed) {
-        _controller.stop();
 
-        await Future.delayed(const Duration(seconds: 2));
+    // _controller.addStatusListener((status) async {
+    //   if (status == AnimationStatus.completed) {
+    //     _controller.stop();
+    //
+    //     await Future.delayed(const Duration(seconds: 2));
+    //
+    //     await _checkForUpdate();
+    //     //getUserData();
+    //   }
+    // });
 
-        await _checkForUpdate();
-        //getUserData();
-      }
-    });
+    Future.delayed(const Duration(milliseconds: 4000), () => _checkForUpdate());
   }
 
   Future<void> _checkForUpdate() async {

@@ -27,11 +27,11 @@ class _EsignWebViewScreenState extends State<EsignWebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) async {
-           // await UtilityClass.showProgressDialog(context, "");
+            // await UtilityClass.showProgressDialog(context, "");
           },
           onPageFinished: (url) async {
             debugPrint("Page Finished: $url");
-           // await UtilityClass.dismissProgressDialog();
+            // await UtilityClass.dismissProgressDialog();
 
           },
           onNavigationRequest: (NavigationRequest request) {
@@ -39,7 +39,7 @@ class _EsignWebViewScreenState extends State<EsignWebViewScreen> {
 
             if (request.url.toLowerCase().contains("success")) {
               Future.delayed(const Duration(seconds: 5), () {
-                  Navigator.pop(context, request.url);
+                Navigator.pop(context, request.url);
               });
               return NavigationDecision.navigate;
             }
@@ -57,7 +57,7 @@ class _EsignWebViewScreenState extends State<EsignWebViewScreen> {
           },
           onWebResourceError: (WebResourceError error) async {
             debugPrint("WebView Error: ${error.description}");
-          //  await UtilityClass.dismissProgressDialog();
+            //  await UtilityClass.dismissProgressDialog();
 
           },
         ),

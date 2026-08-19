@@ -170,7 +170,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     try {
       selectedYearObj = yearListApi.firstWhere(
-        (y) => y.name == previousMonthDate.year.toString(),
+            (y) => y.name == previousMonthDate.year.toString(),
         orElse: () => yearListApi.first,
       );
 
@@ -195,7 +195,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     try {
       selectedMonthObj = monthListApi.firstWhere(
-        (m) => m.dropID == previousMonthDate.month,
+            (m) => m.dropID == previousMonthDate.month,
         orElse: () => monthListApi.first,
       );
 
@@ -209,11 +209,11 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<DeptJoinAttendanceModal?> getDeptJoinAttendanceListApi(
-    BuildContext context, {
-    String? registrationNumber,
-    String? jobSeekerId,
-    String? userId,
-  }) async {
+      BuildContext context, {
+        String? registrationNumber,
+        String? jobSeekerId,
+        String? userId,
+      }) async {
     //example to check encryption
     // EncryptionHelper helper = EncryptionHelper();
     // print("encryptDTAAA====> ${helper.encryptData("ABCDE1234F")}");
@@ -369,9 +369,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   void openAttendancePopup(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) {
     isWholeMonthAbsent = false;
 
     // Reset values
@@ -436,7 +436,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -494,10 +494,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         items: yearList
                             .map(
                               (year) => DropdownMenuItem(
-                                value: year,
-                                child: Text(year.toString()),
-                              ),
-                            )
+                            value: year,
+                            child: Text(year.toString()),
+                          ),
+                        )
                             .toList(),
                         onChanged: null, // 🔥 DISABLED
                       ),
@@ -525,10 +525,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                         items: monthList
                             .map(
                               (month) => DropdownMenuItem(
-                                value: month,
-                                child: Text(_getMonthName(month)),
-                              ),
-                            )
+                            value: month,
+                            child: Text(_getMonthName(month)),
+                          ),
+                        )
                             .toList(),
                         onChanged: null, // 🔥 DISABLED
                       ),
@@ -628,90 +628,90 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                             setStateDialog(() {});
                           },
                         ),
-                        ],
-                        const SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Note:",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
+                      ],
+                      const SizedBox(height: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Note:",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "• ",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "• ",
+                              Expanded(
+                                child: Text(
+                                  "यदि आवेदक/ Job Seeker पूरे माह में एक भी दिन उपस्थित नहीं हुआ है, तो 'पूरे माह अनुपस्थित (Whole Month)' वाले चेक बॉक्स पर क्लिक करें।",
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Expanded(
-                                  child: Text(
-                                    "यदि आवेदक/ Job Seeker पूरे माह में एक भी दिन उपस्थित नहीं हुआ है, तो 'पूरे माह अनुपस्थित (Whole Month)' वाले चेक बॉक्स पर क्लिक करें।",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "• ",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "• ",
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "यदि आवेदक/ Job Seeker माह में एक या अधिक दिन उपस्थित हुआ है, तो सरकारी अवकाशों (Government Holidays) को छोड़कर शेष अनुपस्थित दिनों की संख्या दर्ज करें।",
                                   style: TextStyle(
                                     color: Colors.red,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Expanded(
-                                  child: Text(
-                                    "यदि आवेदक/ Job Seeker माह में एक या अधिक दिन उपस्थित हुआ है, तो सरकारी अवकाशों (Government Holidays) को छोड़कर शेष अनुपस्थित दिनों की संख्या दर्ज करें।",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        // const SizedBox(height: 20),
-                        //
-                        // /// PRESENT DAYS BOX
-                        // Container(
-                        //   padding: const EdgeInsets.all(12),
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.green.shade50,
-                        //     borderRadius: BorderRadius.circular(10),
-                        //   ),
-                        //   child: Text(
-                        //     "Total No. of Present Days - $presentDays",
-                        //     style: const TextStyle(
-                        //       fontWeight: FontWeight.w600,
-                        //       color: Colors.green,
-                        //     ),
-                        //   ),
-                        // ),
+                      // const SizedBox(height: 20),
+                      //
+                      // /// PRESENT DAYS BOX
+                      // Container(
+                      //   padding: const EdgeInsets.all(12),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.green.shade50,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Text(
+                      //     "Total No. of Present Days - $presentDays",
+                      //     style: const TextStyle(
+                      //       fontWeight: FontWeight.w600,
+                      //       color: Colors.green,
+                      //     ),
+                      //   ),
+                      // ),
 
-                        const SizedBox(height: 26),
-                     // ],
+                      const SizedBox(height: 26),
+                      // ],
 
                       /// SUBMIT BUTTON
                       SizedBox(
@@ -741,9 +741,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> viewCertificate(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) async {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -837,9 +837,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> approveAttendance(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) async {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
       showAlertError(
@@ -912,9 +912,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   void viewAttendance(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) {
     // Reset values
     selectedMonth = DateTime.now();
     absentDays = 0;
@@ -935,7 +935,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -993,9 +993,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<MarkAttendanceBasicDetails?> getMarkAttendanceBasicDetails(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) async {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
     try {
       final month = item.monthId!.toString().padLeft(2, '0');
       final year = item.year.toString();
@@ -1054,9 +1054,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   Future<void> _submitAttendance(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) async {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
     // ✅ Validate only when NOT whole month absent
     if (!isWholeMonthAbsent && absentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1300,9 +1300,9 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   // }
 
   Future<void> pickAttendanceDate(
-    BuildContext context,
-    DeptJoinAttendanceItem item,
-  ) async {
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
