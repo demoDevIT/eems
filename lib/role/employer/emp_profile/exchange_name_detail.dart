@@ -65,7 +65,7 @@ class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
                 children: [
 
                   _label("Exchange Name"),
-                  _field(provider.exchangeNameCtrl, "Enter exchange name"),
+                  _field( provider.exchangeNameCtrl, "Enter exchange name"),
 
                   const SizedBox(height: 30),
                 ],

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -111,6 +112,7 @@ import 'l10n/app_localizations.dart';
 import 'role/job_seeker/loginscreen/provider/locale_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:rajemployment/utils/my_http_overrides.dart';
 
 // If you use FlutterFire CLI, also import:
 
@@ -122,6 +124,8 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
   //  Firebase.initializeApp();
+    HttpOverrides.global = MyHttpOverrides();
+
 
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

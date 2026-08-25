@@ -14,8 +14,8 @@ android {
         applicationId = "com.rajemployment.eems2"
         minSdk = 29
         targetSdk = 36
-        versionCode = 11
-        versionName = "1.0.11"
+        versionCode = 12
+        versionName = "1.0.12"
 
         ndk {
             abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))

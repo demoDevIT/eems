@@ -73,101 +73,76 @@ class _ChatScreenState extends State<ChatScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: provider.originalStatusList.length,
                       itemBuilder: (context, index) {
-                        var item = provider.originalStatusList[index];
+                        final item = provider.originalStatusList[index];
+
                         bool hasData(dynamic value) {
-                          return value != null && value.toString().trim().isNotEmpty && value.toString() != "null";
-                        }
-                        String formatDate(String? dateStr) {
-                          if (!hasData(dateStr)) return "";
-                          return dateStr!.split('T')[0];
+                          return value != null &&
+                              value.toString().trim().isNotEmpty &&
+                              value.toString() != "null";
                         }
 
-                        return Stack(
-                          children: [
-                            Positioned(
-                              top: 0,
-                              left: 20,
-                              child: CustomPaint(
-                                painter:
-                                ChatBubblePainter(Colors.blueGrey.withOpacity(0.1)),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 15),
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFEEEEEE),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(5),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 2),
-                                  )
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Header: Event Name & ID
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          hasData(item.actionNameHi) ? item.actionNameHi.toString() : (hasData(item.actionNameEn) ? item.actionNameEn.toString() : ""),
-                                          style: const TextStyle(color: kBlackColor, fontWeight: FontWeight.bold, fontSize: 18),
-                                        ),
-                                      ),
-                                      if (hasData(item.eventId))
-                                        Container(
-                                          padding: const EdgeInsets.all(5),
-                                          decoration: BoxDecoration(color: Colors.white10, borderRadius: BorderRadius.circular(5)),
-                                          child: Text(item.eventId.toString(), style: const TextStyle(color:kBlackColor, fontSize: 10)),
-                                        ),
-                                    ],
-                                  ),
-                                  const Divider(color: kGrayColor, height: 20),
-                                  if (hasData(item.actionNameEn)) buildDataRow("Action", item.actionNameEn, Icons.pending_actions),
-                                  if (hasData(item.officeName)) buildDataRow("Office Name", item.officeName, Icons.cabin),
-                                  if (hasData(item.applicationNo)) buildDataRow("App No", item.applicationNo, Icons.assignment_ind),
-                                  if (hasData(item.venue)) buildDataRow("Venue", item.venue, Icons.location_on),
-                                  if (hasData(item.inchargeName)) buildDataRow("Incharge", item.inchargeName, Icons.person),
-                                  if (hasData(item.contactNumber)) buildDataRow("Contact", item.contactNumber, Icons.phone),
-                                  if (hasData(item.startDate) || hasData(item.endDate))
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.calendar_month, size: 16, color:kBlackColor),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            "${formatDate(item.startDate)} To ${formatDate(item.endDate)}",
-                                            style: const TextStyle(color:kBlackColor, fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                        final List<Color> accentColors = [
+                          const Color(0xFFFF7A00),
+                          const Color(0xFFFF6845),
+                          const Color(0xFFFFB000),
+                          const Color(0xFF7CB342),
+                          const Color(0xFF9575CD),
+                        ];
 
-                                  if (hasData(item.eventDescription))
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        item.eventDescription.toString(),
-                                        style: const TextStyle(color: Colors.white54, fontSize: 13),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        final List<IconData> icons = [
+                          Icons.person_add_alt_1_outlined,
+                          Icons.assignment_outlined,
+                          Icons.description_outlined,
+                          Icons.verified_user_outlined,
+                          Icons.edit_document,
+                        ];
+
+                        final Color accentColor =
+                        accentColors[index % accentColors.length];
+
+                        final IconData cardIcon =
+                        icons[index % icons.length];
+
+                        final String title = hasData(item.actionNameHi)
+                            ? item.actionNameHi.toString()
+                            : hasData(item.actionNameEn)
+                            ? item.actionNameEn.toString()
+                            : "";
+
+                        return _buildFaqCard(
+                          title: title,
+                          action: hasData(item.actionNameEn)
+                              ? item.actionNameEn.toString()
+                              : "",
+                          officeName: hasData(item.officeName)
+                              ? item.officeName.toString()
+                              : "",
+                          applicationNo: hasData(item.applicationNo)
+                              ? item.applicationNo.toString()
+                              : "",
+                          venue: hasData(item.venue)
+                              ? item.venue.toString()
+                              : "",
+                          inchargeName: hasData(item.inchargeName)
+                              ? item.inchargeName.toString()
+                              : "",
+                          contactNumber: hasData(item.contactNumber)
+                              ? item.contactNumber.toString()
+                              : "",
+                          startDate: hasData(item.startDate)
+                              ? item.startDate.toString()
+                              : "",
+                          endDate: hasData(item.endDate)
+                              ? item.endDate.toString()
+                              : "",
+                          eventDescription: hasData(item.eventDescription)
+                              ? item.eventDescription.toString()
+                              : "",
+                          eventId: hasData(item.eventId)
+                              ? item.eventId.toString()
+                              : "",
+                          accentColor: accentColor,
+                          icon: cardIcon,
                         );
                       },
                     ),
@@ -245,6 +220,319 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  Widget _buildFaqCard({
+    required String title,
+    required String action,
+    required String officeName,
+    required String applicationNo,
+    required String venue,
+    required String inchargeName,
+    required String contactNumber,
+    required String startDate,
+    required String endDate,
+    required String eventDescription,
+    required String eventId,
+    required Color accentColor,
+    required IconData icon,
+  }) {
+    String formatDate(String date) {
+      if (date.trim().isEmpty || date == "null") {
+        return "";
+      }
+
+      try {
+        return date.split('T')[0];
+      } catch (_) {
+        return date;
+      }
+    }
+
+    final String formattedStartDate = formatDate(startDate);
+    final String formattedEndDate = formatDate(endDate);
+
+    final bool hasDate =
+        formattedStartDate.isNotEmpty || formattedEndDate.isNotEmpty;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.07),
+            blurRadius: 10,
+            spreadRadius: 0,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // LEFT COLORED STRIP
+              Container(
+                width: 5,
+                color: accentColor,
+              ),
+
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // =========================
+                      // TITLE + EVENT ID
+                      // =========================
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: accentColor.withOpacity(0.10),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              icon,
+                              size: 26,
+                              color: accentColor,
+                            ),
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          Expanded(
+                            child: Text(
+                              title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Color(0xFF292929),
+                                fontSize: 16,
+                                height: 1.25,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+
+                          if (eventId.isNotEmpty) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: accentColor.withOpacity(0.10),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                eventId,
+                                style: TextStyle(
+                                  color: accentColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // DIVIDER
+                      Container(
+                        height: 1,
+                        color: const Color(0xFFEAEAEA),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // =========================
+                      // ACTION
+                      // =========================
+                      if (action.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.touch_app_outlined,
+                          label: "Action",
+                          value: action,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // OFFICE NAME
+                      // =========================
+                      if (officeName.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.business_outlined,
+                          label: "Office Name",
+                          value: officeName,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // APPLICATION NUMBER
+                      // =========================
+                      if (applicationNo.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.assignment_ind_outlined,
+                          label: "App No",
+                          value: applicationNo,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // VENUE
+                      // =========================
+                      if (venue.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.location_on_outlined,
+                          label: "Venue",
+                          value: venue,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // INCHARGE
+                      // =========================
+                      if (inchargeName.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.person_outline,
+                          label: "Incharge",
+                          value: inchargeName,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // CONTACT
+                      // =========================
+                      if (contactNumber.isNotEmpty)
+                        _buildInfoRow(
+                          icon: Icons.phone_outlined,
+                          label: "Contact",
+                          value: contactNumber,
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // DATE
+                      // =========================
+                      if (hasDate)
+                        _buildInfoRow(
+                          icon: Icons.calendar_month_outlined,
+                          label: "Date",
+                          value: hasDate
+                              ? "${formattedStartDate.isNotEmpty ? formattedStartDate : "-"}"
+                              " To "
+                              "${formattedEndDate.isNotEmpty ? formattedEndDate : "-"}"
+                              : "",
+                          iconColor: accentColor,
+                        ),
+
+                      // =========================
+                      // DESCRIPTION
+                      // =========================
+                      if (eventDescription.isNotEmpty) ...[
+                        const SizedBox(height: 6),
+
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF8F8F8),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                size: 16,
+                                color: accentColor,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  eventDescription,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Color(0xFF555555),
+                                    fontSize: 12,
+                                    height: 1.35,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color iconColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: iconColor,
+          ),
+
+          const SizedBox(width: 8),
+
+          Text(
+            "$label: ",
+            style: const TextStyle(
+              color: Color(0xFF4A4A4A),
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Color(0xFF4A4A4A),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w400,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildDataRow(String label, dynamic value, IconData icon) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),

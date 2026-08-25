@@ -1222,6 +1222,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
           final decodedXml = utf8.decode(base64Decode(base64Xml)).trim();
 
+             print("data$decodedXml");
+
           /// ✅ STEP 2: DECODE XML
           // String xml = decodedXml;
 
@@ -1234,7 +1236,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                   enctype="multipart/form-data">
 
               <textarea name="esignData">
-                ${decodedXml.replaceAll("'", "&apos;")}
+                ${decodedXml.replaceAll("'","&apos;")}
               </textarea>
 
             </form>

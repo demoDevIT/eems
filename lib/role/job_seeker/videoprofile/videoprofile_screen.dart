@@ -124,11 +124,22 @@ var videoProvider;
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: () async {
-                   String Video = await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()),);
-                   if(Video == "True"){
-                     provider.getVideo(context);
-                   }
+                    // onPressed: () async {
+                    //   String Video = await Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()),);
+                    //   if(Video == "True"){
+                    //     provider.getVideo(context);
+                    //   }
+                    // },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CameraPage(),
+                        ),
+                      ).then((_) async {
+                        // CameraPage is closed, refresh the video
+                        await provider.getVideo(context);
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kViewAllColor,

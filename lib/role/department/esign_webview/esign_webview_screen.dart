@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rajemployment/utils/utility_class.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class EsignWebViewScreen extends StatefulWidget {
@@ -17,62 +16,70 @@ class EsignWebViewScreen extends StatefulWidget {
 class _EsignWebViewScreenState extends State<EsignWebViewScreen> {
   late final WebViewController controller;
 
-
   @override
   void initState() {
     super.initState();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (url) async {
-            // await UtilityClass.showProgressDialog(context, "");
+          onPageStarted: (String url) {
+            debugPrint('START: $url');
           },
-          onPageFinished: (url) async {
-            debugPrint("Page Finished: $url");
-            // await UtilityClass.dismissProgressDialog();
-
+          onPageFinished: (String url) {
+            debugPrint('FINISHED: $url');
           },
           onNavigationRequest: (NavigationRequest request) {
-            debugPrint("Navigation URL: ${request.url}");
+            final String url = request.url;
 
-            if (request.url.toLowerCase().contains("success")) {
-              Future.delayed(const Duration(seconds: 5), () {
-                Navigator.pop(context, request.url);
-              });
-              return NavigationDecision.navigate;
+            debugPrint('NAVIGATION URL: $url');
+
+            final String lowerUrl = url.toLowerCase();
+
+            if (lowerUrl.contains('success')) {
+              if (mounted) {
+                Navigator.pop(context, url);
+              }
+
+              return NavigationDecision.prevent;
             }
 
-            if (request.url.toLowerCase().contains("failed")) {
-              Future.delayed(const Duration(seconds: 5), () {
-                if (mounted) {
-                  Navigator.pop(context, request.url);
-                }
-              });
+            if (lowerUrl.contains('failed')) {
+              if (mounted) {
+                Navigator.pop(context, url);
+              }
+
               return NavigationDecision.prevent;
             }
 
             return NavigationDecision.navigate;
           },
-          onWebResourceError: (WebResourceError error) async {
-            debugPrint("WebView Error: ${error.description}");
-            //  await UtilityClass.dismissProgressDialog();
 
+          onSslAuthError: (SslAuthError error) {
+            error.proceed();
+          },
+          onWebResourceError: (WebResourceError error) {
           },
         ),
       )
-      ..loadHtmlString(widget.htmlData);
+      ..loadHtmlString(
+        widget.htmlData,
+        baseUrl: 'https://esign.rajasthan.gov.in/',
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("eSign"),
+        title: const Text('eSign'),
       ),
-      body: WebViewWidget(
-        controller: controller,
+      body: SafeArea(
+        child: WebViewWidget(
+          controller: controller,
+        ),
       ),
     );
   }
