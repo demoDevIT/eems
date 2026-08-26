@@ -49,6 +49,8 @@ class ActionData {
   dynamic  eventDescription;
   dynamic  registrationOpenDate;
   dynamic  distDivisionName;
+  dynamic  documentPath;
+  dynamic  documentMasterEn;
 
   ActionData(
       {this.actionNameEn,
@@ -68,7 +70,10 @@ class ActionData {
         this.contactNumber,
         this.eventDescription,
         this.registrationOpenDate,
-        this.distDivisionName});
+        this.distDivisionName,
+        this.documentPath,
+        this.documentMasterEn,
+      });
 
   ActionData.fromJson(Map<String, dynamic> json) {
     actionNameEn = json['ActionNameEn'];
@@ -89,6 +94,8 @@ class ActionData {
     eventDescription = json['EventDescription'];
     registrationOpenDate = json['RegistrationOpenDate'];
     distDivisionName = json['Dist_DivisionName'];
+    documentPath = json['DocumentPath'];
+    documentMasterEn = json['DocumentMasterEn'];
   }
 
 

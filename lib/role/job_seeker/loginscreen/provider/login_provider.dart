@@ -176,7 +176,7 @@ class LoginProvider with ChangeNotifier {
             "Password": pass,
             "DeviceID": deviceId,
             "IPv4": ipAddress,
-            "BypassSSO": true //true for sandbox, remove for live
+            //"BypassSSO": true //true for sandbox, remove for live
           };
         }
 

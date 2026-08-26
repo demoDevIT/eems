@@ -8,6 +8,7 @@ import 'package:rajemployment/role/job_seeker/faqs_screen/faqs_screen.dart';
 
 import '../../../../animatedList/animated_list_view.dart';
 import '../../../../comonwidgets/common_widgets.dart';
+import '../../../../constants/constants.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../utils/language_toggle_switch.dart';
 import '../../jobseekerdashboard/job_seeker_dashboard.dart';
@@ -18,7 +19,16 @@ class ChatScreen extends StatefulWidget {
   final dynamic item;
   final String? status;
 
-  const ChatScreen({super.key, this.item, this.status});
+  final int? submittedYear;
+  final int? submittedMonth;
+
+  const ChatScreen({
+    super.key,
+    this.item,
+    this.status,
+    this.submittedYear,
+    this.submittedMonth,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -34,11 +44,15 @@ class _ChatScreenState extends State<ChatScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       final provider = Provider.of<ChatProvider>(context, listen: false);
       provider.clearData();
-      if(widget.status == "1"){
+      if (widget.status == "1") {
         provider.originalStatusList.add(widget.item);
-      }else{
-        provider.getStatus(context, widget.item);
-
+      } else {
+        provider.getStatus(
+          context,
+          widget.item,
+          submittedYear: widget.submittedYear,
+          submittedMonth: widget.submittedMonth,
+        );
       }
     });
   }
@@ -103,17 +117,33 @@ class _ChatScreenState extends State<ChatScreen> {
                         final IconData cardIcon =
                         icons[index % icons.length];
 
+                        // final String title = hasData(item.actionNameHi)
+                        //     ? item.actionNameHi.toString()
+                        //     : hasData(item.actionNameEn)
+                        //     ? item.actionNameEn.toString()
+                        //     : "";
+
                         final String title = hasData(item.actionNameHi)
                             ? item.actionNameHi.toString()
                             : hasData(item.actionNameEn)
                             ? item.actionNameEn.toString()
                             : "";
 
+                        final String faqAssistanceId =
+                            widget.item?.fAQAssistanceId?.toString() ?? "";
+
                         return _buildFaqCard(
                           title: title,
                           action: hasData(item.actionNameEn)
                               ? item.actionNameEn.toString()
                               : "",
+                          documentMasterEn: hasData(item.documentMasterEn)
+                              ? item.documentMasterEn.toString()
+                              : "",
+                          documentPath: hasData(item.documentPath)
+                              ? item.documentPath.toString()
+                              : "",
+                          faqAssistanceId: faqAssistanceId,
                           officeName: hasData(item.officeName)
                               ? item.officeName.toString()
                               : "",
@@ -224,6 +254,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildFaqCard({
     required String title,
     required String action,
+    required String documentMasterEn,
+    required String documentPath,
+    required String faqAssistanceId,
     required String officeName,
     required String applicationNo,
     required String venue,
@@ -236,6 +269,8 @@ class _ChatScreenState extends State<ChatScreen> {
     required Color accentColor,
     required IconData icon,
   }) {
+    final bool isSchemeInformation = faqAssistanceId == "4";
+
     String formatDate(String date) {
       if (date.trim().isEmpty || date == "null") {
         return "";
@@ -295,19 +330,19 @@ class _ChatScreenState extends State<ChatScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: accentColor.withOpacity(0.10),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              icon,
-                              size: 26,
-                              color: accentColor,
-                            ),
-                          ),
+                          // Container(
+                          //   width: 48,
+                          //   height: 48,
+                          //   decoration: BoxDecoration(
+                          //     color: accentColor.withOpacity(0.10),
+                          //     shape: BoxShape.circle,
+                          //   ),
+                          //   child: Icon(
+                          //     icon,
+                          //     size: 26,
+                          //     color: accentColor,
+                          //   ),
+                          // ),
 
                           const SizedBox(width: 12),
 
@@ -349,9 +384,97 @@ class _ChatScreenState extends State<ChatScreen> {
                         ],
                       ),
 
+                      // const SizedBox(height: 10),
+                      //
+                      // // DIVIDER
+                      // Container(
+                      //   height: 1,
+                      //   color: const Color(0xFFEAEAEA),
+                      // ),
+                      //
+                      // const SizedBox(height: 8),
+                      //
+                      // // =========================
+                      // // ACTION
+                      // // =========================
+                      // if (action.isNotEmpty)
+                      //   _buildInfoRow(
+                      //     icon: Icons.touch_app_outlined,
+                      //     label: "Action",
+                      //     value: action,
+                      //     iconColor: accentColor,
+                      //   ),
+
+                      if (!isSchemeInformation && action.isNotEmpty)
                       const SizedBox(height: 10),
 
-                      // DIVIDER
+// =========================
+// SCHEME DOCUMENT
+// =========================
+                      if (isSchemeInformation && documentMasterEn.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 0,
+                            bottom: 0,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Icon(
+                              //   Icons.description_outlined,
+                              //   size: 15,
+                              //   color: accentColor,
+                              // ),
+                              //
+                              // const SizedBox(width: 7),
+
+                              Expanded(
+                                child: Text(
+                                  documentMasterEn,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Color(0xFF4A4A4A),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.25,
+                                  ),
+                                ),
+                              ),
+
+                              //
+                              // if (documentPath.isNotEmpty)
+                              //   Icon(
+                              //     Icons.file_open_outlined,
+                              //     size: 19,
+                              //     color: accentColor,
+                              //   ),
+
+                              if (documentPath.isNotEmpty)
+                                GestureDetector(
+                                  onTap: () {
+                                    final provider = Provider.of<ChatProvider>(
+                                      context,
+                                      listen: false,
+                                    );
+
+                                    provider.downloadAndOpenPdf(
+                                      Constants.showPdfUrl + documentPath,
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.file_open_outlined,
+                                    size: 19,
+                                    color: accentColor,
+                                  ),
+                                ),
+
+                            ],
+                          ),
+                        ),
+
+// DIVIDER
+                      if (!isSchemeInformation && action.isNotEmpty)
                       Container(
                         height: 1,
                         color: const Color(0xFFEAEAEA),
@@ -359,16 +482,21 @@ class _ChatScreenState extends State<ChatScreen> {
 
                       const SizedBox(height: 8),
 
-                      // =========================
-                      // ACTION
-                      // =========================
-                      if (action.isNotEmpty)
+                      if (!isSchemeInformation && action.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.touch_app_outlined,
                           label: "Action",
                           value: action,
                           iconColor: accentColor,
                         ),
+
+                      // if (isSchemeInformation && documentMasterEn.isNotEmpty)
+                      //   _buildDocumentRow(
+                      //     documentName: documentMasterEn,
+                      //     documentPath: documentPath,
+                      //     iconColor: accentColor,
+                      //   ),
+
 
                       // =========================
                       // OFFICE NAME
@@ -485,6 +613,62 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDocumentRow({
+    required String documentName,
+    required String documentPath,
+    required Color iconColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.description_outlined,
+            size: 18,
+            color: iconColor,
+          ),
+
+          const SizedBox(width: 8),
+
+          const Text(
+            "Document: ",
+            style: TextStyle(
+              color: Color(0xFF4A4A4A),
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          Expanded(
+            child: Text(
+              documentName,
+              style: const TextStyle(
+                color: Color(0xFF4A4A4A),
+                fontSize: 11.5,
+                fontWeight: FontWeight.w400,
+                height: 1.3,
+              ),
+            ),
+          ),
+
+          if (documentPath.isNotEmpty)
+            IconButton(
+              onPressed: () {
+                // Open document here
+              },
+              icon: Icon(
+                Icons.file_open_outlined,
+                color: iconColor,
+                size: 22,
+              ),
+              tooltip: "Open Document",
+            ),
+        ],
       ),
     );
   }

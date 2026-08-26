@@ -25,6 +25,9 @@ class FaqsProvider with ChangeNotifier {
   List<QuickServiceModel> quickServicesList = [];
   List<FaqsAssistanceData> originalFaqList = [];
 
+  int? selectedYear;
+  int? selectedMonth;
+
   FaqsProvider({required this.commonRepo});
 
 
@@ -146,21 +149,66 @@ class FaqsProvider with ChangeNotifier {
     }
   }
 
-  void updateSelectedIndex(BuildContext context,int index,QuickServiceModel item) {
+  Future<void> updateSelectedIndex(
+      BuildContext context,
+      int index,
+      QuickServiceModel item,
+      ) async {
     _selectedIndex = index;
-    String title =
+
+    final String title =
     AppLocalizations.of(context)!.localeName == 'en'
         ? item.faqAssistanceEng
         : item.faqAssistanceHi;
+
+    // ============================================================
+    // PAYMENT STATUS
+    // ============================================================
+    if (title == "Payment Status" || title == "भुगतान स्थिति") {
+      final result = await _showMonthYearDialog(context);
+
+      // User pressed Cancel / closed dialog
+      if (result == null) {
+        _selectedIndex = 0;
+        notifyListeners();
+        return;
+      }
+
+      final int selectedYear = result['year']!;
+      final int selectedMonth = result['month']!;
+
+      Navigator.of(context).push(
+        RightToLeftRoute(
+          page: ChatScreen(
+            item: item,
+            submittedYear: selectedYear,
+            submittedMonth: selectedMonth,
+          ),
+          duration: const Duration(milliseconds: 500),
+          startOffset: const Offset(-1.0, 0.0),
+        ),
+      );
+
+      notifyListeners();
+      return;
+    }
+
+    // ============================================================
+    // JOB FAIR
+    // ============================================================
     if (title == "Job Fair" || title == "नौकरी मेला") {
-      Provider.of<BottomProvider>(context, listen: false).clearData();
+      Provider.of<BottomProvider>(
+        context,
+        listen: false,
+      ).clearData();
+
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) {
-          // Provider.of<FaqsProvider>(context, listen: false).clearData();
           final screenHeight = MediaQuery.of(context).size.height;
+
           return Stack(
             children: [
               Container(
@@ -177,7 +225,6 @@ class FaqsProvider with ChangeNotifier {
                   child: BottomScreen(item: item),
                 ),
               ),
-
               Positioned(
                 top: 0,
                 right: 0,
@@ -194,7 +241,7 @@ class FaqsProvider with ChangeNotifier {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 10,
-                        )
+                        ),
                       ],
                     ),
                     padding: const EdgeInsets.all(8),
@@ -211,18 +258,226 @@ class FaqsProvider with ChangeNotifier {
         },
       );
 
-    } else {
-      Navigator.of(context)
-          .push(
-        RightToLeftRoute(
-          page:  ChatScreen( item: item,),
-          duration: const Duration(milliseconds: 500),
-          startOffset: const Offset(-1.0, 0.0),
-        ),
-      );
-
+      notifyListeners();
+      return;
     }
+
+    // ============================================================
+    // OTHER FAQ SERVICES
+    // ============================================================
+    Navigator.of(context).push(
+      RightToLeftRoute(
+        page: ChatScreen(item: item),
+        duration: const Duration(milliseconds: 500),
+        startOffset: const Offset(-1.0, 0.0),
+      ),
+    );
+
     notifyListeners();
+  }
+
+  Future<Map<String, int>?> _showMonthYearDialog(
+      BuildContext context,
+      ) async {
+    int? selectedYear;
+    int? selectedMonth;
+
+    return showDialog<Map<String, int>>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            final bool isValid =
+                selectedYear != null && selectedMonth != null;
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+
+              title: const Text(
+                "Select Month & Year",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+
+                  // ==========================
+                  // YEAR DROPDOWN
+                  // ==========================
+                  DropdownButtonFormField<int>(
+                    value: selectedYear,
+
+                    decoration: InputDecoration(
+                      labelText: "Year *",
+                      prefixIcon: const Icon(
+                        Icons.calendar_today_outlined,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+
+                    hint: const Text("Select Year"),
+
+                    items: List.generate(
+                      DateTime.now().year - 2000 + 1,
+                          (index) {
+                        final int year = 2000 + index;
+
+                        return DropdownMenuItem<int>(
+                          value: year,
+                          child: Text(year.toString()),
+                        );
+                      },
+                    ),
+
+                    onChanged: (value) {
+                      setState(() {
+                        selectedYear = value;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ==========================
+                  // MONTH DROPDOWN
+                  // ==========================
+                  DropdownButtonFormField<int>(
+                    value: selectedMonth,
+
+                    decoration: InputDecoration(
+                      labelText: "Month *",
+                      prefixIcon: const Icon(
+                        Icons.date_range_outlined,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+
+                    hint: const Text("Select Month"),
+
+                    items: const [
+                      DropdownMenuItem(
+                        value: 1,
+                        child: Text("January"),
+                      ),
+                      DropdownMenuItem(
+                        value: 2,
+                        child: Text("February"),
+                      ),
+                      DropdownMenuItem(
+                        value: 3,
+                        child: Text("March"),
+                      ),
+                      DropdownMenuItem(
+                        value: 4,
+                        child: Text("April"),
+                      ),
+                      DropdownMenuItem(
+                        value: 5,
+                        child: Text("May"),
+                      ),
+                      DropdownMenuItem(
+                        value: 6,
+                        child: Text("June"),
+                      ),
+                      DropdownMenuItem(
+                        value: 7,
+                        child: Text("July"),
+                      ),
+                      DropdownMenuItem(
+                        value: 8,
+                        child: Text("August"),
+                      ),
+                      DropdownMenuItem(
+                        value: 9,
+                        child: Text("September"),
+                      ),
+                      DropdownMenuItem(
+                        value: 10,
+                        child: Text("October"),
+                      ),
+                      DropdownMenuItem(
+                        value: 11,
+                        child: Text("November"),
+                      ),
+                      DropdownMenuItem(
+                        value: 12,
+                        child: Text("December"),
+                      ),
+                    ],
+
+                    onChanged: (value) {
+                      setState(() {
+                        selectedMonth = value;
+                      });
+                    },
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // Mandatory message
+                  if (!isValid)
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 4),
+                        child: Text(
+                          "* Month and Year are required",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+
+              actions: [
+
+                // ==========================
+                // CANCEL
+                // ==========================
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  child: const Text("Cancel"),
+                ),
+
+                // ==========================
+                // OK
+                // ==========================
+                ElevatedButton(
+                  onPressed: isValid
+                      ? () {
+                    Navigator.pop(
+                      dialogContext,
+                      {
+                        'year': selectedYear!,
+                        'month': selectedMonth!,
+                      },
+                    );
+                  }
+                      : null,
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   void clearData(){
