@@ -319,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
        //   onTap: () {},
        // ),
        _DashboardItem(
-         title: "CV Builder",
+         title: AppLocalizations.of(context)!.cvbuilder,
          iconPath: "assets/images/cvBuilder.svg",
          onTap: () {
            Navigator.push(context,
@@ -327,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
          },
        ),
        _DashboardItem(
-         title: "Search Job/Apply",
+         title: AppLocalizations.of(context)!.searchJobApply, //"Search Job/Apply",
          iconPath: "assets/images/searchJobApply.svg",
          showArrow: true,
          onTap: () => _showSearchJobPopup(),
@@ -338,13 +338,13 @@ class _HomeScreenState extends State<HomeScreen> {
        //   onTap: () {},
        // ),
        _DashboardItem(
-         title: "Job Fair Events",
+         title: AppLocalizations.of(context)!.jobfairevents, //"Job Fair Events",
          iconPath: "assets/images/jobFairEvent.svg",
          showArrow: true,
          onTap: () => _showJobFairPopup(),
        ),
        _DashboardItem(
-         title: "Download Registration Card",
+         title: AppLocalizations.of(context)!.downldregiscard, //"Download Registration Card",
          iconPath: "assets/images/downloadRegCard.svg",
          onTap: () {
            Navigator.push(context,
@@ -352,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
          },
        ),
        _DashboardItem(
-         title: "MYSY Status", //"Departmental Schemes",
+         title: AppLocalizations.of(context)!.mysyStatus, //"MYSY Status", //"Departmental Schemes",
          iconPath: "assets/images/deptScheme.svg",
          showArrow: true,
          // onTap: () => _showDepartmentSchemePopup(),
@@ -364,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
          }
        ),
        _DashboardItem(
-         title: "Grievance/Feedback",
+         title: AppLocalizations.of(context)!.grievfeedbak, //"Grievance/Feedback",
          iconPath: "assets/images/grievances.svg",
          onTap: () {
            Navigator.push(context,
@@ -380,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> {
        //   },
        // ),
        _DashboardItem(
-         title: "Self Assessment",
+         title: AppLocalizations.of(context)!.selfassess, //"Self Assessment",
          iconPath: "assets/images/selfAssessment.svg",
          onTap: () {
            Navigator.push(context,

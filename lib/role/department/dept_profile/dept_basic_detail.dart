@@ -8,6 +8,7 @@ import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_detail
 import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/user_new.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
@@ -52,7 +53,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
     return Scaffold(
 
-        appBar: commonAppBar2("Add Basic Info", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.addBasicInfo, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -65,8 +66,8 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Basic Details",
+                  Text(
+                    AppLocalizations.of(context)!.basicDetails, //"Basic Details",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   // const Text(
@@ -159,13 +160,13 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                   ),
 
                   const SizedBox(height: 20),
-                  labelWithStar("Officer's SSO ID",required: false),
+                  labelWithStar(AppLocalizations.of(context)!.officerSSOID,required: false),
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.ssoController,
-                      "Officer's SSO ID",
+                      AppLocalizations.of(context)!.officerSSOID,
                       MediaQuery.of(context).size.width,
                       50,
                       isEnabled: false,
@@ -174,13 +175,13 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                   ),
 
                  // const SizedBox(height: 20),
-                  labelWithStar("Officer's Name",required: false),
+                  labelWithStar(AppLocalizations.of(context)!.officerName,required: false),
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.nameController,
-                      "Officer's Name",
+                      AppLocalizations.of(context)!.officerName,
                       MediaQuery.of(context).size.width,
                       50,
                       isEnabled: false,
@@ -189,13 +190,13 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                   ),
 
                  // const SizedBox(height: 20),
-                  labelWithStar("Name As Per Aadhaar",required: false),
+                  labelWithStar(AppLocalizations.of(context)!.nameAsPerAdhar,required: false),
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.nameAsAdharController,
-                      "Name As Per Aadhaar",
+                      AppLocalizations.of(context)!.nameAsPerAdhar,
                       MediaQuery.of(context).size.width,
                       50,
                      // isEnabled: false,
@@ -203,7 +204,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                     ),
                   ),
                   Text(
-                    "Note - Enter your name exactly as per your Aadhaar for verification of applicant's internship joining and attendance.",
+                    AppLocalizations.of(context)!.nameAsPerAdharNote,
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 12,
@@ -211,13 +212,13 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  labelWithStar('Mobile No',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.mobileNo,required: false),
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.mobileController,
-                      "Mobile No",
+                      AppLocalizations.of(context)!.mobileNo,
                       MediaQuery.of(context).size.width,
                       50,
                      // isEnabled: false,
@@ -225,14 +226,14 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                     ),
                   ),
 
-                  labelWithStar('Designation As Per SSO',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.designationAsPerSSO,required: false),
 
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.designationController,
-                      "Designation As Per SSO",
+                      AppLocalizations.of(context)!.designationAsPerSSO,
                       MediaQuery.of(context).size.width,
                       50,
                       isEnabled: false,
@@ -242,14 +243,14 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
                  // const SizedBox(height: 30),
 
-                  labelWithStar('Administration Department',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.adminDept,required: false),
 
                   Padding(
                     padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                     child: buildTextWithBorderField(
                       provider.adminDeptNameController,
-                      "Administration Department",
+                      AppLocalizations.of(context)!.adminDept,
                       MediaQuery.of(context).size.width,
                       50,
                       isEnabled: false,
@@ -258,7 +259,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                   ),
 
               /// ===== DISTRICT =====
-                  labelWithStar('District',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.district,required: false),
                   buildSearchableDropdown<DistrictData>(
                     enabled: false,
                   items: provider.districtList,
@@ -269,7 +270,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
                 controller: provider.districtController,
                 idController: provider.districtIdController,
-                hintText: "--Select District--",
+                hintText: AppLocalizations.of(context)!.selectDistrict, //"--Select District--",
                 // height: 50,
                 // selectedValue: provider.selectedDistrict,
                 // getLabel: (e) => e.name ?? "",
@@ -283,7 +284,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                 },
                   ),
 
-                  labelWithStar('Department',required: false),  // label name got from amit in screenshot
+                  labelWithStar(AppLocalizations.of(context)!.department,required: false),  // label name got from amit in screenshot
                   provider.isDepartmentLoading
                       ? const Center(child: CircularProgressIndicator())
                       : buildSearchableDropdown<DepartmentData>(
@@ -296,7 +297,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
                     controller: provider.deptNameController,
                     idController: provider.deptIdController,
-                    hintText: "--Select Department--",
+                    hintText: AppLocalizations.of(context)!.selectDepartment,
                     onChanged: (value) {
                       provider.selectedDepartment = value;
                       provider.deptNameController.text =
@@ -318,7 +319,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                     },
                   ),
 
-                  labelWithStar('Internship Office Name',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.internOfficeName,required: false),
                   provider.isOfficeLoading
                       ? const Center(child: CircularProgressIndicator())
                       : buildSearchableDropdown<OfficeData>(
@@ -331,7 +332,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
                     controller: provider.allotDeptNameController,
                     idController: provider.allotDeptIdController,
-                    hintText: "--Select Office--",
+                    hintText: AppLocalizations.of(context)!.selectOffice,
                     // height: 50,
                     // selectedValue: provider.selectedOffice,
                     // getLabel: (e) => e.nameEng ?? "",
@@ -356,8 +357,8 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                         if (validateBasicDetails(context, provider)) {
                           confirmAlertDialog(
                             context,
-                            "Confirm Submission",
-                            "Are you sure you want to submit the form ?",
+                            AppLocalizations.of(context)!.confrmSubmision,
+                            AppLocalizations.of(context)!.areYouSureSubmitForm, //"Are you sure you want to submit the form ?",
                                 (value) {
                               if (value.toString() == "success") {
                                 provider.submitForm(context);
@@ -374,7 +375,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text('Save',
+                      child: Text(AppLocalizations.of(context)!.save,
                           style: TextStyle(fontSize: 16, color: Colors.white)),
                     ),
                   ),
@@ -400,12 +401,12 @@ bool validateBasicDetails(
     ) {
 
   if (provider.nameAsAdharController.text.trim().isEmpty) {
-    showAlertError("Please enter Name (As per Aadhaar)", context);
+    showAlertError(AppLocalizations.of(context)!.plzentrnamAsAdhar, context);
     return false;
   }
 
   if (provider.mobileController.text.trim().isEmpty) {
-    showAlertError("Please enter Mobile Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzentrmobilNo, context);
     return false;
   }
 

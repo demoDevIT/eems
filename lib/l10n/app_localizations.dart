@@ -226,6 +226,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download Registration Card'**
   String get downldregiscard;
+  String get mysyStatus;
 
   /// No description provided for @grievfeedbak.
   ///
@@ -370,6 +371,80 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quick Services'**
   String get quickServices;
+
+  String get searchRegNo;
+  String get scanQRCode;
+  String get role;
+  String get officeName;
+  String get updateProfile;
+  String get requestDMap;
+  String get logoutConfirmMsg;
+  String get logoutThankYouText;
+  String get cancel;
+  String get yeslogout;
+  String get enterRegNo;
+  String get internJoin;
+  String get internAttend;
+  String get dmapReqForm;
+  String get name;
+  String get mobileNo;
+  String get nameAsPerAdhar;
+  String get presentDept;
+  String get internOfficeDept;
+  String get remarks;
+  String get enterRemarks;
+  String get submit;
+  String get addBasicInfo;
+  String get basicDetails;
+  String get officerSSOID;
+  String get officerName;
+  String get nameAsPerAdharNote;
+  String get designationAsPerSSO;
+  String get adminDept;
+  String get district;
+  String get selectDistrict;
+  String get department;
+  String get selectDepartment;
+  String get internOfficeName;
+  String get selectOffice;
+  String get confrmSubmision;
+  String get areYouSureSubmitForm;
+  String get save;
+  String get plzentrnamAsAdhar;
+  String get plzentrmobilNo;
+  String get forAnyQuery;
+  String get noRecord;
+  String get regNo;
+  String get fName;
+  String get gender;
+  String get dob;
+  String get appDate;
+  String get approvalDate;
+  String get allocDate;
+  String get dept;
+  String get allotedDept;
+  String get joinStatus;
+  String get viewJoinLetter;
+  String get approveJoin;
+  String get registrationNo;
+  String get search;
+  String get clear;
+  String get category;
+  String get joinDate;
+  String get joinLetter;
+  String get attendYear;
+  String get attendMonth;
+  String get attendUploadOn;
+  String get attendStatus;
+  String get attendLetter;
+  String get markAttend;
+  String get view;
+  String get year;
+  String get month;
+  String get selectYear;
+  String get selectMonth;
+  String get wholeMonthAbsent;
+
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

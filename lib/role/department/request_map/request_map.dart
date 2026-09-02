@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import 'provider/request_map_provider.dart';
 import '../../../utils/textfeild.dart';
 
@@ -54,8 +55,8 @@ class _RequestMapScreenState extends State<RequestMapScreen> {
               ),
               onPressed: () => Navigator.pop(context),
             ),
-            title: const Text(
-              "D-Map Request Form",
+            title: Text(
+              AppLocalizations.of(context)!.dmapReqForm, //"D-Map Request Form",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -89,54 +90,54 @@ class _RequestMapScreenState extends State<RequestMapScreen> {
                     ),
                   ),
 
-                _label("SSOID"),
+                _label(AppLocalizations.of(context)!.ssoid),
                 _field(
                   provider.ssoIdController,
-                  "SSOID",
+                  AppLocalizations.of(context)!.ssoid, //SSOID
                   isEnabled: false,
                 ),
 
-                _label("Name"),
+                _label(AppLocalizations.of(context)!.name),
                 _field(
                   provider.nameController,
-                  "Name",
+                  AppLocalizations.of(context)!.name, //"Name",
                   isEnabled: false,
                 ),
 
-                _label("Mobile No."),
+                _label(AppLocalizations.of(context)!.mobileNo),
                 _field(
                   provider.mobileController,
-                  "Mobile No.",
+                  AppLocalizations.of(context)!.mobileNo,
                   isEnabled: false,
                 ),
 
-                _label("Name As Per Aadhar"),
+                _label(AppLocalizations.of(context)!.nameAsPerAdhar),
                 _field(
                   provider.aadhaarNameController,
-                  "Name As Per Aadhar",
+                  AppLocalizations.of(context)!.nameAsPerAdhar,
                   isEnabled: false,
                 ),
 
-                _label("Present Department"),
+                _label(AppLocalizations.of(context)!.presentDept),
                 _field(
                   provider.presentDeptController,
-                  "Present Department",
+                  AppLocalizations.of(context)!.presentDept,
                   isEnabled: false,
                 ),
 
-                _label("Internship Office Department"),
+                _label(AppLocalizations.of(context)!.internOfficeDept),
                 _field(
                   provider.internshipDeptController,
-                  "Internship Office Department",
+                  AppLocalizations.of(context)!.internOfficeDept,
                   isEnabled: false,
                 ),
 
-                _label("Remarks *"),
+                _label(AppLocalizations.of(context)!.remarks + "*"),
                 TextField(
                   controller: provider.remarksController,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: "Enter Remarks",
+                    hintText: AppLocalizations.of(context)!.enterRemarks,
                     filled: true,
                     fillColor: fafafaColor,
                     border: OutlineInputBorder(
@@ -172,8 +173,8 @@ class _RequestMapScreenState extends State<RequestMapScreen> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
-                      "Submit",
+                    child: Text(
+                      AppLocalizations.of(context)!.submit, //"Submit",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,

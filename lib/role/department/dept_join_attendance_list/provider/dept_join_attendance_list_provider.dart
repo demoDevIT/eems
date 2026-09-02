@@ -475,8 +475,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       const SizedBox(height: 8),
 
                       /// YEAR DROPDOWN
-                      const Text(
-                        "Select Year",
+                      Text(
+                        AppLocalizations.of(context)!.selectYear,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
@@ -505,8 +505,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                       const SizedBox(height: 20),
 
                       /// MONTH DROPDOWN
-                      const Text(
-                        "Select Month",
+                      Text(
+                        AppLocalizations.of(context)!.selectMonth,
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
@@ -521,7 +521,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 14, vertical: 14),
                         ),
-                        hint: const Text("Select Month"),
+                        hint: Text(AppLocalizations.of(context)!.selectMonth),
                         items: monthList
                             .map(
                               (month) => DropdownMenuItem(
@@ -577,8 +577,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                               setStateDialog(() {});
                             },
                           ),
-                          const Text(
-                            "Whole Month Absent",
+                          Text(
+                            AppLocalizations.of(context)!.wholeMonthAbsent,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, color: Colors.red),
                           ),

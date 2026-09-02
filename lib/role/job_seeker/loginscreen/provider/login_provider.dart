@@ -176,7 +176,7 @@ class LoginProvider with ChangeNotifier {
             "Password": pass,
             "DeviceID": deviceId,
             "IPv4": ipAddress,
-            //"BypassSSO": true //true for sandbox, remove for live
+            "BypassSSO": true //true for sandbox, remove for live
           };
         }
 
@@ -265,53 +265,53 @@ class LoginProvider with ChangeNotifier {
                   // UserData().model.value.gENDER = sm.data!.gender;
 
 
-                  // await saveRememberMeData();
-                  // getDeptBasicDetails(
-                  //     context, sm.data!.userID.toString(), sm.data!.roleID,
-                  //     ssoId, sm.data!.internshipDeptID, sm.data!.internshipDeptTypeID);
-
                   await saveRememberMeData();
+                  getDeptBasicDetails(
+                      context, sm.data!.userID.toString(), sm.data!.roleID,
+                      ssoId, sm.data!.internshipDeptID, sm.data!.internshipDeptTypeID);
 
-                  bool otpSent = await loginHistoryMessagesApi(
-                    context,
-                    sm.data!.mobileno,
-                    sm.data!.userID,
-                    sm.data!.roleID,
-                  );
-
-                  if (!otpSent) {
-                    showAlertError("Failed to send OTP", context);
-                    return null;
-                  }
-
-                  showOtpDialog(
-                    context,
-                    sm.data!.mobileno,
-                    onSubmit: (otp) async {
-                      bool verified = await verifyOtpApi(
-                        context,
-                        sm.data!.mobileno,
-                        otp,
-                      );
-
-                      if (!verified) {
-                        showAlertError(
-                          "Invalid OTP. Please try again.",
-                          context,
-                        );
-                        return;
-                      }
-
-                      await getDeptBasicDetails(
-                        context,
-                        sm.data!.userID.toString(),
-                        sm.data!.roleID,
-                        ssoId,
-                        sm.data!.internshipDeptID,
-                        sm.data!.internshipDeptTypeID,
-                      );
-                    },
-                  );
+                  // await saveRememberMeData();
+                  //
+                  // bool otpSent = await loginHistoryMessagesApi(
+                  //   context,
+                  //   sm.data!.mobileno,
+                  //   sm.data!.userID,
+                  //   sm.data!.roleID,
+                  // );
+                  //
+                  // if (!otpSent) {
+                  //   showAlertError("Failed to send OTP", context);
+                  //   return null;
+                  // }
+                  //
+                  // showOtpDialog(
+                  //   context,
+                  //   sm.data!.mobileno,
+                  //   onSubmit: (otp) async {
+                  //     bool verified = await verifyOtpApi(
+                  //       context,
+                  //       sm.data!.mobileno,
+                  //       otp,
+                  //     );
+                  //
+                  //     if (!verified) {
+                  //       showAlertError(
+                  //         "Invalid OTP. Please try again.",
+                  //         context,
+                  //       );
+                  //       return;
+                  //     }
+                  //
+                  //     await getDeptBasicDetails(
+                  //       context,
+                  //       sm.data!.userID.toString(),
+                  //       sm.data!.roleID,
+                  //       ssoId,
+                  //       sm.data!.internshipDeptID,
+                  //       sm.data!.internshipDeptTypeID,
+                  //     );
+                  //   },
+                  // );
 
                   return sm;
 

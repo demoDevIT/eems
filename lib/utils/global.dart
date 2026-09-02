@@ -974,7 +974,7 @@ Future<void> showLogoutDialog(
                               () {
                             Navigator.of(context).pop();
                           },
-                          "Cancel",
+                          AppLocalizations.of(context)!.cancel,
                           '',
                           height: 40,
                           radius: 50,
@@ -990,7 +990,7 @@ Future<void> showLogoutDialog(
                             Navigator.of(context).pop();
                             fun("success");
                           },
-                          "Yes Logout",
+                          AppLocalizations.of(context)!.yeslogout,
                           '',
                           fontSize: 14,
                           height: 40,

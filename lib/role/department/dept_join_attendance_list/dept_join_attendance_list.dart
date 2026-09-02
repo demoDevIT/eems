@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/role/department/dept_join_attendance_list/modal/year_modal.dart';
+import '../../../l10n/app_localizations.dart';
 import 'modal/dept_join_attendance_modal.dart';
 import 'modal/financial_year_modal.dart';
 import 'modal/level_name_modal.dart';
@@ -65,9 +66,9 @@ class _DeptJoinAttendanceListScreenState
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           //"Attendance List for Department Joining",
-          "Internship Attendance",
+            AppLocalizations.of(context)!.internAttend,
           // "Pending Attendance list for Approval",
           style: TextStyle(color: Colors.black),
         ),
@@ -109,7 +110,7 @@ class _DeptJoinAttendanceListScreenState
                 child: provider.isAttendanceLoading
                     ? const Center(child: CircularProgressIndicator())
                     : provider.attendanceList.isEmpty
-                    ? const Center(child: Text("No records found"))
+                    ? Center(child: Text(AppLocalizations.of(context)!.noRecord))
                     : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: provider.attendanceList.length,
@@ -214,25 +215,25 @@ class _DeptJoinAttendanceListScreenState
 
             const SizedBox(height: 15),
 
-            _row("Registration No. ", item.registrationNo),
-            _row("Father Name", item.fName),
-            _row("Gender", item.gender),
-            _row("Category", item.category),
-            _row("DOB", item.dob),
-            _row("Joining Date", _formatDate(item.joinDate)),
+            _row(AppLocalizations.of(context)!.registrationNo, item.registrationNo),
+            _row(AppLocalizations.of(context)!.fName, item.fName),
+            _row(AppLocalizations.of(context)!.gender, item.gender),
+            _row(AppLocalizations.of(context)!.category, item.category),
+            _row(AppLocalizations.of(context)!.dob, item.dob),
+            _row(AppLocalizations.of(context)!.joinDate, _formatDate(item.joinDate)),
             _fileRow(
-              label: "Joining Letter",
+              label: AppLocalizations.of(context)!.joinLetter,
               fileUrl: item.pdfPath,
               onTap: () {
                 provider.downloadAndOpenPdf(item.pdfPath!);
               },
             ),
-            _row("Attendance Year", item.year?.toString()),
-            _row("Attendance Month", item.monthName),
-            _row("Attendance Uploaded ON", item.attendanceUploadedOn),
-            _row("Attendance Status", item.attendanceStatus),
+            _row(AppLocalizations.of(context)!.attendYear, item.year?.toString()),
+            _row(AppLocalizations.of(context)!.attendMonth, item.monthName),
+            _row(AppLocalizations.of(context)!.attendUploadOn, item.attendanceUploadedOn),
+            _row(AppLocalizations.of(context)!.attendStatus, item.attendanceStatus),
             _fileRow(
-              label: "Attendance Letter",
+              label: AppLocalizations.of(context)!.attendLetter,
               fileUrl: item.attendanceLetter,
               onTap: () {
                 provider.downloadAndOpenPdf(item.attendanceLetter!);
@@ -250,7 +251,7 @@ class _DeptJoinAttendanceListScreenState
                   OutlinedButton(
                     onPressed: () =>
                         provider.openAttendancePopup(context, item),
-                    child: const Text("Mark Attendance"),
+                    child: Text(AppLocalizations.of(context)!.markAttend),
                   ),
 
                 /// 🔹 IF MARKED
@@ -371,8 +372,8 @@ class _DeptJoinAttendanceListScreenState
             child: fileUrl != null && fileUrl.isNotEmpty
                 ? GestureDetector(
               onTap: onTap,
-              child: const Text(
-                "View",
+              child: Text(
+                AppLocalizations.of(context)!.view,
                 style: TextStyle(
                   color: Colors.blue,
                   decoration: TextDecoration.underline,
@@ -412,7 +413,7 @@ class _DeptJoinAttendanceListScreenState
           TextField(
             controller: provider.regNoController,
             decoration: InputDecoration(
-              labelText: "Registration No.",
+              labelText: AppLocalizations.of(context)!.registrationNo,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -430,7 +431,7 @@ class _DeptJoinAttendanceListScreenState
                 child: DropdownButtonFormField<YearData>(
                   value: provider.selectedYearObj,
                   decoration: InputDecoration(
-                    labelText: "Year",
+                    labelText: AppLocalizations.of(context)!.year,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -456,7 +457,7 @@ class _DeptJoinAttendanceListScreenState
                 child: DropdownButtonFormField<MonthData>(
                   value: provider.selectedMonthObj,
                   decoration: InputDecoration(
-                    labelText: "Month",
+                    labelText: AppLocalizations.of(context)!.month,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -489,7 +490,7 @@ class _DeptJoinAttendanceListScreenState
                   onPressed: () {
                     provider.search(context);
                   },
-                  child: const Text("Search"),
+                  child: Text(AppLocalizations.of(context)!.search),
                 ),
               ),
 
@@ -501,7 +502,7 @@ class _DeptJoinAttendanceListScreenState
                   onPressed: () {
                     provider.clearSearch();
                   },
-                  child: const Text("Clear"),
+                  child: Text(AppLocalizations.of(context)!.clear),
                 ),
               ),
             ],

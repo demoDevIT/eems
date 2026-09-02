@@ -8,9 +8,11 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/department/register_form/register_form.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../api_service/datasource/remote/dio/dio_client.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
+import '../../../utils/language_toggle_switch.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/user_new.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
@@ -61,8 +63,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            "Dashboard",
+          title: Text(
+            AppLocalizations.of(context)!.dashboard, //"Dashboard",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -70,130 +72,145 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
             ),
           ),
           actions: [
-            Consumer<DepartmentDashboardProvider>(
-              builder: (context, provider, _) {
-                return PopupMenuButton<RoleData>(
-                    offset: const Offset(0, 10), // opens below button
-                    position: PopupMenuPosition.under,
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.95,
-                      maxWidth: MediaQuery.of(context).size.width * 0.95,
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.manage_accounts,
-                              color: Colors.white, size: 18),
-                          SizedBox(width: 6),
-                          Text(
-                            "Role",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(width: 4),
-                          Icon(Icons.keyboard_arrow_down,
-                              color: Colors.white),
-                        ],
-                      ),
-                    ),
-                  onSelected: (RoleData role) async {
-                    provider.selectedRole = role;
 
-                    provider.roleNameController.text = role.roleName ?? "";
-                    provider.roleIdController.text = role.roleID?.toString() ?? "";
-
-                    provider.notifyListeners();
-
-                    print("dept dashboard Selected Role : ${role.roleName}");
-                    print("Role Id : ${role.roleID}");
-
-                    final roleID = role.roleID;
-                    final officeID = role.officeID;
-                    final internDeptTypeID = role.internshipDeptTypeID;
-                    final internDeptID = role.internshipDeptID;
-
-                    await provider.GetSSOUserDetail(
-                      context,
-                      switchRoleID: roleID!,
-                      switchOfficeID: officeID!, // use your actual field name
-                      intDeptTypeID: internDeptTypeID!, // use your actual field name
-                      intDeptID: internDeptID!, // use your actual field name
-                    );
-                  },
-
-                  itemBuilder: (context) {
-                    return provider.roleList.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final role = entry.value;
-
-                      final bool isSelected =
-                          role.roleID == UserData().model.value.roleId &&
-                              role.officeID == UserData().model.value.officeID &&
-                              role.internshipDeptID == UserData().model.value.internshipDeptID;
-
-                      return PopupMenuItem<RoleData>(
-                        value: role,
-                        padding: EdgeInsets.zero,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.blue.shade50 : Colors.white,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(
-                                Icons.work_outline,
-                                color: Colors.blue,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      role.roleName ?? "",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    // const SizedBox(height: 4),
-                                    // Text(
-                                    //   role.officeNameEn ?? "",
-                                    //   style: TextStyle(
-                                    //     color: Colors.grey.shade600,
-                                    //     fontSize: 12,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+          Consumer<DepartmentDashboardProvider>(
+            builder: (context, provider, _) {
+              return PopupMenuButton<RoleData>(
+                offset: const Offset(0, 10), // opens below button
+                position: PopupMenuPosition.under,
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width * 0.95,
+                  maxWidth: MediaQuery.of(context).size.width * 0.95,
+                ),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.manage_accounts,
+                          color: Colors.white, size: 18),
+                      SizedBox(width: 6),
+                      Text(
+                        AppLocalizations.of(context)!.role, //"Role",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
-                      );
-                    }).toList();
-                  },
-                );
-              },
+                      ),
+                      SizedBox(width: 4),
+                      Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
+                    ],
+                  ),
+                ),
+                onSelected: (RoleData role) async {
+                  provider.selectedRole = role;
+
+                  provider.roleNameController.text = role.roleName ?? "";
+                  provider.roleIdController.text = role.roleID?.toString() ?? "";
+
+                  provider.notifyListeners();
+
+                  print("dept dashboard Selected Role : ${role.roleName}");
+                  print("Role Id : ${role.roleID}");
+
+                  final roleID = role.roleID;
+                  final officeID = role.officeID;
+                  final internDeptTypeID = role.internshipDeptTypeID;
+                  final internDeptID = role.internshipDeptID;
+
+                  await provider.GetSSOUserDetail(
+                    context,
+                    switchRoleID: roleID!,
+                    switchOfficeID: officeID!, // use your actual field name
+                    intDeptTypeID: internDeptTypeID!, // use your actual field name
+                    intDeptID: internDeptID!, // use your actual field name
+                  );
+                },
+
+                itemBuilder: (context) {
+                  return provider.roleList.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final role = entry.value;
+
+                    final bool isSelected =
+                        role.roleID == UserData().model.value.roleId &&
+                            role.officeID == UserData().model.value.officeID &&
+                            role.internshipDeptID == UserData().model.value.internshipDeptID;
+
+                    return PopupMenuItem<RoleData>(
+                      value: role,
+                      padding: EdgeInsets.zero,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.blue.shade50 : Colors.white,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.work_outline,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    //role.roleName ?? "",
+                                    Localizations.localeOf(context).languageCode == 'hi'
+                                        ? (role.roleNameHi ?? role.roleName ?? "")
+                                        : (role.roleName ?? ""),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  // const SizedBox(height: 4),
+                                  // Text(
+                                  //   role.officeNameEn ?? "",
+                                  //   style: TextStyle(
+                                  //     color: Colors.grey.shade600,
+                                  //     fontSize: 12,
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList();
+                },
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: SizedBox(
+              width: 80,
+              child: LanguageToggleSwitch(),
             ),
-          ],
+          ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 8),
+            //   child: _languageButton(context),
+            // ),
+        ],
         ),
         body: Consumer<DepartmentDashboardProvider>(
           builder: (context, provider, _) {
@@ -211,7 +228,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     children: [
                       Expanded(
                         child: _actionButton(
-                          title: "Search with Reg No.",
+                          title: AppLocalizations.of(context)!.searchRegNo, //"Search with Reg No.",
                           icon: Icons.search,
                           onTap: () {
                             provider.openRegSearch();
@@ -223,7 +240,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                       Expanded(
                         child: _actionButton(
-                          title: "Scan QR Code",
+                          title: AppLocalizations.of(context)!.scanQRCode, //"Scan QR Code",
                           icon: Icons.qr_code_scanner,
                           onTap: () {
                             Navigator.of(context).push(
@@ -260,7 +277,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontSize: 14),
                         decoration: InputDecoration(
-                          hintText: "Enter Registration Number",
+                          hintText: AppLocalizations.of(context)!.enterRegNo, //"Enter Registration Number",
                           prefixIcon: const Icon(Icons.badge_outlined),
                           filled: true,
                           fillColor: Colors.white,
@@ -304,8 +321,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           provider.searchByRegistration(context);
                         },
                         icon: const Icon(Icons.send, size: 18),
-                        label: const Text(
-                          "Submit",
+                        label: Text(
+                          AppLocalizations.of(context)!.submit,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
@@ -348,7 +365,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     children: [
                       Expanded(
                         child: _dashboardCard(
-                          title: "Internship Joining",
+                          title: AppLocalizations.of(context)!.internJoin,
                           iconPath: "assets/images/internshipImg.png",
                           borderColor: const Color(0xff7B61FF),
                           bgColor: const Color(0xffF5F3FF),
@@ -367,7 +384,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                       Expanded(
                         child: _dashboardCard(
-                          title: "Internship Attendance",
+                          title: AppLocalizations.of(context)!.internAttend,
                           iconPath: "assets/images/attendanceImg.png",
                           borderColor: const Color(0xff22C55E),
                           bgColor: const Color(0xffECFDF5),
@@ -398,8 +415,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         width: 1,
                       ),
                     ),
-                    child: const Text(
-                      "For any queries related to Internship Joining, Attendance, or E-Sign, please contact your concerned District Employment Officer for assistance.",
+                    child: Text(
+                      AppLocalizations.of(context)!.forAnyQuery,
+                      //"For any queries related to Internship Joining, Attendance, or E-Sign, please contact your concerned District Employment Officer for assistance.",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -413,6 +431,61 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           },
         ),
       );
+  }
+
+  Widget _languageButton(BuildContext context) {
+    final isHindi =
+        Localizations.localeOf(context).languageCode == 'hi';
+
+    return InkWell(
+      onTap: () {
+        // Call your existing language change logic here
+      },
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        height: 36,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: Colors.blue,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'A',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: !isHindi ? Colors.blue : Colors.grey,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                '/',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+            Text(
+              'अ',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: isHindi ? Colors.blue : Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildRoleSection() {
@@ -506,10 +579,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                         Expanded(
                           flex: 3,
                           child: Text(
-                            "Role :-",
+                            AppLocalizations.of(context)!.role + " :-",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -536,10 +609,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                         Expanded(
                           flex: 3,
                           child: Text(
-                            "Office Name :-",
+                            AppLocalizations.of(context)!.officeName + " :-", //"Office Name :-",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -619,8 +692,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                               ),
                             );
                           },
-                          child: const Text(
-                            "Update Profile",
+                          child: Text(
+                            AppLocalizations.of(context)!.updateProfile, //"Update Profile",
                             style: TextStyle(
                               fontSize: 14,
                               color: kViewAllColor,
@@ -647,14 +720,14 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.dashboard),
-            title: const Text("Dashboard", style: TextStyle(fontSize: 14)),
+            title:  Text(AppLocalizations.of(context)!.dashboard, style: TextStyle(fontSize: 14)),
             onTap: () {
               Navigator.pop(context); // Already on dashboard
             },
           ),
           ListTile(
             leading: const Icon(Icons.request_page),
-            title: const Text("Request for DMap", style: TextStyle(fontSize: 14)),
+            title: Text(AppLocalizations.of(context)!.requestDMap, style: TextStyle(fontSize: 14)),
             // onTap: () {
             //   Navigator.pop(context); // Already on dashboard
             // },
@@ -682,12 +755,12 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               fit: BoxFit.cover,
             ),
             title: Text(
-              "logout",
+              AppLocalizations.of(context)!.logout,
               style: Styles.mediumTextStyle(size: 14),
             ),
             onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
+              showLogoutDialog(context, AppLocalizations.of(context)!.logout,AppLocalizations.of(context)!.logoutConfirmMsg, AppLocalizations.of(context)!.logoutThankYouText, (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
 

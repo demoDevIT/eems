@@ -75,6 +75,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get downldregiscard => 'पंजीकरण कार्ड डाउनलोड करें';
 
   @override
+  String get mysyStatus => 'MYSY स्टेटस';
+
+  @override
   String get grievfeedbak => 'शिकायत/प्रतिक्रिया';
 
   @override
@@ -145,4 +148,221 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get quickServices => 'त्वरित सेवाएं';
+
+  @override
+  String get searchRegNo => "रजिस्ट्रेशन नंबर से खोजें";
+
+  @override
+  String get scanQRCode => "स्कैन क्यू आर कोड";
+
+  @override
+  String get role => "भूमिका";
+
+  @override
+  String get officeName => "कार्यालय का नाम";
+
+  @override
+  String get updateProfile => "प्रोफ़ाइल अपडेट करें";
+
+  @override
+  String get requestDMap => "DMap के लिए अनुरोध";
+
+  @override
+  String get logoutConfirmMsg => "क्या आप सच में लॉग आउट करना चाहते हैं?";
+
+  @override
+  String get logoutThankYouText => "धन्यवाद और फिर मिलेंगे!";
+
+  @override
+  String get cancel => "रद्द करें";
+
+  @override
+  String get yeslogout => "हाँ, लॉग आउट करें";
+
+  @override
+  String get enterRegNo => "रजिस्ट्रेशन नंबर डालें";
+
+  @override
+  String get internJoin => "इंटर्नशिप जॉइनिंग";
+
+  @override
+  String get internAttend => "इंटर्नशिप उपस्थिति";
+
+  @override
+  String get dmapReqForm => "D-Map अनुरोध फ़ॉर्म";
+
+  @override
+  String get name => "नाम";
+
+  @override
+  String get mobileNo => "मोबाइल नंबर";
+
+  @override
+  String get nameAsPerAdhar => "आधार के अनुसार नाम";
+
+  @override
+  String get presentDept => "वर्तमान विभाग";
+
+  @override
+  String get internOfficeDept => "इंटर्नशिप कार्यालय विभाग";
+
+  @override
+  String get remarks => "टिप्पणी";
+
+  @override
+  String get enterRemarks => "टिप्पणियाँ दर्ज करें";
+
+  @override
+  String get submit => "जमा करें";
+
+  @override
+  String get addBasicInfo => "बुनियादी जानकारी जोड़ें";
+
+  @override
+  String get basicDetails => "बुनियादी जानकारी";
+
+  @override
+  String get officerSSOID => "अधिकारी की SSO ID";
+
+  @override
+  String get officerName => "अधिकारी का नाम";
+
+  @override
+  String get nameAsPerAdharNote => "नोट - आवेदक की इंटर्नशिप जॉइनिंग और उपस्थिति के वेरिफिकेशन के लिए अपना नाम ठीक वैसा ही लिखें जैसा आपके आधार कार्ड पर है।";
+
+  @override
+  String get designationAsPerSSO => "SSO के अनुसार पद";
+
+  @override
+  String get adminDept => "प्रशासनिक विभाग";
+
+  @override
+  String get district => "ज़िला";
+
+  @override
+  String get selectDistrict => "--ज़िला चुनें--";
+
+  @override
+  String get department => "विभाग";
+
+  @override
+  String get selectDepartment => "विभाग चुनें";
+
+  @override
+  String get internOfficeName => "इंटर्नशिप कार्यालय का नाम";
+
+  @override
+  String get selectOffice => "--ऑफ़िस चुनें--";
+
+  @override
+  String get confrmSubmision => "सबमिशन की पुष्टि करें";
+
+  @override
+  String get areYouSureSubmitForm => "क्या आप पक्का फ़ॉर्म सबमिट करना चाहते हैं?";
+
+  @override
+  String get save => "जमा";
+
+  @override
+  String get plzentrnamAsAdhar => "कृपया नाम दर्ज करें (आधार के अनुसार)";
+
+  @override
+  String get plzentrmobilNo => "कृपया मोबाइल नंबर डालें";
+
+  @override
+  String get forAnyQuery => "इंटर्नशिप जॉइनिंग, अटेंडेंस या ई-साइन से जुड़े किसी भी सवाल के लिए, कृपया मदद के लिए अपने संबंधित ज़िला रोज़गार अधिकारी से संपर्क करें।";
+
+  @override
+  String get noRecord => "कोई रिकॉर्ड नहीं मिला";
+
+  @override
+  String get regNo => "पंजीकरण संख्या: ";
+
+  @override
+  String get fName => "पिता का नाम";
+
+  @override
+  String get gender => "लिंग";
+
+  @override
+  String get dob => "जन्म तिथि";
+
+  @override
+  String get appDate => "आवेदन की तारीख";
+
+  @override
+  String get approvalDate => "अनुमोदन तिथि";
+
+  @override
+  String get allocDate => "आवंटन की तारीख";
+
+  @override
+  String get dept => "विभाग";
+
+  @override
+  String get allotedDept => "आवंटित विभाग";
+
+  @override
+  String get joinStatus => "शामिल होने की स्थिति";
+
+  @override
+  String get viewJoinLetter => "जॉइनिंग लेटर देखें";
+
+  @override
+  String get approveJoin => "शामिल होने को मंज़ूरी दें";
+
+  @override
+  String get registrationNo => "पंजीकरण संख्या";
+
+  @override
+  String get search => "खोजें";
+
+  @override
+  String get clear => "हटा दें";
+
+  @override
+  String get category => "श्रेणी";
+
+  @override
+  String get joinDate => "कार्यग्रहण तारीख";
+
+  @override
+  String get joinLetter => "जॉइनिंग लेटर";
+
+  @override
+  String get attendYear => "उपस्थिति वर्ष";
+
+  @override
+  String get attendMonth => "उपस्थिति महीना";
+
+  @override
+  String get attendUploadOn => "उपस्थिति अपलोड की गई";
+
+  @override
+  String get attendStatus => "उपस्थिति स्थिति";
+
+  @override
+  String get attendLetter => "उपस्थिति पत्र";
+
+  @override
+  String get markAttend => "उपस्थिति दर्ज करें";
+
+  @override
+  String get view => "देखें";
+
+  @override
+  String get year => "वर्ष";
+
+  @override
+  String get month => "महीना";
+
+  @override
+  String get selectYear => "साल चुनें";
+
+  @override
+  String get selectMonth => "महीना चुनिए";
+
+  @override
+  String get wholeMonthAbsent => "पूरे महीने अनुपस्थित";
+
 }

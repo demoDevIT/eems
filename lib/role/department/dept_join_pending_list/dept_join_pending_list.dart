@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import 'modal/financial_year_modal.dart';
 import 'modal/level_name_modal.dart';
@@ -61,8 +62,8 @@ class _DeptJoinPendingListScreenState
     return Scaffold(
       backgroundColor: kWhite,
       appBar: AppBar(
-        title: const Text(
-          "Internship Joining",
+        title: Text(
+          AppLocalizations.of(context)!.internJoin,
           // "Pending List for Department Joining",
           style: TextStyle(color: Colors.black),
         ),
@@ -104,7 +105,7 @@ class _DeptJoinPendingListScreenState
                 child: provider.isPendingListLoading
                     ? const Center(child: CircularProgressIndicator())
                     : provider.pendingList.isEmpty
-                    ? const Center(child: Text("No records found"))
+                    ? Center(child: Text(AppLocalizations.of(context)!.noRecord))
                     : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: provider.pendingList.length,
@@ -176,7 +177,7 @@ class _DeptJoinPendingListScreenState
                         ),
                       ),
                       const SizedBox(height: 6),
-                      Text("Reg No: ${item.regNo ?? "-"}"),
+                      Text(AppLocalizations.of(context)!.regNo + "${item.regNo ?? "-"}"),
                      // Text("Mobile: ${item.mobileNo ?? "-"}"),
                     ],
                   ),
@@ -186,24 +187,24 @@ class _DeptJoinPendingListScreenState
 
             const SizedBox(height: 15),
 
-            _row("Father Name", item.fNameEng),
+            _row(AppLocalizations.of(context)!.fName, item.fNameEng),
 
 
          //   _row("Approval Date", _formatDate(item.lastActionDate)),
-            _row("Gender", item.gender),
-            _row("DOB", item.dob),
-            _row("Mobile No.", item.mobileNo),
-            _row("Application Date", item.applyDate),
-            _row("Approval Date", item.applicationApprovalDate),
+            _row(AppLocalizations.of(context)!.gender, item.gender),
+            _row(AppLocalizations.of(context)!.dob, item.dob),
+            _row(AppLocalizations.of(context)!.mobileNo, item.mobileNo),
+            _row(AppLocalizations.of(context)!.appDate, item.applyDate),
+            _row(AppLocalizations.of(context)!.approvalDate, item.applicationApprovalDate),
 
-            _row("Allocation Date", item.deptAllotmentDate),
-            _row("Department", item.departmentNameEn),
+            _row(AppLocalizations.of(context)!.allocDate, item.deptAllotmentDate),
+            _row(AppLocalizations.of(context)!.dept, item.departmentNameEn),
             _row(
-              "Alloted Department",
+              AppLocalizations.of(context)!.allotedDept,
               "${item.allottedDeptName ?? "-"} (${item.departmentNameEn ?? "-"})",
             ),
             _row(
-              "Joining Status",
+              AppLocalizations.of(context)!.joinStatus,
               item.internJoined == 0 ? "No" : "Yes",
             ),
             // if "yes" - view button for joining letter
@@ -219,7 +220,7 @@ class _DeptJoinPendingListScreenState
                         context,
                         item.jobSeekerUserId ?? 0,
                       ),
-                      child: const Text("View Joining Letter"),
+                      child: Text(AppLocalizations.of(context)!.viewJoinLetter),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -228,7 +229,7 @@ class _DeptJoinPendingListScreenState
                       onPressed: () {
                         provider.openApproveJoiningPopup(context, item);
                       },
-                      child: const Text("Approve Joining"),
+                      child: Text(AppLocalizations.of(context)!.approveJoin),
                     ),
                   ),
                 ],
@@ -328,7 +329,7 @@ class _DeptJoinPendingListScreenState
           TextField(
             controller: provider.regNoController,
             decoration: InputDecoration(
-              labelText: "Registration No.",
+              labelText: AppLocalizations.of(context)!.registrationNo,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -347,7 +348,7 @@ class _DeptJoinPendingListScreenState
                   onPressed: () {
                     provider.search(context);
                   },
-                  child: const Text("Search"),
+                  child: Text(AppLocalizations.of(context)!.search),
                 ),
               ),
 
@@ -359,7 +360,7 @@ class _DeptJoinPendingListScreenState
                   onPressed: () {
                     provider.clearSearch();
                   },
-                  child: const Text("Clear"),
+                  child: Text(AppLocalizations.of(context)!.clear),
                 ),
               ),
             ],
