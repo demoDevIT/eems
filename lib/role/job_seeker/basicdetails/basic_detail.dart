@@ -7,6 +7,7 @@ import 'package:rajemployment/role/job_seeker/basicdetails/provider/basic_detail
 import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/user_new.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
@@ -43,7 +44,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
 
     return Scaffold(
 
-    appBar: commonAppBar2("Add Basic Info", context,
+    appBar: commonAppBar2(AppLocalizations.of(context)!.addBasicInfo, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -56,12 +57,12 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Basic Details",
+              Text(
+                AppLocalizations.of(context)!.basicDetails,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              const Text(
-                "(As Per Jan Aadhaar)",
+              Text(
+                "("+AppLocalizations.of(context)!.nameAsPerJanAdhar+")",
                 style: TextStyle(color: Colors.red, fontSize: 12),
               ),
               const SizedBox(height: 20),
@@ -150,7 +151,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
               ),
 
               const SizedBox(height: 20),
-              labelWithStar('Full Name',required: false),
+              labelWithStar(AppLocalizations.of(context)!.fullName,required: false),
              /* Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -166,7 +167,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.fullNameController,
-                  "Enter your full name",
+                  AppLocalizations.of(context)!.enterFullName,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -184,14 +185,14 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           color: kBlackColor, size: 14)),
                 ),
               ),*/
-              labelWithStar('Father’s Name',required: false),
+              labelWithStar(AppLocalizations.of(context)!.fName,required: false),
 
               Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.fatherNameController,
-                  "Enter your father name",
+                  AppLocalizations.of(context)!.enterFName,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -199,14 +200,14 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 ),
               ),
 
-              labelWithStar('Mother’s Name',required: false),
+              labelWithStar(AppLocalizations.of(context)!.mName,required: false),
 
               Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.motherNameController,
-                  "Enter your mother name",
+                  AppLocalizations.of(context)!.enterMName,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -303,7 +304,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('Date of Birth',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.dob,required: false),
                         const SizedBox(height: 6),
                         buildTextWithBorderWhiteBgField(
                             provider.dobController,
@@ -324,11 +325,11 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('Mobile Number',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.mobileNo,required: false),
                         const SizedBox(height: 6),
                         buildTextWithBorderWhiteBgField(
                           provider.mobileController,
-                          "Enter mobile number" , // No
+                          AppLocalizations.of(context)!.enterMobileNo , // No
                           MediaQuery.of(context).size.width,
                           50,
                           isEnabled: false,
@@ -340,7 +341,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 ],
               ),
 
-              labelWithStar('Email',required: false),
+              labelWithStar(AppLocalizations.of(context)!.email,required: false),
 
               /*Padding(
                 padding:
@@ -357,7 +358,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.emailController,
-                  "Enter your email",
+                  AppLocalizations.of(context)!.enterEmail,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -376,7 +377,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('Marital Status',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.maritalStatus,required: false),
                        /* Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -392,7 +393,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                           child: buildTextWithBorderField(
                             provider.maritalStatusController,
-                            "Marital Status",
+                            AppLocalizations.of(context)!.maritalStatus,
                             MediaQuery.of(context).size.width,
                             50,
                             isEnabled: false,
@@ -416,7 +417,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('Religion',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.religion,required: false),
                         /*Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -433,7 +434,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                           child: buildTextWithBorderField(
                             provider.religionController,
-                            "Select Religion",
+                            AppLocalizations.of(context)!.selectReligion,
                             MediaQuery.of(context).size.width,
                             50,
                             isEnabled: false,
@@ -454,7 +455,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 ],
               ),
 
-              labelWithStar('Caste',required: false),
+              labelWithStar(AppLocalizations.of(context)!.caste,required: false),
              /* Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -478,14 +479,14 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.casteController,
-                  "Select caste",
+                  AppLocalizations.of(context)!.selectCaste,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
                   TextInputType.emailAddress,
                 ),
               ),
-              labelWithStar('Aadhaar Reference Number',required: false),
+              labelWithStar(AppLocalizations.of(context)!.adharRefNo,required: false),
 
               /*Padding(
                 padding:
@@ -502,7 +503,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.aadharController,
-                  "Enter aadhaar reference number",
+                  AppLocalizations.of(context)!.enterAdharRefNo,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -521,7 +522,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      labelWithStar('Minority',required: false),
+                      labelWithStar(AppLocalizations.of(context)!.minority,required: false),
                       //const Text("Minority", style: TextStyle(fontWeight: FontWeight.w500)),
                       const SizedBox(height: 0),
 
@@ -572,7 +573,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     // margin: const EdgeInsets.only(left: 12),
                     children: [
-                      labelWithStar('Gender',required: false),
+                      labelWithStar(AppLocalizations.of(context)!.gender,required: false),
                      /* Padding(
                         padding: const EdgeInsets.only(left: 5),
                         child: const Text("Gender", style: TextStyle(fontWeight: FontWeight.w500)),
@@ -590,7 +591,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("Male"),
+                          Text(AppLocalizations.of(context)!.male),
                           Radio<String>(
                             value: "Female",
                             groupValue:  provider.gender,
@@ -600,7 +601,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("Female"),
+                          Text(AppLocalizations.of(context)!.female),
                           Radio<String>(
                             value: "Other",
                             groupValue:  provider.gender,
@@ -610,7 +611,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("Other"),
+                          Text(AppLocalizations.of(context)!.other),
                         ],
                       ),
                     ],
@@ -629,7 +630,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      labelWithStar('Ex-Service Man',required: false),
+                      labelWithStar(AppLocalizations.of(context)!.exSerMan,required: false),
                       const SizedBox(height: 8),
 
                       Row(
@@ -643,7 +644,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("Yes"),
+                          Text(AppLocalizations.of(context)!.yes),
                           Radio<String>(
                             value: "no",
                             groupValue:  provider.isExServiceMan,
@@ -653,7 +654,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("No"),
+                          Text(AppLocalizations.of(context)!.no),
                         ],
                       ),
                     ],
@@ -668,7 +669,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      labelWithStar('EWS Banificiary',required: false),
+                      labelWithStar(AppLocalizations.of(context)!.ewsBanificiary,required: false),
                       const SizedBox(height: 8),
 
                       Row(
@@ -682,7 +683,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("Yes"),
+                          Text(AppLocalizations.of(context)!.yes),
                           Radio<String>(
                             value: "no",
                             groupValue:  provider.isEWSCategory,
@@ -692,7 +693,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          const Text("No"),
+                          Text(AppLocalizations.of(context)!.no),
                         ],
                       ),
                     ],
@@ -702,7 +703,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
 
               const SizedBox(height: 12),
 
-              labelWithStar('Family Income',required: false),
+              labelWithStar(AppLocalizations.of(context)!.familyIncome,required: false),
 
             /*  Padding(
                 padding:
@@ -719,7 +720,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                 const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: buildTextWithBorderField(
                   provider.familyIncomeController,
-                  "Enter your family income",
+                  AppLocalizations.of(context)!.enterFamilyIncome,
                   MediaQuery.of(context).size.width,
                   50,
                   isEnabled: false,
@@ -729,7 +730,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
 
               const SizedBox(height: 20),
 
-              labelWithStar('Add Other Info',required: false),
+              labelWithStar(AppLocalizations.of(context)!.addOtherInfo,required: false),
               /*const Text(
                 "Add Other Info",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -747,7 +748,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('UID Type',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.uidType,required: false),
                        /* Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -763,7 +764,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                               horizontal: 0, vertical: 5),
                           child: buildTextWithBorderWhiteBgField(
                             provider.uidTypeController,
-                            "UID Type" , // No
+                              AppLocalizations.of(context)!.uidType , // No
                             MediaQuery.of(context).size.width,
                             50,
                             TextInputType.text,
@@ -787,7 +788,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelWithStar('UID Number',required: false),
+                        labelWithStar(AppLocalizations.of(context)!.uidNumber,required: false),
                         /*Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 0),

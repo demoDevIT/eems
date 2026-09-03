@@ -365,4 +365,130 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get wholeMonthAbsent => "पूरे महीने अनुपस्थित";
 
+  @override
+  String get nameAsPerJanAdhar => "जन आधार के अनुसार";
+
+  @override
+  String get fullName => "पूरा नाम";
+
+  @override
+  String get enterFullName => "अपना पूरा नाम भरें";
+
+  @override
+  String get enterFName => "अपने पिता का नाम दर्ज करें";
+
+  @override
+  String get mName => "मां का नाम";
+
+  @override
+  String get enterMName => "अपनी माँ का नाम दर्ज करें";
+
+  @override
+  String get enterMobileNo => "अपना मोबाइल नंबर दर्ज करे";
+
+  @override
+  String get email => "ईमेल";
+
+  @override
+  String get enterEmail => "अपना ईमेल दर्ज करें";
+
+  @override
+  String get maritalStatus => "वैवाहिक स्थिति";
+
+  @override
+  String get religion => "धर्म";
+
+  @override
+  String get selectReligion => "धर्म चुनें";
+
+  @override
+  String get caste => "जाति";
+
+  @override
+  String get selectCaste => "जाति चुनें";
+
+  @override
+  String get adharRefNo => "आधार संदर्भ संख्या";
+
+  @override
+  String get enterAdharRefNo => "आधार रेफरेंस नंबर डालें";
+
+  @override
+  String get minority => "अल्पसंख्यक";
+
+  @override
+  String get male => "पुरुष";
+
+  @override
+  String get female => "महिला";
+
+  @override
+  String get other => "अन्य";
+
+  @override
+  String get exSerMan => "पूर्व सैनिक";
+
+  @override
+  String get yes => "हाँ";
+
+  @override
+  String get no => "नहीं";
+
+  @override
+  String get ewsBanificiary => "EWS लाभार्थी";
+
+  @override
+  String get familyIncome => "पारिवारिक आय";
+
+  @override
+  String get enterFamilyIncome => "अपनी पारिवारिक आय दर्ज करें";
+
+  @override
+  String get addOtherInfo => "अन्य जानकारी जोड़ें";
+
+  @override
+  String get uidType => "UID का प्रकार";
+
+  @override
+  String get uidNumber => "UID नंबर";
+
+  @override
+  String get addressInfo => "पता संबंधी जानकारी";
+
+  @override
+  String get perAddAsPerJanadhar => "स्थायी पता: जन आधार के अनुसार";
+
+  @override
+  String get ifAnyChanges => "(अगर कोई बदलाव हो, तो कृपया जन आधार पर अपडेट करें)";
+
+  @override
+  String get city => "शहर";
+
+  @override
+  String get selectCity => "शहर चुनें";
+
+  @override
+  String get ward => "वार्ड";
+
+  @override
+  String get selectWard => "वार्ड चुनें";
+
+  @override
+  String get territoryType => "क्षेत्र का प्रकार";
+
+  @override
+  String get rural => "ग्रामीण";
+
+  @override
+  String get urban => "शहरी";
+
+  @override
+  String get address => "पता";
+
+  @override
+  String get pincode => "पिन कोड";
+
+  @override
+  String get communicationAdd => "पत्राचार का पता";
+
 }

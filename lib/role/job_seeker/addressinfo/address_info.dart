@@ -7,6 +7,7 @@ import 'package:rajemployment/role/job_seeker/addressinfo/provider/address_info_
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/user_new.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -42,7 +43,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Address Info", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.addressInfo, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -54,13 +55,13 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// Header
-                const Text(
-                  "Permanent Address: As Per Jan Aadhar",
+                Text(
+                  AppLocalizations.of(context)!.perAddAsPerJanadhar,
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
                 hSpace(4),
-                const Text(
-                  "(If Any changes, please update on Jan Aadhar)",
+                Text(
+                  AppLocalizations.of(context)!.ifAnyChanges,
                   style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
                 hSpace(16),
@@ -76,7 +77,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('District ',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.district,required: false),
 
                          /* Padding(
                             padding:
@@ -119,7 +120,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.districtNameController,
-                                "Select District",
+                                AppLocalizations.of(context)!.selectDistrict,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -137,7 +138,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('City ',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.city,required: false),
                           /*Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -180,7 +181,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.cityNameController,
-                                "Select City",
+                                AppLocalizations.of(context)!.selectCity,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -207,7 +208,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('Ward ',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.ward,required: false),
                           /*Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -242,7 +243,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.wardNameController,
-                                "Select Ward",
+                                AppLocalizations.of(context)!.selectWard,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -258,7 +259,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('Territory Type ',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.territoryType,required: false),
                          /* Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -287,7 +288,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                 visualDensity: VisualDensity.compact, // reduce space inside
                                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              const Text("Rural"),
+                              Text(AppLocalizations.of(context)!.rural),
                               SizedBox(width: 10), // Add space between the radio buttons
                               Radio<String>(
                                 value: "Urban",
@@ -297,7 +298,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                 visualDensity: VisualDensity.compact, // reduce space inside
                                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              const Text("Urban"),
+                              Text(AppLocalizations.of(context)!.urban),
                             ],
 
                           )
@@ -310,7 +311,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
 
                 hSpace(4),
 
-                labelWithStar('Address',required: false),
+                labelWithStar(AppLocalizations.of(context)!.address,required: false),
                /* Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -326,7 +327,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                   child: buildTextWithBorderField(
                     provider.addressController,
-                    "Address",
+                    AppLocalizations.of(context)!.address,
                     MediaQuery.of(context).size.width,
                     80,
                     TextInputType.emailAddress,
@@ -338,7 +339,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
 
                 hSpace(4),
 
-                labelWithStar('Pin Code',required: false),
+                labelWithStar(AppLocalizations.of(context)!.pincode,required: false),
                /* Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -354,7 +355,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                   child: buildTextWithBorderField(
                     provider.pinCodeController,
-                    "Pin Code",
+                    AppLocalizations.of(context)!.pincode,
                     MediaQuery.of(context).size.width,
                     50,
                     TextInputType.number,
@@ -369,7 +370,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                 Row(
                   children: [
 
-                    labelWithStar('Communication Address',required: false),
+                    labelWithStar(AppLocalizations.of(context)!.communicationAdd,required: false),
 
 
                     Row(

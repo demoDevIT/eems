@@ -57,6 +57,16 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   bool isAttendanceLoading = false;
   List<DeptJoinAttendanceItem> attendanceList = [];
 
+  // ================= PAGINATION =================
+  int currentPage = 1;
+  int pageSize = 10;
+
+  bool hasNextPage = false;
+  bool isPaginationLoading = false;
+
+// Used to prevent going back from page 1
+  bool get hasPreviousPage => currentPage > 1;
+
   // ******** filter variables *********
   TextEditingController regNoController = TextEditingController();
 
@@ -213,6 +223,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         String? registrationNumber,
         String? jobSeekerId,
         String? userId,
+        int? page,
+        bool resetPage = false,
       }) async {
     //example to check encryption
     // EncryptionHelper helper = EncryptionHelper();
@@ -224,6 +236,12 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     this.registrationNumber = registrationNumber ?? this.registrationNumber;
     this.jobSeekerId = jobSeekerId ?? this.jobSeekerId;
     this.userId = userId ?? this.userId;
+
+    if (resetPage) {
+      currentPage = 1;
+    }
+
+    final requestedPage = page ?? currentPage;
 
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (!isInternet) {
@@ -275,10 +293,17 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "FromDate": null,
         "ToDate": null,
         "PrivateDepartmentID": UserData().model.value.internshipDeptTypeID,
-        "AllotmentDeptId": UserData().model.value.internshipDeptID
+        "AllotmentDeptId": UserData().model.value.internshipDeptID,
+        "Page": requestedPage,
+        "PageSize": pageSize,
       };
 
-      isAttendanceLoading = true;
+      if (requestedPage == 1) {
+        isAttendanceLoading = true;
+      } else {
+        isPaginationLoading = true;
+      }
+
       notifyListeners();
 
       //  ProgressDialog.showLoadingDialog(context);
@@ -298,28 +323,67 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         }
 
         final sm = DeptJoinAttendanceModal.fromJson(responseData);
-        attendanceList.clear();
 
-        if (sm.state == 200 && sm.data != null) {
-          attendanceList.addAll(sm.data!);
+        if (sm.state == 200) {
+          attendanceList.clear();
+
+          if (sm.data != null) {
+            attendanceList.addAll(sm.data!);
+          }
+
+          currentPage = requestedPage;
+
+          // If API returns exactly pageSize records,
+          // assume another page may exist.
+          hasNextPage = (sm.data?.length ?? 0) >= pageSize;
+        } else {
+          hasNextPage = false;
         }
 
         isAttendanceLoading = false;
+        isPaginationLoading = false;
         notifyListeners();
         return sm;
       } else {
         isAttendanceLoading = false;
+        isPaginationLoading = false;
+        hasNextPage = false;
+
         notifyListeners();
         return DeptJoinAttendanceModal(
             state: 0, message: "Something went wrong");
       }
     } catch (e) {
-      ProgressDialog.closeLoadingDialog(context);
       isAttendanceLoading = false;
+      isPaginationLoading = false;
+
       notifyListeners();
+
       showAlertError(e.toString(), context);
       return DeptJoinAttendanceModal(state: 0, message: e.toString());
     }
+  }
+
+  Future<void> nextPage(BuildContext context) async {
+    if (!hasNextPage || isPaginationLoading) {
+      return;
+    }
+
+    await getDeptJoinAttendanceListApi(
+      context,
+      page: currentPage + 1,
+    );
+  }
+
+  Future<void> previousPage(BuildContext context) async {
+    if (!hasPreviousPage || isPaginationLoading) {
+      return;
+    }
+
+    await getDeptJoinAttendanceListApi(
+      context,
+      page: currentPage - 1,
+    );
   }
 
   Future<void> search(BuildContext context) async {
@@ -333,6 +397,8 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
       registrationNumber: regNoController.text.trim(),
       jobSeekerId: null,
       userId: null,
+      page: 1,
+      resetPage: true,
     );
   }
 
@@ -345,6 +411,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     filterSelectedYear = null;
     filterSelectedMonthNumber = null;
+
+    /// RESET PAGINATION
+    currentPage = 1;
+    hasNextPage = false;
 
     /// CLEAR LIST
     attendanceList.clear();

@@ -21,6 +21,7 @@ import '../l10n/app_localizations.dart';
 import '../role/job_seeker/qr_scanner/qr_scanner_screen.dart';
 import 'button.dart';
 import 'images.dart';
+import 'language_toggle_switch.dart';
 
 
 Widget vSpace(double space) {
@@ -664,6 +665,13 @@ commonAppBar(title, mContext, currentLanguage, userId, isBack, type, {Function? 
         },
         child: Row(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: SizedBox(
+                width: 80,
+                child: LanguageToggleSwitch(),
+              ),
+            ),
             InkWell(
               onTap: () async {
                 final scanned = await Navigator.of(mContext).push<String>(
@@ -708,6 +716,7 @@ commonAppBar(title, mContext, currentLanguage, userId, isBack, type, {Function? 
             //     ),
             //   ),
             // ),
+
             const SizedBox(width: 16),
           ],
         ),

@@ -141,6 +141,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
         localeProvider.toggleLocale();
       }),
         body:_pages[_currentIndex],
+
       ),
     );
   }

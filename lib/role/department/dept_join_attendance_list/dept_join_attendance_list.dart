@@ -49,13 +49,15 @@ class _DeptJoinAttendanceListScreenState
 
       provider.setCurrentYearMonth(); // 🔥 NEW
 
-      await provider.getDeptJoinAttendanceListApi(context);
+     // await provider.getDeptJoinAttendanceListApi(context);
 
       provider.getDeptJoinAttendanceListApi(
         context,
         registrationNumber: widget.registrationNumber,
         jobSeekerId: widget.jobSeekerId,
         userId: widget.userId,
+        page: 1,
+        resetPage: true,
       );
     });
   }
@@ -88,7 +90,7 @@ class _DeptJoinAttendanceListScreenState
           }
           return Column(
             children: [
-            //  _filterSection(context, provider),
+              //  _filterSection(context, provider),
 
               // const SizedBox(height: 8),
               //
@@ -110,22 +112,110 @@ class _DeptJoinAttendanceListScreenState
                 child: provider.isAttendanceLoading
                     ? const Center(child: CircularProgressIndicator())
                     : provider.attendanceList.isEmpty
-                    ? Center(child: Text(AppLocalizations.of(context)!.noRecord))
-                    : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: provider.attendanceList.length,
-                  itemBuilder: (context, index) {
-                    final item = provider.attendanceList[index];
-                    return _pendingCard(context, provider, item);
-                  },
+                    ? Center(
+                    child: Text(AppLocalizations.of(context)!.noRecord))
+                    : Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: provider.attendanceList.length,
+                        itemBuilder: (context, index) {
+                          final item = provider.attendanceList[index];
+                          return _pendingCard(context, provider, item);
+                        },
+                      ),
+                    ),
+
+                    /// PAGINATION
+                    _paginationControls(
+                      context,
+                      provider,
+                    ),
+                  ],
                 ),
               ),
             ],
+
           );
-        },
+        }
       ),
+    );
+  }
 
+  Widget _paginationControls(
+      BuildContext context,
+      DeptJoinAttendanceListProvider provider,
+      ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 10,
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          /// PREVIOUS
+          OutlinedButton.icon(
+            onPressed: !provider.hasPreviousPage ||
+                provider.isPaginationLoading
+                ? null
+                : () {
+              provider.previousPage(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 16,
+            ),
+            label: const Text("Previous"),
+          ),
 
+          /// PAGE NUMBER
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: Colors.grey.shade300,
+              ),
+            ),
+            child: Text(
+              "Page ${provider.currentPage}",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          /// NEXT
+          ElevatedButton.icon(
+            onPressed: !provider.hasNextPage ||
+                provider.isPaginationLoading
+                ? null
+                : () {
+              provider.nextPage(context);
+            },
+            icon: const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+            ),
+            label: const Text("Next"),
+          ),
+        ],
+      ),
     );
   }
 

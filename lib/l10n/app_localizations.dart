@@ -444,6 +444,48 @@ abstract class AppLocalizations {
   String get selectYear;
   String get selectMonth;
   String get wholeMonthAbsent;
+  String get nameAsPerJanAdhar;
+  String get fullName;
+  String get enterFullName;
+  String get enterFName;
+  String get mName;
+  String get enterMName;
+  String get enterMobileNo;
+  String get email;
+  String get enterEmail;
+  String get maritalStatus;
+  String get religion;
+  String get selectReligion;
+  String get caste;
+  String get selectCaste;
+  String get adharRefNo;
+  String get enterAdharRefNo;
+  String get minority;
+  String get male;
+  String get female;
+  String get other;
+  String get exSerMan;
+  String get yes;
+  String get no;
+  String get ewsBanificiary;
+  String get familyIncome;
+  String get enterFamilyIncome;
+  String get addOtherInfo;
+  String get uidType;
+  String get uidNumber;
+  String get addressInfo;
+  String get perAddAsPerJanadhar;
+  String get ifAnyChanges;
+  String get city;
+  String get selectCity;
+  String get ward;
+  String get selectWard;
+  String get territoryType;
+  String get rural;
+  String get urban;
+  String get address;
+  String get pincode;
+  String get communicationAdd;
 
 }
 

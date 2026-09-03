@@ -364,4 +364,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wholeMonthAbsent => "Whole Month Absent";
+
+  @override
+  String get nameAsPerJanAdhar => "As Per Jan Aadhaar";
+
+  @override
+  String get fullName => "Full Name";
+
+  @override
+  String get enterFullName => "Enter your Full Name";
+
+  @override
+  String get enterFName => "Enter your Father Name";
+
+  @override
+  String get mName => "Mother's Name";
+
+  @override
+  String get enterMName => "Enter your Mother Name";
+
+  @override
+  String get enterMobileNo => "Enter your Mobile Number";
+
+  @override
+  String get email => "Email";
+
+  @override
+  String get enterEmail => "Enter your Email";
+
+  @override
+  String get maritalStatus => "Marital Status";
+
+  @override
+  String get religion => "Religion";
+
+  @override
+  String get selectReligion => "Select Religion";
+
+  @override
+  String get caste => "Caste";
+
+  @override
+  String get selectCaste => "Select caste";
+
+  @override
+  String get adharRefNo => "Aadhaar Reference Number";
+
+  @override
+  String get enterAdharRefNo => "Enter aadhaar reference number";
+
+  @override
+  String get minority => "Minority";
+
+  @override
+  String get male => "Male";
+
+  @override
+  String get female => "Female";
+
+  @override
+  String get other => "Other";
+
+  @override
+  String get exSerMan => "Ex-Service Man";
+
+  @override
+  String get yes => "Yes";
+
+  @override
+  String get no => "No";
+
+  @override
+  String get ewsBanificiary => "EWS Banificiary";
+
+  @override
+  String get familyIncome => "Family Income";
+
+  @override
+  String get enterFamilyIncome => "Enter your family income";
+
+  @override
+  String get addOtherInfo => "Add Other Info";
+
+  @override
+  String get uidType => "UID Type";
+
+  @override
+  String get uidNumber => "UID Number";
+
+  @override
+  String get addressInfo => "Address Info";
+
+  @override
+  String get perAddAsPerJanadhar => "Permanent Address: As Per Jan Aadhar";
+
+  @override
+  String get ifAnyChanges => "(If Any changes, please update on Jan Aadhar)";
+
+  @override
+  String get city => "City";
+
+  @override
+  String get selectCity => "Select City";
+
+  @override
+  String get ward => "Ward";
+
+  @override
+  String get selectWard => "Select Ward";
+
+  @override
+  String get territoryType => "Territory Type";
+
+  @override
+  String get rural => "Rural";
+
+  @override
+  String get urban => "Urban";
+
+  @override
+  String get address => "Address";
+
+  @override
+  String get pincode => "Pin Code";
+
+  @override
+  String get communicationAdd => "Communication Address";
 }
