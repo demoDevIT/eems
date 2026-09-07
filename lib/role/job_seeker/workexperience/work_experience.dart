@@ -6,6 +6,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/workexperience/provider/work_experience_provider.dart';
 import 'package:rajemployment/utils/dot_border.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../addworkexperience/add_work_experience.dart';
@@ -36,7 +37,7 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Work Experience", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.workExp, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -128,7 +129,7 @@ class DottedBorder extends StatelessWidget {
 
 
             },
-            child: const Center(
+            child: Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -144,7 +145,7 @@ class DottedBorder extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      "Add Work Experience",
+                      AppLocalizations.of(context)!.addWorkExp,
                       style: TextStyle(color: Colors.black54),
                     )
                   ],
@@ -182,23 +183,23 @@ class EmploymentSummaryCard extends StatelessWidget {
         children: [
           // Add the heading inside the box
           Text(
-            "As Per OTR Form",
+            AppLocalizations.of(context)!.asPerOTRForm,
             style: Styles.semiBoldTextStyle(size: 14, color: kBlackColor),
           ),
           const SizedBox(height: 8),
-          _rowItem("Employment Status", data.employmentStatus ?? "-"),
+          _rowItem(AppLocalizations.of(context)!.empStatus, data.employmentStatus ?? "-"),
           const SizedBox(height: 6),
           Divider(color: dividerColor),
           const SizedBox(height: 6),
 
           _rowItem(
-              "Experience (Years)", "${data.employmentExpYear ?? 0}"),
+              AppLocalizations.of(context)!.expYear, "${data.employmentExpYear ?? 0}"),
           const SizedBox(height: 6),
           Divider(color: dividerColor),
           const SizedBox(height: 6),
 
           _rowItem(
-              "Experience (Months)", "${data.employmentExpMonth ?? 0}"),
+              AppLocalizations.of(context)!.ExpMonth, "${data.employmentExpMonth ?? 0}"),
         ],
       ),
     );
@@ -334,7 +335,7 @@ class WorkExperienceCard extends StatelessWidget {
                         SizedBox(width: 10),
                         InkWell(
                           onTap: () {
-                            confirmAlertDialog(context, "Alert","Are you sure want to delete ?", (value) {
+                            confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouWantToDelete, (value) {
                               if (value.toString() == "success") {
                                 provider.deleteEducationDetailsApi(context,employmentID);
 
@@ -371,7 +372,7 @@ class WorkExperienceCard extends StatelessWidget {
               Divider(color: dividerColor),
 
               Text(
-                "NCO Code: ${checkNullValue(ncoCode)}",
+                AppLocalizations.of(context)!.ncoCode + checkNullValue(ncoCode),
                 style: Styles.regularTextStyle(size: 13, color: fontGrayColor),
               ),
 

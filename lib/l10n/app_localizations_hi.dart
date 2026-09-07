@@ -491,4 +491,210 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get communicationAdd => "पत्राचार का पता";
 
+  @override
+  String get sameAsAbove => "ऊपर की तरह";
+
+  @override
+  String get plzSelectDistrict => "कृपया ज़िला चुनें";
+
+  @override
+  String get plzSelectCity => "कृपया शहर चुनें";
+
+  @override
+  String get plzSelectWard => "कृपया वार्ड चुनें";
+
+  @override
+  String get plzSelectTeriType => "कृपया क्षेत्र का प्रकार चुनें";
+
+  @override
+  String get plzEnterAddress => "कृपया पता दर्ज करें";
+
+  @override
+  String get plzEnterPincode => "कृपया पिनकोड डालें";
+
+  @override
+  String get plzSelectAssemConsti => "कृपया विधानसभा क्षेत्र चुनें।";
+
+  @override
+  String get plzSelectParliConsti => "कृपया संसदीय निर्वाचन क्षेत्र चुनें।";
+
+  @override
+  String get alert => "सावधान";
+
+  @override
+  String get eduDetail => "शिक्षा संबंधी विवरण";
+
+  @override
+  String get addEduDetail => "शिक्षा संबंधी विवरण जोड़ें";
+
+  @override
+  String get areYouWantToDelete => "क्या आप वाकई इसे डिलीट करना चाहते हैं?";
+
+  @override
+  String get ncoCode => "NCO कोड";
+
+  @override
+  String get uniBoard => "यूनिवर्सिटी/बोर्ड:";
+
+  @override
+  String get colSch => "कॉलेज/स्कूल:";
+
+  @override
+  String get mode => "प्रकार:";
+
+  @override
+  String get medium => "मीडियम:";
+
+  @override
+  String get passYear => "पास होने का वर्ष:";
+
+  @override
+  String get workExp => "कार्य अनुभव";
+
+  @override
+  String get addWorkExp => "काम का अनुभव जोड़ें";
+
+  @override
+  String get asPerOTRForm => "OTR फ़ॉर्म के अनुसार";
+
+  @override
+  String get empStatus => "रोज़गार की स्थिति";
+
+  @override
+  String get expYear => "अनुभव (वर्ष)";
+
+  @override
+  String get ExpMonth => "अनुभव (महीने)";
+
+  @override
+  String get langNskill => "भाषा और स्किल";
+
+  @override
+  String get addSkill => "स्किल जोड़ें";
+
+  @override
+  String get addLang => "भाषा जोड़ें";
+
+  @override
+  String get skillSumry => "स्किल का सार";
+
+  @override
+  String get langKnow => "ज्ञात भाषाएँ";
+
+  @override
+  String get addLangSkill => "भाषाएँ और स्किल जोड़ें";
+
+  @override
+  String get acqThro => "इनके माध्यम से प्राप्त किया गया:";
+
+  @override
+  String get phyAttri => "शारीरिक विशेषताएँ";
+
+  @override
+  String get phyAttriSumry => "शारीरिक विशेषताओं का सारांश";
+
+  @override
+  String get updatePhyAttri => "शारीरिक विशेषताओं को अपडेट करें";
+
+  @override
+  String get phyDetail => "शारीरिक विवरण";
+
+  @override
+  String get height => "ऊंचाई:";
+
+  @override
+  String get chest => "चेस्ट: ";
+
+  @override
+  String get eyeSight => "दृष्टि:";
+
+  // @override
+  // String get pwd => "Pwd";
+
+  @override
+  String get disability => "विकलांगता: ";
+
+  @override
+  String get percentage => "प्रतिशतता: ";
+
+  @override
+  String get weight => "वज़न: ";
+
+  @override
+  String get jobPref => "नौकरी की प्राथमिकता";
+
+  @override
+  String get areYouIntIntJob => "क्या आप अंतरराष्ट्रीय नौकरियों में रुचि रखते हैं?";
+
+  @override
+  String get update => "अपडेट करें";
+
+  @override
+  String get noteMax5Job => "नोट: (अधिकतम 5 जॉब प्राथमिकताएँ चुनी जा सकती हैं)";
+
+  @override
+  String get addJobPref => "नौकरी की प्राथमिकता जोड़ें";
+
+  @override
+  String get jobType => "नौकरी का प्रकार: ";
+
+  @override
+  String get shift => "पारी ";
+
+  @override
+  String get expSal => "अपेक्षित वेतन: ";
+
+  @override
+  String get updateJobPref => "नौकरी की प्राथमिकता अपडेट करें";
+
+  @override
+  String get plzSelPreLoc => "कृपया अपनी पसंदीदा जगह चुनें।";
+
+  @override
+  String get add => "जोड़ें";
+
+  @override
+  String get kinChoseJobPrefMatchQuaWorkExp => "कृपया अपनी योग्यता या काम के अनुभव से मेल खाने वाली नौकरी की प्राथमिकता चुनें।";
+
+  @override
+  String get sector => "क्षेत्र";
+
+  @override
+  String get prefLoc => "पसंदीदा स्थान";
+
+  @override
+  String get selOption => "--विकल्प चुनें--";
+
+  @override
+  String get desEmpType => "पसंदीदा रोज़गार का प्रकार";
+
+  @override
+  String get desJobType => "पसंदीदा नौकरी का प्रकार";
+
+  @override
+  String get expSalRanMon => "अपेक्षित वेतन सीमा (मासिक)";
+
+  @override
+  String get plzSelNcoCodJobPref => "कृपया अपनी नौकरी की पसंद के आधार पर NCO कोड चुनें।";
+
+  @override
+  String get videoProfile => "वीडियो प्रोफ़ाइल";
+
+  @override
+  String get recordLiveIntVideo => "अपना लाइव परिचय वीडियो रिकॉर्ड करें (वैकल्पिक)";
+
+  @override
+  String get recordVideo4Step => "4 आसान स्टेप्स में अपना वीडियो प्रोफ़ाइल रिकॉर्ड करें। एम्प्लॉयर्स को दिखाएं कि आप असल में कैसे हैं!";
+
+  @override
+  String get create45SecVideo => "अपना 45-सेकंड का वीडियो परिचय बनाएँ";
+
+  @override
+  String get skip => "स्किप";
+
+  @override
+  String get startRec => "रिकॉर्डिंग शुरू करें";
+
+  @override
+  String get noVideoAvail => "कोई वीडियो उपलब्ध नहीं है";
 }

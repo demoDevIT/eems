@@ -4,6 +4,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/videoprofile/provider/videoprofile_provider.dart';
 import 'package:rajemployment/utils/live_video_player.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../l10n/app_localizations.dart';
 import '../camera/camera_page.dart';
 
 class VideoprofileScreen extends StatefulWidget {
@@ -34,8 +35,8 @@ var videoProvider;
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          "Video Profile",
+        title: Text(
+          AppLocalizations.of(context)!.videoProfile,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -50,16 +51,16 @@ var videoProvider;
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// Top Text Section
-              const Text(
-                "Record Your Live Introduction Video (Optional)",
+              Text(
+                AppLocalizations.of(context)!.recordLiveIntVideo,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
-                "Record your video profile in 4 short steps. Let employers know the real you!",
+              Text(
+                AppLocalizations.of(context)!.recordVideo4Step,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.black54,
@@ -92,10 +93,10 @@ var videoProvider;
                     const SizedBox(width: 12),
 
                     /// Text right
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Text(
-                        "Create Your 45-Second Video Introduction",
+                        AppLocalizations.of(context)!.create45SecVideo,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -113,8 +114,8 @@ var videoProvider;
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
-                      "Skip",
+                    child: Text(
+                      AppLocalizations.of(context)!.skip,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
@@ -152,8 +153,8 @@ var videoProvider;
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          "Start Recording",
+                        Text(
+                          AppLocalizations.of(context)!.startRec,
                           style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                         const SizedBox(width: 8),
@@ -186,7 +187,7 @@ var videoProvider;
               else
                 SizedBox(
                   height: 200,
-                  child: Center(child: Text("No video available")),
+                  child: Center(child: Text(AppLocalizations.of(context)!.noVideoAvail)),
                 )
               // ClipRRect(
               //   borderRadius: BorderRadius.circular(12),

@@ -490,4 +490,212 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get communicationAdd => "Communication Address";
+
+  @override
+  String get sameAsAbove => "Same As Above";
+
+  @override
+  String get plzSelectDistrict => "Please select district";
+
+  @override
+  String get plzSelectCity => "Please select city";
+
+  @override
+  String get plzSelectWard => "Please select ward";
+
+  @override
+  String get plzSelectTeriType => "Please select territory type";
+
+  @override
+  String get plzEnterAddress => "Please enter address";
+
+  @override
+  String get plzEnterPincode => "Please enter pincode";
+
+  @override
+  String get plzSelectAssemConsti => "Please select assembly constituency";
+
+  @override
+  String get plzSelectParliConsti => "Please select parliament constituency";
+
+  @override
+  String get alert => "Alert";
+
+  @override
+  String get eduDetail => "Educational Details";
+
+  @override
+  String get addEduDetail => "Add Educational Details";
+
+  @override
+  String get areYouWantToDelete => "Are you sure want to delete ?";
+
+  @override
+  String get ncoCode => "NCO Code";
+
+  @override
+  String get uniBoard => "Uni/Board:";
+
+  @override
+  String get colSch => "College/School:";
+
+  @override
+  String get mode => "Mode:";
+
+  @override
+  String get medium => "Medium:";
+
+  @override
+  String get passYear => "Passing Year:";
+
+  @override
+  String get workExp => "Work Experience";
+
+  @override
+  String get addWorkExp => "Add Work Experience";
+
+  @override
+  String get asPerOTRForm => "As Per OTR Form";
+
+  @override
+  String get empStatus => "Employment Status";
+
+  @override
+  String get expYear => "Experience (Years)";
+
+  @override
+  String get ExpMonth => "Experience (Months)";
+
+  @override
+  String get langNskill => "Language & Skills";
+
+  @override
+  String get addSkill => "Add Skill";
+
+  @override
+  String get addLang => "Add Language";
+
+  @override
+  String get skillSumry => "Skill Summary";
+
+  @override
+  String get langKnow => "Language Known";
+
+  @override
+  String get addLangSkill => "Add Languages & Skills";
+
+  @override
+  String get acqThro => "Acquired Through:";
+
+  @override
+  String get phyAttri => "Physical Attributes";
+
+  @override
+  String get phyAttriSumry => "Physical Attributes Summary";
+
+  @override
+  String get updatePhyAttri => "Update Physical Attributes";
+
+  @override
+  String get phyDetail => "Physical Details";
+
+  @override
+  String get height => "Height: ";
+
+  @override
+  String get chest => "Chest: ";
+
+  @override
+  String get eyeSight => "Eye Sight:";
+
+  // @override
+  // String get pwd => "Pwd";
+
+  @override
+  String get disability => "Disability: ";
+
+  @override
+  String get percentage => "Percentage: ";
+
+  @override
+  String get weight => "Weight: ";
+
+  @override
+  String get jobPref => "Job Preference";
+
+  @override
+  String get areYouIntIntJob => "Are you interested in International Jobs?";
+
+  @override
+  String get update => "Update";
+
+  @override
+  String get noteMax5Job => "Note : (Maximum of 5 Job Preferences Allowed)";
+
+  @override
+  String get addJobPref => "Add Job Preference";
+
+  @override
+  String get jobType => "Job Type: ";
+
+  @override
+  String get shift => "Shift ";
+
+  @override
+  String get expSal => "Expected salary: ";
+
+  @override
+  String get updateJobPref => "Update Job-Preference";
+
+  @override
+  String get plzSelPreLoc => "Please select preferred location";
+
+  @override
+  String get add => "Add";
+
+  @override
+  String get kinChoseJobPrefMatchQuaWorkExp => "Kindly choose a job preference that matches your qualification or work experience.";
+
+  @override
+  String get sector => "Sector";
+
+  @override
+  String get prefLoc => "Preferred Location";
+
+  @override
+  String get selOption => "--Select Option--";
+
+  @override
+  String get desEmpType => "Desired Employment Type";
+
+  @override
+  String get desJobType => "Desired Job Type";
+
+  @override
+  String get expSalRanMon => "Expected Salary Range (Monthly)";
+
+  @override
+  String get plzSelNcoCodJobPref => "Please select the NCO code based on your Job Preference.";
+
+  @override
+  String get videoProfile => "Video Profile";
+
+  @override
+  String get recordLiveIntVideo => "Record Your Live Introduction Video (Optional)";
+
+  @override
+  String get recordVideo4Step => "Record your video profile in 4 short steps. Let employers know the real you!";
+
+  @override
+  String get create45SecVideo => "Create Your 45-Second Video Introduction";
+
+  @override
+  String get skip => "Skip";
+
+  @override
+  String get startRec => "Start Recording";
+
+  @override
+  String get noVideoAvail => "No video available";
+
 }

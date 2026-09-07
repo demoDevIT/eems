@@ -424,7 +424,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                           ),
                         ),
 
-                        const Text("Same As Above"),
+                        Text(AppLocalizations.of(context)!.sameAsAbove),
                       ],
                     ),
 
@@ -447,7 +447,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('District',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.district,required: false),
                         /*  Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -467,7 +467,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                 items: provider.cDistrictList,
                                 controller: provider.cDistrictNameController,
                                 idController: provider.cDistrictIdController,
-                                hintText:"Select District",
+                                hintText:AppLocalizations.of(context)!.selectDistrict,
                                 height: 50,
                                 color: Colors.transparent,
                                 width: MediaQuery.of(context).size.width * 0.90 / 2,
@@ -501,7 +501,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('City',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.city,required: false),
                         /*  Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -523,7 +523,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                               items: provider.cCityList,
                               controller: provider.cCityNameController,
                               idController: provider.cCityIdController,
-                              hintText: "Select City",
+                              hintText: AppLocalizations.of(context)!.selectCity,
                               height: 50,
                               color: Colors.transparent,
                               width: MediaQuery.of(context).size.width * 0.90 / 2,
@@ -591,7 +591,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('Ward',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.ward,required: false),
                          /* Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -613,7 +613,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                   items: provider.cWardList,
                                   controller: provider.cWardNameController,
                                   idController: provider.cWardIdController,
-                                  hintText: "Select Ward",
+                                  hintText: AppLocalizations.of(context)!.selectWard,
                                   height: 50,
                                   color: Colors.transparent,
                                   width: MediaQuery.of(context).size.width * 0.90 / 2,
@@ -662,7 +662,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('Territory Type',required: false),
+                          labelWithStar(AppLocalizations.of(context)!.territoryType,required: false),
                         /*  Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -689,7 +689,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                   visualDensity: VisualDensity.compact, // reduce space inside
                                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
-                                const Text("Rural"),
+                                Text(AppLocalizations.of(context)!.rural),
                                 SizedBox(width: 10), // Add space between the radio buttons
                                 Radio<String>(
                                   value: "Urban",
@@ -700,7 +700,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                   visualDensity: VisualDensity.compact, // reduce space inside
                                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
-                                const Text("Urban"),
+                                Text(AppLocalizations.of(context)!.urban),
                               ],
 
                             ),
@@ -713,7 +713,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                 ),
 
                 hSpace(4),
-                labelWithStar('Address',required: false),
+                labelWithStar(AppLocalizations.of(context)!.address,required: false),
                /* Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -729,7 +729,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                   child: buildTextWithBorderField(
                     provider.cAddressController,
-                    "Address",
+                    AppLocalizations.of(context)!.address,
                     MediaQuery.of(context).size.width,
                     80,
                     maxLine: 20,
@@ -740,7 +740,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                 ),
 
                 hSpace(4),
-                labelWithStar('Pin Code',required: false),
+                labelWithStar(AppLocalizations.of(context)!.pincode,required: false),
                /* Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -756,7 +756,7 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                   child: buildTextWithBorderField(
                     provider.cPinCodeController,
-                    "Pin Code",
+                    AppLocalizations.of(context)!.pincode,
                     MediaQuery.of(context).size.width,
                     50,
                     TextInputType.number,
@@ -905,31 +905,31 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                     if(provider.cDistrictIdController.text.isEmpty){
-                      showAlertError("Please select district", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
                     }
                     else if(provider.cCityIdController.text.isEmpty){
-                      showAlertError("Please select city", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
                     }
                     else if(provider.cWardIdController.text.isEmpty){
-                      showAlertError("Please select ward", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectWard, context);
                     }
                     else if(provider.cTerritoryType.isEmpty){
-                      showAlertError("Please select territory type", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectTeriType, context);
                     }
                     else if(provider.cAddressController.text.isEmpty){
-                      showAlertError("Please enter address", context);
+                      showAlertError(AppLocalizations.of(context)!.plzEnterAddress, context);
                     }
                     else if(provider.pinCodeController.text.isEmpty){
-                      showAlertError("Please enter pincode", context);
+                      showAlertError(AppLocalizations.of(context)!.plzEnterPincode, context);
                     }
                     else if(provider.assemblyIDController.text.isEmpty){
-                      showAlertError("Please select assembly constituency", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectAssemConsti, context);
                     }
                     else if(provider.constituencyIDController.text.isEmpty){
-                      showAlertError("Please select parliament constituency", context);
+                      showAlertError(AppLocalizations.of(context)!.plzSelectParliConsti, context);
                     }
                     else{
-                      confirmAlertDialog(context, "Alert","Are you sure want to submit ?", (value) {
+                      confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouSureSubmitForm, (value) {
                         if (value.toString() == "success") {
                           provider.saveDataAddressApi(context);
                         }
@@ -946,8 +946,8 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: const Text(
-                      "Save",
+                    child: Text(
+                      AppLocalizations.of(context)!.save,
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/addjobpreference/provider/add_job_preference_provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -68,7 +69,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
     final provider = Provider.of<AddJobPreferenceProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2(isUpdate == true ? "Update Job-Preference" : "Add Job-Preference", context,
+        appBar: commonAppBar2(isUpdate == true ? AppLocalizations.of(context)!.updateJobPref : AppLocalizations.of(context)!.addJobPref, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -80,11 +81,11 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
           child: ElevatedButton(
             onPressed: () {
               if(provider.preferredLocationIdController.text.isEmpty){
-                showAlertError("Please select preferred location", context);
+                showAlertError(AppLocalizations.of(context)!.plzSelPreLoc, context);
 
               }
               else{
-                confirmAlertDialog(context, "Alert","Are you sure want to submit ?", (value) {
+                confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouSureSubmitForm, (value) {
                   if (value.toString() == "success") {
                     provider.saveJobPreferenceApi(context,isUpdate,jobPreferenceData != null ? jobPreferenceData!.jobPreferenceID.toString():"" );
                   }
@@ -97,7 +98,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
               backgroundColor: kPrimaryColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             ),
-            child:  Text(isUpdate == true ? 'Update' : 'Add', style: TextStyle(fontSize: 16, color: Colors.white)),
+            child:  Text(isUpdate == true ? AppLocalizations.of(context)!.update : AppLocalizations.of(context)!.add, style: TextStyle(fontSize: 16, color: Colors.white)),
           ),
         ),
       ),
@@ -110,13 +111,13 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Kindly choose a job preference that matches your qualification or work experience.",
+                    Text(AppLocalizations.of(context)!.kinChoseJobPrefMatchQuaWorkExp,
                       style: Styles.mediumTextStyle(size: 12,color: kRedColor),),
                     const SizedBox(height: 14),
 
 
                     // Sector
-                    labelWithStar('Sector'),
+                    labelWithStar(AppLocalizations.of(context)!.sector),
                     const SizedBox(height: 8),
                     IgnorePointer(
 
@@ -125,7 +126,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.sectorList,
                         controller: provider.sectorNameController,
                         idController: provider.sectorIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -139,7 +140,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     SizedBox(height: fieldSpacing),
 
                     // Preferred Location
-                    labelWithStar('Preferred Location',required: true),
+                    labelWithStar(AppLocalizations.of(context)!.prefLoc,required: true),
                     const SizedBox(height: 8),
                     IgnorePointer(
 
@@ -148,7 +149,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.preferredLocationList,
                         controller: provider.preferredLocationNameController,
                         idController: provider.preferredLocationIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -161,7 +162,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     SizedBox(height: fieldSpacing),
 
                     // Desired Employment Type
-                    labelWithStar('Desired Employment Type'),
+                    labelWithStar(AppLocalizations.of(context)!.desEmpType),
                     const SizedBox(height: 8),
 
                     IgnorePointer(
@@ -171,7 +172,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.employmentTypeList,
                         controller: provider.employmentTypeNameController,
                         idController: provider.employmentTypeIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -184,7 +185,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     SizedBox(height: fieldSpacing),
 
                     // Desired Job Type (text field)
-                    labelWithStar('Desired Job Type'),
+                    labelWithStar(AppLocalizations.of(context)!.desJobType),
                     const SizedBox(height: 8),
                     IgnorePointer(
 
@@ -193,7 +194,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.jobTypeList,
                         controller: provider.jobTypeNameController,
                         idController: provider.jobTypeIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -235,7 +236,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     //   ),
                     // ),
 
-                    labelWithStar('Expected Salary Range (Monthly)', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.expSalRanMon, required: true),
                     const SizedBox(height: 8),
 
                     IgnorePointer(
@@ -244,7 +245,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.salaryRangeList,
                         controller: provider.salaryRangeNameController,
                         idController: provider.salaryRangeIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -256,7 +257,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     const SizedBox(height: fieldSpacing),
 
                     // Shift
-                    labelWithStar('Shift'),
+                    labelWithStar(AppLocalizations.of(context)!.shift),
                     const SizedBox(height: 8),
 
                     IgnorePointer(
@@ -266,7 +267,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.shiftList,
                         controller: provider.shiftNameController,
                         idController: provider.shiftIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -279,7 +280,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                     SizedBox(height: fieldSpacing),
 
                     // NCO Code with red star required
-                    labelWithStar('NCO Code', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.ncoCode, required: true),
                     const SizedBox(height: 8),
                     IgnorePointer(
                       ignoring: false,
@@ -287,7 +288,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.ncoCodeList,
                         controller: provider.ncoCodeNameController,
                         idController: provider.ncoCodeIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -296,7 +297,7 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         },
                       ),
                     ),
-                    Text("Please select the NCO code based on your Job Preference.",
+                    Text(AppLocalizations.of(context)!.plzSelNcoCodJobPref,
                       style: Styles.mediumTextStyle(size: 12,color: kRedColor),),
 
                     const SizedBox(height:8),

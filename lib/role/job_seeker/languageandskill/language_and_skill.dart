@@ -7,6 +7,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/languageandskill/provider/language_and_skill_provider.dart';
 import 'package:rajemployment/utils/dot_border.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../add_language_skills/add_language_skills.dart';
@@ -47,7 +48,7 @@ class _LanguageAndSkillScreenState extends State<LanguageAndSkillScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Language & Skills", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.langNskill, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -66,7 +67,7 @@ class _LanguageAndSkillScreenState extends State<LanguageAndSkillScreen> {
                     Expanded(
                       child: AddDottedCard(
                         icon: Icons.build,
-                        title: "Add Skill",
+                        title: AppLocalizations.of(context)!.addSkill,
                         onTap: () async {
                           final result = await Navigator.push(
                             context,
@@ -94,7 +95,7 @@ class _LanguageAndSkillScreenState extends State<LanguageAndSkillScreen> {
                     Expanded(
                       child: AddDottedCard(
                         icon: Icons.language,
-                        title: "Add Language",
+                        title: AppLocalizations.of(context)!.addLang,
                         onTap: () async {
                           final result = await Navigator.push(
                             context,
@@ -206,7 +207,7 @@ class _LanguageAndSkillScreenState extends State<LanguageAndSkillScreen> {
 
                       // ---- Skill Summary Title ----
                       Text(
-                        "Skill Summary",
+                        AppLocalizations.of(context)!.skillSumry,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -245,7 +246,7 @@ class _LanguageAndSkillScreenState extends State<LanguageAndSkillScreen> {
 
                       // ---- Language Title ----
                       Text(
-                        "Language Known",
+                        AppLocalizations.of(context)!.langKnow,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -354,7 +355,7 @@ class DottedBorder extends StatelessWidget {
           onTap: () {
             _showAddOptionSheet(context);
           },
-          child: const Center(
+          child: Center(
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: Column(
@@ -363,7 +364,7 @@ class DottedBorder extends StatelessWidget {
                   Icon(Icons.add_circle, color: kPrimaryColor, size: 30),
                   SizedBox(width: 6, height: 8),
                   Text(
-                    "Add Languages & Skills",
+                    AppLocalizations.of(context)!.addLangSkill,
                     style: TextStyle(color: Colors.black54),
                   )
                 ],
@@ -390,7 +391,7 @@ void _showAddOptionSheet(BuildContext context) {
           children: [
             ListTile(
               leading: const Icon(Icons.build, color: kPrimaryColor),
-              title: const Text("Add Skill"),
+              title: Text(AppLocalizations.of(context)!.addSkill),
               onTap: () async {
                 Navigator.pop(context);
                 final result = await Navigator.push(
@@ -418,7 +419,7 @@ void _showAddOptionSheet(BuildContext context) {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.language, color: Colors.green),
-              title: const Text("Add Language"),
+              title: Text(AppLocalizations.of(context)!.addLang),
               onTap: () async {
                 Navigator.pop(context);
                 final result = await Navigator.push(
@@ -553,7 +554,7 @@ class EducationCard extends StatelessWidget {
                         SizedBox(width: 10),
                         InkWell(
                           onTap: () {
-                            confirmAlertDialog(context, "Alert","Are you sure want to delete ?", (value) {
+                            confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouWantToDelete, (value) {
                               if (value.toString() == "success") {
                                 provider.deleteSkillsDetailProfileApi(context,skillDetailID);
 
@@ -582,7 +583,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "NCO Code: ${checkNullValue(ncoCode)}",
+                  AppLocalizations.of(context)!.ncoCode + checkNullValue(ncoCode),
                   style:
                   Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
@@ -593,7 +594,7 @@ class EducationCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Text(
-                      "Acquired Through: ${checkNullValue(acquiredName)}",
+                        AppLocalizations.of(context)!.acqThro + checkNullValue(acquiredName),
                       style: Styles.regularTextStyle(
                           size: 13, color: fontGrayColor),
                     )),
@@ -727,7 +728,7 @@ class LanguageCard extends StatelessWidget {
                             SizedBox(width: 10),
                             InkWell(
                               onTap: () {
-                                confirmAlertDialog(context, "Alert","Are you sure want to delete ?", (value) {
+                                confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouWantToDelete, (value) {
                                   if (value.toString() == "success") {
                                     provider.deleteDetailProfileApi(context,languageID);
 

@@ -7,6 +7,7 @@ import 'package:rajemployment/role/job_seeker/jobpreference/provider/job_prefere
 import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../addjobpreference/add_job_preference.dart';
 import '../loginscreen/provider/locale_provider.dart';
@@ -37,7 +38,7 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Job Preference", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.jobPref, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -48,7 +49,7 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
             child: Column(
               children: [
                 Text(
-                  'Are you interested in International Jobs?',
+                  AppLocalizations.of(context)!.areYouIntIntJob,
                   style: Styles.semiBoldTextStyle(size: 14, color: kBlackColor),
                 ),
                 const SizedBox(height: 6),
@@ -99,8 +100,8 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: const Text(
-                      "Update",
+                    child: Text(
+                      AppLocalizations.of(context)!.update,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -111,7 +112,7 @@ class _JobPreferenceScreenState extends State<JobPreferenceScreen> {
                 ),
 
                 const SizedBox(height: 14),
-                Text("Note : (Maximum of 5 Job Preferences Allowed)",
+                Text(AppLocalizations.of(context)!.noteMax5Job,
                   style: Styles.mediumTextStyle(size: 12,color: kRedColor),),
                  hSpace(10),
                 provider.jobPreferenceList.length < 5 ? GestureDetector(
@@ -199,7 +200,7 @@ class DottedBorder extends StatelessWidget {
 
 
             },
-            child: const Center(
+            child: Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -215,7 +216,7 @@ class DottedBorder extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      "Add Job Preference",
+                      AppLocalizations.of(context)!.addJobPref,
                       style: TextStyle(color: Colors.black54),
                     )
                   ],
@@ -321,8 +322,8 @@ class EducationCard extends StatelessWidget {
                           onTap: () {
                             confirmAlertDialog(
                               context,
-                              "Alert",
-                              "Are you sure want to delete ?",
+                              AppLocalizations.of(context)!.alert,
+                              AppLocalizations.of(context)!.areYouWantToDelete,
                               (value) {
                                 if (value.toString() == "success") {
                                   provider.deleteDetailProfileApi(
@@ -352,7 +353,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "NCO Code: ${checkNullValue(ncoCode)}",
+                    AppLocalizations.of(context)!.ncoCode + ":" + checkNullValue(ncoCode),
                   style:
                       Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
@@ -363,7 +364,7 @@ class EducationCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Text(
-                      "Job Type: ${checkNullValue(jobType)}",
+                        AppLocalizations.of(context)!.jobType + checkNullValue(jobType),
                       style: Styles.regularTextStyle(
                           size: 13, color: fontGrayColor),
                     )),
@@ -371,7 +372,7 @@ class EducationCard extends StatelessWidget {
                     alignment: Alignment.topRight,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Text(
-                      "Shift: ${checkNullValue(shift)}",
+                        AppLocalizations.of(context)!.shift + ":" + checkNullValue(shift),
                       style: Styles.regularTextStyle(
                           size: 13, color: fontGrayColor),
                     )),
@@ -382,7 +383,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "Expected salary: ${checkNullValue(salary)}",
+                    AppLocalizations.of(context)!.expSal + checkNullValue(salary),
                   style:
                       Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),

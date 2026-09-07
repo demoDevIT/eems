@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/role/job_seeker/physicalattribute/provider/physicalattribute_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../../../utils/user_new.dart';
 import '../addphysicalattribute/addphysicalattribute_screen.dart';
@@ -40,7 +41,7 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: commonAppBar2("Physical Attributes", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.phyAttri, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -51,8 +52,8 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Physical Attributes Summary",
+                Text(
+                  AppLocalizations.of(context)!.phyAttriSumry,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -94,8 +95,8 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                           width: 25,
                         ),
                         const SizedBox(height: 6),
-                        const Text(
-                          "Update Physical Attributes",
+                        Text(
+                          AppLocalizations.of(context)!.updatePhyAttri,
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
@@ -139,8 +140,8 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const Text(
-                                      "Physical Details",
+                                    Text(
+                                      AppLocalizations.of(context)!.phyDetail,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
@@ -188,7 +189,7 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                                     SizedBox(width: 10),
                                     InkWell(
                                       onTap: () {
-                                        confirmAlertDialog(context, "Alert","Are you sure want to delete ?", (value) {
+                                        confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouWantToDelete, (value) {
                                           if (value.toString() == "success") {
                                             provider.deleteDetailProfileApi(context,dataPhysical.physicalDetailID.toString());
                                           }
@@ -213,14 +214,14 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children:  [
-                                      Text("Height: ${checkNullValue(dataPhysical.heightInCMS.toString())}" + "cm",
+                                      Text(AppLocalizations.of(context)!.height + checkNullValue(dataPhysical.heightInCMS.toString()) + "cm",
                                           style: TextStyle(
                                               fontSize: 12
                                           )
                                       ),
                                       SizedBox(height: 6),
                                       if (UserData().model.value.gENDER != "Female")
-                                      Text("Chest :${checkNullValue(dataPhysical.chestInCMS.toString())}" + "cm",
+                                      Text(AppLocalizations.of(context)!.chest + checkNullValue(dataPhysical.chestInCMS.toString()) + "cm",
                                           style: TextStyle(
                                               fontSize: 12
                                           )
@@ -232,7 +233,7 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children:  [
-                                      Text("Eye Sight: ${checkNullValue(dataPhysical.eyeSight.toString())}" + "cm",
+                                      Text(AppLocalizations.of(context)!.eyeSight + checkNullValue(dataPhysical.eyeSight.toString()) + "cm",
                                           style: TextStyle(
                                               fontSize: 12
                                           )
@@ -259,13 +260,13 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children:  [
-                                      Text("Disability: ${checkNullValue(dataPhysical.disabilityName.toString())}",
+                                      Text(AppLocalizations.of(context)!.disability + checkNullValue(dataPhysical.disabilityName.toString()),
                                           style: TextStyle(
                                               fontSize: 12
                                           )
                                       ),
                                       SizedBox(height: 6),
-                                      Text("Percentage: ${checkNullValue(dataPhysical.disabilityPercentage.toString())}" + "%",
+                                      Text(AppLocalizations.of(context)!.percentage + checkNullValue(dataPhysical.disabilityPercentage.toString()) + "%",
                                           style: TextStyle(
                                               fontSize: 12
                                           )
@@ -278,7 +279,7 @@ class _PhysicalattributeScreenState extends State<PhysicalattributeScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children:  [
-                                      Text("Weight: ${checkNullValue(dataPhysical.weightInKG.toString())}",
+                                      Text(AppLocalizations.of(context)!.weight + checkNullValue(dataPhysical.weightInKG.toString()),
                                           style: TextStyle(
                                               fontSize: 12
                                           )

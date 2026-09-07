@@ -6,6 +6,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/educationdetail/provider/education_details_provider.dart';
 import 'package:rajemployment/utils/dot_border.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
 import '../addeducationaldetail/add_educational_detail.dart';
@@ -37,7 +38,7 @@ class _EducationalDetailsScreenState extends State<EducationalDetailsScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Educational Details", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.eduDetail, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -140,7 +141,7 @@ class DottedBorder extends StatelessWidget {
               }
 
             },
-            child: const Center(
+            child: Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Column(
@@ -156,7 +157,7 @@ class DottedBorder extends StatelessWidget {
                       height: 8,
                     ),
                     Text(
-                      "Add Educational Details",
+                      AppLocalizations.of(context)!.addEduDetail,
                       style: TextStyle(color: Colors.black54),
                     )
                   ],
@@ -283,7 +284,7 @@ class EducationCard extends StatelessWidget {
                         SizedBox(width: 10),
                         InkWell(
                           onTap:  () {
-                            confirmAlertDialog(context, "Alert","Are you sure want to delete ?", (value) {
+                            confirmAlertDialog(context, AppLocalizations.of(context)!.alert, AppLocalizations.of(context)!.areYouWantToDelete, (value) {
                               if (value.toString() == "success") {
                                 provider.deleteEducationDetailsApi(context,educationID);
 
@@ -312,7 +313,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "NCO Code:${checkNullValue(ncoCode)}",
+                    AppLocalizations.of(context)!.ncoCode + checkNullValue(ncoCode),
                   style:
                       Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
@@ -323,7 +324,7 @@ class EducationCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Text(
-                      "Uni/Board: ${checkNullValue(uniborad)}",
+                        AppLocalizations.of(context)!.uniBoard + checkNullValue(uniborad),
                       style: Styles.regularTextStyle(
                           size: 13, color: fontGrayColor),
                     )),
@@ -331,7 +332,7 @@ class EducationCard extends StatelessWidget {
                     alignment: Alignment.topRight,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Text(
-                      "College/School: ${checkNullValue(college)}",
+                        AppLocalizations.of(context)!.colSch + checkNullValue(college),
                       style: Styles.regularTextStyle(
                           size: 13, color: fontGrayColor),
                     )),
@@ -342,7 +343,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "Mode: ${checkNullValue(mode)}",
+                    AppLocalizations.of(context)!.mode + checkNullValue(mode),
                   style:
                       Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
@@ -351,7 +352,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "Medium: ${checkNullValue(medium)}",
+                    AppLocalizations.of(context)!.medium + checkNullValue(medium),
                   style:
                   Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
@@ -361,7 +362,7 @@ class EducationCard extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Text(
-                  "Passing Year: ${checkNullValue(passing_year)}",
+                    AppLocalizations.of(context)!.passYear + checkNullValue(passing_year),
                   style:
                   Styles.regularTextStyle(size: 13, color: fontGrayColor),
                 )),
