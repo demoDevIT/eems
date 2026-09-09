@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/role/job_seeker/mysy/payment_logs.dart';
 import '../../../constants/constants.dart';
+import '../../../l10n/app_localizations.dart';
 import 'allot_dept_mysy.dart';
 import 'attendance_logs.dart';
 import 'document_logs.dart';
@@ -34,7 +35,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
         return Scaffold(
           backgroundColor: const Color(0xfff5f6fa),
           appBar: AppBar(
-            title: const Text("MYSY List"),
+            title: Text(AppLocalizations.of(context)!.mysyList),
             backgroundColor: Colors.white,
             elevation: 0,
             foregroundColor: Colors.black,
@@ -291,24 +292,24 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                 CrossAxisAlignment.start,
                                 children: [
 
-                                  _row("Father Name",
+                                  _row(AppLocalizations.of(context)!.fName,
                                       info.fatherName ?? ""),
-                                  _row("Mobile",
+                                  _row(AppLocalizations.of(context)!.mobileNo,
                                       info.mobileNo ?? ""),
-                                  _row("DOB", info.dob ?? ""),
-                                  _row("Registration Date",
+                                  _row(AppLocalizations.of(context)!.dob, info.dob ?? ""),
+                                  _row(AppLocalizations.of(context)!.regDate,
                                       info.regDate ?? ""),
-                                  _row("Gender",
+                                  _row(AppLocalizations.of(context)!.gender,
                                       info.gender ?? ""),
-                                  _row("Category",
+                                  _row(AppLocalizations.of(context)!.category,
                                       info.category ?? ""),
-                                  _row("Scheme",
+                                  _row(AppLocalizations.of(context)!.schemes,
                                       info.schemeName ?? ""),
-                                  _row("Apply Date",
+                                  _row(AppLocalizations.of(context)!.applyDate,
                                       info.applyDate ?? ""),
-                                  _row("Approve Date",
+                                  _row(AppLocalizations.of(context)!.approveDate,
                                       info.approveDate ?? ""),
-                                  _row("Stopped Date",
+                                  _row(AppLocalizations.of(context)!.stoppedDate,
                                       info.stopDate ?? ""),
 
                                   const SizedBox(height: 15),
@@ -334,7 +335,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.apartment,
-                                          "Alloted Department",
+                                          AppLocalizations.of(context)!.allotedDept,
                                               () {
                                             Navigator.push(
                                               context,
@@ -353,7 +354,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.message,
-                                          "Message Logs",
+                                          AppLocalizations.of(context)!.msgLogs,
                                               () {
                                             Navigator.push(
                                               context,
@@ -375,7 +376,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.apartment,
-                                          "Joining Logs",
+                                          AppLocalizations.of(context)!.joinLogs,
                                               () {
                                             Navigator.push(
                                               context,
@@ -394,7 +395,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.message,
-                                          "Attendance Log",
+                                          AppLocalizations.of(context)!.attendLogs,
                                               () {
                                             Navigator.push(
                                               context,
@@ -416,7 +417,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.apartment,
-                                          "Document Log",
+                                          AppLocalizations.of(context)!.docLogs,
                                               () {
                                             Navigator.push(
                                               context,
@@ -435,7 +436,7 @@ class _MysyListScreenState extends State<MysyListScreen> {
                                       Expanded(
                                         child: _actionButton(
                                           Icons.message,
-                                          "Payment Log",
+                                          AppLocalizations.of(context)!.paymentLogs,
                                               () {
                                             Navigator.push(
                                               context,

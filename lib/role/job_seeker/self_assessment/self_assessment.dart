@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import 'assessment_test.dart';
 import 'modal/self_assessment_modal.dart';
 import 'provider/self_assessment_provider.dart';
@@ -36,8 +37,8 @@ class _SelfAssessmentScreenState
     return Scaffold(
       backgroundColor: const Color(0xffF3F4F6),
       appBar: AppBar(
-        title: const Text(
-          "Self-Assessment Test",
+        title: Text(
+          AppLocalizations.of(context)!.selfAssessTest,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -80,22 +81,22 @@ class _SelfAssessmentScreenState
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "Overview",
+                  AppLocalizations.of(context)!.overview,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 12),
                 Text(
-                  "The Self-Assessment Test is designed to help individuals understand their skills, interests, and career preferences. It serves as a diagnostic tool that enables job seekers or students to identify their strengths and areas for improvement, assisting them in making informed career choices. By analyzing the responses, the system provides insights into personality traits, aptitude levels, and potential job roles aligned with the user’s profile.",
+                  AppLocalizations.of(context)!.overviewContent,
                   style: TextStyle(height: 1.6),
                 ),
                 SizedBox(height: 20),
 
                 Text(
-                  "Key Features",
+                  AppLocalizations.of(context)!.keyFeature,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
@@ -104,30 +105,30 @@ class _SelfAssessmentScreenState
 
                 FeatureItem(
                     text:
-                    "Comprehensive Skill Evaluation including logical reasoning, verbal ability, numerical aptitude."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature1),
                 FeatureItem(
                     text:
-                    "Personality and Interest Mapping aligned with suitable career paths."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature2),
                 FeatureItem(
                     text:
-                    "Instant Feedback and Insights after completing the test."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature3),
                 FeatureItem(
                     text:
-                    "User-Friendly Interface with easy navigation."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature4),
                 FeatureItem(
                     text:
-                    "Confidential and Secure data handling."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature5),
                 FeatureItem(
                     text:
-                    "Guided Career Recommendations."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature6),
                 FeatureItem(
                     text:
-                    "Reattempt Option to track improvement."),
+                    AppLocalizations.of(context)!.selfAssessKeyFeature7),
 
                 SizedBox(height: 20),
 
                 Text(
-                  "Benefits",
+                  AppLocalizations.of(context)!.benefits,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
@@ -135,10 +136,15 @@ class _SelfAssessmentScreenState
                 SizedBox(height: 12),
 
                 Text(
-                  "• Helps in self-discovery\n"
-                      "• Scientific basis for career decisions\n"
-                      "• Pre-screening tool\n"
-                      "• Encourages continuous learning",
+                  "• " + AppLocalizations.of(context)!.benifit1 + "\n"
+                      "• " + AppLocalizations.of(context)!.benifit2 + "\n"
+                      "• " + AppLocalizations.of(context)!.benifit3 + "\n"
+                      "• " + AppLocalizations.of(context)!.benifit4 + "\n",
+
+                  // "• Helps in self-discovery\n"
+                  //     "• Scientific basis for career decisions\n"
+                  //     "• Pre-screening tool\n"
+                  //     "• Encourages continuous learning",
                   style: TextStyle(height: 1.6),
                 ),
               ],
@@ -163,7 +169,7 @@ class _SelfAssessmentScreenState
                   showCategorySelection = true;
                 });
               },
-              child: const Text("Continue"),
+              child: Text(AppLocalizations.of(context)!.continuee),
             ),
           ],
         )
@@ -194,13 +200,13 @@ class _SelfAssessmentScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Select at least 1 category(s) for Assessment",
+        Text(
+          AppLocalizations.of(context)!.sel1CatForAssess,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 24),
 
-        const Text("Self Assessment",
+        Text(AppLocalizations.of(context)!.selfassess,
             style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 12),
 
@@ -215,7 +221,7 @@ class _SelfAssessmentScreenState
 
         const SizedBox(height: 30),
 
-        const Text("Psychometric",
+        Text(AppLocalizations.of(context)!.psychometric,
             style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 12),
 
@@ -240,7 +246,7 @@ class _SelfAssessmentScreenState
                   selectedCategories.clear();
                 });
               },
-              child: const Text("Cancel"),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             const SizedBox(width: 16),
             ElevatedButton(
@@ -249,7 +255,7 @@ class _SelfAssessmentScreenState
                   : () {
                 _showInstructionPopup();
               },
-              child: const Text("Start Test"),
+              child: Text(AppLocalizations.of(context)!.startTest),
             ),
           ],
         )
@@ -317,9 +323,9 @@ class _SelfAssessmentScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const Center(
+                  Center(
                     child: Text(
-                      "Assessment Instructions",
+                      AppLocalizations.of(context)!.assessInstr,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
@@ -328,43 +334,50 @@ class _SelfAssessmentScreenState
                   const SizedBox(height: 20),
 
                   /// Always show
-                  const Text("General Instructions",
+                  Text(AppLocalizations.of(context)!.generalInstr,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
 
-                  _bullet("Selected Categories: ${selectedCategories.length}"),
-                  _bullet("Total Questions: $totalQuestions"),
-                  _bullet("Total Duration: $totalDuration minutes"),
-                  _bullet("Do not refresh the page during the test."),
-                  _bullet("Each question must be answered before proceeding."),
-                  _bullet("Once submitted, answers cannot be changed."),
+                  _bullet(AppLocalizations.of(context)!.selCate + selectedCategories.length.toString()),
+                  _bullet(AppLocalizations.of(context)!.totalQues + totalQuestions.toString()),
+                  _bullet(AppLocalizations.of(context)!.totalDuration + totalDuration.toString() + AppLocalizations.of(context)!.minutes),
+                  _bullet(AppLocalizations.of(context)!.doNotRefreshTest),
+                  _bullet(AppLocalizations.of(context)!.eachQuesAnsBfrProceed),
+                  _bullet(AppLocalizations.of(context)!.onceSubmtAnsNotChange),
+
+                  // _bullet("Selected Categories: ${selectedCategories.length}"),
+                  // _bullet("Total Questions: $totalQuestions"),
+                  // _bullet("Total Duration: $totalDuration minutes"),
+                  // _bullet("Do not refresh the page during the test."),
+                  // _bullet("Each question must be answered before proceeding."),
+                  // _bullet("Once submitted, answers cannot be changed."),
 
                   /// Self Assessment Condition
                   if (hasSelfAssessment) ...[
                     const SizedBox(height: 20),
-                    const Text("Self Assessment Instructions",
+                    Text(AppLocalizations.of(context)!.selfAssessInstr,
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
-                    _bullet("There is only one correct answer per question."),
-                    _bullet("Each correct answer carries marks."),
-                    _bullet("Attempt all questions carefully."),
+                    _bullet(AppLocalizations.of(context)!.onlyOneAnsPerQues),
+                    _bullet(AppLocalizations.of(context)!.correctAnsMark),
+                    _bullet(AppLocalizations.of(context)!.attAllQuesCare),
                   ],
 
                   /// Psychometric Condition
                   if (hasPsychometric) ...[
                     const SizedBox(height: 20),
-                    const Text("Psychometric Instructions",
+                    Text(AppLocalizations.of(context)!.psychoInstr,
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
-                    _bullet("No answers are right or wrong."),
-                    _bullet("Answer honestly based on your behaviour."),
-                    _bullet("Do not overthink your responses."),
+                    _bullet(AppLocalizations.of(context)!.noRightWrong),
+                    _bullet(AppLocalizations.of(context)!.ansBasedBehaviour),
+                    _bullet(AppLocalizations.of(context)!.doNotOverthink),
                   ],
 
                   const SizedBox(height: 30),
@@ -376,7 +389,7 @@ class _SelfAssessmentScreenState
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text("Cancel"),
+                        child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -386,7 +399,7 @@ class _SelfAssessmentScreenState
 
                           // TODO: Navigate to test page
                         },
-                        child: const Text("Start Test"),
+                        child: Text(AppLocalizations.of(context)!.startTest),
                       ),
                     ],
                   )

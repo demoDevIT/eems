@@ -535,11 +535,11 @@ class _HomeScreenState extends State<HomeScreen> {
          return Dialog(
            backgroundColor: Colors.transparent,
            child: _centerPopupContainer(
-             title: "Search Job/Apply",
+             title: AppLocalizations.of(context)!.searchJobApply,
              children: [
 
                _popupRow(
-                 title: "Preferred/Recommended Jobs",
+                 title: AppLocalizations.of(context)!.prefRecomJobs,
                  iconPath: "assets/images/prefRecomJob.svg",
                  onTap: () {
                    Navigator.pop(context);
@@ -555,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
 
                _popupRow(
-                 title: "Applied Jobs",
+                 title: AppLocalizations.of(context)!.appJobs,
                  iconPath: "assets/images/appliedJobs.svg",
                  onTap: () {
                    Navigator.pop(context);
@@ -677,11 +677,11 @@ class _HomeScreenState extends State<HomeScreen> {
          return Dialog(
            backgroundColor: Colors.transparent,
            child: _centerPopupContainer(
-             title: "Job Fair Events",
+             title: AppLocalizations.of(context)!.jobfairevents,
              children: [
 
                _popupRow(
-                 title: "Events",
+                 title: AppLocalizations.of(context)!.events,
                  iconPath: "assets/images/events.svg",
                  onTap: () {
                    Navigator.pop(context);
@@ -697,7 +697,7 @@ class _HomeScreenState extends State<HomeScreen> {
                ),
 
                _popupRow(
-                 title: "Registered Event",
+                 title: AppLocalizations.of(context)!.regEvents,
                  iconPath: "assets/images/regEvents.svg",
                  onTap: () {
                    Navigator.pop(context);

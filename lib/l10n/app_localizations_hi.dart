@@ -697,4 +697,365 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get noVideoAvail => "कोई वीडियो उपलब्ध नहीं है";
+
+  @override
+  String get cvBuilder => "CV बिल्डर";
+
+  @override
+  String get downloadCV => "CV डाउनलोड करें";
+
+  @override
+  String get prefRecomJobs => "पसंदीदा/सुझाए गए काम";
+
+  @override
+  String get appJobs => "आवेदन की गई नौकरियां";
+
+  @override
+  String get prefJobs => "पसंदीदा नौकरियां";
+
+  @override
+  String get filter => "फ़िल्टर";
+
+  @override
+  String get searchJobTitle => "जॉब टाइटल के आधार पर खोजें";
+
+  @override
+  String get searchByLocation => "स्थान के आधार पर खोजें";
+
+  @override
+  String get selSector => "सेक्टर चुनें";
+
+  @override
+  String get searchSector => "सर्च सेक्टर";
+
+  @override
+  String get jobBasedUrProfile => "आपकी प्रोफ़ाइल के आधार पर नौकरियां";
+
+  @override
+  String get apply => "आवेदन करें";
+
+  @override
+  String get salary => "वेतन";
+
+  @override
+  String get confirm => "पुष्टि करना";
+
+  @override
+  String get areYouWantApply => "क्या आप पक्का अप्लाई करना चाहते हैं?";
+
+  @override
+  String get somethingWrong => "कुछ गलत हो गया";
+
+  @override
+  String get noAppJobFound => "कोई भी अप्लाइड जॉब नहीं मिली";
+
+  @override
+  String get events => "कार्यक्रम";
+
+  @override
+  String get regEvents => "पंजीकृत कार्यक्रम";
+
+  @override
+  String get fromDate => "तिथि से";
+
+  @override
+  String get endDate => "अंतिम तिथि";
+
+  @override
+  String get fromDateNotGreaterEndDate => "'शुरू होने की तारीख' 'समाप्त होने की तारीख' से ज़्यादा नहीं हो सकती।";
+
+  @override
+  String get applyFilter => "फ़िल्टर लागू करें";
+
+  @override
+  String get eventID => "इवेंट ID";
+
+  @override
+  String get startDate => "आरंभ करने की तिथि";
+
+  @override
+  String get level => "स्तर";
+
+  @override
+  String get venue => "कार्यक्रम का स्थान";
+
+  @override
+  String get selectDate => "तारीख़ चुनें";
+
+  @override
+  String get downRegCard => "रजिस्ट्रेशन कार्ड डाउनलोड करें";
+
+  @override
+  String get areYouWantDownload => "क्या आप सच में डाउनलोड करना चाहते हैं?";
+
+  @override
+  String get JobSeekRegCard => "नौकरी चाहने वाले का पंजीकरण कार्ड";
+
+  @override
+  String get regDate => "पंजीकरण की तारीख:";
+
+  @override
+  String get exchangeName => "एक्सचेंज का नाम";
+
+  @override
+  String get highQua => "उच्चतम योग्यता";
+
+  @override
+  String get perAddress => "स्थायी पता:";
+
+  @override
+  String get commAddress => "पत्राचार का पता:";
+
+  @override
+  String get mysyList => "MYSY सूची";
+
+  @override
+  String get applyDate => "आवेदन की तिथि";
+
+  @override
+  String get approveDate => "मंजूरी की तारीख";
+
+  @override
+  String get stoppedDate => "बंद होने की तारीख";
+
+  @override
+  String get msgLogs => "मैसेज लॉग्स";
+
+  @override
+  String get joinLogs => "शामिल होने के लॉग";
+
+  @override
+  String get attendLogs => "हाज़िरी का रिकॉर्ड";
+
+  @override
+  String get docLogs => "दस्तावेज़ लॉग";
+
+  @override
+  String get paymentLogs => "पेमेंट लॉग";
+
+  @override
+  String get grieAsignForm => "शिकायत सौंपने का फ़ॉर्म";
+
+  @override
+  String get noDataFound => "डाटा प्राप्त नहीं हुआ";
+
+  @override
+  String get complainNo => "शिकायत संख्या";
+
+  @override
+  String get subject => "विषय";
+
+  @override
+  String get cateType => "श्रेणी का प्रकार";
+
+  @override
+  String get module => "मॉड्यूल";
+
+  @override
+  String get status => "स्टेटस";
+
+  @override
+  String get createdOn => "बनाया गया";
+
+  @override
+  String get viewTrail => "ट्रेल देखें";
+
+  @override
+  String get subModule => "सब-मॉड्यूल";
+
+  @override
+  String get subRelComplain => "विषय (शिकायत से संबंधित)";
+
+  @override
+  String get enterSubRelComplain => "विषय दर्ज करें (शिकायत से संबंधित)";
+
+  @override
+  String get uploadAttachment => "अटैचमेंट अपलोड करें";
+
+  @override
+  String get selectUploadAttachment => "अपलोड करने के लिए अटैचमेंट चुनें";
+
+  @override
+  String get plzSelCate => "कृपया श्रेणी चुनें";
+
+  @override
+  String get plzSelCateType => "कृपया श्रेणी का प्रकार चुनें।";
+
+  @override
+  String get plzSelModule => "कृपया मॉड्यूल चुनें";
+
+  @override
+  String get plzSelSubModule => "कृपया सब-मॉड्यूल चुनें";
+
+  @override
+  String get plzEnterSub => "कृपया विषय दर्ज करें";
+
+  @override
+  String get plzEnterRemark => "कृपया टिप्पणी दर्ज करें";
+
+  @override
+  String get selfAssessTest => "स्व-मूल्यांकन परीक्षा";
+
+  @override
+  String get overview => "अवलोकन";
+
+  @override
+  String get overviewContent => "सेल्फ़-असेसमेंट टेस्ट लोगों को उनके कौशल, रुचियों और करियर की पसंद को समझने में मदद करने के लिए बनाया गया है। यह एक डायग्नोस्टिक टूल के तौर पर काम करता है, जिससे नौकरी चाहने वाले या छात्र अपनी खूबियों और सुधार की ज़रूरतों को पहचान सकते हैं और सही करियर चुन सकते हैं। जवाबों का विश्लेषण करके, यह सिस्टम यूज़र की प्रोफ़ाइल के आधार पर उनकी पर्सनैलिटी की खूबियों, काबिलियत के स्तर और संभावित जॉब रोल के बारे में जानकारी देता है।";
+
+  @override
+  String get keyFeature => "मुख्य विशेषताएँ";
+
+  @override
+  String get selfAssessKeyFeature1 => "लॉजिकल रीजनिंग, वर्बल एबिलिटी और न्यूमेरिकल एप्टीट्यूड सहित व्यापक कौशल मूल्यांकन।";
+
+  @override
+  String get selfAssessKeyFeature2 => "उपयुक्त करियर रास्तों के साथ व्यक्तित्व और रुचि की मैपिंग।";
+
+  @override
+  String get selfAssessKeyFeature3 => "टेस्ट पूरा करने के बाद तुरंत फ़ीडबैक और इनसाइट्स।";
+
+  @override
+  String get selfAssessKeyFeature4 => "आसान नेविगेशन वाला यूज़र-फ्रेंडली इंटरफ़ेस।";
+
+  @override
+  String get selfAssessKeyFeature5 => "गोपनीय और सुरक्षित डेटा हैंडलिंग।";
+
+  @override
+  String get selfAssessKeyFeature6 => "गाइडेड करियर सुझाव।";
+
+  @override
+  String get selfAssessKeyFeature7 => "सुधार को ट्रैक करने के लिए दोबारा प्रयास करने का विकल्प।";
+
+  @override
+  String get benefits => "फ़ायदे";
+
+  @override
+  String get benifit1 => "खुद को जानने में मदद करता है।";
+
+  @override
+  String get benifit2 => "करियर से जुड़े फैसलों का वैज्ञानिक आधार";
+
+  @override
+  String get benifit3 => "प्री-स्क्रीनिंग टूल";
+
+  @override
+  String get benifit4 => "लगातार सीखने को बढ़ावा देता है";
+
+  @override
+  String get continuee => "जारी रखें";
+
+  @override
+  String get sel1CatForAssess => "मूल्यांकन के लिए कम से कम 1 श्रेणी चुनें।";
+
+  @override
+  String get psychometric => "साइकोमेट्रिक";
+
+  @override
+  String get startTest => "टेस्ट शुरू करें";
+
+  @override
+  String get assessInstr => "मूल्यांकन के निर्देश";
+
+  @override
+  String get generalInstr => "सामान्य निर्देश";
+
+  @override
+  String get selCate => "चुनी गई श्रेणियाँ:";
+
+  @override
+  String get totalQues => "कुल सवाल:";
+
+  @override
+  String get totalDuration => "कुल अवधि:";
+
+  @override
+  String get minutes => "मिनट";
+
+  @override
+  String get doNotRefreshTest => "टेस्ट के दौरान पेज को रिफ्रेश न करें।";
+
+  @override
+  String get eachQuesAnsBfrProceed => "आगे बढ़ने से पहले हर सवाल का जवाब देना ज़रूरी है।";
+
+  @override
+  String get onceSubmtAnsNotChange => "एक बार सबमिट करने के बाद, जवाब बदले नहीं जा सकते।";
+
+  @override
+  String get selfAssessInstr => "स्व-मूल्यांकन के लिए निर्देश";
+
+  @override
+  String get onlyOneAnsPerQues => "हर सवाल का सिर्फ़ एक ही सही जवाब है।";
+
+  @override
+  String get correctAnsMark => "हर सही जवाब के लिए अंक मिलते हैं।";
+
+  @override
+  String get attAllQuesCare => "सभी प्रश्नों को ध्यानपूर्वक हल करें।";
+
+  @override
+  String get psychoInstr => "साइकोमेट्रिक निर्देश";
+
+  @override
+  String get noRightWrong => "कोई भी जवाब सही या गलत नहीं है।";
+
+  @override
+  String get ansBasedBehaviour => "अपने व्यवहार के आधार पर ईमानदारी से जवाब दें।";
+
+  @override
+  String get doNotOverthink => "अपने जवाबों के बारे में ज़्यादा न सोचें।";
+
+  @override
+  String get jobAlert => "नौकरी के अलर्ट";
+
+  @override
+  String get privacy => "प्राइवेसी";
+
+  @override
+  String get profileVisibleRequiters => "रिक्रूटर को प्रोफ़ाइल दिखेगी";
+
+  @override
+  String get support => "सहायता";
+
+  @override
+  String get aboutApp => "ऐप के बारे में";
+
+  @override
+  String get viewProfile => "प्रोफ़ाइल देखें";
+
+  @override
+  String get areYouSureLogOut => "क्या आप सच में लॉग आउट करना चाहते हैं?";
+
+  @override
+  String get skillKnown => "ज्ञात स्किल";
+
+  @override
+  String get skillCate => "स्किल श्रेणी";
+
+  @override
+  String get skillSubCate => "स्किल सब-कैटेगरी";
+
+  @override
+  String get acquThro => "के माध्यम से प्राप्त";
+
+  @override
+  String get experience => "अनुभव";
+
+  @override
+  String get enterYear => "साल डालें";
+
+  @override
+  String get enterMonth => "महीना डालें";
+
+  @override
+  String get uploadSkillCert => "स्किल सर्टिफ़िकेट अपलोड करें";
+
+  @override
+  String get uploadImage => "कृपया इमेज अपलोड करें।";
+
+  @override
+  String get uploadPDF => "PDF अपलोड करें";
+
+  @override
+  String get language => "भाषा";
+
 }

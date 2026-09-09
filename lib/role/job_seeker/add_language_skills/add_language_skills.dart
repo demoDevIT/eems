@@ -6,6 +6,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
 import 'package:rajemployment/role/job_seeker/addjobpreference/provider/add_job_preference_provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -58,11 +59,11 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
   String get screenTitle {
     if (showSkillSection && !showLanguageSection) {
-      return "Add Skill";
+      return AppLocalizations.of(context)!.addSkill;
     } else if (!showSkillSection && showLanguageSection) {
-      return "Add Language";
+      return AppLocalizations.of(context)!.addLang;
     } else {
-      return "Add Language & Skills";
+      return AppLocalizations.of(context)!.addLangSkill;
     }
   }
 
@@ -111,8 +112,8 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                 )) {
                   confirmAlertDialog(
                     context,
-                    "Alert",
-                    "Are you sure want to submit ?",
+                    AppLocalizations.of(context)!.alert,
+                    AppLocalizations.of(context)!.areYouSureSubmitForm,
                     (value) {
                       if (value.toString() == "success") {
                         /* =======================
@@ -181,8 +182,8 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
               ),
               child: Text(
                   isUpdateSkill == false && isUpdateLanguage == false
-                      ? 'Add'
-                      : "Update",
+                      ? AppLocalizations.of(context)!.add
+                      : AppLocalizations.of(context)!.update,
                   style: TextStyle(fontSize: 16, color: Colors.white)),
             ),
           ),
@@ -198,14 +199,14 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                   children: [
                     if (showSkillSection) ...[
                       Text(
-                        'Skill Known',
+                        AppLocalizations.of(context)!.skillKnown,
                         style:
                             Styles.boldTextStyle(color: kBlackColor, size: 16),
                       ),
                       hSpace(14),
 
                       // Sector
-                      labelWithStar('Skill Category', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.skillCate, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -218,7 +219,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
                           controller: provider.categoryNameController,
                           idController: provider.categoryIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -234,7 +235,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       hSpace(8),
 
                       // Preferred Location
-                      labelWithStar('Skill Sub Category', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.skillSubCate, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -247,7 +248,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
                           controller: provider.subCategoryNameController,
                           idController: provider.subCategoryIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -256,7 +257,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       ),
                       hSpace(8),
 
-                      labelWithStar('Acquired Through', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.acquThro, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -269,7 +270,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
                           controller: provider.acquiredThroughNameController,
                           idController: provider.acquiredThroughIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -279,7 +280,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       hSpace(8),
 
                       // Desired Job Type (text field)
-                      labelWithStar('Experience', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.experience, required: true),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -289,7 +290,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.yearController,
-                              "Enter Year",
+                              AppLocalizations.of(context)!.enterYear,
                               MediaQuery.of(context).size.width * 0.88 / 2,
                               50,
                               TextInputType.text,
@@ -300,7 +301,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.monthController,
-                              "Enter Month",
+                              AppLocalizations.of(context)!.enterMonth,
                               MediaQuery.of(context).size.width * 0.88 / 2,
                               50,
                               TextInputType.text,
@@ -310,7 +311,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       ),
                       hSpace(8),
 
-                      labelWithStar('NCO Code', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.ncoCode, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -323,7 +324,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
                           controller: provider.ncoNameController,
                           idController: provider.ncoIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -332,7 +333,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       ),
                       hSpace(8),
 
-                      labelWithStar('Remark', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.remarks, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -346,7 +347,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       ),
                       hSpace(8),
 
-                      labelWithStar('Upload Skill Certificate',
+                      labelWithStar(AppLocalizations.of(context)!.uploadSkillCert,
                           required: false),
                       InkWell(
                         onTap: () {
@@ -358,7 +359,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                                   children: [
                                     ListTile(
                                       leading: Icon(Icons.image),
-                                      title: Text("Upload Image"),
+                                      title: Text(AppLocalizations.of(context)!.uploadImage),
                                       onTap: () async {
                                         Navigator.pop(context);
 
@@ -384,7 +385,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
                                     ListTile(
                                       leading: Icon(Icons.picture_as_pdf),
-                                      title: Text("Upload PDF"),
+                                      title: Text(AppLocalizations.of(context)!.uploadPDF),
                                       onTap: () async {
                                         Navigator.pop(context);
 
@@ -414,12 +415,12 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                     ],
                     if (showLanguageSection) ...[
                       Text(
-                        'Language Known',
+                        AppLocalizations.of(context)!.langKnow,
                         style:
                             Styles.boldTextStyle(color: kBlackColor, size: 16),
                       ),
                       const SizedBox(height: 30),
-                      labelWithStar('Language', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.language, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),

@@ -9,6 +9,7 @@ import 'package:rajemployment/role/job_seeker/registration_card/provider/registr
 import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/user_new.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
@@ -44,7 +45,7 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Download Registration Card", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.downRegCard, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -85,8 +86,8 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                         onPressed: () async {
                           confirmAlertDialog(
                             context,
-                            "Alert",
-                            "Are you sure want to Download ?",
+                            AppLocalizations.of(context)!.alert,
+                            AppLocalizations.of(context)!.areYouWantDownload,
                                 (value) async {
                               if (value.toString() == "success") {
                                 await provider.generatePdfFromWidget(_pdfKey);
@@ -101,8 +102,8 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          "Download Registration Card",
+                        child: Text(
+                          AppLocalizations.of(context)!.downRegCard,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -203,8 +204,8 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
           cardHeader(),
 
           const SizedBox(height: 6),
-          const Text(
-            "Job Seeker Registration Card",
+          Text(
+            AppLocalizations.of(context)!.JobSeekRegCard,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,
@@ -218,11 +219,11 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Reg No.: ${cardData.regNo ?? ""}",
+                  AppLocalizations.of(context)!.regNo + cardData.regNo ?? "",
                   style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "Reg Date: ${cardData.registrationDate ?? ""}",
+                  AppLocalizations.of(context)!.regDate + cardData.registrationDate ?? "",
                   style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                 ),
 
@@ -255,7 +256,7 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                     ),
 
                     const SizedBox(height: 4),
-                    Text("NCO Code",
+                    Text(AppLocalizations.of(context)!.ncoCode,
                         style: TextStyle(fontSize: 10, color: Colors.grey)),
                     SizedBox(
                       width: 60, // adjust based on design
@@ -281,9 +282,9 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      infoRow("Name",
+                      infoRow(AppLocalizations.of(context)!.name,
                           "${cardData.firstName ?? ""} ${cardData.lastName ?? ""}"),
-                      infoRow("Father Name", cardData.fatherName ?? ""),
+                      infoRow(AppLocalizations.of(context)!.fName, cardData.fatherName ?? ""),
                       // infoRow("DOB", cardData.dOB ?? ""),
                       // infoRow("Gender", cardData.gender ?? ""),
                       // infoRow("Caste", cardData.casteCategory ?? "NA"),
@@ -295,12 +296,12 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                         children: [
                           Expanded(
                             // flex: 3, // 👈 more space for DOB
-                            child: infoRow("DOB", cardData.dOB ?? ""),
+                            child: infoRow(AppLocalizations.of(context)!.dob, cardData.dOB ?? ""),
                           ),
                           // const SizedBox(width: 4), // 👈 tiny shift right
                           Expanded(
                             // flex: 2,
-                            child: infoRow("Caste", cardData.casteCategory ?? ""),
+                            child: infoRow(AppLocalizations.of(context)!.caste, cardData.casteCategory ?? ""),
                           ),
                         ],
                       ),
@@ -311,16 +312,16 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: infoRow("Gender", cardData.gender ?? ""),
+                            child: infoRow(AppLocalizations.of(context)!.gender, cardData.gender ?? ""),
                           ),
                           Expanded(
-                            child: infoRow("Disability", cardData.isDisablity ?? ""),
+                            child: infoRow(AppLocalizations.of(context)!.disability, cardData.isDisablity ?? ""),
                           ),
                         ],
                       ),
 
-                      infoRow("Exchange Name", cardData.exchangeName ?? ""),
-                      infoRow("Highest Qualification", cardData.highQuali ?? ""),
+                      infoRow(AppLocalizations.of(context)!.exchangeName, cardData.exchangeName ?? ""),
+                      infoRow(AppLocalizations.of(context)!.highQua, cardData.highQuali ?? ""),
                     ],
                   ),
                 ),
@@ -356,8 +357,8 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Permanent Address:",
+                          Text(
+                            AppLocalizations.of(context)!.perAddress,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 4),
@@ -376,9 +377,9 @@ class _RegistrationCardScreenState extends State<RegistrationCardScreen> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
-                            "Communication Address:",
+                            AppLocalizations.of(context)!.commAddress,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 4),

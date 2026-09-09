@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/user_new.dart';
 import 'modal/all_job_sector_list_modal.dart';
@@ -42,7 +43,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
           return Scaffold(
             backgroundColor: const Color(0xfff5f6fa),
             appBar: AppBar(
-              title: const Text("Preferred Jobs"),
+              title: Text(AppLocalizations.of(context)!.prefJobs),
               backgroundColor: Colors.white,
               elevation: 0,
               foregroundColor: Colors.black,
@@ -65,7 +66,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text("Filter",
+                          Text(AppLocalizations.of(context)!.filter,
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold)),
@@ -75,7 +76,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                           /// Job Title
                           _textField(
                             provider.jobTitleController,
-                            "Search By Job Title",
+                            AppLocalizations.of(context)!.searchJobTitle,
                           ),
 
                           const SizedBox(height: 12),
@@ -83,7 +84,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                           /// Location
                           _textField(
                             provider.locationController,
-                            "Search By Location",
+                            AppLocalizations.of(context)!.searchByLocation,
                           ),
 
                           const SizedBox(height: 12),
@@ -119,7 +120,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
 
                             decoratorProps: DropDownDecoratorProps(
                               decoration: _inputDecoration(
-                                hintText: "Select Sector",
+                                hintText: AppLocalizations.of(context)!.selSector,
                               ),
                             ),
 
@@ -130,7 +131,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
 
                               searchFieldProps: TextFieldProps(
                                 decoration: InputDecoration(
-                                  hintText: "Search Sector",
+                                  hintText: AppLocalizations.of(context)!.searchSector,
                                   prefixIcon: Icon(Icons.search),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -162,7 +163,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                   ),
-                                  child: const Text("Search"),
+                                  child: Text(AppLocalizations.of(context)!.search),
                                 ),
                               ),
 
@@ -179,7 +180,7 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                                       BorderRadius.circular(30),
                                     ),
                                   ),
-                                  child: const Text("Clear"),
+                                  child: Text(AppLocalizations.of(context)!.clear),
                                 ),
                               ),
                             ],
@@ -209,8 +210,8 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                             children: [
 
                               /// 🔹 Heading
-                              const Text(
-                                "Jobs based on your profile",
+                              Text(
+                                AppLocalizations.of(context)!.jobBasedUrProfile,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -237,7 +238,8 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Apply (${provider.selectedJobs.length})",
+                                    //"Apply (${provider.selectedJobs.length})",
+                                    AppLocalizations.of(context)!.apply + "(" + provider.selectedJobs.length.toString() + ")",
                                     style: const TextStyle(fontSize: 13),
                                   ),
                                 ),
@@ -330,7 +332,8 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
                                             const SizedBox(height: 6),
 
                                             Text(
-                                              "Salary: ₹${job.salary ?? 0}",
+                                              // "Salary: ₹${job.salary ?? 0}",
+                                              AppLocalizations.of(context)!.salary + ": ₹" + job.salary.toString() ?? "0" ,
                                               style: const TextStyle(fontSize: 13),
                                             ),
 
@@ -465,8 +468,8 @@ class _SectorSearchSheetState extends State<_SectorSearchSheet> {
             /// 🔍 Search Field
             TextField(
               controller: searchController,
-              decoration: const InputDecoration(
-                hintText: "Search Sector",
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.searchSector,
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: _filter,

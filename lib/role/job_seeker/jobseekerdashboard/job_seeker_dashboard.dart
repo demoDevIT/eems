@@ -136,7 +136,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
       child: Scaffold(
         drawer: _buildSideDrawer(), // Left Drawer
         bottomNavigationBar: _buildBottomNavigationBar(),
-        appBar: commonAppBar("Jobs", context,
+        appBar: commonAppBar(AppLocalizations.of(context)!.jobs, context,
           localeProvider.currentLanguage, "", false, "", onTapClick: () {
         localeProvider.toggleLocale();
       }),
@@ -277,7 +277,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
                             },
                             child: Text(
                               // AppLocalizations.of(context)!.updateprofile,
-                              "View profile",
+                              AppLocalizations.of(context)!.viewProfile,
                               style: TextStyle(
                                 fontSize: 14,
                                 //color: Colors.blue,
@@ -672,7 +672,7 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
             title: Text(AppLocalizations.of(context)!.logout,style: Styles.mediumTextStyle(size: 14),),
             onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
+              showLogoutDialog(context, AppLocalizations.of(context)!.logout,AppLocalizations.of(context)!.areYouSureLogOut, AppLocalizations.of(context)!.logoutThankYouText, (value) async {
                   if (value.toString() == "success") {
                     // earlier working code, before remember me
                     // final pref = AppSharedPref();

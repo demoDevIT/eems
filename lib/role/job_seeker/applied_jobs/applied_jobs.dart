@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import 'provider/applied_jobs_provider.dart';
 
@@ -29,7 +30,7 @@ class _AppliedJobsScreenState extends State<AppliedJobsScreen> {
         return Scaffold(
           backgroundColor: const Color(0xfff5f6fa),
           appBar: AppBar(
-            title: const Text("Applied Jobs"),
+            title: Text(AppLocalizations.of(context)!.appJobs),
             backgroundColor: Colors.white,
             elevation: 0,
             foregroundColor: Colors.black,
@@ -37,7 +38,7 @@ class _AppliedJobsScreenState extends State<AppliedJobsScreen> {
           body: provider.isLoading
               ? const Center(child: CircularProgressIndicator())
               : provider.appliedJobs.isEmpty
-              ? const Center(child: Text("No Applied Jobs Found"))
+              ? Center(child: Text(AppLocalizations.of(context)!.noAppJobFound))
               : Padding(
             padding: const EdgeInsets.all(16),
             child: ListView.builder(

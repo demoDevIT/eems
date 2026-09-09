@@ -5,6 +5,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/job_details/job_details.dart';
 import 'package:rajemployment/role/job_seeker/jobs/provider/jobs_list_provider.dart';
 import 'package:rajemployment/utils/images.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 
@@ -60,7 +61,7 @@ class _JobsListScreenState extends State<JobsListScreen> {
 
                           alignment: Alignment.center,
                           child: Text(
-                            "Preferred Jobs",
+                            AppLocalizations.of(context)!.prefJobs,
                             style: Styles.semiBoldTextStyle(size: 15, color: provider.tab == true ? kWhite : kbuttonColor,),
                           ),
                         ),
@@ -81,7 +82,7 @@ class _JobsListScreenState extends State<JobsListScreen> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            "Applied Jobs",
+                            AppLocalizations.of(context)!.appJobs,
                             style: Styles.semiBoldTextStyle(size: 15, color: provider.tab == false ? kWhite : kbuttonColor,),                       ),
                         ),
                       ),

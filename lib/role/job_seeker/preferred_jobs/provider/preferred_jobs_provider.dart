@@ -536,12 +536,12 @@ class PreferredJobsProvider extends ChangeNotifier {
       context: context,
       builder: (confirmContext) {
         return AlertDialog(
-          title: const Text("Confirm"),
-          content: const Text("Are you sure you want to apply?"),
+          title: Text(AppLocalizations.of(context)!.confirm),
+          content: Text(AppLocalizations.of(context)!.areYouWantApply),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(confirmContext),
-              child: const Text("No"),
+              child: Text(AppLocalizations.of(context)!.no),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -552,7 +552,7 @@ class PreferredJobsProvider extends ChangeNotifier {
                 Navigator.pop(confirmContext);
                 onYes();
               },
-              child: const Text("Yes"),
+              child: Text(AppLocalizations.of(context)!.yes),
             ),
           ],
         );
@@ -628,6 +628,7 @@ class PreferredJobsProvider extends ChangeNotifier {
         isJobDetailsLoading = false;
         notifyListeners();
         showAlertError("Something went wrong", context);
+        // showAlertError(AppLocalizations.of(context)!.somethingWrong, context);
       }
 
     } catch (e) {
@@ -651,7 +652,7 @@ class PreferredJobsProvider extends ChangeNotifier {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: const Text(
+          title: Text(
             "Confirm",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),

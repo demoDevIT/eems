@@ -14,6 +14,7 @@ import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../addjobpreference/add_job_preference.dart';
@@ -58,7 +59,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Registered Events", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.regEvents, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -85,7 +86,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                           children: [
                             Expanded(
                               child: _buildDateField(
-                                title: "From Date",
+                                title: AppLocalizations.of(context)!.fromDate,
                                 controller: fromDateController,
                                 onTap: () => _selectDate(context, true),
                               ),
@@ -93,7 +94,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                             SizedBox(width: 12),
                             Expanded(
                               child: _buildDateField(
-                                title: "End Date",
+                                title: AppLocalizations.of(context)!.endDate,
                                 controller: toDateController,
                                 onTap: () => _selectDate(context, false),
                               ),
@@ -114,7 +115,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                                       selectedFromDate!
                                           .isAfter(selectedToDate!)) {
                                     showAlertError(
-                                        "From Date cannot be greater than End Date",
+                                        AppLocalizations.of(context)!.fromDateNotGreaterEndDate,
                                         context);
                                     return;
                                   }
@@ -125,7 +126,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                                     endDate: toDateApi,
                                   );
                                 },
-                                child: Text("Apply Filter"),
+                                child: Text(AppLocalizations.of(context)!.applyFilter),
                               ),
                             ),
                             SizedBox(width: 10),
@@ -143,7 +144,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
 
                                   provider.allJobMatchingListApi(context);
                                 },
-                                child: Text("Clear"),
+                                child: Text(AppLocalizations.of(context)!.clear),
                               ),
                             ),
                           ],
@@ -208,16 +209,16 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
 
                               Divider(height: 20, thickness: 1),
 
-                              _buildRow("Event ID", data.eventId.toString(), Icons.badge),
+                              _buildRow(AppLocalizations.of(context)!.eventID, data.eventId.toString(), Icons.badge),
                               //_buildRow("Event Description", data.eventDescription.toString(), Icons.badge),
-                              _buildRow("Start Date",
+                              _buildRow(AppLocalizations.of(context)!.startDate,
                                   getFormattedDate(data.startDate.toString()),
                                   Icons.calendar_today),
-                              _buildRow("End Date",
+                              _buildRow(AppLocalizations.of(context)!.endDate,
                                   getFormattedDate(data.endDate.toString()),
                                   Icons.calendar_today_outlined),
-                              _buildRow("Level", data.levelNameEnglish.toString(), Icons.badge),
-                              _buildRow("Venue", data.venue ?? "", Icons.location_on),
+                              _buildRow(AppLocalizations.of(context)!.level, data.levelNameEnglish.toString(), Icons.badge),
+                              _buildRow(AppLocalizations.of(context)!.venue, data.venue ?? "", Icons.location_on),
 
                             ],
                           ),
@@ -989,7 +990,7 @@ class _RegisteredEventListScreenState extends State<RegisteredEventListScreen> {
                   SizedBox(height: 4),
                   Text(
                     controller.text.isEmpty
-                        ? "Select Date"
+                        ? AppLocalizations.of(context)!.selectDate
                         : controller.text,
                     style: TextStyle(
                       fontSize: 13,

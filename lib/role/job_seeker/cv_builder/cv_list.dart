@@ -14,6 +14,7 @@ import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../addjobpreference/add_job_preference.dart';
@@ -47,7 +48,7 @@ class _CvListScreenState extends State<CvListScreen> {
 
     return Scaffold(
       appBar: commonAppBar2(
-        "CV Builder",
+        AppLocalizations.of(context)!.cvBuilder,
         context,
         localeProvider.currentLanguage,
         "",
@@ -83,8 +84,8 @@ class _CvListScreenState extends State<CvListScreen> {
                     },
                     child: provider.isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                      "Download CV",
+                        : Text(
+                      AppLocalizations.of(context)!.downloadCV,
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),

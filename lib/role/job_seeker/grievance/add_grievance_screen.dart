@@ -8,6 +8,7 @@ import 'package:rajemployment/role/job_seeker/grievance/module/category_model.da
 import 'package:rajemployment/role/job_seeker/grievance/module/module_model.dart';
 import 'package:rajemployment/role/job_seeker/grievance/module/sub_module_modal.dart';
 import 'package:rajemployment/role/job_seeker/grievance/provider/add_grievance_provider.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -48,7 +49,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Grievance Assign Form", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.grieAsignForm, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -62,13 +63,13 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Grievance Assign Form',
+                      AppLocalizations.of(context)!.grieAsignForm,
                       style: Styles.semiBoldTextStyle(
                           color: kBlackColor, size: 16),
                     ),
                     hSpace(10),
                     // Sector
-                    labelWithStar('Category'),
+                    labelWithStar(AppLocalizations.of(context)!.category),
                     hSpace(6),
                     IgnorePointer(
                       ignoring: false,
@@ -81,7 +82,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         controller: provider.categoryNameController,
                         idController: provider.categoryIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         // height: 50,
                         // color: Colors.transparent,
                         // borderRadius: BorderRadius.circular(8),
@@ -98,7 +99,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                     hSpace(10),
                     // Preferred Location
-                    labelWithStar('Category Type'),
+                    labelWithStar(AppLocalizations.of(context)!.cateType),
                     hSpace(6),
                     IgnorePointer(
                       ignoring: false,
@@ -111,7 +112,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         controller: provider.categoryTypeNameController,
                         idController: provider.categoryTypeIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         // height: 50,
                         // color: Colors.transparent,
                         // borderRadius: BorderRadius.circular(8),
@@ -127,7 +128,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                     hSpace(10),
                     // Desired Employment Type
-                    labelWithStar('Module'),
+                    labelWithStar(AppLocalizations.of(context)!.module),
                     hSpace(6),
                     IgnorePointer(
                       ignoring: false,
@@ -140,7 +141,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         controller: provider.moduleNameController,
                         idController: provider.moduleIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         // height: 50,
                         // color: Colors.transparent,
                         // borderRadius: BorderRadius.circular(8),
@@ -158,7 +159,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
 
                     hSpace(10),
-                    labelWithStar('Sub Module'),
+                    labelWithStar(AppLocalizations.of(context)!.subModule),
                     hSpace(6),
                     IgnorePointer(
                       ignoring: false,
@@ -171,7 +172,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         controller: provider.subModuleNameController,
                         idController: provider.subModuleIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         // height: 50,
                         // color: Colors.transparent,
                         // borderRadius: BorderRadius.circular(8),
@@ -183,12 +184,12 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
 
                     hSpace(10),
-                    labelWithStar('Subject (Related to Complaint)'),
+                    labelWithStar(AppLocalizations.of(context)!.subRelComplain),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.complaintController,
-                        "Enter Subject (Related to Complaint)",
+                        AppLocalizations.of(context)!.enterSubRelComplain,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.text,
@@ -197,13 +198,13 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
 
                     hSpace(10),
-                    labelWithStar('Remark'),
+                    labelWithStar(AppLocalizations.of(context)!.remarks),
                     Padding(
                       padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.remarkController,
-                        "Remark",
+                        AppLocalizations.of(context)!.remarks,
                         MediaQuery.of(context).size.width,
                         100,
                         maxLine: 20,
@@ -212,7 +213,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                     ),
 
                     hSpace(10),
-                    labelWithStar('Upload Attachment'),
+                    labelWithStar(AppLocalizations.of(context)!.uploadAttachment),
                     InkWell(
                       onTap: () {
                         showImagePicker(context,
@@ -255,7 +256,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         child: buildTextWithBorderField(
                           provider.certificateController,
-                          "Select Upload Attachment",
+                            AppLocalizations.of(context)!.selectUploadAttachment,
                           MediaQuery.of(context).size.width,
                           50,
                           TextInputType.number,
@@ -282,8 +283,8 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
                           if (!validateForm(context, provider)) return;
                           confirmAlertDialog(
                             context,
-                            "Alert",
-                            "Are you sure want to submit ?",
+                            AppLocalizations.of(context)!.alert,
+                            AppLocalizations.of(context)!.areYouSureSubmitForm,
                                 (value) {
                               if (value.toString() == "success") {
                                 provider.saveGrievanceModalApi(context);
@@ -293,7 +294,7 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         },
                         child:  Text(
-                          "Add" ,
+                          AppLocalizations.of(context)!.add ,
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
@@ -314,32 +315,32 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
   bool validateForm(BuildContext context, AddGrievanceProvider provider) {
     if (provider.categoryIdController.text.isEmpty) {
-      showAlertError("Please select Category", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelCate, context);
       return false;
     }
 
     if (provider.categoryTypeIdController.text.isEmpty) {
-      showAlertError("Please select Category Type", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelCateType, context);
       return false;
     }
 
     if (provider.moduleIdController.text.isEmpty) {
-      showAlertError("Please select Module", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelModule, context);
       return false;
     }
 
     if (provider.subModuleIdController.text.isEmpty) {
-      showAlertError("Please select Sub Module", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelSubModule, context);
       return false;
     }
 
     if (provider.complaintController.text.trim().isEmpty) {
-      showAlertError("Please enter Subject", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterSub, context);
       return false;
     }
 
     if (provider.remarkController.text.trim().isEmpty) {
-      showAlertError("Please enter Remark", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterRemark, context);
       return false;
     }
 

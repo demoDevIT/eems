@@ -698,4 +698,364 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noVideoAvail => "No video available";
 
+  @override
+  String get cvBuilder => "CV Builder";
+
+  @override
+  String get downloadCV => "Download CV";
+
+  @override
+  String get prefRecomJobs => "Preferred/Recommended Jobs";
+
+  @override
+  String get appJobs => "Applied Jobs";
+
+  @override
+  String get prefJobs => "Preferred Jobs";
+
+  @override
+  String get filter => "Filter";
+
+  @override
+  String get searchJobTitle => "Search By Job Title";
+
+  @override
+  String get searchByLocation => "Search By Location";
+
+  @override
+  String get selSector => "Select Sector";
+
+  @override
+  String get searchSector => "Search Sector";
+
+  @override
+  String get jobBasedUrProfile => "Jobs based on your profile";
+
+  @override
+  String get apply => "Apply";
+
+  @override
+  String get salary => "Salary";
+
+  @override
+  String get confirm => "Confirm";
+
+  @override
+  String get areYouWantApply => "Are you sure you want to apply?";
+
+  @override
+  String get somethingWrong => "Something went wrong";
+
+  @override
+  String get noAppJobFound => "No Applied Jobs Found";
+
+  @override
+  String get events => "Events";
+
+  @override
+  String get regEvents => "Registered Events";
+
+  @override
+  String get fromDate => "From Date";
+
+  @override
+  String get endDate => "End Date";
+
+  @override
+  String get fromDateNotGreaterEndDate => "From Date cannot be greater than End Date";
+
+  @override
+  String get applyFilter => "Apply Filter";
+
+  @override
+  String get eventID => "Event ID";
+
+  @override
+  String get startDate => "Start Date";
+
+  @override
+  String get level => "Level";
+
+  @override
+  String get venue => "Venue";
+
+  @override
+  String get selectDate => "Select Date";
+
+  @override
+  String get downRegCard => "Download Registration Card";
+
+  @override
+  String get areYouWantDownload => "Are you sure want to Download ?";
+
+  @override
+  String get JobSeekRegCard => "Job Seeker Registration Card";
+
+  @override
+  String get regDate => "Reg Date:";
+
+  @override
+  String get exchangeName => "Exchange Name";
+
+  @override
+  String get highQua => "Highest Qualification";
+
+  @override
+  String get perAddress => "Permanent Address:";
+
+  @override
+  String get commAddress => "Communication Address:";
+
+  @override
+  String get mysyList => "MYSY List";
+
+  @override
+  String get applyDate => "Apply Date";
+
+  @override
+  String get approveDate => "Approve Date";
+
+  @override
+  String get stoppedDate => "Stopped Date";
+
+  @override
+  String get msgLogs => "Message Logs";
+
+  @override
+  String get joinLogs => "Joining Logs";
+
+  @override
+  String get attendLogs => "Attendance Log";
+
+  @override
+  String get docLogs => "Document Log";
+
+  @override
+  String get paymentLogs => "Payment Log";
+
+  @override
+  String get grieAsignForm => "Grievance Assign Form";
+
+  @override
+  String get noDataFound => "No Data Found";
+
+  @override
+  String get complainNo => "Complain No.";
+
+  @override
+  String get subject => "Subject";
+
+  @override
+  String get cateType => "Category Type";
+
+  @override
+  String get module => "Module";
+
+  @override
+  String get status => "Status";
+
+  @override
+  String get createdOn => "Created On";
+
+  @override
+  String get viewTrail => "View Trail";
+
+  @override
+  String get subModule => "Sub Module";
+
+  @override
+  String get subRelComplain => "Subject (Related to Complaint)";
+
+  @override
+  String get enterSubRelComplain => "Enter Subject (Related to Complaint)";
+
+  @override
+  String get uploadAttachment => "Upload Attachment";
+
+  @override
+  String get selectUploadAttachment => "Select Upload Attachment";
+
+  @override
+  String get plzSelCate => "Please select Category";
+
+  @override
+  String get plzSelCateType => "Please select Category Type";
+
+  @override
+  String get plzSelModule => "Please select Module";
+
+  @override
+  String get plzSelSubModule => "Please select Sub Module";
+
+  @override
+  String get plzEnterSub => "Please enter Subject";
+
+  @override
+  String get plzEnterRemark => "Please enter Remark";
+
+  @override
+  String get selfAssessTest => "Self-Assessment Test";
+
+  @override
+  String get overview => "Overview";
+
+  @override
+  String get overviewContent => "The Self-Assessment Test is designed to help individuals understand their skills, interests, and career preferences. It serves as a diagnostic tool that enables job seekers or students to identify their strengths and areas for improvement, assisting them in making informed career choices. By analyzing the responses, the system provides insights into personality traits, aptitude levels, and potential job roles aligned with the user’s profile.";
+
+  @override
+  String get keyFeature => "Key Features";
+
+  @override
+  String get selfAssessKeyFeature1 => "Comprehensive Skill Evaluation including logical reasoning, verbal ability, numerical aptitude.";
+
+  @override
+  String get selfAssessKeyFeature2 => "Personality and Interest Mapping aligned with suitable career paths.";
+
+  @override
+  String get selfAssessKeyFeature3 => "Instant Feedback and Insights after completing the test.";
+
+  @override
+  String get selfAssessKeyFeature4 => "User-Friendly Interface with easy navigation.";
+
+  @override
+  String get selfAssessKeyFeature5 => "Confidential and Secure data handling.";
+
+  @override
+  String get selfAssessKeyFeature6 => "Guided Career Recommendations.";
+
+  @override
+  String get selfAssessKeyFeature7 => "Reattempt Option to track improvement.";
+
+  @override
+  String get benefits => "Benefits";
+
+  @override
+  String get benifit1 => "Helps in self-discovery";
+
+  @override
+  String get benifit2 => "Scientific basis for career decisions";
+
+  @override
+  String get benifit3 => "Pre-screening tool";
+
+  @override
+  String get benifit4 => "Encourages continuous learning";
+
+  @override
+  String get continuee => "Continue";
+
+  @override
+  String get sel1CatForAssess => "Select at least 1 category(s) for Assessment";
+
+  @override
+  String get psychometric => "Psychometric";
+
+  @override
+  String get startTest => "Start Test";
+
+  @override
+  String get assessInstr => "Assessment Instructions";
+
+  @override
+  String get generalInstr => "General Instructions";
+
+  @override
+  String get selCate => "Selected Categories:";
+
+  @override
+  String get totalQues => "Total Questions:";
+
+  @override
+  String get totalDuration => "Total Duration:";
+
+  @override
+  String get minutes => "Minutes";
+
+  @override
+  String get doNotRefreshTest => "Do not refresh the page during the test.";
+
+  @override
+  String get eachQuesAnsBfrProceed => "Each question must be answered before proceeding.";
+
+  @override
+  String get onceSubmtAnsNotChange => "Once submitted, answers cannot be changed.";
+
+  @override
+  String get selfAssessInstr => "Self Assessment Instructions";
+
+  @override
+  String get onlyOneAnsPerQues => "There is only one correct answer per question.";
+
+  @override
+  String get correctAnsMark => "Each correct answer carries marks.";
+
+  @override
+  String get attAllQuesCare => "Attempt all questions carefully.";
+
+  @override
+  String get psychoInstr => "Psychometric Instructions";
+
+  @override
+  String get noRightWrong => "No answers are right or wrong.";
+
+  @override
+  String get ansBasedBehaviour => "Answer honestly based on your behaviour.";
+
+  @override
+  String get doNotOverthink => "Do not overthink your responses.";
+
+  @override
+  String get jobAlert => "Job Alerts";
+
+  @override
+  String get privacy => "Privacy";
+
+  @override
+  String get profileVisibleRequiters => "Profile Visible to Recruiters";
+
+  @override
+  String get support => "Support";
+
+  @override
+  String get aboutApp => "About App";
+
+  @override
+  String get viewProfile => "View Profile";
+
+  @override
+  String get areYouSureLogOut => "Are you sure want to Logout ?";
+
+  @override
+  String get skillKnown => "Skill Known";
+
+  @override
+  String get skillCate => "Skill Category";
+
+  @override
+  String get skillSubCate => "Skill Sub Category";
+
+  @override
+  String get acquThro => "Acquired Through";
+
+  @override
+  String get experience => "Experience";
+
+  @override
+  String get enterYear => "Enter Year";
+
+  @override
+  String get enterMonth => "Enter Month";
+
+  @override
+  String get uploadSkillCert => "Upload Skill Certificate";
+
+  @override
+  String get uploadImage => "Upload Image";
+
+  @override
+  String get uploadPDF => "Upload PDF";
+
+  @override
+  String get language => "Language";
+
 }

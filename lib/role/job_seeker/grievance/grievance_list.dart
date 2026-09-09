@@ -12,6 +12,7 @@ import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../addjobpreference/add_job_preference.dart';
@@ -47,7 +48,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Grievance Assign Form", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.grieAsignForm, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -82,7 +83,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
          /// ✅ STEP 2: Optional (empty state)
          if (provider.grievanceDataList.isEmpty) {
            return Center(
-             child: Text("No Data Found"),
+             child: Text(AppLocalizations.of(context)!.noDataFound),
            );
          }
             return   Padding(
@@ -132,7 +133,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Complain No.",
+                                        text:AppLocalizations.of(context)!.complainNo,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -218,7 +219,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Subject",
+                                        text:AppLocalizations.of(context)!.subject,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -303,7 +304,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Category ",
+                                        text:AppLocalizations.of(context)!.category,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -396,7 +397,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Category Type",
+                                        text:AppLocalizations.of(context)!.cateType,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -483,7 +484,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Module",
+                                        text:AppLocalizations.of(context)!.module,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -568,7 +569,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Status",
+                                        text:AppLocalizations.of(context)!.status,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -655,7 +656,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                     ),
                                     children: [
                                       TextSpan(
-                                        text:"Created On",
+                                        text:AppLocalizations.of(context)!.createdOn,
                                         // Normal text
                                         style: Styles
                                             .mediumTextStyle(
@@ -726,7 +727,7 @@ class _GrievanceScreenState extends State<GrievanceScreen> {
                                 );
                               },
                               child: Text(
-                                "View Trail",
+                                AppLocalizations.of(context)!.viewTrail,
                                 style: TextStyle(color: Colors.white, fontSize: 12),
                               ),
                             ),

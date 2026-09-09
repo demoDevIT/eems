@@ -3,6 +3,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/about_app/about_app.dart';
 import 'package:rajemployment/utils/size_config.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../faqs_screen/faqs_screen.dart';
 
@@ -63,10 +64,10 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
             //   ),
             // ),
             SizedBox(height: SizeConfig.defaultSize! * 2),
-            buildSectionTitle("Job Preferences"),
+            buildSectionTitle(AppLocalizations.of(context)!.jobPref),
             buildSwitchTile(
               icon: Icons.work_outline,
-              title: "Job Alerts",
+              title: AppLocalizations.of(context)!.jobAlert,
               value: jobAlert,
               onChanged: (val) {
                 setState(() {
@@ -85,10 +86,10 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
             //   },
             // ),
             SizedBox(height: SizeConfig.defaultSize! ),
-            buildSectionTitle("Privacy"),
+            buildSectionTitle(AppLocalizations.of(context)!.privacy),
             buildSwitchTile(
               icon: Icons.visibility_outlined,
-              title: "Profile Visible to Recruiters",
+              title: AppLocalizations.of(context)!.profileVisibleRequiters,
               value: profileVisible,
               onChanged: (val) {
                 setState(() {
@@ -109,10 +110,10 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
             //   },
             // ),
             SizedBox(height: SizeConfig.defaultSize! ),
-            buildSectionTitle("Support"),
+            buildSectionTitle(AppLocalizations.of(context)!.support),
             buildNavigationTile(
               icon: Icons.help_outline,
-              title: "FAQs",
+              title: AppLocalizations.of(context)!.faqs,
               onTap: () {
                 Navigator.of(_scaffoldKey.currentContext!)
                     .push(
@@ -133,7 +134,7 @@ class _JobSettingsPageState extends State<JobSettingsScreen> {
 
             buildNavigationTile(
               icon: Icons.info_outline,
-              title: "About App",
+              title: AppLocalizations.of(context)!.aboutApp,
               onTap: () {
                 Navigator.of(_scaffoldKey.currentContext!)
                     .push(

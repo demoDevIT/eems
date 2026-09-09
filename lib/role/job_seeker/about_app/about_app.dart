@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textstyles.dart';
 import '../loginscreen/provider/locale_provider.dart';
 import 'provider/about_app_provider.dart';
@@ -34,7 +35,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("About App", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.aboutApp, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -52,7 +53,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
           /// ✅ STEP 2: Optional (empty state)
           if (provider.aboutAppData.isEmpty) {
             return Center(
-              child: Text("No Data Found"),
+              child: Text(AppLocalizations.of(context)!.noDataFound),
             );
           }
           return   Padding(
