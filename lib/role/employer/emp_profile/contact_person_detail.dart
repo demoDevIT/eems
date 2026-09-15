@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/dropdown.dart';
 import '../empotr_form/modal/city_modal.dart';
@@ -92,8 +93,8 @@ class _ContactPersonDetailState
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Contact Person Details",
+        title: Text(
+          AppLocalizations.of(context)!.contactPerDetail,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -110,29 +111,29 @@ class _ContactPersonDetailState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _label("PAN No"),
-            _field(provider.panCtrl, "Enter PAN number"),
+            _label(AppLocalizations.of(context)!.panNo),
+            _field(provider.panCtrl, AppLocalizations.of(context)!.enterPANNo),
 
-            _label("Full Name"),
-            _field(provider.fullNameCtrl, "Enter full name"),
+            _label(AppLocalizations.of(context)!.fullName),
+            _field(provider.fullNameCtrl, AppLocalizations.of(context)!.enterFullName),
 
-            _label("Mobile Number"),
-            _field(provider.mobileCtrl, "Enter mobile number", TextInputType.phone),
+            _label(AppLocalizations.of(context)!.mobileNo),
+            _field(provider.mobileCtrl, AppLocalizations.of(context)!.enterMobileNo, TextInputType.phone),
 
-            _label("Alternate Mobile Number"),
-            _field(provider.altMobileCtrl, "Enter alternate mobile number",
+            _label(AppLocalizations.of(context)!.alterMobileNo),
+            _field(provider.altMobileCtrl, AppLocalizations.of(context)!.enterAlterMobileNo,
                 TextInputType.phone),
 
-            _label("Email"),
-            _field(provider.emailCtrl, "Enter email", TextInputType.emailAddress),
+            _label(AppLocalizations.of(context)!.email),
+            _field(provider.emailCtrl, AppLocalizations.of(context)!.enterEmail, TextInputType.emailAddress),
 
             /// ===== Dropdowns =====
-            _label("State"),
+            _label(AppLocalizations.of(context)!.state),
             buildDropdownWithBorderFieldOnlyThisPage<StateData>(
               items: provider.stateList,
               controller: provider.stateController,
               idController: provider.stateIdController,
-              hintText: "--Select State--",
+              hintText: AppLocalizations.of(context)!.selectState,
               height: 50,
               selectedValue: provider.selectedState,
               getLabel: (e) => e.name ?? "",
@@ -140,14 +141,14 @@ class _ContactPersonDetailState
             ),
 
 
-            _label("District"),
+            _label(AppLocalizations.of(context)!.district),
             provider.isDistrictLoading
                 ? const Center(child: CircularProgressIndicator())
                 : buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
               items: provider.districtList,
               controller: provider.districtController,
               idController: provider.districtIdController,
-              hintText: "--Select District--",
+              hintText: AppLocalizations.of(context)!.selectDistrict,
               height: 50,
               selectedValue: provider.selectedDistrict,
               getLabel: (e) => e.name ?? "",
@@ -155,12 +156,12 @@ class _ContactPersonDetailState
             ),
 
 
-            _label("City"),
+            _label(AppLocalizations.of(context)!.city),
             buildDropdownWithBorderFieldOnlyThisPage<CityData>(
               items: provider.cityList,
               controller: provider.cityController,
               idController: provider.cityIdController,
-              hintText: "--Select City--",
+              hintText: AppLocalizations.of(context)!.selectCity,
               height: 50,
               selectedValue: provider.selectedCity,
               getLabel: (e) => e.nameEng ?? "",
@@ -168,17 +169,17 @@ class _ContactPersonDetailState
 
             ),
 
-            _label("Pincode"),
-            _field(provider.pincodeCtrl, "Enter pincode", TextInputType.number),
+            _label(AppLocalizations.of(context)!.pincode),
+            _field(provider.pincodeCtrl, AppLocalizations.of(context)!.enterPinCode, TextInputType.number),
 
-            _label("Designation"),
-            _field(provider.designationCtrl, "Enter designation"),
+            _label(AppLocalizations.of(context)!.designation),
+            _field(provider.designationCtrl, AppLocalizations.of(context)!.enterDesignation),
 
-            _label("Department"),
-            _field(provider.departmentCtrl, "Enter department"),
+            _label(AppLocalizations.of(context)!.department),
+            _field(provider.departmentCtrl, AppLocalizations.of(context)!.enterDept),
 
-            _label("Address"),
-            _field(provider.addressCtrl, "Enter address"),
+            _label(AppLocalizations.of(context)!.address),
+            _field(provider.addressCtrl, AppLocalizations.of(context)!.enterAddress),
 
             const SizedBox(height: 30),
           ],

@@ -428,7 +428,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                           items: provider.languageKnownList,
                           controller: provider.languageNameController,
                           idController: provider.languageIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -436,7 +436,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         ),
                       ),
                       hSpace(8),
-                      labelWithStar('Proficiency', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.proficiency, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
@@ -444,7 +444,7 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                           items: provider.proficiencyTypeList,
                           controller: provider.proficiencyNameController,
                           idController: provider.proficiencyIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -455,19 +455,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                       Column(
                         children: [
                           CheckboxListTile(
-                            title: const Text('Read'),
+                            title: Text(AppLocalizations.of(context)!.read),
                             value: provider.read,
                             onChanged: (v) =>
                                 setState(() => provider.read = v ?? false),
                           ),
                           CheckboxListTile(
-                            title: const Text('Write'),
+                            title: Text(AppLocalizations.of(context)!.write),
                             value: provider.write,
                             onChanged: (v) =>
                                 setState(() => provider.write = v ?? false),
                           ),
                           CheckboxListTile(
-                            title: const Text('Speak'),
+                            title: Text(AppLocalizations.of(context)!.speak),
                             value: provider.speak,
                             onChanged: (v) =>
                                 setState(() => provider.speak = v ?? false),
@@ -492,54 +492,54 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
     if (showSkillSection) {
       // ---------- CATEGORY ----------
       if (provider.categoryIdController.text.trim().isEmpty) {
-        showAlertError("Please select category", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelCate, context);
         return false;
       }
 
       // ---------- SUB CATEGORY ----------
       if (provider.subCategoryIdController.text.trim().isEmpty) {
-        showAlertError("Please select sub category", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelSubCate, context);
 
         return false;
       }
 
       // ---------- ACQUIRED THROUGH ----------
       if (provider.acquiredThroughIdController.text.trim().isEmpty) {
-        showAlertError("Please select acquired through", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelAcqThro, context);
 
         return false;
       }
 
       // ---------- EXPERIENCE YEAR ----------
       if (provider.yearController.text.trim().isEmpty) {
-        showAlertError("Please enter experience year", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterExpYear, context);
         return false;
       }
       if (int.tryParse(provider.yearController.text.trim()) == null) {
-        showAlertError("Experience year must be number", context);
+        showAlertError(AppLocalizations.of(context)!.expYearNumber, context);
         return false;
       }
 
       // ---------- EXPERIENCE MONTH ----------
       if (provider.monthController.text.trim().isEmpty) {
-        showAlertError("Please enter experience month", context);
+        showAlertError(AppLocalizations.of(context)!.expMonth, context);
         return false;
       }
       if (int.tryParse(provider.monthController.text.trim()) == null ||
           int.parse(provider.monthController.text.trim()) > 11) {
-        showAlertError("Month must be between 0 - 11", context);
+        showAlertError(AppLocalizations.of(context)!.month011, context);
         return false;
       }
 
       // ---------- NCO CODE ----------
       if (provider.ncoIdController.text.trim().isEmpty) {
-        showAlertError("Please select NCO code", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelNcoCode, context);
         return false;
       }
 
       // ---------- REMARK ----------
       if (provider.remarkController.text.trim().isEmpty) {
-        showAlertError("Remark is required", context);
+        showAlertError(AppLocalizations.of(context)!.remIsReq, context);
         return false;
       }
     }
@@ -553,19 +553,19 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
 
       // ---------- LANGUAGE ----------
       if (provider.languageIdController.text.trim().isEmpty) {
-        showAlertError("Please select language", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelLang, context);
         return false;
       }
 
       // ---------- PROFICIENCY ----------
       if (provider.proficiencyIdController.text.trim().isEmpty) {
-        showAlertError("Please select proficiency", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelProf, context);
         return false;
       }
 
       // ---------- READ/WRITE/SPEAK ----------
       if (!provider.read && !provider.write && !provider.speak) {
-        showAlertError("Select at least one: Read / Write / Speak", context);
+        showAlertError(AppLocalizations.of(context)!.selOneRWS, context);
         return false;
       }
     }

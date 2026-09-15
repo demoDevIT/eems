@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 
 class ExchangeNameDetail extends StatefulWidget {
@@ -46,8 +47,8 @@ class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Exchange Name / District Employment Office",
+        title: Text(
+          AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -64,8 +65,8 @@ class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  _label("Exchange Name"),
-                  _field( provider.exchangeNameCtrl, "Enter exchange name"),
+                  _label(AppLocalizations.of(context)!.exchangeName),
+                  _field( provider.exchangeNameCtrl, AppLocalizations.of(context)!.enterExchangeName),
 
                   const SizedBox(height: 30),
                 ],

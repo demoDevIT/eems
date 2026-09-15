@@ -5,6 +5,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/addworkexperience/provider/add_work_experience_provider.dart';
 import 'package:rajemployment/utils/textfeild.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textstyles.dart';
@@ -82,7 +83,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
 
     return Scaffold(
         appBar: commonAppBar2(
-            isUpdate == true ? "Update Work Experience" : "Add Work Experience",
+            isUpdate == true ? AppLocalizations.of(context)!.updateWorkExp : AppLocalizations.of(context)!.addWorkExp,
             context,
             localeProvider.currentLanguage,
             "",
@@ -106,7 +107,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                 children: [
                   if (!widget.hideExperienceQuestion) ...[
                     const SizedBox(height: 10),
-                    labelWithStar('Are you Experienced or Not?',
+                    labelWithStar(AppLocalizations.of(context)!.areYouExp,
                         required: true),
                     Row(
                       children: provider.experienceTypesList.map((type) {
@@ -141,14 +142,14 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                     ),
                   ],
                   hSpace(10),
-                  labelWithStar('Employment Type', required: true),
+                  labelWithStar(AppLocalizations.of(context)!.empType, required: true),
                   IgnorePointer(
                     ignoring: false,
                     child: buildDropdownWithBorderField(
                       items: provider.employmentTypesList,
                       controller: provider.employmentTypeNameController,
                       idController: provider.employmentTypeIdController,
-                      hintText: "--Select Option--",
+                      hintText: AppLocalizations.of(context)!.selOption,
                       height: 50,
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -163,7 +164,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                       : hSpace(0),
                   provider.experienceTypes == "Yes" &&
                           provider.employmentTypeIdController.text == "6"
-                      ? labelWithStar('Have you been employed in past',
+                      ? labelWithStar(AppLocalizations.of(context)!.haveYouEmpPast,
                           required: true)
                       : SizedBox(),
                   provider.experienceTypes == "Yes" &&
@@ -208,16 +209,16 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  labelWithStar('Add Work Experience'),
+                                  labelWithStar(AppLocalizations.of(context)!.addWorkExp),
 
                                   hSpace(10),
-                                  labelWithStar('Job Title', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.jobTitle, required: true),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 5),
                                     child: buildTextWithBorderField(
                                       provider.jobTitleNameController,
-                                      "Enter Job Title",
+                                      AppLocalizations.of(context)!.enterJobTitle,
                                       MediaQuery.of(context).size.width,
                                       50,
                                       TextInputType.text,
@@ -225,13 +226,13 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('Company Name', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.companyName, required: true),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 5),
                                     child: buildTextWithBorderField(
                                       provider.companyNameController,
-                                      "Enter Company Name",
+                                      AppLocalizations.of(context)!.enterCompanyName,
                                       MediaQuery.of(context).size.width,
                                       50,
                                       TextInputType.text,
@@ -239,7 +240,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   labelWithStar(
-                                      'Are you still working in this company?',
+                                      AppLocalizations.of(context)!.areYouWorkComp,
                                       required: true),
                                   Row(
                                     children:
@@ -290,7 +291,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            labelWithStar('From ',
+                                            labelWithStar(AppLocalizations.of(context)!.fromDate,
                                                 required: true),
                                             InkWell(
                                               onTap: () {
@@ -317,7 +318,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                                         vertical: 5),
                                                 child: buildTextWithBorderField(
                                                     provider.fromDateController,
-                                                    "Select From",
+                                                    AppLocalizations.of(context)!.selFrom,
                                                     MediaQuery.of(context)
                                                         .size
                                                         .width,
@@ -343,7 +344,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            labelWithStar('To ',
+                                            labelWithStar(AppLocalizations.of(context)!.endDate,
                                                 required: true),
                                             InkWell(
                                               onTap: provider.workingCompanyType == "Yes"
@@ -370,7 +371,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                                         vertical: 5),
                                                 child: buildTextWithBorderField(
                                                     provider.toDateController,
-                                                    "Select To",
+                                                    AppLocalizations.of(context)!.selectTo,
                                                     MediaQuery.of(context)
                                                         .size
                                                         .width,
@@ -392,7 +393,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   hSpace(20),
 
                                   Text(
-                                    'Location',
+                                    AppLocalizations.of(context)!.location,
                                     style: Styles.mediumTextStyle(
                                       color: kBlackColor,
                                       size: 16,
@@ -401,7 +402,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('State', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.state, required: true),
                                   IgnorePointer(
                                     ignoring: false,
                                     child:
@@ -410,7 +411,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                       items: provider.stateList,
                                       controller: provider.stateNameController,
                                       idController: provider.stateIdController,
-                                      hintText: "--Select State--",
+                                      hintText: AppLocalizations.of(context)!.selState,
                                       height: 50,
                                       selectedValue: provider.selectedState,
                                       // ✅
@@ -440,7 +441,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('District', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.district, required: true),
 
                                   provider.isDistrictLoading
                                       ? const Center(
@@ -456,7 +457,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                                 provider.districtNameController,
                                             idController:
                                                 provider.districtIdController,
-                                            hintText: "--Select District--",
+                                            hintText: AppLocalizations.of(context)!.selectDistrict,
                                             height: 50,
                                             selectedValue:
                                                 provider.selectedDistrict,
@@ -486,7 +487,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                         ),
 
                                   hSpace(10),
-                                  labelWithStar('City ', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.city, required: true),
                                   // Padding(
                                   //   padding:
                                   //   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
@@ -509,7 +510,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           provider.locationNameController,
                                       idController:
                                           provider.locationIdController,
-                                      hintText: "--Select Location--",
+                                      hintText: AppLocalizations.of(context)!.selLocation,
                                       height: 50,
                                       selectedValue: provider.selectedCity,
                                       onChanged: (value) {
@@ -526,7 +527,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('Job Type', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.jobbType, required: true),
                                   IgnorePointer(
                                     ignoring: false,
                                     child: buildDropdownWithBorderField(
@@ -535,7 +536,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           provider.jobTypeNameController,
                                       idController:
                                           provider.jobTypeIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(8),
@@ -544,7 +545,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('Nature of Employment',
+                                  labelWithStar(AppLocalizations.of(context)!.natureEmp,
                                       required: true),
                                   IgnorePointer(
                                     ignoring: false,
@@ -554,7 +555,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           .employmentNatureNameController,
                                       idController:
                                           provider.employmentNatureIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(8),
@@ -563,14 +564,14 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
 
                                   hSpace(10),
-                                  labelWithStar('NCO Code', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.ncoCode, required: true),
                                   IgnorePointer(
                                     ignoring: false,
                                     child: buildDropdownWithBorderField(
                                       items: provider.ncoCodeList,
                                       controller: provider.ncoNameController,
                                       idController: provider.ncoIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(8),
@@ -596,8 +597,8 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                         if (validateWorkExperienceForm(context, provider)) {
                           confirmAlertDialog(
                             context,
-                            "Alert",
-                            "Are you sure want to submit ?",
+                            AppLocalizations.of(context)!.alert,
+                            AppLocalizations.of(context)!.areYouSureSubmitForm,
                             (value) {
                               if (value.toString() == "success") {
                                 provider.saveWorkExperienceApi(
@@ -613,7 +614,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                         }
                       },
                       child: Text(
-                        isUpdate == true ? 'Update' : 'Add',
+                        isUpdate == true ? AppLocalizations.of(context)!.update : AppLocalizations.of(context)!.add,
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
@@ -663,7 +664,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
     // 1. Experience Type Required
     // ---------------------------------------------
     if (provider.experienceTypes.isEmpty) {
-      showAlertError("Please select Are you Experienced or Not?", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelExpNot, context);
       return false;
     }
 
@@ -671,7 +672,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
     // 2. Employment Type Required
     // ---------------------------------------------
     if (provider.employmentTypeIdController.text.isEmpty) {
-      showAlertError("Please select Employment Type", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelEmpType, context);
       return false;
     }
 
@@ -682,7 +683,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
     if (provider.experienceTypes == "Yes" &&
         provider.employmentTypeIdController.text == "6" &&
         provider.employedInPastController.text.isEmpty) {
-      showAlertError("Please select Have you been employed in past", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelEmpPast, context);
       return false;
     }
 
@@ -700,32 +701,32 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
     if (provider.experienceTypes == "Yes") {
       // Job Title
       if (provider.jobTitleNameController.text.isEmpty) {
-        showAlertError("Please enter Job Title", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterJobTitle, context);
         return false;
       }
 
       // Company Name
       if (provider.companyNameController.text.isEmpty) {
-        showAlertError("Please enter Company Name", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterCompName, context);
         return false;
       }
 
       // Working in Company?
       if (provider.workingCompanyType.isEmpty) {
-        showAlertError("Please select Are you still working?", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelStillWork, context);
         return false;
       }
 
       // From Date
       if (provider.fromDateController.text.isEmpty) {
-        showAlertError("Please select From date", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelFromDate, context);
         return false;
       }
 
       // To Date
       if (provider.workingCompanyType == "No" &&
           provider.toDateController.text.isEmpty) {
-        showAlertError("Please select To date", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelToDate, context);
         return false;
       }
 
@@ -735,7 +736,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
         DateTime to = DateTime.parse(provider.toDateController.text);
 
         if (to.isBefore(from)) {
-          showAlertError("To Date cannot be earlier than From Date", context);
+          showAlertError(AppLocalizations.of(context)!.toDateEarlierFromDate, context);
           return false;
         }
       }
@@ -759,7 +760,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
 
       if (hasConflict) {
         showAlertError(
-          "This date range is already used. You can't add work experience in this period.",
+          AppLocalizations.of(context)!.thisDateRangeUsed,
           context,
         );
         return false;
@@ -773,45 +774,45 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
       // }
 
       if (provider.stateIdController.text.isEmpty) {
-        showAlertError("Please select State", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelectState, context);
         return false;
       }
 
       if (provider.districtIdController.text.isEmpty) {
-        showAlertError("Please select District", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
         return false;
       }
 
       if (provider.locationIdController.text.isEmpty) {
-        showAlertError("Please select Location", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelLocation, context);
         return false;
       }
 
       if (provider.stateIdController.text.isEmpty) {
-        showAlertError("Please select State", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelectState, context);
         return false;
       }
 
       if (provider.districtIdController.text.isEmpty) {
-        showAlertError("Please select District", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
         return false;
       }
 
       // Job Type
       if (provider.jobTypeIdController.text.isEmpty) {
-        showAlertError("Please select Job Type", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelJobType, context);
         return false;
       }
 
       // Nature of Employment
       if (provider.employmentNatureIdController.text.isEmpty) {
-        showAlertError("Please select Nature of Employment", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelNatureEmp, context);
         return false;
       }
 
       // NCO Code
       if (provider.ncoIdController.text.isEmpty) {
-        showAlertError("Please select NCO Code", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelNCOCode, context);
         return false;
       }
     }

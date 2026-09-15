@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/dropdown.dart';
 import '../empotr_form/modal/city_modal.dart';
@@ -93,8 +94,8 @@ class _HeadOfficeApplicantDetailScreenState
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Head Office Applicant Details",
+        title: Text(
+          AppLocalizations.of(context)!.headOffAppDetail,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -111,43 +112,43 @@ class _HeadOfficeApplicantDetailScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  _label("Applicant Name"),
-                  _field(applicantNameCtrl, "Enter applicant name"),
+                  _label(AppLocalizations.of(context)!.applicantName),
+                  _field(applicantNameCtrl, AppLocalizations.of(context)!.enterApplicantName),
 
-                  _label("Applicant Mobile No."),
-                  _field(applicantMobileCtrl, "Enter mobile number",
+                  _label(AppLocalizations.of(context)!.applicantMobNo),
+                  _field(applicantMobileCtrl, AppLocalizations.of(context)!.enterMobNo,
                       TextInputType.phone),
 
-                  _label("Applicant Email"),
-                  _field(applicantEmailCtrl, "Enter email",
+                  _label(AppLocalizations.of(context)!.applicantEmail),
+                  _field(applicantEmailCtrl, AppLocalizations.of(context)!.enterEmail,
                       TextInputType.emailAddress),
 
-                  _label("Year"),
-                  _field(yearCtrl, "Enter year", TextInputType.number),
+                  _label(AppLocalizations.of(context)!.year),
+                  _field(yearCtrl, AppLocalizations.of(context)!.enterYear, TextInputType.number),
 
-                  _label("Ownership"),
-                  _field(ownershipCtrl, "Enter ownership"),
+                  _label(AppLocalizations.of(context)!.ownership),
+                  _field(ownershipCtrl, AppLocalizations.of(context)!.enterOwnership),
 
-                  _label("Total Person"),
-                  _field(totalPersonCtrl, "Enter total persons",
+                  _label(AppLocalizations.of(context)!.totalPer),
+                  _field(totalPersonCtrl, AppLocalizations.of(context)!.enterTotalPer,
                       TextInputType.number),
 
-                  _label("Act Authority Reg No"),
-                  _field(actAuthorityRegCtrl, "Enter registration number"),
+                  _label(AppLocalizations.of(context)!.actAuthRegNo),
+                  _field(actAuthorityRegCtrl, AppLocalizations.of(context)!.enterActAuthRegNo),
 
-                  _label("TAN No"),
-                  _field(tanCtrl, "Enter TAN number"),
+                  _label(AppLocalizations.of(context)!.tanNo),
+                  _field(tanCtrl, AppLocalizations.of(context)!.enterTANNo),
 
-                  _label("Email"),
-                  _field(emailCtrl, "Enter email", TextInputType.emailAddress),
+                  _label(AppLocalizations.of(context)!.email),
+                  _field(emailCtrl, AppLocalizations.of(context)!.enterEmail, TextInputType.emailAddress),
 
                   /// ===== Dropdowns =====
-                  _label("State"),
+                  _label(AppLocalizations.of(context)!.state),
                   buildDropdownWithBorderFieldOnlyThisPage<StateData>(
                     items: provider.hoStateList,
                     controller: provider.hoStateController,
                     idController: provider.hoStateIdController,
-                    hintText: "--Select State--",
+                    hintText: AppLocalizations.of(context)!.selectState,
                     height: 50,
                     selectedValue: provider.hoSelectedState,
                     getLabel: (e) => e.name ?? "",
@@ -173,14 +174,14 @@ class _HeadOfficeApplicantDetailScreenState
                   ),
 
 
-                  _label("District"),
+                  _label(AppLocalizations.of(context)!.district),
                   provider.isHoDistrictLoading
                       ? const Center(child: CircularProgressIndicator())
                       : buildDropdownWithBorderFieldOnlyThisPage<DistrictData>(
                     items: provider.hoDistrictList,
                     controller: provider.hoDistrictController,
                     idController: provider.hoDistrictIdController,
-                    hintText: "--Select District--",
+                    hintText: AppLocalizations.of(context)!.selectDistrict,
                     height: 50,
                     selectedValue: provider.hoSelectedDistrict,
                     getLabel: (e) => e.name ?? "",
@@ -202,12 +203,12 @@ class _HeadOfficeApplicantDetailScreenState
                   ),
 
 
-                  _label("City"),
+                  _label(AppLocalizations.of(context)!.city),
                   buildDropdownWithBorderFieldOnlyThisPage<CityData>(
                     items: provider.hoCityList,
                     controller: provider.hoCityController,
                     idController: provider.hoCityIdController,
-                    hintText: "--Select City--",
+                    hintText: AppLocalizations.of(context)!.selectCity,
                     height: 50,
                     selectedValue: provider.hoSelectedCity,
                     getLabel: (e) => e.nameEng ?? "",
@@ -222,14 +223,14 @@ class _HeadOfficeApplicantDetailScreenState
                   ),
 
 
-                  _label("Website"),
-                  _field(websiteCtrl, "Enter website"),
+                  _label(AppLocalizations.of(context)!.website),
+                  _field(websiteCtrl, AppLocalizations.of(context)!.enterWebsite),
 
-                  _label("Applicant Address"),
-                  _field(applicantAddressCtrl, "Enter address"),
+                  _label(AppLocalizations.of(context)!.applicantAddress),
+                  _field(applicantAddressCtrl, AppLocalizations.of(context)!.enterApplicantAddress),
 
-                  _label("NIC Code"),
-                  _field(nicCodeCtrl, "Enter NIC code"),
+                  _label(AppLocalizations.of(context)!.nicCode),
+                  _field(nicCodeCtrl, AppLocalizations.of(context)!.enterNICCode),
 
                   const SizedBox(height: 30),
                 ],

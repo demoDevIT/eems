@@ -100,14 +100,14 @@ class EmployerProfileScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             /// ===== Menu Items =====
-            _menuTile(context, "Basic Details"),
-            _menuTile(context, "Branch Office Details"),
-            _menuTile(context, "Head Office Details"),
-            _menuTile(context, "Head Office Applicant Details"),
-            _menuTile(context, "Contact person Details"),
-            _menuTile(context, "Exchange Name / District Employment Office"),
-            _menuTile(context, "Exchange Market Information Program"),
-            _menuTile(context, "Upload Organization/Company Documents"),
+            _menuTile(context, AppLocalizations.of(context)!.basicDetails),
+            _menuTile(context, AppLocalizations.of(context)!.branchOffDetail),
+            _menuTile(context, AppLocalizations.of(context)!.headOffDetail),
+            _menuTile(context, AppLocalizations.of(context)!.headOffAppDetail),
+            _menuTile(context, AppLocalizations.of(context)!.contactPerDetail),
+            _menuTile(context, AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc),
+            _menuTile(context, AppLocalizations.of(context)!.exchangeMarInfoProg),
+            _menuTile(context, AppLocalizations.of(context)!.uploadOrgCompDoc),
           ],
         ),
       ),
@@ -129,7 +129,7 @@ class EmployerProfileScreen extends StatelessWidget {
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {
-          if (title == "Basic Details") {
+          if (title == AppLocalizations.of(context)!.basicDetails) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -137,7 +137,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Branch Office Details") {
+          else if (title == AppLocalizations.of(context)!.branchOffDetail) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -145,7 +145,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Head Office Details") {
+          else if (title == AppLocalizations.of(context)!.headOffDetail) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -153,7 +153,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Head Office Applicant Details") {
+          else if (title == AppLocalizations.of(context)!.headOffAppDetail) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -161,7 +161,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Contact person Details") {
+          else if (title == AppLocalizations.of(context)!.contactPerDetail) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -169,7 +169,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Exchange Name / District Employment Office") {
+          else if (title == AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -177,7 +177,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Exchange Market Information Program") {
+          else if (title == AppLocalizations.of(context)!.exchangeMarInfoProg) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -185,7 +185,7 @@ class EmployerProfileScreen extends StatelessWidget {
               ),
             );
           }
-          else if (title == "Upload Organization/Company Documents") {
+          else if (title == AppLocalizations.of(context)!.uploadOrgCompDoc) {
             Navigator.push(
               context,
               MaterialPageRoute(

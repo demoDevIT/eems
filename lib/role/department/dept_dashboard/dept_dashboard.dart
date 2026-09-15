@@ -28,11 +28,14 @@ class DepartmentDashboardPage extends StatefulWidget {
   const DepartmentDashboardPage({super.key});
 
   @override
-  State<DepartmentDashboardPage> createState() => _DepartmentDashboardPageState();
+  State<DepartmentDashboardPage> createState() =>
+      _DepartmentDashboardPageState();
 }
 
 class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   //const DepartmentDashboardPage({super.key});
+
+  int _selectedOverviewTab = 0;
 
   @override
   void initState() {
@@ -43,13 +46,12 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         .convert(UserData().model.value.toJson()));
     print("========================================");
 
-
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DepartmentDashboardProvider>()
-          .getRoleApi(context, "");
+      // context.read<DepartmentDashboardProvider>().getRoleApi(context, "");
       final provider = context.read<DepartmentDashboardProvider>();
+      provider.getRoleApi(context, "");
       provider.clearData();
+      provider.getJoiningOverview(context);
     });
   }
 
@@ -57,26 +59,26 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _buildSideDrawer(),
-        backgroundColor: kWhite,
-        appBar: AppBar(
-          //automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            AppLocalizations.of(context)!.dashboard, //"Dashboard",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+      backgroundColor: kWhite,
+      appBar: AppBar(
+        //automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          AppLocalizations.of(context)!.dashboard, //"Dashboard",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
-          actions: [
-
+        ),
+        actions: [
           Consumer<DepartmentDashboardProvider>(
             builder: (context, provider, _) {
               return PopupMenuButton<RoleData>(
-                offset: const Offset(0, 10), // opens below button
+                offset: const Offset(0, 10),
+                // opens below button
                 position: PopupMenuPosition.under,
                 constraints: BoxConstraints(
                   minWidth: MediaQuery.of(context).size.width * 0.95,
@@ -106,8 +108,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         ),
                       ),
                       SizedBox(width: 4),
-                      Icon(Icons.keyboard_arrow_down,
-                          color: Colors.white),
+                      Icon(Icons.keyboard_arrow_down, color: Colors.white),
                     ],
                   ),
                 ),
@@ -115,7 +116,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   provider.selectedRole = role;
 
                   provider.roleNameController.text = role.roleName ?? "";
-                  provider.roleIdController.text = role.roleID?.toString() ?? "";
+                  provider.roleIdController.text =
+                      role.roleID?.toString() ?? "";
 
                   provider.notifyListeners();
 
@@ -130,8 +132,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   await provider.GetSSOUserDetail(
                     context,
                     switchRoleID: roleID!,
-                    switchOfficeID: officeID!, // use your actual field name
-                    intDeptTypeID: internDeptTypeID!, // use your actual field name
+                    switchOfficeID: officeID!,
+                    // use your actual field name
+                    intDeptTypeID: internDeptTypeID!,
+                    // use your actual field name
                     intDeptID: internDeptID!, // use your actual field name
                   );
                 },
@@ -144,7 +148,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     final bool isSelected =
                         role.roleID == UserData().model.value.roleId &&
                             role.officeID == UserData().model.value.officeID &&
-                            role.internshipDeptID == UserData().model.value.internshipDeptID;
+                            role.internshipDeptID ==
+                                UserData().model.value.internshipDeptID;
 
                     return PopupMenuItem<RoleData>(
                       value: role,
@@ -155,7 +160,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue.shade50 : Colors.white,
+                          color:
+                              isSelected ? Colors.blue.shade50 : Colors.white,
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,8 +177,12 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                                 children: [
                                   Text(
                                     //role.roleName ?? "",
-                                    Localizations.localeOf(context).languageCode == 'hi'
-                                        ? (role.roleNameHi ?? role.roleName ?? "")
+                                    Localizations.localeOf(context)
+                                                .languageCode ==
+                                            'hi'
+                                        ? (role.roleNameHi ??
+                                            role.roleName ??
+                                            "")
                                         : (role.roleName ?? ""),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -206,19 +216,21 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               child: LanguageToggleSwitch(),
             ),
           ),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 8),
-            //   child: _languageButton(context),
-            // ),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 8),
+          //   child: _languageButton(context),
+          // ),
         ],
-        ),
-        body: Consumer<DepartmentDashboardProvider>(
-          builder: (context, provider, _) {
-            return Padding(
+      ),
+      body: Consumer<DepartmentDashboardProvider>(
+        builder: (context, provider, _) {
+          return SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-
                   _buildRoleSection(),
 
                   const SizedBox(height: 18),
@@ -228,19 +240,19 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     children: [
                       Expanded(
                         child: _actionButton(
-                          title: AppLocalizations.of(context)!.searchRegNo, //"Search with Reg No.",
+                          title: AppLocalizations.of(context)!.searchRegNo,
+                          //"Search with Reg No.",
                           icon: Icons.search,
                           onTap: () {
                             provider.openRegSearch();
                           },
                         ),
                       ),
-
                       const SizedBox(width: 12),
-
                       Expanded(
                         child: _actionButton(
-                          title: AppLocalizations.of(context)!.scanQRCode, //"Scan QR Code",
+                          title: AppLocalizations.of(context)!.scanQRCode,
+                          //"Scan QR Code",
                           icon: Icons.qr_code_scanner,
                           onTap: () {
                             Navigator.of(context).push(
@@ -277,7 +289,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontSize: 14),
                         decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.enterRegNo, //"Enter Registration Number",
+                          hintText: AppLocalizations.of(context)!.enterRegNo,
+                          //"Enter Registration Number",
                           prefixIcon: const Icon(Icons.badge_outlined),
                           filled: true,
                           fillColor: Colors.white,
@@ -310,9 +323,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -359,7 +370,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   //   },
                   // ),
 
-                  const SizedBox(height: 16),
+                  // const SizedBox(height: 16),
 
                   Row(
                     children: [
@@ -373,15 +384,14 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const DeptJoinPendingListScreen(),
+                                builder: (_) =>
+                                    const DeptJoinPendingListScreen(),
                               ),
                             );
                           },
                         ),
                       ),
-
                       const SizedBox(width: 14),
-
                       Expanded(
                         child: _dashboardCard(
                           title: AppLocalizations.of(context)!.internAttend,
@@ -392,7 +402,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const DeptJoinAttendanceListScreen(),
+                                builder: (_) =>
+                                    const DeptJoinAttendanceListScreen(),
                               ),
                             );
                           },
@@ -401,7 +412,12 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ],
                   ),
 
+
                   const SizedBox(height: 16),
+                  _buildJoiningAttendanceOverview(),
+                  const SizedBox(height: 20),
+
+                  // const SizedBox(height: 16),
 
                   Container(
                     width: double.infinity,
@@ -427,15 +443,889 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   ),
                 ],
               ),
-            );
-          },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildJoiningAttendanceOverview() {
+    return Column(
+      children: [
+        _buildOverviewTabs(),
+        const SizedBox(height: 18),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: _selectedOverviewTab == 0
+              ? _buildJoiningOverview()
+              : _buildAttendanceOverview(),
         ),
-      );
+      ],
+    );
+  }
+
+  Widget _buildOverviewTabs() {
+    return Container(
+      height: 50,
+      // padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 2,
+        vertical: 2,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xffF5F7FC),
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildOverviewTab(
+              title: "Joining",
+              icon: Icons.person_outline,
+              index: 0,
+            ),
+          ),
+          Expanded(
+            child: _buildOverviewTab(
+              title: "Attendance",
+              icon: Icons.verified_user_outlined,
+              index: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOverviewTab({
+    required String title,
+    required IconData icon,
+    required int index,
+  }) {
+    final bool selected = _selectedOverviewTab == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedOverviewTab = index;
+        });
+      },
+      // child: AnimatedContainer(
+      child: Container(
+      // duration: const Duration(milliseconds: 200),
+         width: double.infinity,
+         height: double.infinity,
+        // alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xff4A5BE8) : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: selected ? Colors.white : const Color(0xff4A5BE8),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: selected ? Colors.white : const Color(0xff4A5BE8),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildJoiningOverview() {
+    return Consumer<DepartmentDashboardProvider>(
+      builder: (context, provider, _) {
+        if (provider.isJoiningOverviewLoading) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(30),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        final total = provider.joiningTotal;
+        final completed = provider.joiningCompleted;
+        final pending = provider.joiningPending;
+
+        final percentage = provider.joiningCompletionPercentageText;
+
+        return Column(
+          key: const ValueKey("joining"),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffE2F0FF),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.badge_outlined,
+                    color: Color(0xff1683FF),
+                    size: 22,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Joining Overview",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff152238),
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "Internship Joining",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xff718096),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            _buildJoiningMainCard(),
+
+            const SizedBox(height: 14),
+
+            _buildStatusCard(
+              icon: Icons.check,
+              iconBackground: const Color(0xffD5F7E1),
+              iconColor: const Color(0xff00A65A),
+              title: "JOINING COMPLETED",
+              value: completed.toString(),
+              subtitle: "Applications successfully joined",
+              percentage: percentage,
+              percentageColor: const Color(0xff00A65A),
+            ),
+
+            const SizedBox(height: 12),
+
+            _buildStatusCard(
+              icon: Icons.access_time,
+              iconBackground: const Color(0xfffff0ce),
+              iconColor: const Color(0xffff9800),
+              title: "JOINING PENDING",
+              value: pending.toString(),
+              subtitle: "Applications waiting for joining",
+              percentage: total == 0
+                  ? "0%"
+                  : "${((pending / total) * 100).round()}%",
+              percentageColor: const Color(0xffff9800),
+            ),
+
+            const SizedBox(height: 14),
+
+            _buildOverallCompletion(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildJoiningMainCard() {
+    return Consumer<DepartmentDashboardProvider>(
+      builder: (context, provider, _) {
+        final total = provider.joiningTotal;
+        final completed = provider.joiningCompleted;
+        final pending = provider.joiningPending;
+
+        final completion = provider.joiningCompletionPercentage;
+        final percentage = provider.joiningCompletionPercentageText;
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xffD7E1F0),
+            ),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 145,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: 115,
+                      height: 115,
+                      child: CircularProgressIndicator(
+                        value: completion,
+                        strokeWidth: 13,
+                        backgroundColor: const Color(0xffF0F3FA),
+                        valueColor:
+                        const AlwaysStoppedAnimation<Color>(
+                          Color(0xff00A65A),
+                        ),
+                      ),
+                    ),
+
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "Total",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Color(0xff718096),
+                          ),
+                        ),
+
+                        Text(
+                          total.toString(),
+                          style: const TextStyle(
+                            fontSize: 27,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff152238),
+                          ),
+                        ),
+
+                        const Text(
+                          "Applications",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Color(0xff718096),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xffD5F7E1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  "✓ $percentage Completed",
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff00A65A),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildJoiningSummaryBox(
+                      title: "COMPLETED",
+                      value: completed.toString(),
+                      percentage: total == 0
+                          ? "0%"
+                          : "${((completed / total) * 100).round()}%",
+                      backgroundColor:
+                      const Color(0xffD5F7E1),
+                      percentageColor:
+                      const Color(0xff00A65A),
+                    ),
+                  ),
+
+                  const SizedBox(width: 14),
+
+                  Expanded(
+                    child: _buildJoiningSummaryBox(
+                      title: "PENDING",
+                      value: pending.toString(),
+                      percentage: total == 0
+                          ? "0%"
+                          : "${((pending / total) * 100).round()}%",
+                      backgroundColor:
+                      const Color(0xfffff0ce),
+                      percentageColor:
+                      const Color(0xffff9800),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildJoiningSummaryBox({
+    required String title,
+    required String value,
+    required String percentage,
+    required Color backgroundColor,
+    required Color percentageColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 10,
+              color: Color(0xff667085),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff152238),
+                ),
+              ),
+              Text(
+                percentage,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: percentageColor,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusCard({
+    required IconData icon,
+    required Color iconBackground,
+    required Color iconColor,
+    required String title,
+    required String value,
+    required String subtitle,
+    required String percentage,
+    required Color percentageColor,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xffD7E1F0),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: iconBackground,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff667085),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      value,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff152238),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: Text(
+                          subtitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xff718096),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Text(
+            percentage,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: percentageColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOverallCompletion() {
+    return Consumer<DepartmentDashboardProvider>(
+      builder: (context, provider, _) {
+        final completed = provider.joiningCompleted;
+        final pending = provider.joiningPending;
+        final percentage = provider.joiningCompletionPercentage;
+        final percentageText =
+            provider.joiningCompletionPercentageText;
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xffDCEEFF),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: const Color(0xffA8D1FF),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "OVERALL COMPLETION",
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Color(0xff667085),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          percentageText,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff1683FF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    width: 42,
+                    height: 42,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.trending_up,
+                      color: Color(0xff1683FF),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 10),
+
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: LinearProgressIndicator(
+                  value: percentage,
+                  minHeight: 8,
+                  backgroundColor:
+                  const Color(0xffC6DDF5),
+                  valueColor:
+                  const AlwaysStoppedAnimation<Color>(
+                    Color(0xff1683FF),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        size: 8,
+                        color: Color(0xff00A65A),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        "$completed Completed",
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Color(0xff667085),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Text(
+                    "$pending Pending",
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Color(0xff667085),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAttendanceOverview() {
+    return Column(
+      key: const ValueKey("attendance"),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                color: Color(0xffE2F0FF),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.badge_outlined,
+                color: Color(0xff1683FF),
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "Attendance Overview",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff152238),
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "Monthly attendance completion & pending progress",
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Color(0xff718096),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Expanded(
+              child: _buildDropdownBox(
+                title: "YEAR",
+                value: "2026",
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildDropdownBox(
+                title: "MONTH",
+                value: "January",
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildAttendanceCountCard(
+                title: "Verified",
+                value: "3",
+                icon: Icons.badge_outlined,
+                backgroundColor: const Color(0xffDDF2FF),
+                color: const Color(0xff1683FF),
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildAttendanceCountCard(
+                title: "Submitted",
+                value: "0",
+                icon: Icons.check,
+                backgroundColor: const Color(0xffD7F7E2),
+                color: const Color(0xff00A65A),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildAttendanceCountCard(
+                title: "Sendback",
+                value: "0",
+                icon: Icons.undo,
+                backgroundColor: const Color(0xffF0E5FF),
+                color: const Color(0xff8B5CF6),
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: _buildAttendanceCountCard(
+                title: "Pending",
+                value: "0",
+                icon: Icons.access_time,
+                backgroundColor: const Color(0xfffff0ce),
+                color: const Color(0xffff9800),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 14,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: const Color(0xffD7E1F0),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: Color(0xffE2F0FF),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.person_outline,
+                  color: Color(0xff1683FF),
+                ),
+              ),
+              const SizedBox(width: 14),
+              const Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _AttendanceBottomValue(
+                        value: "3",
+                        label: "Total Applications",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 42,
+                      child: VerticalDivider(
+                        color: Color(0xffD7E1F0),
+                        width: 1,
+                      ),
+                    ),
+                    Expanded(
+                      child: _AttendanceBottomValue(
+                        value: "3",
+                        label: "Attendance Eligible",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownBox({
+    required String title,
+    required String value,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff667085),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 44,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color(0xffD7E1F0),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff152238),
+                ),
+              ),
+              const Icon(
+                Icons.keyboard_arrow_down,
+                size: 20,
+                color: Color(0xff667085),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAttendanceCountCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color backgroundColor,
+    required Color color,
+  }) {
+    return Container(
+      height: 90,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(
+          color: color.withOpacity(0.18),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 16,
+                color: color,
+              ),
+              const SizedBox(width: 7),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff152238),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _languageButton(BuildContext context) {
-    final isHindi =
-        Localizations.localeOf(context).languageCode == 'hi';
+    final isHindi = Localizations.localeOf(context).languageCode == 'hi';
 
     return InkWell(
       onTap: () {
@@ -493,7 +1383,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       builder: (context, provider, _) {
         final officeName = UserData().model.value.roleId == 22
             ? "${UserData().model.value.office ?? ""} "
-            "${UserData().model.value.deptNameEn ?? ""}"
+                "${UserData().model.value.deptNameEn ?? ""}"
             : (UserData().model.value.exchangeName ?? "");
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -573,13 +1463,12 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               ),
               child: Column(
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.all(14),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Expanded(
+                        Expanded(
                           flex: 3,
                           child: Text(
                             AppLocalizations.of(context)!.role + " :-",
@@ -601,18 +1490,17 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       ],
                     ),
                   ),
-
                   const Divider(height: 1),
-
                   Padding(
                     padding: const EdgeInsets.all(14),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Expanded(
+                        Expanded(
                           flex: 3,
                           child: Text(
-                            AppLocalizations.of(context)!.officeName + " :-", //"Office Name :-",
+                            AppLocalizations.of(context)!.officeName + " :-",
+                            //"Office Name :-",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -620,14 +1508,13 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           ),
                         ),
                         Expanded(
-                          flex: 5,
-                          child: Text(
-                            officeName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ),
+                            flex: 5,
+                            child: Text(
+                              officeName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )),
                       ],
                     ),
                   ),
@@ -647,7 +1534,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         children: [
           // ===== Header =====
           Container(
-            padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            padding:
+                const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -688,12 +1576,14 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DeptProfileScreen(isAppBarHide: true),
+                                builder: (context) =>
+                                    DeptProfileScreen(isAppBarHide: true),
                               ),
                             );
                           },
                           child: Text(
-                            AppLocalizations.of(context)!.updateProfile, //"Update Profile",
+                            AppLocalizations.of(context)!.updateProfile,
+                            //"Update Profile",
                             style: TextStyle(
                               fontSize: 14,
                               color: kViewAllColor,
@@ -720,14 +1610,16 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.dashboard),
-            title:  Text(AppLocalizations.of(context)!.dashboard, style: TextStyle(fontSize: 14)),
+            title: Text(AppLocalizations.of(context)!.dashboard,
+                style: TextStyle(fontSize: 14)),
             onTap: () {
               Navigator.pop(context); // Already on dashboard
             },
           ),
           ListTile(
             leading: const Icon(Icons.request_page),
-            title: Text(AppLocalizations.of(context)!.requestDMap, style: TextStyle(fontSize: 14)),
+            title: Text(AppLocalizations.of(context)!.requestDMap,
+                style: TextStyle(fontSize: 14)),
             // onTap: () {
             //   Navigator.pop(context); // Already on dashboard
             // },
@@ -736,7 +1628,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>  const RequestMapScreen(),
+                  builder: (context) => const RequestMapScreen(),
                 ),
               );
             },
@@ -760,40 +1652,46 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
             ),
             onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, AppLocalizations.of(context)!.logout,AppLocalizations.of(context)!.logoutConfirmMsg, AppLocalizations.of(context)!.logoutThankYouText, (value) async {
-                if (value.toString() == "success") {
-                  final pref = AppSharedPref();
+              showLogoutDialog(
+                context,
+                AppLocalizations.of(context)!.logout,
+                AppLocalizations.of(context)!.logoutConfirmMsg,
+                AppLocalizations.of(context)!.logoutThankYouText,
+                (value) async {
+                  if (value.toString() == "success") {
+                    final pref = AppSharedPref();
 
-                  // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
-                  // commonRepo.dioClient.clearAuthToken();
+                    // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+                    // commonRepo.dioClient.clearAuthToken();
 
-                  // Clear login session only
-                  UserData().model.value.isLogin = false;
-                  UserData().model.value.userId = null;
-                  // UserData().model.value.postalAddress = null;
-                  // UserData().model.value.empNumber = null;
-                  await pref.remove('UserData');
-                  print("========== AFTER LOGOUT COMPLETE USER MODEL ==========");
-                  print(
-                    const JsonEncoder.withIndent('  ')
-                        .convert(UserData().model.value.toJson()),
-                  );
-                  print("=========================================");
+                    // Clear login session only
+                    UserData().model.value.isLogin = false;
+                    UserData().model.value.userId = null;
+                    // UserData().model.value.postalAddress = null;
+                    // UserData().model.value.empNumber = null;
+                    await pref.remove('UserData');
+                    print(
+                        "========== AFTER LOGOUT COMPLETE USER MODEL ==========");
+                    print(
+                      const JsonEncoder.withIndent('  ')
+                          .convert(UserData().model.value.toJson()),
+                    );
+                    print("=========================================");
 
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
-                        (route) => false,
-                  );
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      (route) => false,
+                    );
 
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (BuildContext context) =>
-                  //     const LoginScreen(),
-                  //   ),
-                  // );
-                }
-              },
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (BuildContext context) =>
+                    //     const LoginScreen(),
+                    //   ),
+                    // );
+                  }
+                },
               );
             },
           ),
@@ -832,9 +1730,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               height: 70,
               fit: BoxFit.contain,
             ),
-
             const SizedBox(height: 14),
-
             Text(
               title,
               textAlign: TextAlign.center,
@@ -911,7 +1807,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             children: [
               Container(
@@ -920,9 +1815,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 color: Colors.grey.shade300,
                 child: const Icon(Icons.person),
               ),
-
               const SizedBox(width: 10),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
@@ -936,29 +1829,22 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 10),
-
           const Text("Father Name: JEEYA RAM"),
           const Text("Designation: -"),
           const Text("Department: Revenue Department"),
           const Text("Reg No.: 22122174752"),
           const Text("Approval Date: 2025-09-19"),
-
           const SizedBox(height: 12),
-
           Row(
             children: [
-
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {},
                   child: const Text("View Joining Letter"),
                 ),
               ),
-
               const SizedBox(width: 10),
-
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {},
@@ -975,7 +1861,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   /// ===== Reusable Button =====
   Widget _dashboardButton({
     required String title,
-   // required IconData icon,
+    // required IconData icon,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -992,7 +1878,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         ),
         child: Row(
           children: [
-           // Icon(icon, color: kPrimaryColor),
+            // Icon(icon, color: kPrimaryColor),
             const SizedBox(width: 14),
             Expanded(
               child: Text(
@@ -1010,6 +1896,44 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _AttendanceBottomValue extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const _AttendanceBottomValue({
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff152238),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 9,
+              color: Color(0xff718096),
+            ),
+          ),
+        ],
       ),
     );
   }

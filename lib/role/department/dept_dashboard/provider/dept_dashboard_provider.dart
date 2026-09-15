@@ -18,6 +18,7 @@ import '../../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../../dept_join_pending_list/dept_join_pending_list.dart';
 import '../dept_dashboard.dart';
 import '../modal/dept_info_modal.dart';
+import '../modal/joining_overview_modal.dart';
 import '../modal/role_modal.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,31 @@ class DepartmentDashboardProvider extends ChangeNotifier {
 
    final TextEditingController roleNameController = TextEditingController();
    final TextEditingController roleIdController = TextEditingController();
+
+   bool isJoiningOverviewLoading = false;
+
+   JoiningOverviewData? joiningOverviewData;
+
+   int get joiningTotal =>
+       joiningOverviewData?.totalApplications ?? 0;
+
+   int get joiningCompleted =>
+       joiningOverviewData?.completed ?? 0;
+
+   int get joiningPending =>
+       joiningOverviewData?.pending ?? 0;
+
+   double get joiningCompletionPercentage {
+     if (joiningTotal == 0) {
+       return 0;
+     }
+
+     return joiningCompleted / joiningTotal;
+   }
+
+   String get joiningCompletionPercentageText {
+     return "${(joiningCompletionPercentage * 100).round()}%";
+   }
 
    Future<void> searchByRegistration(BuildContext context) async {
 
@@ -454,6 +480,84 @@ class DepartmentDashboardProvider extends ChangeNotifier {
      } else {
        showAlertError(
            AppLocalizations.of(context)!.internet_connection, context);
+     }
+   }
+
+   Future<void> getJoiningOverview(BuildContext context) async {
+     var isInternet = await UtilityClass.checkInternetConnectivity();
+
+     if (!isInternet) {
+       showAlertError("No Internet Connection", context);
+       return;
+     }
+
+     try {
+       isJoiningOverviewLoading = true;
+       notifyListeners();
+
+       final userData = UserData().model.value;
+
+       Map<String, dynamic> body = {
+         "ActionName": "JoiningOverview",
+         "UserId": userData.userId,
+         "RoleId": userData.roleId,
+         "InternDepartmentTypeID": userData.internshipDeptTypeID,
+         "AllotmentDeptId": userData.internshipDeptID,
+         "OfficeID": userData.officeID,
+         "AttendanceMonthID": 0,
+         "WorkingYear": 0,
+       };
+
+       print("Joining Overview API Request Body: $body");
+
+       ApiResponse apiResponse = await commonRepo.post(
+         "Dashboard/GetJoiningOverview",
+         body,
+       );
+
+       if (apiResponse.response?.statusCode == 200) {
+         dynamic responseData = apiResponse.response!.data;
+
+         if (responseData is String) {
+           responseData = jsonDecode(responseData);
+         }
+
+         print("Joining Overview API Response: $responseData");
+
+         if (responseData['State'] != 200 ||
+             responseData['Data'] == null ||
+             responseData['Data'].isEmpty) {
+           String errorMsg = responseData['ErrorMessage'] ??
+               responseData['Message'] ??
+               "Something went wrong";
+
+           joiningOverviewData = null;
+
+           showAlertError(errorMsg, context);
+           return;
+         }
+
+         final JoiningOverviewModal modal =
+         JoiningOverviewModal.fromJson(responseData);
+
+         if (modal.data != null && modal.data!.isNotEmpty) {
+           joiningOverviewData = modal.data!.first;
+         } else {
+           joiningOverviewData = null;
+         }
+       } else {
+         joiningOverviewData = null;
+         showAlertError("Something went wrong", context);
+       }
+     } catch (e) {
+       print("Joining Overview API Error: $e");
+
+       joiningOverviewData = null;
+
+       showAlertError(e.toString(), context);
+     } finally {
+       isJoiningOverviewLoading = false;
+       notifyListeners();
      }
    }
 

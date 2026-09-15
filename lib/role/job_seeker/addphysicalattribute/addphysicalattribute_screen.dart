@@ -7,6 +7,7 @@ import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -62,8 +63,8 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
     return Scaffold(
         appBar: commonAppBar2(
             isUpdate == true
-                ? "Upate Physical Attributes"
-                : "Add Physical Attributes",
+                ? AppLocalizations.of(context)!.updatePhysAttri
+                : AppLocalizations.of(context)!.addPhysAttri,
             context,
             localeProvider.currentLanguage,
             "",
@@ -81,19 +82,19 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Physical Attributes',
+                      AppLocalizations.of(context)!.phyAttri,
                       style: Styles.semiBoldTextStyle(
                           color: kBlackColor, size: 16),
                     ),
                     hSpace(10),
                     // Sector
-                    labelWithStar('Height (0 to 255 cm)', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.height0255, required: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.heightController,
-                        "Enter Height (0 to 255 cm)",
+                        AppLocalizations.of(context)!.enterHeight0255,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.number,
@@ -102,13 +103,13 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
 
                     hSpace(10),
                     // Preferred Location
-                    labelWithStar('Weight (0 to 255 kg)', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.weight0255, required: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.weightController,
-                        "Enter Weight (0 to 255 kg)",
+                        AppLocalizations.of(context)!.enterWeight0255,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.number,
@@ -118,13 +119,13 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                     hSpace(10),
                     // Desired Employment Type
                   if (UserData().model.value.gENDER != "Female") ...[
-                    labelWithStar('Chest (0 to 255 cm)', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.chest0255, required: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.chestController,
-                        "Chest (0 to 255 cm)",
+                        AppLocalizations.of(context)!.chest0255,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.number,
@@ -133,14 +134,14 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                     ],
 
                     hSpace(10),
-                    labelWithStar('Blood Group (-/+)', required: false),
+                    labelWithStar(AppLocalizations.of(context)!.bloodGroup, required: false),
                     IgnorePointer(
                       ignoring: false,
                       child: buildDropdownWithBorderField(
                         items: provider.bloodGroupList,
                         controller: provider.bloodNameController,
                         idController: provider.bloodIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -149,13 +150,13 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                     ),
 
                     hSpace(10),
-                    labelWithStar('Eye sight (-/+)', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.eyeeSight, required: true),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.eyesController,
-                        "Eye sight (-/+)",
+                        AppLocalizations.of(context)!.eyeeSight,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.number,
@@ -163,7 +164,7 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                     ),
 
                     hSpace(10),
-                    labelWithStar('Are you differently Abled(PwD)?',
+                    labelWithStar(AppLocalizations.of(context)!.diffAbled,
                         required: true),
 
                     const SizedBox(height: 8),
@@ -209,12 +210,12 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
 
                     if (provider.diffAbled == "Yes") ...[
                       hSpace(10),
-                      labelWithStar('Disability Type', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.disabilityType, required: true),
                       buildDropdownWithBorderField(
                         items: provider.disabilityTypeList, // model list
                         controller: provider.disabilityTypeNameController,
                         idController: provider.disabilityTypeIdController,
-                        hintText: "--Select Disability Type--",
+                        hintText: AppLocalizations.of(context)!.selectDisabilityType,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -236,12 +237,12 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
 
 
                       hSpace(10),
-                      labelWithStar('Disability Percentage (%)', required: true),
+                      labelWithStar(AppLocalizations.of(context)!.disabPercent, required: true),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         child: buildTextWithBorderField(
                           provider.disabilityPercentageController,
-                          "Enter Disability Percentage (0–100)",
+                          AppLocalizations.of(context)!.enterDisabPercent,
                           MediaQuery.of(context).size.width,
                           50,
                           TextInputType.number,
@@ -268,8 +269,8 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                           if (validatePhysicalAttributes(context, provider)) {
                             confirmAlertDialog(
                               context,
-                              "Confirm Submission",
-                              "Are you sure want to submit ?",
+                              AppLocalizations.of(context)!.confirmSub,
+                              AppLocalizations.of(context)!.areYouSureSubmitForm,
                                   (value) {
                                 if (value.toString() == "success") {
                                   provider.saveWorkExperienceApi(
@@ -288,7 +289,7 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
 
                         },
                         child: Text(
-                          isUpdate == true ? "Update" : "Add",
+                          isUpdate == true ? AppLocalizations.of(context)!.update : AppLocalizations.of(context)!.add,
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
@@ -311,21 +312,21 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
 
     // 1. Height
     if (height.isEmpty) {
-      showAlertError("Height is required", context);
+      showAlertError(AppLocalizations.of(context)!.heightReq, context);
       return false;
     }
     if (int.tryParse(height) == null || int.parse(height) < 0 || int.parse(height) > 255) {
-       showAlertError("Height must be between 0 to 255", context);
+       showAlertError(AppLocalizations.of(context)!.heightMust0255, context);
       return false;
     }
 
     // 2. Weight
     if (weight.isEmpty) {
-      showAlertError("Weight is required", context);
+      showAlertError(AppLocalizations.of(context)!.weightReq, context);
       return false;
     }
     if (int.tryParse(weight) == null || int.parse(weight) < 0 || int.parse(weight) > 255) {
-      showAlertError("Weight must be between 0 to 255", context);
+      showAlertError(AppLocalizations.of(context)!.weightMust0255, context);
 
       return false;
     }
@@ -333,19 +334,19 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
     // 3. Chest
     if (UserData().model.value.gENDER != "Female") {
       if (chest.isEmpty) {
-        showAlertError("Chest is required", context);
+        showAlertError(AppLocalizations.of(context)!.chestReq, context);
         return false;
       }
       if (int.tryParse(chest) == null || int.parse(chest) < 0 ||
           int.parse(chest) > 255) {
-        showAlertError("Chest must be between 0 to 255", context);
+        showAlertError(AppLocalizations.of(context)!.chestMust0255, context);
         return false;
       }
     }
 
     // 4. Eye Sight
     if (eyeSight.isEmpty) {
-      showAlertError("Eye Sight is required", context);
+      showAlertError(AppLocalizations.of(context)!.eyeSightReq, context);
       return false;
     }
     // if (int.tryParse(eyeSight) == null) {
@@ -356,21 +357,21 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
     final RegExp eyeSightRegex = RegExp(r'^\d+(\.\d{1,2})?$');
     if (!eyeSightRegex.hasMatch(eyeSight)) {
       showAlertError(
-          "Eye Sight must be a number with up to 2 decimal places (e.g. 6, 6.5, 6.25)",
+          AppLocalizations.of(context)!.eyeSightValidation2Decimal,
           context);
       return false;
     }
 
     // 5. Differently-abled (PwD)
     if (diffAbled.isEmpty) {
-      showAlertError("Please select if you are differently abled", context);
+      showAlertError(AppLocalizations.of(context)!.selIfUDifAbled, context);
       return false;
     }
 
     // 6. Disability Type
     if (diffAbled == "Yes" &&
         provider.disabilityTypeIdController.text.isEmpty) {
-      showAlertError("Please select disability type", context);
+      showAlertError(AppLocalizations.of(context)!.selectDisabilityType, context);
       return false;
     }
 
@@ -380,14 +381,14 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
       provider.disabilityPercentageController.text.trim();
 
       if (disabilityPercent.isEmpty) {
-        showAlertError("Please enter disability percentage", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterDisbPercent, context);
         return false;
       }
 
       final int? percent = int.tryParse(disabilityPercent);
       if (percent == null || percent < 0 || percent > 100) {
         showAlertError(
-            "Disability percentage must be between 0 and 100",
+            AppLocalizations.of(context)!.disPercentMust0100,
             context);
         return false;
       }

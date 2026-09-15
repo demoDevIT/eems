@@ -7,6 +7,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
+import '../../../utils/language_toggle_switch.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
@@ -48,8 +49,9 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
     return Scaffold(
       drawer: _buildSideDrawer(),
       appBar: AppBar(
-        title: const Text(
-          "Employer Dashboard",
+        title: Text(
+          //"Employer Dashboard",
+          AppLocalizations.of(context)!.empDash,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -59,7 +61,17 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: SizedBox(
+              width: 80,
+              child: LanguageToggleSwitch(),
+            ),
+          ),
+        ],
       ),
+
       backgroundColor: const Color(0xFFF2F4F8),
       body: _buildDashboardGrid(),
     );
@@ -149,7 +161,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
   Widget _buildDashboardGrid() {
     final items = [
       _DashboardItem(
-        title: "View Profile",
+        title: AppLocalizations.of(context)!.viewProfile,
         iconPath: "assets/images/profilee.svg",
         onTap: () {
           Navigator.push(
@@ -162,7 +174,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       ),
 
       _DashboardItem(
-        title: "Job Fair",
+        title: AppLocalizations.of(context)!.jobFair,
         iconPath: "assets/images/aplyjobfair.svg",
         onTap: () {
           Navigator.push(
@@ -201,7 +213,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       // ),
 
       _DashboardItem(
-        title: "Grievances",
+        title: AppLocalizations.of(context)!.grievances,
         iconPath: "assets/images/grievances.svg",
         onTap: () async {
           await Navigator.push(
@@ -504,8 +516,8 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                           ),
                         );
                       },
-                      child: const Text(
-                        "Apply Now",
+                      child: Text(
+                        AppLocalizations.of(context)!.applynow,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -689,8 +701,8 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(
-                          "Update Profile",
+                        child: Text(
+                          AppLocalizations.of(context)!.updateProfile,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -722,7 +734,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.dashboard),
-            title: const Text("Dashboard", style: TextStyle(fontSize: 14)),
+            title: Text(AppLocalizations.of(context)!.dashboard, style: TextStyle(fontSize: 14)),
             onTap: () {
               Navigator.pop(context); // Already on dashboard
             },
@@ -742,7 +754,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
             ),
             children: [
               ListTile(
-                title: Text("Events", style: Styles.mediumTextStyle(size: 14)),
+                title: Text(AppLocalizations.of(context)!.events, style: Styles.mediumTextStyle(size: 14)),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigator.push(
@@ -752,7 +764,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                 },
               ),
               ListTile(
-                title: Text("Registered Event", style: Styles.mediumTextStyle(size: 14)),
+                title: Text(AppLocalizations.of(context)!.regEvents, style: Styles.mediumTextStyle(size: 14)),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigator.push(
@@ -762,7 +774,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
                 },
               ),
               ListTile(
-                title: Text("Job Apply", style: Styles.mediumTextStyle(size: 14)),
+                title: Text(AppLocalizations.of(context)!.jobApply, style: Styles.mediumTextStyle(size: 14)),
                 onTap: () {
                   Navigator.pop(context);
                   // Navigator.push(
@@ -794,7 +806,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
             ),
             onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
+              showLogoutDialog(context, AppLocalizations.of(context)!.logout,AppLocalizations.of(context)!.logoutConfirmMsg, AppLocalizations.of(context)!.logoutThankYouText, (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
 

@@ -7,6 +7,7 @@ import 'package:rajemployment/role/job_seeker/job_fair_event/provider/job_fair_e
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 import '../../../constants/constants.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/button.dart';
 import '../../../utils/textstyles.dart';
 import '../../../utils/user_new.dart';
@@ -31,7 +32,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Job Fair Event Detail", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.jobFairEventDetail, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -120,8 +121,8 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                           ); // Save logic here
                           // Validate and submit data
                         },
-                        child: const Text(
-                          "Register Now",
+                        child: Text(
+                          AppLocalizations.of(context)!.regNow,
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite),
                         ),
                       ),
@@ -130,7 +131,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                          "About Job Fair",
+                          AppLocalizations.of(context)!.aboutJobFair,
                           style: Styles.semiBoldTextStyle(size: 16,color: kBlackColor)
                       ),
                     ),
@@ -186,7 +187,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                       ),
                       hSpace(10),
                       Text(
-                        "Job Seeker Registration",
+                        AppLocalizations.of(context)!.jobSeekerReg,
                         style: Styles.regularTextStyle(size: 14, color: fontGrayColor),
                       ),
                       hSpace(10),
@@ -351,7 +352,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "Event Name",
+                                          text: AppLocalizations.of(context)!.eventName,
                                           // Normal text
                                           style: Styles.semiBoldTextStyle(
                                               size: 12,
@@ -417,7 +418,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "Location",
+                                          text: AppLocalizations.of(context)!.location,
                                           // Normal text
                                           style: Styles.semiBoldTextStyle(
                                               size: 12,
@@ -483,7 +484,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "Event ID",
+                                          text: AppLocalizations.of(context)!.eventID,
                                           // Normal text
                                           style: Styles.semiBoldTextStyle(
                                               size: 12,
@@ -549,7 +550,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "Date",
+                                          text: AppLocalizations.of(context)!.date,
                                           // Normal text
                                           style: Styles.semiBoldTextStyle(
                                               size: 12,
@@ -692,11 +693,11 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Annual District-wide job",
+                        AppLocalizations.of(context)!.annualDistrWideJob,
                         style: Styles.semiBoldTextStyle(size: 18, color: kBlackColor),
                       ),
                       Text(
-                        "fair for all sectors",
+                        AppLocalizations.of(context)!.fairForAllSectors,
                         style: Styles.semiBoldTextStyle(size: 18, color: kBlackColor),
                       ),
                       hSpace(10),
@@ -704,12 +705,12 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                       // Image(image: AssetImage(Images.qr_code),width: 100,height: 100,),
                       // hSpace(10),
                       Text(
-                        "Successful",
+                        AppLocalizations.of(context)!.successful,
                         style: Styles.semiBoldTextStyle(size: 18, color: green00C324),
                       ),
                       hSpace(10),
                       Text(
-                        "Thank You for  Registration",
+                        AppLocalizations.of(context)!.thankReg,
                         style: Styles.mediumTextStyle(size: 14, color: kBlackColor),
                       ),
                       // Text(
@@ -794,11 +795,11 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
             borderRadius: BorderRadius.circular(15),
           ),
           title: Text(
-            "Confirmation",
+            AppLocalizations.of(context)!.confirmation,
             style: Styles.semiBoldTextStyle(size: 16, color: kBlackColor),
           ),
           content: Text(
-            "Are you sure you want to register for this Job Fair Event?",
+            AppLocalizations.of(context)!.areYouSureRegJobFair,
             style: Styles.regularTextStyle(size: 14, color: kBlackColor),
           ),
           actions: [
@@ -806,7 +807,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Cancel"),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -835,13 +836,13 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                       content: Text(
                         provider.apiMessage.isNotEmpty
                             ? provider.apiMessage
-                            : "Registration Failed",
+                            : AppLocalizations.of(context)!.regFail,
                       ),
                     ),
                   );
                 }
               },
-              child: Text("Yes"),
+              child: Text(AppLocalizations.of(context)!.yes),
             ),
           ],
         );
@@ -860,7 +861,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Job Fair Registration"),
+          title: Text(AppLocalizations.of(context)!.jobFairReg),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -886,8 +887,8 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
                     mode: LaunchMode.externalApplication,
                   );
                 },
-                child: const Text(
-                  "Click here to download your pass",
+                child: Text(
+                  AppLocalizations.of(context)!.clickDownloadPass,
                   style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
@@ -900,7 +901,7 @@ class _JobFairEventDetailsScreenState extends State<JobFairEventDetailsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
           ],
         );

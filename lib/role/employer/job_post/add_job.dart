@@ -7,6 +7,7 @@ import 'package:rajemployment/role/employer/job_post/modal/emp_type_modal.dart';
 import 'package:rajemployment/role/employer/job_post/modal/job_title_modal.dart';
 import 'package:rajemployment/role/employer/job_post/modal/nature_job_modal.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -69,7 +70,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Add Job"),
+          title: Text(AppLocalizations.of(context)!.addJob),
         ),
         body: Consumer<AddJobProvider>(
           builder: (context, provider, child) {
@@ -90,8 +91,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text(
-                            "Job Details",
+                          Text(
+                            AppLocalizations.of(context)!.jobDetails,
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold),
@@ -100,7 +101,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 12),
 
                           /// EVENT
-                          labelWithStar('Event', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.event, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -113,7 +114,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.eventNameController,
                               idController: provider.eventIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // color: Colors.transparent,
                               // borderRadius: BorderRadius.circular(8),
@@ -128,7 +129,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// EVENT
-                          labelWithStar('Job Sector', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.jobSector, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -141,7 +142,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.sectorNameController,
                               idController: provider.sectorIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // color: Colors.transparent,
                               // borderRadius: BorderRadius.circular(8),
@@ -166,7 +167,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// JOB TITLE
-                          labelWithStar('Job Title', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.jobTitle, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -179,7 +180,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.jobTitleController,
                               idController: provider.jobTitleIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
@@ -214,7 +215,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                                     const SizedBox(height: 10),
 
-                                    labelWithStar('Job Title', required: false),
+                                    labelWithStar(AppLocalizations.of(context)!.jobTitle, required: false),
 
                                     Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -223,7 +224,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                         enabled: provider.isCustomJobTitle, // disabled field
                                         decoration: InputDecoration(
                                           hintText: provider.isCustomJobTitle
-                                              ? "Enter Job Title"
+                                              ? AppLocalizations.of(context)!.enterJobTitle
                                               : "",
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(8),
@@ -239,7 +240,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
 
                           /// NCO
-                          labelWithStar('NCO Code', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.ncoCode, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -252,7 +253,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.ncoCodeController,
                               idController: provider.ncoCodeIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
@@ -265,13 +266,13 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// JOB DESCRIPTION FILE
-                          labelWithStar('Job Description', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.jobDescription, required: false),
                           const SizedBox(height: 6),
                           Consumer<AddJobProvider>(
                             builder: (context, provider, _) {
 
                               return buildImageUploadBox(
-                                title: "Upload Document (PDF)",
+                                title: AppLocalizations.of(context)!.uploadDocPDF,
                                 imageFile: provider.selectedDocumentFile,
                                 onTap: () {
                                   provider.pickAndUploadSingleDocument(
@@ -303,7 +304,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           //   ),
                           // ),
 
-                          labelWithStar('Gender', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.gender, required: false),
                           const SizedBox(height: 4),
                           Consumer<AddJobProvider>(
                             builder: (context, provider, _) {
@@ -321,7 +322,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                                 return buildTextField(
                                   controller: provider.totalVacancyController,
-                                  label: "No of vacancy (Total)",
+                                  label: AppLocalizations.of(context)!.noOfVacancyTotal,
                                 );
                               }
 
@@ -331,19 +332,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   if (provider.selectedGenders.contains("Male"))
                                     buildTextField(
                                       controller: provider.maleVacancyController,
-                                      label: "No of vacancy (Male)",
+                                      label: AppLocalizations.of(context)!.noOfVacancyMale,
                                     ),
 
                                   if (provider.selectedGenders.contains("Female"))
                                     buildTextField(
                                       controller: provider.femaleVacancyController,
-                                      label: "No of vacancy (Female)",
+                                      label: AppLocalizations.of(context)!.noOfVacancyFemale,
                                     ),
 
                                   if (provider.selectedGenders.contains("TransGender"))
                                     buildTextField(
                                       controller: provider.transVacancyController,
-                                      label: "No of vacancy (TransGender)",
+                                      label: AppLocalizations.of(context)!.noOfVacancyTrans,
                                     ),
                                 ],
                               );
@@ -353,7 +354,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// JOB LOCATION
-                          labelWithStar('Job Location', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.jobLocation, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -366,7 +367,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                               controller: provider.locationController,
                               idController: provider.locationIdController,
 
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
 
                               customItemBuilder: (item) {
                                 int index = provider.locationList.indexOf(item);
@@ -376,8 +377,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        "Rajasthan -> Cities",
+                                      Text(
+                                        AppLocalizations.of(context)!.rajCity, //"Rajasthan -> Cities",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black54,
@@ -500,7 +501,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// EMPLOYMENT TYPE
-                          labelWithStar('Employment Type', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.empType, required: false),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: buildSearchableDropdown<EmpTypeData>(
@@ -512,7 +513,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.empTypeController,
                               idController: provider.empTypeIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
@@ -525,7 +526,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// NATURE OF JOB
-                          labelWithStar('Nature Of Job', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.natureJob, required: false),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: buildSearchableDropdown<NatureJobData>(
@@ -537,7 +538,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.natureJobController,
                               idController: provider.natureJobIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
@@ -550,7 +551,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// WORK EXPERIENCE
-                          labelWithStar('Work Experience', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.workExp, required: false),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5),
                           child: buildSearchableDropdown<DropdownItem>(
@@ -562,7 +563,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                             controller: provider.workExpController,
                             idController: provider.workExpIdController,
-                            hintText: "--Select Option--",
+                            hintText: AppLocalizations.of(context)!.selOption,
                             // height: 50,
                             // borderRadius: BorderRadius.circular(8),
                             onChanged: (value) {
@@ -570,7 +571,10 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 provider.workExpIdController.text = provider.workExpIdController.text;
                               });
 
-                              if (provider.workExpController.text == "Experienced") {
+                              //**********getting this value 'experienced' from API side so if this value is in hindi same
+                              // which i convert in hindi so this condition will work for hindi language************//
+
+                              if (provider.workExpController.text == "Experienced") { // AppLocalizations.of(context)!.experienced
                                 provider.isExperienced = true;
                               } else {
                                 provider.isExperienced = false;
@@ -591,7 +595,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
 
-                                  labelWithStar("Experience Limit", required: false),
+                                  labelWithStar(AppLocalizations.of(context)!.expLimit, required: false), //AppLocalizations.of(context)!.expLimit
 
                                   RangeSlider(
                                     min: 1,
@@ -620,7 +624,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 15),
 
                           /// AGE SLIDER
-                          const Text("Age Group Limit"),
+                          Text(AppLocalizations.of(context)!.ageGroupLimit "Age Group Limit"),
 
                           Row(
                             mainAxisAlignment:

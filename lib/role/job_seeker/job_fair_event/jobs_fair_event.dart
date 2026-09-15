@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/job_fair_event/provider/jobs_fair_event_provider.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textstyles.dart';
@@ -32,7 +33,7 @@ class _JobsFairEventScreenState extends State<JobsFairEventScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Jobs Fair Event", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.jobfairevents, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -198,7 +199,7 @@ class _JobsFairEventScreenState extends State<JobsFairEventScreen> {
                                          ),
                                          children: [
                                            TextSpan(
-                                             text:"Current",
+                                             text:AppLocalizations.of(context)!.current,
                                              style: Styles
                                                  .regularTextStyle(
                                                  size: 12,
@@ -284,7 +285,7 @@ class _JobsFairEventScreenState extends State<JobsFairEventScreen> {
                                        ),
                                        children: [
                                          TextSpan(
-                                           text:"In charge Name",
+                                           text: AppLocalizations.of(context)!.inChargeName,
                                            // Normal text
                                            style: Styles
                                                .regularTextStyle(

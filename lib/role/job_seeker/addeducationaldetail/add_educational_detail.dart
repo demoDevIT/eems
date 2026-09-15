@@ -5,6 +5,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/main.dart';
 import 'package:rajemployment/role/job_seeker/addeducationaldetail/provider/add_educational_detail_provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -97,7 +98,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Add Educational Details", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.addEduDetail, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -112,7 +113,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Education History',
+                    Text(AppLocalizations.of(context)!.eduHistory,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600)),
                     SizedBox(height: spacing + 10),
@@ -129,7 +130,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                       ),
                     ),*/
 
-                    labelWithStar('Education Level', required: true),
+                    labelWithStar(AppLocalizations.of(context)!.eduLevel, required: true),
 
                     IgnorePointer(
                       ignoring: false,
@@ -145,7 +146,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
 
                           controller: provider.educationLevelNameController,
                           idController: provider.educationLevelIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -194,7 +195,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     //below10.................
 
                     provider.educationLevelIdController.text == "2"
-                        ? labelWithStar('Choose Class', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.chooseClass, required: true)
                         : SizedBox(),
 
                     Visibility(
@@ -208,7 +209,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.classList,
                           controller: provider.classNameController,
                           idController: provider.classIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -222,7 +223,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
 
                     provider.educationLevelIdController.text == "3" ||
                             provider.educationLevelIdController.text == "4"
-                        ? labelWithStar('Board', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.board, required: true)
                         : SizedBox(),
 
 /*
@@ -250,7 +251,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.boardList,
                           controller: provider.boardNameController,
                           idController: provider.boardIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -262,7 +263,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     provider.educationLevelIdController.text == "2" ||
                             provider.educationLevelIdController.text == "3" ||
                             provider.educationLevelIdController.text == "4"
-                        ? labelWithStar('School Name', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.schoolName, required: true)
                         : SizedBox(),
 
                     /*provider.educationLevelIdController.text == "2"  || provider.educationLevelIdController.text == "3"  ||  provider.educationLevelIdController.text == "4"?  Padding(
@@ -284,7 +285,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.schoolNameController,
-                              "Enter School Name",
+                              AppLocalizations.of(context)!.enterSchoolName,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -297,7 +298,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     //12 secondary.............
 
                     provider.educationLevelIdController.text == "4"
-                        ? labelWithStar('Stream', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.stream, required: true)
                         : SizedBox(),
 
                     /*  provider.educationLevelIdController.text == "4" ? Padding(
@@ -322,7 +323,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.streamTypeList,
                           controller: provider.streamNameController,
                           idController: provider.streamIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -375,7 +376,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
 
                           controller: provider.graduationTypeNameController,
                           idController: provider.graduationTypeIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -410,7 +411,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         provider.showItiChildDropdown) ...[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: labelWithStar('ITI Sub Trade Type', required: true),
+                        child: labelWithStar(AppLocalizations.of(context)!.ITISubTradeType, required: true),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -420,7 +421,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           getName: (item) => item.name ?? "",
                           controller: provider.itiChildNameController,
                           idController: provider.itiChildIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           onChanged: (value) {
                             provider.onSelectItiItem(context, value, 1);
                           },
@@ -459,7 +460,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                             (provider.educationLevelIdController.text == "8" &&
                                 provider.graduationTypeIdController.text ==
                                     "127")
-                        ? labelWithStar('Other Graduation Type', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.otherGraType, required: true)
                         : SizedBox(),
 
                     /* (provider.educationLevelIdController.text == "5" &&  provider.graduationTypeIdController.text == "31" )  ||  (provider.educationLevelIdController.text == "6" &&  provider.graduationTypeIdController.text == "90")  || (provider.educationLevelIdController.text == "8" &&  provider.graduationTypeIdController.text == "127" )  ? Padding(
@@ -487,7 +488,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.otherGraduationTypeController,
-                              "Enter Other Graduation Type*",
+                              AppLocalizations.of(context)!.enterOtherGraType,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -506,7 +507,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: labelWithStar('Stream Type',
+                      child: labelWithStar(AppLocalizations.of(context)!.streamType,
                           required: true),
                     )
                         : SizedBox(),
@@ -536,7 +537,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           provider.graduationStreamTypeNameController,
                           idController:
                           provider.graduationStreamTypeIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           // height: 50,
                           // color: Colors.transparent,
                           // borderRadius: BorderRadius.circular(8),
@@ -554,7 +555,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: labelWithStar('Other Stream',
+                      child: labelWithStar(AppLocalizations.of(context)!.otherStream,
                           required: true),
                     )
                         : SizedBox(),
@@ -565,7 +566,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           horizontal: 10, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.otherStreamController,
-                        "Enter Other Stream",
+                        AppLocalizations.of(context)!.enterOtherStream,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.text,
@@ -577,7 +578,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     provider.educationLevelIdController.text == "5" ||
                             provider.educationLevelIdController.text == "6" ||
                             provider.educationLevelIdController.text == "8"
-                        ? labelWithStar('University', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.university, required: true)
                         : SizedBox(),
 
                     /* provider.educationLevelIdController.text == "5" ||  provider.educationLevelIdController.text == "6"  ||  provider.educationLevelIdController.text == "8" ? Padding(
@@ -605,7 +606,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.universityList,
                           controller: provider.universityNameController,
                           idController: provider.universityIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -617,7 +618,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     ),
 
                     provider.universityIdController.text == "-1"
-                        ? labelWithStar('Other University', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.otherUni, required: true)
                         : SizedBox(),
 
                     /* provider.universityIdController.text == "3"  ? Padding(
@@ -637,7 +638,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.otherEducationUniversity,
-                              "Enter Other University",
+                              AppLocalizations.of(context)!.enterOtherUni,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -648,7 +649,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     provider.educationLevelIdController.text == "5" ||
                             provider.educationLevelIdController.text == "6" ||
                             provider.educationLevelIdController.text == "8"
-                        ? labelWithStar('College', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.college, required: true)
                         : SizedBox(),
 
                     /*   provider.educationLevelIdController.text == "5" ||  provider.educationLevelIdController.text == "6"  ||  provider.educationLevelIdController.text == "8" ? Padding(
@@ -670,7 +671,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.collageNameController,
-                              "Enter College name",
+                              AppLocalizations.of(context)!.enterCollege,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -681,7 +682,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     // under graduate / graduate / post graduate.......////
 
                     provider.educationLevelIdController.text != "1"
-                        ? labelWithStar('Medium of Education', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.medEdu, required: true)
                         : SizedBox(),
 
                     /* Padding(
@@ -707,7 +708,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                     provider.mediumEducationNameController,
                                 idController:
                                     provider.mediumEducationIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -720,7 +721,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         : SizedBox(),
 
                     provider.mediumEducationIdController.text == "70"
-                        ? labelWithStar('Other Medium of Education',
+                        ? labelWithStar(AppLocalizations.of(context)!.otherMedEdu,
                             required: true)
                         : SizedBox(),
 
@@ -741,7 +742,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 horizontal: 0, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.otherMediumEducationController,
-                              "Other Medium of Education",
+                              AppLocalizations.of(context)!.otherMedEdu,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -750,7 +751,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         : SizedBox(),
 
                     provider.educationLevelIdController.text != "1"
-                        ? labelWithStar('Nature of Course', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.natureCourse, required: true)
                         : SizedBox(),
 
                     /* Padding(
@@ -776,7 +777,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                     provider.natureOfCourseNameController,
                                 idController:
                                     provider.natureOfCourseIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -787,7 +788,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         : SizedBox(),
 
                     provider.educationLevelIdController.text != "1"
-                        ? labelWithStar('Year of Passing', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.passingYear, required: true)
                         : SizedBox(),
                     /*   Padding(
                       padding: const EdgeInsets.symmetric(
@@ -840,7 +841,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                   horizontal: 0, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.yearOfPassingNameController,
-                                "--Select Option--",
+                                AppLocalizations.of(context)!.selOption,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -851,7 +852,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                         : SizedBox(),
 
                     provider.educationLevelIdController.text != "1"
-                        ? labelWithStar('NCO Code', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.ncoCode, required: true)
                         : SizedBox(),
 
                     /*  Padding(
@@ -875,7 +876,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 items: provider.ncoCodeList,
                                 controller: provider.ncoCodeNameController,
                                 idController: provider.ncoCodeIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -888,7 +889,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     hSpace(6),
                     provider.educationLevelIdController.text != "1"
                         ? Text(
-                            'Note:- Please select the NCO code based on your Qualification',
+                            AppLocalizations.of(context)!.plzSelNocURQuali,
                             style: TextStyle(fontSize: 12, color: Colors.red),
                           )
                         : SizedBox(),
@@ -896,7 +897,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                     hSpace(18),
 
                     provider.educationLevelIdController.text != "1"
-                        ? labelWithStar('Result Type', required: true)
+                        ? labelWithStar(AppLocalizations.of(context)!.resultType, required: true)
                         : SizedBox(),
 
                     // Result Type (radio inline)
@@ -925,7 +926,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Grade',
+                                    AppLocalizations.of(context)!.grade,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -949,7 +950,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Percentage',
+                                    AppLocalizations.of(context)!.percent,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -973,7 +974,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'CGPA',
+                                    AppLocalizations.of(context)!.CGPA,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -1027,7 +1028,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.gradeTypeList,
                           controller: provider.gradeTypeNameController,
                           idController: provider.gradeTypeIdController,
-                          hintText: "--Select Option--",
+                          hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
@@ -1047,8 +1048,8 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           if (validateEducationForm(context, provider)) {
                             confirmAlertDialog(
                               context,
-                              "Alert",
-                              "Are you sure want to submit ?",
+                              AppLocalizations.of(context)!.alert,
+                              AppLocalizations.of(context)!.areYouSureSubmitForm,
                               (value) {
                                 if (value.toString() == "success") {
                                   provider.saveDataEducationDetailsApi(context);
@@ -1072,7 +1073,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text('Add',
+                        child: Text(AppLocalizations.of(context)!.add,
                             style:
                                 TextStyle(fontSize: 16, color: Colors.white)),
                       ),
@@ -1091,26 +1092,26 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     final provider = Provider.of<AddEducationalDetailProvider>(context, listen: false);
     switch (provider.educationLevelIdController.text) {
       case "5":
-        return "Under Graduation Type";
+        return AppLocalizations.of(context)!.underGradType;
 
       case "6":
-        return "Graduation Type";
+        return AppLocalizations.of(context)!.gradType;
 
       case "8":
-        return "Post Graduation Type";
+        return AppLocalizations.of(context)!.postGradType;
 
       case "9":
-        return "ITI Trade Type";
+        return AppLocalizations.of(context)!.ITITradeType;
 
       default:
-        return "Graduation Type";
+        return AppLocalizations.of(context)!.gradType;
     }
   }
 
   bool validateEducationForm(BuildContext context, provider) {
     // ---------- EDUCATION LEVEL ----------
     if (provider.educationLevelIdController.text.trim().isEmpty) {
-      showAlertError("Please select Education Level", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelEduLevel, context);
       return false;
     }
 
@@ -1119,12 +1120,12 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     // ---------- BELOW 10 (ID = 2) ----------
     if (edu == "2") {
       if (provider.classIdController.text.trim().isEmpty) {
-        showAlertError("Please select Class", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelClass, context);
         return false;
       }
 
       if (provider.schoolNameController.text.trim().isEmpty) {
-        showAlertError("Please enter School Name", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterSchName, context);
         return false;
       }
     }
@@ -1132,11 +1133,11 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     // ---------- 10th (ID = 3) ----------
     if (edu == "3") {
       if (provider.boardIdController.text.trim().isEmpty) {
-        showAlertError("Please select Board", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelBoard, context);
         return false;
       }
       if (provider.schoolNameController.text.trim().isEmpty) {
-        showAlertError("Please enter School Name", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterSchName, context);
         return false;
       }
     }
@@ -1144,15 +1145,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     // ---------- 12th (ID = 4) ----------
     if (edu == "4") {
       if (provider.boardIdController.text.trim().isEmpty) {
-        showAlertError("Please select Board", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelBoard, context);
         return false;
       }
       if (provider.streamIdController.text.trim().isEmpty) {
-        showAlertError("Please select Stream", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelStream, context);
         return false;
       }
       if (provider.schoolNameController.text.trim().isEmpty) {
-        showAlertError("Please enter School Name", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterSchName, context);
         return false;
       }
     }
@@ -1161,7 +1162,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     if (edu == "5" || edu == "6" || edu == "8") {
       // Graduation Type
       if (provider.graduationTypeIdController.text.trim().isEmpty) {
-        showAlertError("Please select Graduation Type", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelGraType, context);
         return false;
       }
 
@@ -1170,27 +1171,27 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
           (edu == "6" && provider.graduationTypeIdController.text == "90") ||
           (edu == "8" && provider.graduationTypeIdController.text == "127")) {
         if (provider.otherGraduationTypeController.text.trim().isEmpty) {
-          showAlertError("Please enter Other Graduation Type", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterOtherGraType, context);
           return false;
         }
       }
 
       // University
       if (provider.universityIdController.text.trim().isEmpty) {
-        showAlertError("Please select University", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelUniv, context);
         return false;
       }
 
       if (provider.universityIdController.text == "3") {
         if (provider.otherEducationUniversity.text.trim().isEmpty) {
-          showAlertError("Please enter Other University", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterOtherUni, context);
           return false;
         }
       }
 
       // College Name
       if (provider.collageNameController.text.trim().isEmpty) {
-        showAlertError("Please enter College Name", context);
+        showAlertError(AppLocalizations.of(context)!.plzEnterClgName, context);
         return false;
       }
     }
@@ -1198,58 +1199,58 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
     // ---------- MEDIUM OF EDUCATION (for all except ID = 1) ----------
     if (edu != "1") {
       if (provider.mediumEducationIdController.text.trim().isEmpty) {
-        showAlertError("Please select Medium of Education", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelMedEdu, context);
         return false;
       }
 
       if (provider.mediumEducationIdController.text == "70") {
         if (provider.otherMediumEducationController.text.trim().isEmpty) {
-          showAlertError("Please enter Other Medium of Education", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterOthMedEdu, context);
           return false;
         }
       }
 
       // ---------- NATURE OF COURSE ----------
       if (provider.natureOfCourseIdController.text.trim().isEmpty) {
-        showAlertError("Please select Nature of Course", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelNatCourse, context);
         return false;
       }
 
       // ---------- YEAR OF PASSING ----------
       if (provider.yearOfPassingNameController.text.trim().isEmpty) {
-        showAlertError("Please select Year of Passing", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelYearPass, context);
         return false;
       }
 
       // ---------- NCO CODE ----------
       if (provider.ncoCodeIdController.text.trim().isEmpty) {
-        showAlertError("Please select NCO Code", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelNcoCode, context);
         return false;
       }
 
       // ---------- RESULT TYPE ----------
       if (provider.resultType.trim().isEmpty) {
-        showAlertError("Please select Result Type", context);
+        showAlertError(AppLocalizations.of(context)!.plzSelResType, context);
         return false;
       }
 
       if (provider.resultType == "Percentage") {
         if (provider.percentageController.text.trim().isEmpty) {
-          showAlertError("Please enter percentage", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterPerc, context);
           return false;
         }
       }
 
       if (provider.resultType == "CGPA") {
         if (provider.cgpaController.text.trim().isEmpty) {
-          showAlertError("Please enter CGPA", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterCGPA, context);
           return false;
         }
       }
 
       if (provider.resultType == "Grade") {
         if (provider.gradeTypeIdController.text.trim().isEmpty) {
-          showAlertError("Please select grade", context);
+          showAlertError(AppLocalizations.of(context)!.plzEnterGrade, context);
           return false;
         }
       }

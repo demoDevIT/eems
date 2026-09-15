@@ -14,6 +14,7 @@ import 'package:rajemployment/utils/dot_border.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/textfeild.dart';
@@ -50,7 +51,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Job Apply List", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.jobApplyList, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -62,7 +63,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
               child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  labelWithStar('Event Name',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.eventName,required: false),
                   IgnorePointer(
                     ignoring: false,
                     child: Padding(
@@ -72,7 +73,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                         items: provider.eventNameList,
                         controller: provider.eventNameController,
                         idController: provider.eventIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -83,7 +84,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                     ),
                   ),
 
-                  labelWithStar('Job Sector',required: false),
+                  labelWithStar(AppLocalizations.of(context)!.jobSector,required: false),
                   IgnorePointer(
                     ignoring: false,
                     child: Padding(
@@ -93,7 +94,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                         items: provider.sectorList,
                         controller: provider.sectorNameController,
                         idController: provider.sectorIdController,
-                        hintText: "--Select Option--",
+                        hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
@@ -108,7 +109,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
 
                   Align(
                   alignment: Alignment.center,
-                  child: labelWithStar('Search and Apply',required: false,size: 18)),
+                  child: labelWithStar(AppLocalizations.of(context)!.searchApply,required: false,size: 18)),
                   hSpace(10),
                   Expanded(
                     child: ListView.builder(
@@ -156,7 +157,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                                           ),
                                           children: [
                                             TextSpan(
-                                              text:"NCO Code",
+                                              text:AppLocalizations.of(context)!.ncoCode,
                                               // Normal text
                                               style: Styles
                                                   .mediumTextStyle(
@@ -242,7 +243,7 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                                           ),
                                           children: [
                                             TextSpan(
-                                              text:"NCO Name",
+                                              text:AppLocalizations.of(context)!.ncoName,
                                               // Normal text
                                               style: Styles
                                                   .mediumTextStyle(

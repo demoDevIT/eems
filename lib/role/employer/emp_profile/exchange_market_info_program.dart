@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/exchange_market_info_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/dropdown.dart';
 import '../empotr_form/modal/actEstablishment_modal.dart';
@@ -80,8 +81,8 @@ class _ExchangeMarketInformationProgramState
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Exchange Market Information Program",
+        title: Text(
+          AppLocalizations.of(context)!.exchangeMarInfoProg,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -98,20 +99,20 @@ class _ExchangeMarketInformationProgramState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// ===== Dropdowns =====
-                _label("Type of Organization"),
+                _label(AppLocalizations.of(context)!.typeOfOrg),
                 buildDropdownFieldStaticValue(
-                  "Type of Organization",
-                  "Select type",
+                  AppLocalizations.of(context)!.typeOfOrg,
+                  AppLocalizations.of(context)!.selType,
                   value: orgType,
                   items: provider.organizationTypes,
                   onChanged: null, // disabled
                 ),
 
                 if (orgType != null && orgType != "Private") ...[
-                  _label("Government Body"),
+                  _label(AppLocalizations.of(context)!.govtBody),
                   buildDropdownFieldStaticValue(
-                    "Government Body",
-                    "Select government body",
+                    AppLocalizations.of(context)!.govtBody,
+                    AppLocalizations.of(context)!.selectGovtBody,
                     value: govtBody,
                     items: provider.governmentBodies,
                     onChanged: null, // 👈 disabled
@@ -119,25 +120,25 @@ class _ExchangeMarketInformationProgramState
                 ],
 
                 /// ===== Employee Count =====
-                _label("No of Male Employees"),
-                _field(provider.maleEmpCtrl, "Enter male employees",
+                _label(AppLocalizations.of(context)!.noOfMaleEmp),
+                _field(provider.maleEmpCtrl, AppLocalizations.of(context)!.enterMaleEmp,
                     TextInputType.number),
 
-                _label("No of Female Employees"),
-                _field(provider.femaleEmpCtrl, "Enter female employees",
+                _label(AppLocalizations.of(context)!.noOfFemaleEmp),
+                _field(provider.femaleEmpCtrl, AppLocalizations.of(context)!.enterFemaleEmp,
                     TextInputType.number),
 
-                _label("No of Transgender Employees"),
+                _label(AppLocalizations.of(context)!.noOfTransEmp),
                 _field(provider.transgenderEmpCtrl,
-                    "Enter transgender employees", TextInputType.number),
+                    AppLocalizations.of(context)!.enterTransEmp, TextInputType.number),
 
-                _label("Total Number of Employees"),
-                _field(provider.totalEmpCtrl, "Enter total employees",
+                _label(AppLocalizations.of(context)!.totalNoEmp),
+                _field(provider.totalEmpCtrl, AppLocalizations.of(context)!.enterTotalEmp,
                     TextInputType.number),
 
                 /// ===== More Dropdowns =====
                 if (orgType != "Government") ...[
-                  _label("Act Establishment"),
+                  _label(AppLocalizations.of(context)!.actEst),
                   DropdownButtonFormField<ActEstablishmentData>(
                     value: provider.selectedActEst,
                     isExpanded: true,
@@ -162,7 +163,7 @@ class _ExchangeMarketInformationProgramState
                         ),
                       ),
                     ),
-                    hint: const Text("--Select Option--"),
+                    hint: Text(AppLocalizations.of(context)!.selOption),
                     items: provider.actEstList
                         .map(
                           (e) => DropdownMenuItem<ActEstablishmentData>(
@@ -177,16 +178,16 @@ class _ExchangeMarketInformationProgramState
                   ),
                 ],
 
-                _label("Industry Type"),
+                _label(AppLocalizations.of(context)!.indusType),
                 buildDropdownFieldStaticValue(
-                  "Industry Type",
-                  "Select industry type",
+                  AppLocalizations.of(context)!.indusType,
+                  AppLocalizations.of(context)!.selectIndusType,
                   value: industryType,
                   items: provider.industryTypes,
                   onChanged: null, // ✅ disabled like previous dropdowns
                 ),
 
-                _label("Sector"),
+                _label(AppLocalizations.of(context)!.sector),
                 DropdownButtonFormField<int>(
                   value: provider.selectedSectorId,
                   isExpanded: true,
@@ -207,7 +208,7 @@ class _ExchangeMarketInformationProgramState
                           const BorderSide(color: borderColor, width: 0.5),
                     ),
                   ),
-                  hint: const Text("--Select Option--"),
+                  hint: Text(AppLocalizations.of(context)!.selOption),
                   items: provider.sectorList
                       .map(
                         (e) => DropdownMenuItem<int>(

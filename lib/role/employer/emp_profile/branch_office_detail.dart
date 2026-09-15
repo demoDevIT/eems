@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 import 'provider/branch_office_detail_provider.dart';
 
@@ -62,8 +63,8 @@ class _BranchOfficeDetailScreenState
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Branch Office Details",
+        title: Text(
+          AppLocalizations.of(context)!.branchOffDetail,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -78,41 +79,41 @@ class _BranchOfficeDetailScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            _label("Company Name"),
-            _field(companyNameCtrl, "Enter company name"),
+            _label(AppLocalizations.of(context)!.companyName),
+            _field(companyNameCtrl, AppLocalizations.of(context)!.enterCompanyName),
 
-            _label("House Number"),
-            _field(houseNumberCtrl, "Enter house number"),
+            _label(AppLocalizations.of(context)!.houseNo),
+            _field(houseNumberCtrl, AppLocalizations.of(context)!.enterHouseNo),
 
-            _label("Lane"),
-            _field(laneCtrl, "Enter lane"),
+            _label(AppLocalizations.of(context)!.lane),
+            _field(laneCtrl, AppLocalizations.of(context)!.enterLane),
 
-            _label("Locality"),
-            _field(localityCtrl, "Enter locality"),
+            _label(AppLocalizations.of(context)!.locality),
+            _field(localityCtrl, AppLocalizations.of(context)!.enterLocality),
 
-            _label("Pin Code"),
-            _field(pinCodeCtrl, "Enter pin code", TextInputType.number),
+            _label(AppLocalizations.of(context)!.pincode),
+            _field(pinCodeCtrl, AppLocalizations.of(context)!.enterPinCode, TextInputType.number),
 
-            _label("Tel No"),
-            _field(telNoCtrl, "Enter telephone number", TextInputType.phone),
+            _label(AppLocalizations.of(context)!.telNo),
+            _field(telNoCtrl, AppLocalizations.of(context)!.enterTelNo, TextInputType.phone),
 
-            _label("Email"),
-            _field(emailCtrl, "Enter email", TextInputType.emailAddress),
+            _label(AppLocalizations.of(context)!.email),
+            _field(emailCtrl, AppLocalizations.of(context)!.enterEmail, TextInputType.emailAddress),
 
-            _label("GST Number"),
-            _field(gstCtrl, "Enter GST number"),
+            _label(AppLocalizations.of(context)!.gstNo),
+            _field(gstCtrl, AppLocalizations.of(context)!.enterGstNo),
 
-            _label("PAN Number"),
-            _field(panCtrl, "Enter PAN number"),
+            _label(AppLocalizations.of(context)!.panNo),
+            _field(panCtrl, AppLocalizations.of(context)!.enterPANNo),
 
-            _label("PAN Holder"),
-            _field(panHolderCtrl, "Enter PAN holder name"),
+            _label(AppLocalizations.of(context)!.panHolder),
+            _field(panHolderCtrl, AppLocalizations.of(context)!.enterPANHolder),
 
-            _label("PAN Verified"),
-            _field(panVerifiedCtrl, "PAN verified"),
+            _label(AppLocalizations.of(context)!.panVerified),
+            _field(panVerifiedCtrl, AppLocalizations.of(context)!.panVerified),
 
-            _label("TAN Number"),
-            _field(tanCtrl, "Enter TAN number"),
+            _label(AppLocalizations.of(context)!.tanNo),
+            _field(tanCtrl, AppLocalizations.of(context)!.enterTANNo),
 
             const SizedBox(height: 30),
           ],

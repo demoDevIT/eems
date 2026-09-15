@@ -6,6 +6,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/size_config.dart';
 import 'package:rajemployment/utils/utility_class.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import '../loginscreen/provider/locale_provider.dart';
 import 'provider/comera_provider.dart';
@@ -36,7 +37,7 @@ class _CameraPageState extends State<CameraPage> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: commonAppBar2("Video Profile", context,
+        appBar: commonAppBar2(AppLocalizations.of(context)!.videoprof, context,
             localeProvider.currentLanguage, "", false, "", onTapClick: () {
               localeProvider.toggleLocale();
             }),
@@ -51,7 +52,7 @@ class _CameraPageState extends State<CameraPage> {
                   height: double.infinity,
                   width: double.infinity,
                   alignment: Alignment.center,
-                  color: Colors.black,child: Text("Loaded video",style: TextStyle(color: Colors.white),),
+                  color: Colors.black,child: Text(AppLocalizations.of(context)!.loadVideo,style: TextStyle(color: Colors.white),),
                 ) : ( Provider.chewieController != null &&
                     Provider.videoPlayerController != null &&
                     Provider.videoPlayerController!.value.isInitialized)
@@ -65,7 +66,7 @@ class _CameraPageState extends State<CameraPage> {
                   height: double.infinity,
                   width: double.infinity,
                   alignment: Alignment.center,
-                  color: Colors.black,child: Text("No video",style: TextStyle(color: Colors.white),),
+                  color: Colors.black,child: Text(AppLocalizations.of(context)!.noVideo,style: TextStyle(color: Colors.white),),
                 ),),
             ),
             Expanded(
@@ -76,18 +77,18 @@ class _CameraPageState extends State<CameraPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: SizeConfig.defaultSize,),
-                    Text("Record Your Live Introduction Video",style: UtilityClass.poppins(fontSize: 15, fontWeight: FontWeight.w700, color: kBlackColor),),SizedBox(height: SizeConfig.defaultSize,),
+                    Text(AppLocalizations.of(context)!.recordLiveIntroVideo,style: UtilityClass.poppins(fontSize: 15, fontWeight: FontWeight.w700, color: kBlackColor),),SizedBox(height: SizeConfig.defaultSize,),
                     SizedBox(height: SizeConfig.defaultSize! * 0.05),
-                    Text("Record your video profile in 3 short steps. Let employers know the real you!",style: UtilityClass.poppins(fontSize: 15, fontWeight: FontWeight.w300, color: kDartGrayColor),),SizedBox(height: SizeConfig.defaultSize,),
+                    Text(AppLocalizations.of(context)!.recordVideoProfile3Step,style: UtilityClass.poppins(fontSize: 15, fontWeight: FontWeight.w300, color: kDartGrayColor),),SizedBox(height: SizeConfig.defaultSize,),
                     SizedBox(height: SizeConfig.defaultSize!  * 0.05),
                     SizedBox(
                       height: SizeConfig.screenHeight! * 0.45,
                       child: GridView.count(
                         crossAxisCount: 2,
                         children: [
-                          Provider.buildStepCard(1, "Give a brief introduction about yourself.",context),
-                          Provider.buildStepCard(2, "What are your key skills or areas of expertise?",context),
-                          Provider.buildStepCard(3, "Describe your work experience.l",context),
+                          Provider.buildStepCard(1, AppLocalizations.of(context)!.yourBriefIntro,context),
+                          Provider.buildStepCard(2, AppLocalizations.of(context)!.expertKeySkill,context),
+                          Provider.buildStepCard(3, AppLocalizations.of(context)!.workExpDescribe,context),
                           Provider.buildUpload(context),],
 
                       ),

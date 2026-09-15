@@ -1058,4 +1058,994 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get language => "भाषा";
 
+  @override
+  String get proficiency => "कुशलता"; //दक्षता
+
+  @override
+  String get read => "पढ़ना";
+
+  @override
+  String get write => "लिखना";
+
+  @override
+  String get speak => "बोलना";
+
+  @override
+  String get plzSelSubCate => "कृपया सब-कैटेगरी चुनें";
+
+  @override
+  String get plzSelAcqThro => "कृपया चुनें कि किसके माध्यम से प्राप्त किया गया";
+
+  @override
+  String get plzEnterExpYear => "कृपया अनुभव के वर्ष दर्ज करें।";
+
+  @override
+  String get expYearNumber => "अनुभव के वर्ष की संख्या होनी चाहिए।";
+
+  @override
+  String get expMonth => "कृपया अनुभव के महीने दर्ज करें।";
+
+  @override
+  String get month011 => "महीना 0 से 11 के बीच होना चाहिए।";
+
+  @override
+  String get plzSelNcoCode => "कृपया NCO कोड चुनें";
+
+  @override
+  String get remIsReq => "टिप्पणी ज़रूरी है";
+
+  @override
+  String get plzSelLang => "कृपया भाषा चुनें";
+
+  @override
+  String get plzSelProf => "कृपया दक्षता चुनें";
+
+  @override
+  String get selOneRWS => "कम से कम एक चुनें: पढ़ना / लिखना / बोलना";
+
+  @override
+  String get eduHistory => "शिक्षा का इतिहास";
+
+  @override
+  String get eduLevel => "शिक्षा का स्तर";
+
+  @override
+  String get chooseClass => "क्लास चुनें";
+
+  @override
+  String get board => "बोर्ड";
+
+  @override
+  String get schoolName => "स्कूल का नाम";
+
+  @override
+  String get enterSchoolName => "स्कूल का नाम डालें";
+
+  @override
+  String get stream => "स्ट्रीम";
+
+  @override
+  String get ITISubTradeType => "ITI सब-ट्रेड प्रकार";
+
+  @override
+  String get otherGraType => "अन्य प्रकार की ग्रेजुएशन";
+
+  @override
+  String get enterOtherGraType => "अन्य ग्रेजुएशन प्रकार दर्ज करें*";
+
+  @override
+  String get streamType => "स्ट्रीम का प्रकार";
+
+  @override
+  String get otherStream => "अन्य स्ट्रीम";
+
+  @override
+  String get enterOtherStream => "अन्य स्ट्रीम दर्ज करें";
+
+  @override
+  String get university => "विश्वविद्यालय";
+
+  @override
+  String get otherUni => "अन्य विश्वविद्यालय";
+
+  @override
+  String get enterOtherUni => "अन्य विश्वविद्यालय दर्ज करें";
+
+  @override
+  String get college => "कॉलेज";
+
+  @override
+  String get enterCollege => "कॉलेज का नाम डालें";
+
+  @override
+  String get medEdu => "शिक्षा का माध्यम";
+
+  @override
+  String get otherMedEdu => "शिक्षा का अन्य माध्यम";
+
+  @override
+  String get natureCourse => "कोर्स का स्वरूप";
+
+  @override
+  String get passingYear => "पास होने का वर्ष";
+
+  @override
+  String get plzSelNocURQuali => "नोट:- कृपया अपनी योग्यता के आधार पर NCO कोड चुनें।";
+
+  @override
+  String get resultType => "परिणाम का प्रकार";
+
+  @override
+  String get grade => "ग्रेड";
+
+  @override
+  String get percent => "प्रतिशत";
+
+  @override
+  String get CGPA => "सीजीपीए";
+
+  @override
+  String get underGradType => "अंडर-ग्रेजुएशन का प्रकार";
+
+  @override
+  String get gradType => "ग्रेजुएशन का प्रकार";
+
+  @override
+  String get postGradType => "पोस्ट-ग्रेजुएशन का प्रकार";
+
+  @override
+  String get ITITradeType => "ITI ट्रेड का प्रकार";
+
+  @override
+  String get plzSelEduLevel => "कृपया शिक्षा का स्तर चुनें";
+
+  @override
+  String get plzSelClass => "कृपया क्लास चुनें";
+
+  @override
+  String get plzEnterSchName => "कृपया स्कूल का नाम दर्ज करें";
+
+  @override
+  String get plzSelBoard => "कृपया बोर्ड चुनें";
+
+  @override
+  String get plzSelStream => "कृपया स्ट्रीम चुनें";
+
+  @override
+  String get plzSelGraType => "कृपया ग्रेजुएशन का प्रकार चुनें।";
+
+  @override
+  String get plzEnterOtherGraType => "कृपया ग्रेजुएशन का अन्य प्रकार दर्ज करें।";
+
+  @override
+  String get plzSelUniv => "कृपया यूनिवर्सिटी चुनें";
+
+  @override
+  String get plzEnterOtherUni => "कृपया अन्य विश्वविद्यालय दर्ज करें";
+
+  @override
+  String get plzEnterClgName => "कृपया कॉलेज का नाम डालें";
+
+  @override
+  String get plzSelMedEdu => "कृपया शिक्षा का माध्यम चुनें।";
+
+  @override
+  String get plzEnterOthMedEdu => "कृपया शिक्षा का अन्य माध्यम दर्ज करें।";
+
+  @override
+  String get plzSelNatCourse => "कृपया कोर्स का प्रकार चुनें।";
+
+  @override
+  String get plzSelYearPass => "कृपया पास होने का वर्ष चुनें।";
+
+  @override
+  String get plzSelResType => "कृपया परिणाम का प्रकार चुनें";
+
+  @override
+  String get plzEnterPerc => "कृपया प्रतिशत दर्ज करें";
+
+  @override
+  String get plzEnterCGPA => "कृपया CGPA दर्ज करें";
+
+  @override
+  String get plzEnterGrade => "कृपया ग्रेड चुनें";
+
+  @override
+  String get updateWorkExp => "काम का अनुभव अपडेट करें";
+
+  @override
+  String get areYouExp => "क्या आपके पास अनुभव है या नहीं?";
+
+  @override
+  String get empType => "रोजगार के प्रकार";
+
+  @override
+  String get haveYouEmpPast => "क्या आप अतीत में कार्यरत रहे हैं?";
+
+  @override
+  String get jobTitle => "नौकरी का पद";
+
+  @override
+  String get enterJobTitle => "नौकरी का शीर्षक डालें";
+
+  @override
+  String get companyName => "कंपनी का नाम";
+
+  @override
+  String get enterCompanyName => "कंपनी का नाम डालें";
+
+  @override
+  String get areYouWorkComp => "क्या आप अभी भी इस कंपनी में काम कर रहे हैं?";
+
+  @override
+  String get selFrom => "इनमें से चुनें";
+
+  @override
+  String get selectTo => "चुनें";
+
+  @override
+  String get location => "जगह";
+
+  @override
+  String get state => "राज्य";
+
+  @override
+  String get selState => "--राज्य चुनें--";
+
+  @override
+  String get selLocation => "--जगह चुनें--";
+
+  @override
+  String get jobbType => "नौकरी का प्रकार";
+
+  @override
+  String get natureEmp => "रोज़गार की प्रकृति";
+
+  @override
+  String get plzSelExpNot => "कृपया चुनें कि आप अनुभवी हैं या नहीं?";
+
+  @override
+  String get plzSelEmpType => "कृपया रोज़गार का प्रकार चुनें।";
+
+  @override
+  String get plzSelEmpPast => "कृपया चुनें: क्या आप पहले कहीं नौकरी कर चुके हैं?";
+
+  @override
+  String get plzEnterJobTitle => "कृपया जॉब का टाइटल डालें";
+
+  @override
+  String get plzEnterCompName => "कृपया कंपनी का नाम दर्ज करें";
+
+  @override
+  String get plzSelStillWork => "कृपया चुनें, क्या आप अभी भी काम कर रहे हैं?";
+
+  @override
+  String get plzSelFromDate => "कृपया 'से' तारीख चुनें।";
+
+  @override
+  String get plzSelToDate => "कृपया 'तक' की तारीख चुनें।";
+
+  @override
+  String get toDateEarlierFromDate => "आज तक की तारीख, से पहले की तारीख से पहले की नहीं हो सकती।";
+
+  @override
+  String get thisDateRangeUsed => "यह तारीख़ रेंज पहले से ही इस्तेमाल हो रही है। आप इस समय-सीमा में काम का अनुभव नहीं जोड़ सकते।";
+
+  @override
+  String get plzSelectState => "कृपया राज्य चुनें";
+
+  @override
+  String get plzSelLocation => "कृपया स्थान चुनें";
+
+  @override
+  String get plzSelJobType => "कृपया नौकरी का प्रकार चुनें";
+
+  @override
+  String get plzSelNatureEmp => "कृपया रोज़गार का प्रकार चुनें।";
+
+  @override
+  String get plzSelNCOCode => "कृपया NCO कोड चुनें";
+
+  @override
+  String get updatePhysAttri => "शारीरिक विशेषताओं को अपडेट करें";
+
+  @override
+  String get addPhysAttri => "शारीरिक विशेषताएँ जोड़ें";
+
+  @override
+  String get height0255 => "ऊंचाई (0 से 255 cm)";
+
+  @override
+  String get enterHeight0255 => "ऊंचाई डालें (0 से 255 cm)";
+
+  @override
+  String get weight0255 => "वज़न (0 से 255 kg)";
+
+  @override
+  String get enterWeight0255 => "वज़न डालें (0 से 255 kg)";
+
+  @override
+  String get chest0255 => "छाती (0 से 255 cm)";
+
+  @override
+  String get bloodGroup => "ब्लड ग्रुप (-/+)";
+
+  @override
+  String get eyeeSight => "आंखों की रोशनी (-/+)";
+
+  @override
+  String get diffAbled => "क्या आप दिव्यांग (PwD) हैं?";
+
+  @override
+  String get disabilityType => "विकलांगता का प्रकार";
+
+  @override
+  String get selectDisabilityType => "--विकलांगता का प्रकार चुनें--";
+
+  @override
+  String get disabPercent => "विकलांगता का प्रतिशत (%)";
+
+  @override
+  String get enterDisabPercent => "विकलांगता का प्रतिशत (0–100) दर्ज करें";
+
+  @override
+  String get confirmSub => "सबमिशन की पुष्टि करें";
+
+  @override
+  String get heightReq => "लंबाई दर्ज करें";
+
+  @override
+  String get heightMust0255 => "ऊंचाई 0 से 255 के बीच होनी चाहिए।";
+
+  @override
+  String get weightReq => "वज़न दर्ज करें";
+
+  @override
+  String get weightMust0255 => "वज़न 0 से 255 के बीच होना चाहिए।";
+
+  @override
+  String get chestReq => "छाती का माप दर्ज करें";
+
+  @override
+  String get chestMust0255 => "चेस्ट की वैल्यू 0 से 255 के बीच होनी चाहिए।";
+
+  @override
+  String get eyeSightReq => "आंखों की रोशनी दर्ज करें";
+
+  @override
+  String get eyeSightValidation2Decimal => "आंखों की रोशनी का नंबर दशमलव के बाद अधिकतम 2 अंकों वाला होना चाहिए (जैसे: 6, 6.5, 6.25)।";
+
+  @override
+  String get selIfUDifAbled => "कृपया बताएं कि क्या आप दिव्यांग हैं।";
+
+  @override
+  String get plzEnterDisbPercent => "कृपया विकलांगता का प्रतिशत दर्ज करें।";
+
+  @override
+  String get disPercentMust0100 => "विकलांगता का प्रतिशत 0 और 100 के बीच होना चाहिए।";
+
+  @override
+  String get loadVideo => "वीडियो लोड हो गया";
+
+  @override
+  String get noVideo => "कोई वीडियो नहीं";
+
+  @override
+  String get recordLiveIntroVideo => "अपना लाइव परिचय वीडियो रिकॉर्ड करें";
+
+  @override
+  String get recordVideoProfile3Step => "3 आसान स्टेप्स में अपना वीडियो प्रोफ़ाइल रिकॉर्ड करें। एम्प्लॉयर्स को दिखाएं कि आप असल में कैसे हैं!";
+
+  @override
+  String get yourBriefIntro => "अपने बारे में संक्षेप में बताएँ।";
+
+  @override
+  String get expertKeySkill => "आपकी मुख्य स्किल्स या विशेषज्ञता के क्षेत्र क्या हैं?";
+
+  @override
+  String get workExpDescribe => "अपने काम के अनुभव के बारे में बताएं।";
+
+  @override
+  String get jobApplyList => "नौकरी के लिए आवेदन की सूची";
+
+  @override
+  String get eventName => "आयोजन नाम";
+
+  @override
+  String get jobSector => "नौकरी का क्षेत्र";
+
+  @override
+  String get searchApply => "खोजें और आवेदन करें";
+
+  @override
+  String get ncoName => "NCO का नाम";
+
+  @override
+  String get jobFairEventDetail => "जॉब फेयर इवेंट की जानकारी";
+
+  @override
+  String get regNow => "अभी पंजीकरण करें";
+
+  @override
+  String get aboutJobFair => "जॉब फेयर के बारे में";
+
+  @override
+  String get jobSeekerReg => "नौकरी चाहने वालों का रजिस्ट्रेशन";
+
+  @override
+  String get date => "तारीख";
+
+  @override
+  String get annualDistrWideJob => "पूरे ज़िले में सालाना नौकरी";
+
+  @override
+  String get fairForAllSectors => "सभी सेक्टरों के लिए निष्पक्ष";
+
+  @override
+  String get successful => "सफल";
+
+  @override
+  String get thankReg => "रजिस्ट्रेशन के लिए धन्यवाद";
+
+  @override
+  String get confirmation => "पुष्टीकरण";
+
+  @override
+  String get areYouSureRegJobFair => "क्या आप पक्का इस जॉब फेयर इवेंट के लिए रजिस्टर करना चाहते हैं?";
+
+  @override
+  String get regFail => "पंजीकरण विफल रहा";
+
+  @override
+  String get jobFairReg => "जॉब फेयर रजिस्ट्रेशन";
+
+  @override
+  String get clickDownloadPass => "अपना पास डाउनलोड करने के लिए यहां क्लिक करें";
+
+  @override
+  String get ok => "ठीक है";
+
+  @override
+  String get current => "वर्तमान";
+
+  @override
+  String get inChargeName => "प्रभारी का नाम";
+
+  @override
+  String get otrForm => "OTR फ़ॉर्म";
+
+  @override
+  String get dearAspirant => "प्रिय उम्मीदवार, कृपया आवेदन करते समय अपनी SSO_ID का ही उपयोग करें।";
+
+  @override
+  String get imgSize => "इमेज का साइज़ 100 KB से कम होना चाहिए।";
+
+  @override
+  String get ssoId => "एसएसओआईडी";
+
+  @override
+  String get enterSSOID => "SSO ID डालें";
+
+  @override
+  String get enterName => "नाम दर्ज करें";
+
+  @override
+  String get dateOfBirth => "जन्म तिथि";
+
+  @override
+  String get selectDOB => "जन्म की तारीख चुनें";
+
+  @override
+  String get enterMaritalStatus => "वैवाहिक स्थिति दर्ज करें";
+
+  @override
+  String get enterCaste => "जाति दर्ज करें";
+
+  @override
+  String get otherReligion => "अन्य धर्म";
+
+  @override
+  String get disabilityTypePercent => "विकलांगता का प्रकार और प्रतिशत";
+
+  @override
+  String get transgender => "ट्रांसजेंडर";
+
+  @override
+  String get familyAnualIncomeINR => "परिवार की सालाना आय (INR)";
+
+  @override
+  String get enterFamilyAnualIncomeINR => "परिवार की सालाना आय (INR) दर्ज करें";
+
+  @override
+  String get enterUID => "UID दर्ज करें";
+
+  @override
+  String get linkedInProfileURL => "लिंक्डइन प्रोफ़ाइल URL";
+
+  @override
+  String get enterLinkedInProfileURL => "लिंक्डइन प्रोफ़ाइल URL डालें";
+
+  @override
+  String get exServiceMan => "पूर्व सैनिक";
+
+  @override
+  String get ewsBenificiary => "EWS लाभार्थी";
+
+  @override
+  String get permAddressJanAdhar => "जन आधार के अनुसार स्थायी पता (यदि कोई बदलाव हो, तो कृपया जन आधार पर अपडेट करें)";
+
+  @override
+  String get exchangeNameDistrictEmpOfc => "एक्सचेंज का नाम/ज़िला रोज़गार कार्यालय";
+
+  @override
+  String get enterExchangeName => "एक्सचेंज का नाम डालें";
+
+  @override
+  String get empDetailWorkExp => "रोज़गार का विवरण/काम का अनुभव";
+
+  @override
+  String get curEmpStatus => "वर्तमान रोज़गार की स्थिति";
+
+  @override
+  String get expYears => "अनुभव (वर्षों में)";
+
+  @override
+  String get expMonths => "अनुभव (महीनों में)";
+
+  @override
+  String get intPrivateJob => "क्या आप प्राइवेट नौकरियों में भी दिलचस्पी रखते हैं?";
+
+  @override
+  String get selectRegion => "क्षेत्र का चयन करें";
+
+  @override
+  String get skillNlangDetail => "स्किल और भाषाओं की जानकारी (कम से कम एक स्किल जोड़ें)";
+
+  @override
+  String get areYouSkilled => "क्या आप कुशल हैं?";
+
+  @override
+  String get areYouIntRSLDCskillTraing => "क्या आप RSLDC स्किल ट्रेनिंग में रुचि रखते हैं?";
+
+  @override
+  String get languages => "भाषा";
+
+  @override
+  String get alreadyExist => "पहले से ही मौजूद है!";
+
+  @override
+  String get plzUploadPhoto => "कृपया फ़ोटो अपलोड करें।";
+
+  @override
+  String get plzEnterFullName => "कृपया पूरा नाम दर्ज करें";
+
+  @override
+  String get plzSelDOB => "कृपया जन्म तिथि चुनें";
+
+  @override
+  String get mobile10digit => "मोबाइल नंबर 10 अंकों का होना चाहिए।";
+
+  @override
+  String get plzEnterFName => "कृपया पिता का नाम दर्ज करें।";
+
+  @override
+  String get plzEnterMName => "कृपया माँ का नाम दर्ज करें";
+
+  @override
+  String get plzEnterEmail => "कृपया ईमेल पता दर्ज करें";
+
+  @override
+  String get plzEnterValidEmail => "कृपया सही ईमेल पता दें";
+
+  @override
+  String get plzSelReligion => "कृपया धर्म चुनें";
+
+  @override
+  String get plzEnterPWD => "कृपया दिव्यांग (PWD) दर्ज करें।";
+
+  @override
+  String get plzEnterDisPercent => "कृपया विकलांगता का प्रतिशत दर्ज करें।";
+
+  @override
+  String get plzEnterValidDisPercent => "कृपया विकलांगता का सही प्रतिशत दर्ज करें।";
+
+  @override
+  String get disPercent0100 => "विकलांगता का प्रतिशत 0 और 100 के बीच होना चाहिए।";
+
+  @override
+  String get plzSelGender => "कृपया लिंग चुनें";
+
+  @override
+  String get plzSelUIDType => "कृपया UID प्रकार चुनें";
+
+  @override
+  String get plzEnterUIDNo => "कृपया UID नंबर डालें";
+
+  @override
+  String get pinCode6digit => "पिन कोड 6 अंकों का होना चाहिए।";
+
+  @override
+  String get distComMising => "ज़िला (संचार) की जानकारी मौजूद नहीं है।";
+
+  @override
+  String get cityComMising => "शहर (संचार) की जानकारी नहीं है";
+
+  @override
+  String get wardComMising => "वार्ड (संचार) गायब है।";
+
+  @override
+  String get plzEnterComAddress => "कृपया संपर्क का पता दर्ज करें।";
+
+  @override
+  String get plzEnterComPin => "कृपया संचार पिन कोड दर्ज करें";
+
+  @override
+  String get comPin6digit => "कम्युनिकेशन पिन कोड 6 अंकों का होना चाहिए।";
+
+  @override
+  String get plzSelExchangeDistrict => "कृपया एक्सचेंज ज़िला चुनें";
+
+  @override
+  String get plzEnterExchange => "कृपया एक्सचेंज दर्ज करें";
+
+  @override
+  String get plzSelStreamType => "कृपया स्ट्रीम का प्रकार चुनें";
+
+  @override
+  String get plzEnterOtherMedEdu => "कृपया शिक्षा का अन्य माध्यम दर्ज करें।";
+
+  @override
+  String get perc2Digit => "प्रतिशत में दशमलव के बाद ज़्यादा से ज़्यादा 2 अंक हो सकते हैं।";
+
+  @override
+  String get perc0100 => "प्रतिशत 0 और 100 के बीच होना चाहिए।";
+
+  @override
+  String get CGPAValid => "CGPA एक मान्य संख्या होनी चाहिए।";
+
+  @override
+  String get CGPA010 => "CGPA 0 और 10 के बीच होनी चाहिए।";
+
+  @override
+  String get selCurEmpStatus => "कृपया वर्तमान रोज़गार की स्थिति चुनें।";
+
+  @override
+  String get expYearValid => "सालों में अनुभव एक मान्य संख्या होनी चाहिए।";
+
+  @override
+  String get expMonthValid => "महीनों में अनुभव एक मान्य संख्या होनी चाहिए।";
+
+  @override
+  String get expMonth011 => "महीनों में अनुभव 0 और 11 के बीच होना चाहिए।";
+
+  @override
+  String get plzSelIntIntJobs => "कृपया चुनें कि क्या आप अंतरराष्ट्रीय नौकरियों में रुचि रखते हैं।";
+
+  @override
+  String get plzSelPrefRegion => "कृपया पसंदीदा क्षेत्र चुनें";
+
+  @override
+  String get plzSelRUskilled => "कृपया चुनें कि क्या आप कुशल हैं (ग्रामीण / शहरी)";
+
+  @override
+  String get plzSelRUIntRSLDCTraing => "कृपया चुनें: क्या आप RSLDC स्किल ट्रेनिंग में रुचि रखते हैं?";
+
+  @override
+  String get plzSelSkillCate => "कृपया कौशल श्रेणी चुनें";
+
+  @override
+  String get plzSelSkillSubCate => "कृपया स्किल सब-कैटेगरी चुनें।";
+
+  @override
+  String get clickAddBtn => "कृपया 'जोड़ें' बटन पर क्लिक करें।";
+
+  @override
+  String get empDash => "एम्प्लॉयर डैशबोर्ड";
+
+  @override
+  String get jobFair => "रोज़गार मेला";
+
+  @override
+  String get grievances => "शिकायतें";
+
+  @override
+  String get jobApply => "नौकरी के लिए आवेदन";
+
+  @override
+  String get branchOffDetail => "शाखा कार्यालय का विवरण";
+
+  @override
+  String get headOffDetail => "मुख्यालय का विवरण";
+
+  @override
+  String get headOffAppDetail => "मुख्यालय आवेदक का विवरण";
+
+  @override
+  String get contactPerDetail => "संपर्क व्यक्ति का विवरण";
+
+  @override
+  String get exchangeMarInfoProg => "एक्सचेंज मार्केट सूचना कार्यक्रम";
+
+  @override
+  String get uploadOrgCompDoc => "ऑर्गनाइज़ेशन/कंपनी के दस्तावेज़ अपलोड करें";
+
+  @override
+  String get brn => "बीआरएन";
+
+  @override
+  String get enterBRN => "BRN डालें";
+
+  @override
+  String get enterDistrict => "ज़िला दर्ज करें";
+
+  @override
+  String get area => "क्षेत्र";
+
+  @override
+  String get tehsil => "तहसील";
+
+  @override
+  String get enterTehsil => "तहसील दर्ज करें";
+
+  @override
+  String get localBody => "स्थानीय निकाय";
+
+  @override
+  String get enterLocalBody => "स्थानीय निकाय दर्ज करें";
+
+  @override
+  String get houseNo => "घर का नंबर";
+
+  @override
+  String get enterHouseNo => "घर का नंबर डालें";
+
+  @override
+  String get lane => "लेन";
+
+  @override
+  String get enterLane => "लेन डालें";
+
+  @override
+  String get locality => "इलाका";
+
+  @override
+  String get enterLocality => "इलाका डालें";
+
+  @override
+  String get enterPinCode => "पिन कोड डालें";
+
+  @override
+  String get telNo => "टेलीफोन नंबर";
+
+  @override
+  String get enterTelNo => "टेलीफ़ोन नंबर डालें";
+
+  @override
+  String get gstNo => "GST नंबर";
+
+  @override
+  String get enterGstNo => "GST नंबर डालें";
+
+  @override
+  String get panNo => "PAN नंबर";
+
+  @override
+  String get enterPANNo => "PAN नंबर डालें";
+
+  @override
+  String get panHolder => "पैन कार्ड धारक";
+
+  @override
+  String get enterPANHolder => "PAN धारक का नाम दर्ज करें";
+
+  @override
+  String get panVerified => "PAN सत्यापित";
+
+  @override
+  String get tanNo => "TAN नंबर";
+
+  @override
+  String get enterTANNo => "TAN नंबर डालें";
+
+  @override
+  String get applicantName => "आवेदक का नाम";
+
+  @override
+  String get enterApplicantName => "आवेदक का नाम दर्ज करें";
+
+  @override
+  String get applicantMobNo => "आवेदक का मोबाइल नंबर";
+
+  @override
+  String get enterMobNo => "मोबाइल नंबर डालें";
+
+  @override
+  String get applicantEmail => "आवेदक का ईमेल";
+
+  @override
+  String get ownership => "स्वामित्व";
+
+  @override
+  String get enterOwnership => "ओनरशिप दर्ज करें";
+
+  @override
+  String get totalPer => "संपूर्ण व्यक्ति";
+
+  @override
+  String get enterTotalPer => "कुल लोगों की संख्या डालें";
+
+  @override
+  String get actAuthRegNo => "एक्ट अथॉरिटी रजिस्ट्रेशन नंबर";
+
+  @override
+  String get enterActAuthRegNo => "एक्ट अथॉरिटी रजिस्ट्रेशन नंबर दर्ज करें";
+
+  @override
+  String get selectState => "--राज्य चुनें--";
+
+  @override
+  String get website => "वेबसाइट";
+
+  @override
+  String get enterWebsite => "वेबसाइट पर जाएँ";
+
+  @override
+  String get applicantAddress => "आवेदक का पता";
+
+  @override
+  String get enterApplicantAddress => "पता दर्ज करें";
+
+  @override
+  String get nicCode => "NIC कोड";
+
+  @override
+  String get enterNICCode => "NIC कोड डालें";
+
+  @override
+  String get alterMobileNo => "वैकल्पिक मोबाइल नंबर";
+
+  @override
+  String get enterAlterMobileNo => "वैकल्पिक मोबाइल नंबर डालें";
+
+  @override
+  String get designation => "पद";
+
+  @override
+  String get enterDesignation => "पद दर्ज करें";
+
+  @override
+  String get enterDept => "विभाग दर्ज करें";
+
+  @override
+  String get enterAddress => "पता दर्ज करें";
+
+  @override
+  String get typeOfOrg => "संगठन का प्रकार";
+
+  @override
+  String get selType => "प्रकार चुनें";
+
+  @override
+  String get govtBody => "सरकारी निकाय";
+
+  @override
+  String get selectGovtBody => "सरकारी संस्था चुनें";
+
+  @override
+  String get noOfMaleEmp => "पुरुष कर्मचारियों की संख्या";
+
+  @override
+  String get enterMaleEmp => "पुरुष कर्मचारी की संख्या दर्ज करें";
+
+  @override
+  String get noOfFemaleEmp => "महिला कर्मचारियों की संख्या";
+
+  @override
+  String get enterFemaleEmp => "महिला कर्मचारियों का प्रवेश";
+
+  @override
+  String get noOfTransEmp => "ट्रांसजेंडर कर्मचारियों की संख्या";
+
+  @override
+  String get enterTransEmp => "ट्रांसजेंडर कर्मचारियों को शामिल करें";
+
+  @override
+  String get totalNoEmp => "कर्मचारियों की कुल संख्या";
+
+  @override
+  String get enterTotalEmp => "कुल कर्मचारियों की संख्या दर्ज करें";
+
+  @override
+  String get actEst => "अधिनियम की स्थापना";
+
+  @override
+  String get indusType => "उद्योग का प्रकार";
+
+  @override
+  String get selectIndusType => "इंडस्ट्री का प्रकार चुनें";
+
+  @override
+  String get uploadDocPDF => "अपलोड किए गए दस्तावेज़ (PDF)";
+
+  @override
+  String get orgImage => "संगठन की छवि";
+
+  @override
+  String get noImgUpload => "कोई भी इमेज अपलोड नहीं की गई है।";
+
+  @override
+  String get postJobInFair => "जॉब फेयर में नौकरियां पोस्ट करें";
+
+  @override
+  String get jobFairApp => "जॉब फेयर के लिए आवेदन";
+
+  @override
+  String get postJob => "नौकरी पोस्ट करें";
+
+  @override
+  String get jobPosts => "नौकरी की पोस्ट";
+
+  @override
+  String get addJob => "नौकरी जोड़ें";
+
+  @override
+  String get title => "शीर्षक";
+
+  @override
+  String get qualification => "योग्यता";
+
+  @override
+  String get skill => "स्किल";
+
+  @override
+  String get vacancy => "रिक्ति";
+
+  @override
+  String get nco => "एनसीओ";
+
+  @override
+  String get deleteJob => "जॉब डिलीट करें";
+
+  @override
+  String get areYouSureDeleteThisJobPost => "क्या आप वाकई इस जॉब पोस्ट को डिलीट करना चाहते हैं?";
+
+  @override
+  String get delete => "डिलीट करें";
+
+  @override
+  String get jobDetails => "नौकरी की जानकारी";
+
+  @override
+  String get event => "आयोजन";
+
+  @override
+  String get jobDescription => "नौकरी का विवरण";
+
+  @override
+  String get noOfVacancyTotal => "कुल रिक्तियों की संख्या";
+
+  @override
+  String get noOfVacancyMale => "खाली पदों की संख्या (पुरुष)";
+
+  @override
+  String get noOfVacancyFemale => "खाली पदों की संख्या (महिला)";
+
+  @override
+  String get noOfVacancyTrans => "खाली पदों की संख्या (ट्रांसजेंडर)";
+
+  @override
+  String get jobLocation => "नौकरी की जगह";
+
+  @override
+  String get rajCity => "राजस्थान -> शहर";
+
+  @override
+  String get natureJob => "काम का स्वरूप";
+
+  @override
+  String get experienced => "अनुभवी";
+
+  @override
+  String get expLimit => "अनुभव सीमा";
+
 }

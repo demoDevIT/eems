@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/textfeild.dart';
 import 'provider/emp_basic_detail_provider.dart';
 
@@ -48,8 +49,8 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Basic Details",
+        title: Text(
+          AppLocalizations.of(context)!.basicDetails,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -65,10 +66,10 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
           children: [
 
             /// BRN
-            _label("BRN"),
+            _label(AppLocalizations.of(context)!.brn),
             buildTextWithBorderField(
               brnController,
-              "Enter BRN",
+              AppLocalizations.of(context)!.enterBRN,
               MediaQuery.of(context).size.width,
               50,
               TextInputType.text,
@@ -76,10 +77,10 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
             ),
 
             /// District
-            _label("District"),
+            _label(AppLocalizations.of(context)!.district),
             buildTextWithBorderField(
               districtController,
-              "Enter District",
+              AppLocalizations.of(context)!.enterDistrict,
               MediaQuery.of(context).size.width,
               50,
               TextInputType.text,
@@ -87,7 +88,7 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
             ),
 
             /// Area (Radio)
-            _label("Area"),
+            _label(AppLocalizations.of(context)!.area),
             Row(
               children: [
                 Radio<String>(
@@ -95,22 +96,22 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
                   groupValue: areaType,
                   onChanged: null, // disabled
                 ),
-                const Text("Rural"),
+                Text(AppLocalizations.of(context)!.rural),
                 const SizedBox(width: 12),
                 Radio<String>(
                   value: "Urban",
                   groupValue: areaType,
                   onChanged: null, // disabled
                 ),
-                const Text("Urban"),
+                Text(AppLocalizations.of(context)!.urban),
               ],
             ),
 
             /// Tehsil
-            _label("Tehsil"),
+            _label(AppLocalizations.of(context)!.tehsil),
             buildTextWithBorderField(
               tehsilController,
-              "Enter Tehsil",
+              AppLocalizations.of(context)!.enterTehsil,
               MediaQuery.of(context).size.width,
               50,
               TextInputType.text,
@@ -118,10 +119,10 @@ class _EmpBasicDetailScreenState extends State<EmpBasicDetailScreen> {
             ),
 
             /// Local Body
-            _label("Local Body"),
+            _label(AppLocalizations.of(context)!.localBody),
             buildTextWithBorderField(
               localBodyController,
-              "Enter Local Body",
+              AppLocalizations.of(context)!.enterLocalBody,
               MediaQuery.of(context).size.width,
               50,
               TextInputType.text,

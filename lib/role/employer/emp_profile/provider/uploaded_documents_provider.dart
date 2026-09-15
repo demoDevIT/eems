@@ -27,7 +27,7 @@ class UploadedDocumentsProvider extends ChangeNotifier {
   String? apiMessage;
 
   Future<void> loadUploadedDocuments({
-    required String userId,
+    required int? userId,
   }) async {
     isLoading = true;
     notifyListeners();

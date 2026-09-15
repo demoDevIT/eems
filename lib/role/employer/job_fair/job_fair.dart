@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../job_seeker/job_fair_event/jobs_fair_event.dart';
 import '../../job_seeker/job_fair_event/registered_event_list.dart';
 import '../job_application/job_application.dart';
@@ -13,7 +14,7 @@ class JobFairScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Job Fair"),
+        title: Text(AppLocalizations.of(context)!.jobFair),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -90,7 +91,7 @@ class JobFairScreen extends StatelessWidget {
   Widget _buildJobFairGrid(BuildContext context) {
     final items = [
       _JobFairItem(
-        title: "Events",
+        title: AppLocalizations.of(context)!.events,
         iconPath: "assets/images/events.svg",
         onTap: () {
           Navigator.push(
@@ -103,7 +104,7 @@ class JobFairScreen extends StatelessWidget {
       ),
 
       _JobFairItem(
-        title: "Registered Events",
+        title: AppLocalizations.of(context)!.regEvents,
         iconPath: "assets/images/regEvents.svg",
         onTap: () {
           Navigator.push(
@@ -116,7 +117,7 @@ class JobFairScreen extends StatelessWidget {
       ),
 
       _JobFairItem(
-        title: "Post Jobs in Job Fair",
+        title: AppLocalizations.of(context)!.postJobInFair,
         iconPath: "assets/images/postJob.svg",
         onTap: () {
           Navigator.push(
@@ -129,7 +130,7 @@ class JobFairScreen extends StatelessWidget {
       ),
 
       _JobFairItem(
-        title: "Job Fair Applications",
+        title: AppLocalizations.of(context)!.jobFairApp,
         iconPath: "assets/images/jobapp.svg",
         onTap: () {
           Navigator.push(

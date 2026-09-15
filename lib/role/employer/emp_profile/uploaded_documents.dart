@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/user_new.dart';
 import 'provider/uploaded_documents_provider.dart';
 
 class UploadOrganizationDocuments extends StatefulWidget {
@@ -29,7 +31,7 @@ class _UploadOrganizationDocumentsState
       debugPrint("userModel => $data");
 
       provider.loadUploadedDocuments(
-        userId: "8442", // 🔴 dynamic later
+        userId: UserData().model.value.userId, // 🔴 dynamic later
       );
     });
   }
@@ -46,8 +48,8 @@ class _UploadOrganizationDocumentsState
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Upload Organization / Company Documents",
+        title: Text(
+          AppLocalizations.of(context)!.uploadOrgCompDoc,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -69,7 +71,7 @@ class _UploadOrganizationDocumentsState
                   children: [
 
                     /// ===== PDFs =====
-                    _label("Uploaded Documents (PDF)"),
+                    _label(AppLocalizations.of(context)!.uploadDocPDF),
 
                     ...provider.pdfUrls.map(
                           (url) =>
@@ -84,12 +86,12 @@ class _UploadOrganizationDocumentsState
                     const SizedBox(height: 20),
 
                     /// ===== Image =====
-                    _label("Organization Image"),
+                    _label(AppLocalizations.of(context)!.orgImage),
 
                     if (provider.imageUrl != null)
                       _imagePreview(provider.imageUrl!)
                     else
-                      const Text("No image uploaded"),
+                      Text(AppLocalizations.of(context)!.noImgUpload),
 
                     const SizedBox(height: 30),
                   ],

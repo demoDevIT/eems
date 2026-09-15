@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../job_seeker/addjobpreference/modal/sector_modal.dart';
 import '../../job_seeker/job_fair_event/modal/event_name_modal.dart';
@@ -42,7 +43,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: commonAppBar2("Post Job", context, "en", "", false, "", onTapClick: () {}),
+      appBar: commonAppBar2(AppLocalizations.of(context)!.postJob, context, "en", "", false, "", onTapClick: () {}),
 
       body: Consumer<JobPostProvider>(
         builder: (context, provider, child) {
@@ -54,8 +55,8 @@ class _JobPostScreenState extends State<JobPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 
-                    const Text(
-                      "Job Posts",
+                    Text(
+                      AppLocalizations.of(context)!.jobPosts,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
 
                     ElevatedButton.icon(
                       icon: const Icon(Icons.add),
-                      label: const Text("Add Job"),
+                      label: Text(AppLocalizations.of(context)!.addJob),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -91,7 +92,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            labelWithStar('Event Name', required: false),
+                            labelWithStar(AppLocalizations.of(context)!.eventName, required: false),
 
                             IgnorePointer(
                               ignoring: false,
@@ -106,7 +107,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
 
                                   controller: provider.eventNameController,
                                   idController: provider.eventIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
                                   // height: 50,
                                   // color: Colors.transparent,
                                   // borderRadius: BorderRadius.circular(8),
@@ -129,7 +130,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            labelWithStar('Job Sector', required: false),
+                            labelWithStar(AppLocalizations.of(context)!.jobSector, required: false),
 
                             IgnorePointer(
                               ignoring: false,
@@ -144,7 +145,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
 
                                   controller: provider.sectorNameController,
                                   idController: provider.sectorIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
                                   // height: 50,
                                   // color: Colors.transparent,
                                   // borderRadius: BorderRadius.circular(8),
@@ -172,7 +173,7 @@ class _JobPostScreenState extends State<JobPostScreen> {
                                 sectorId: selectedSector,
                               );
                             },
-                            child: const Text("Search"),
+                            child: Text(AppLocalizations.of(context)!.search),
                           ),
                         )
                       ],
@@ -230,12 +231,12 @@ class _JobPostScreenState extends State<JobPostScreen> {
                               const Divider(),
 
                              // _buildRow("Event", data.eventName),
-                              _buildRow("Sector", data.sectorName),
-                              _buildRow("Title", data.jobPosition),
-                              _buildRow("Qualification", data.qualification),
-                              _buildRow("Skill", data.skillName),
-                              _buildRow("Vacancy", getVacancyText(data)),
-                              _buildRow("NCO", data.ncoCode),
+                              _buildRow(AppLocalizations.of(context)!.sector, data.sectorName),
+                              _buildRow(AppLocalizations.of(context)!.title, data.jobPosition),
+                              _buildRow(AppLocalizations.of(context)!.qualification, data.qualification),
+                              _buildRow(AppLocalizations.of(context)!.skill, data.skillName),
+                              _buildRow(AppLocalizations.of(context)!.vacancy, getVacancyText(data)),
+                              _buildRow(AppLocalizations.of(context)!.nco, data.ncoCode),
 
                               Align(
                                 alignment: Alignment.centerRight,
@@ -247,15 +248,15 @@ class _JobPostScreenState extends State<JobPostScreen> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: const Text("Delete Job"),
-                                          content: const Text("Are you sure you want to delete this job post?"),
+                                          title: Text(AppLocalizations.of(context)!.deleteJob),
+                                          content: Text(AppLocalizations.of(context)!.areYouSureDeleteThisJobPost),
                                           actions: [
 
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text("Cancel"),
+                                              child: Text(AppLocalizations.of(context)!.cancel),
                                             ),
 
                                             TextButton(
@@ -267,8 +268,8 @@ class _JobPostScreenState extends State<JobPostScreen> {
                                                   data.jobPostId,
                                                 );
                                               },
-                                              child: const Text(
-                                                "Delete",
+                                              child: Text(
+                                                AppLocalizations.of(context)!.delete,
                                                 style: TextStyle(color: Colors.red),
                                               ),
                                             ),

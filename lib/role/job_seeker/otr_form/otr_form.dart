@@ -9,6 +9,7 @@ import 'package:rajemployment/main.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/modal/language_list_modal.dart';
 import 'package:rajemployment/role/job_seeker/otr_form/provider/otr_form_provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dot_border.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
@@ -121,7 +122,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
     return Scaffold(
         appBar: commonAppBar2(
-            "OTR Form", context, localeProvider.currentLanguage, "", false, "",
+            AppLocalizations.of(context)!.otrForm, context, localeProvider.currentLanguage, "", false, "",
             onTapClick: () {
           localeProvider.toggleLocale();
         }),
@@ -139,7 +140,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 5),
                       child: Text(
-                          'Dear aspirant, please use your own SSO_ID while apply',
+                          AppLocalizations.of(context)!.dearAspirant,
                           textAlign: TextAlign.center,
                           style: Styles.semiBoldTextStyle(size: 16)),
                     ),
@@ -164,7 +165,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   // ✅ 100 KB validation
                                   if (fileSizeInKB > 100) {
                                     showAlertError(
-                                      "Image size must be less than 100 KB",
+                                      AppLocalizations.of(context)!.imgSize,
                                       context,
                                     );
                                     return; // ❌ STOP upload
@@ -312,14 +313,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: labelWithStar('SSOID', required: false),
+                      child: labelWithStar(AppLocalizations.of(context)!.ssoId, required: false),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       child: buildTextWithBorderField(
                           provider.ssoIDController,
-                          "Enter sso id",
+                          AppLocalizations.of(context)!.enterSSOID,
                           MediaQuery.of(context).size.width,
                           50,
                           TextInputType.text,
@@ -330,7 +331,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: labelWithStar('Name', required: false),
+                      child: labelWithStar(AppLocalizations.of(context)!.name, required: false),
                     ),
 
                     Padding(
@@ -338,7 +339,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           horizontal: 10, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.nameController,
-                        "Enter Name",
+                        AppLocalizations.of(context)!.enterName,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.text,
@@ -350,7 +351,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: labelWithStar('Mobile No', required: false),
+                      child: labelWithStar(AppLocalizations.of(context)!.mobileNo, required: false),
                     ),
 
                     Padding(
@@ -358,7 +359,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           horizontal: 10, vertical: 5),
                       child: buildTextWithBorderField(
                         provider.mobileNOController,
-                        "Enter mobile number",
+                        AppLocalizations.of(context)!.enterMobileNo,
                         MediaQuery.of(context).size.width,
                         50,
                         TextInputType.number,
@@ -388,7 +389,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "1.Basic Details",
+                              "1." + AppLocalizations.of(context)!.basicDetails,
                               style: Styles.semiBoldTextStyle(
                                   size: 14, color: kWhite),
                             ),
@@ -396,14 +397,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Full Name', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.fullName, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.fullNameController,
-                              "Enter full name",
+                              AppLocalizations.of(context)!.enterFullName,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -416,7 +417,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar('Date of Birth', required: true),
+                                labelWithStar(AppLocalizations.of(context)!.dateOfBirth, required: true),
                           ),
                           InkWell(
                             onTap: () {
@@ -441,7 +442,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.dateOfBirthController,
-                                "Select Date of Birth",
+                                AppLocalizations.of(context)!.selectDOB,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -455,14 +456,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar('Mobile Number', required: true),
+                                labelWithStar(AppLocalizations.of(context)!.mobileNo, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.mobileNumberController,
-                              "Enter mobile number",
+                              AppLocalizations.of(context)!.enterMobileNo,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -475,14 +476,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar("Father's Name", required: true),
+                                labelWithStar(AppLocalizations.of(context)!.fName, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.fatherNameController,
-                              "Enter father name",
+                              AppLocalizations.of(context)!.enterFName,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -495,14 +496,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                            labelWithStar("Mother's Name", required: true),
+                            labelWithStar(AppLocalizations.of(context)!.mName, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.motherNameController,
-                              "Enter mother name",
+                              AppLocalizations.of(context)!.enterMName,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -514,7 +515,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Marital Status',
+                            child: labelWithStar(AppLocalizations.of(context)!.maritalStatus,
                                 required: false),
                           ),
                           Padding(
@@ -522,7 +523,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.maritalStatusController,
-                              "Enter marital status",
+                              AppLocalizations.of(context)!.enterMaritalStatus,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -534,14 +535,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Caste', required: false),
+                            child: labelWithStar(AppLocalizations.of(context)!.caste, required: false),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.castController,
-                              "Enter caste",
+                              AppLocalizations.of(context)!.enterCaste,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -553,7 +554,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Aadhaar Reference No.',
+                            child: labelWithStar(AppLocalizations.of(context)!.adharRefNo,
                                 required: false),
                           ),
                           Padding(
@@ -561,7 +562,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.aadhaarRefNOController,
-                              "Enter Aadhaar Reference No.",
+                              AppLocalizations.of(context)!.enterAdharRefNo,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.number,
@@ -573,7 +574,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Minority', required: false),
+                            child: labelWithStar(AppLocalizations.of(context)!.minority, required: false),
                           ),
                           Row(
                             children: [
@@ -590,7 +591,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -610,7 +611,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -623,7 +624,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar('Email Address', required: true),
+                                labelWithStar(AppLocalizations.of(context)!.email , required: true),
                           ),
 
                           Column(
@@ -635,7 +636,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     horizontal: 10, vertical: 5),
                                 child: buildTextWithBorderField(
                                   provider.emailController,
-                                  "Enter email address",
+                                  AppLocalizations.of(context)!.enterEmail,
                                   MediaQuery.of(context).size.width,
                                   50,
                                   TextInputType.emailAddress,
@@ -665,7 +666,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Religion', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.religion, required: true),
                           ),
                           IgnorePointer(
                             ignoring: false,
@@ -681,7 +682,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.religionNameController,
                                 idController: provider.religionIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -702,7 +703,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.religionOtherNameController,
-                                    "Other Religion",
+                                    AppLocalizations.of(context)!.otherReligion,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.number,
@@ -713,7 +714,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Differently Abled(PWD)',
+                            child: labelWithStar(AppLocalizations.of(context)!.diffAbled,
                                 required: true),
                           ),
 
@@ -738,7 +739,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                       color: kBlackColor,
                                       size: 14,
@@ -775,7 +776,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                       color: kBlackColor,
                                       size: 14,
@@ -795,7 +796,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: labelWithStar(
-                                  'Disability Type & Percentage',
+                                  AppLocalizations.of(context)!.disabilityTypePercent,
                                   required: true),
                             ),
                             Padding(
@@ -811,7 +812,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.disabilityNameController,
                                 idController: provider.disabilityIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -825,7 +826,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.disabilityPercentageController,
-                                "Percentage",
+                                AppLocalizations.of(context)!.percent,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -835,7 +836,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Gender', required: false),
+                            child: labelWithStar(AppLocalizations.of(context)!.gender, required: false),
                           ),
                           Row(
                             children: [
@@ -850,7 +851,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Male',
+                                    AppLocalizations.of(context)!.male,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -868,7 +869,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Female',
+                                    AppLocalizations.of(context)!.female,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -886,7 +887,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'TransGender',
+                                    AppLocalizations.of(context)!.transgender,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -898,7 +899,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Family Annual Income(INR)',
+                            child: labelWithStar(AppLocalizations.of(context)!.familyAnualIncomeINR,
                                 required: false),
                           ),
                           Padding(
@@ -906,7 +907,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.familyIncomeController,
-                              "Enter family annual income(INR)",
+                              AppLocalizations.of(context)!.enterFamilyAnualIncomeINR,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.number,
@@ -916,7 +917,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('UID Type', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.uidType, required: true),
                           ),
                           IgnorePointer(
                             ignoring: false,
@@ -932,7 +933,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.uidTypeNameController,
                                 idController: provider.uidTypeIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -953,7 +954,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('UID No.', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.uidNumber, required: true),
                           ),
                           // Padding(
                           //   padding: const EdgeInsets.symmetric(
@@ -980,7 +981,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   children: [
                                     buildTextWithBorderField(
                                       provider.uidNOController,
-                                      "Enter UID ",
+                                      AppLocalizations.of(context)!.enterUID,
                                       MediaQuery.of(context).size.width,
                                       50,
                                       TextInputType.text,
@@ -1011,7 +1012,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Linkedin Profile URL',
+                            child: labelWithStar(AppLocalizations.of(context)!.linkedInProfileURL,
                                 required: false),
                           ),
                           Padding(
@@ -1019,7 +1020,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.linkedinController,
-                              "Enter linkedin profile URL",
+                              AppLocalizations.of(context)!.enterLinkedInProfileURL,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -1029,7 +1030,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Ex-Service Man', required: false),
+                            child: labelWithStar(AppLocalizations.of(context)!.exServiceMan, required: false),
                           ),
                           Row(
                             children: [
@@ -1046,7 +1047,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -1066,7 +1067,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -1078,7 +1079,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('EWS Banificiary', required: false),
+                            child: labelWithStar(AppLocalizations.of(context)!.ewsBenificiary, required: false),
                           ),
                           Row(
                             children: [
@@ -1095,7 +1096,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -1115,7 +1116,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -1147,7 +1148,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "2.Permanent Address As Per Jan Aadhaar(If any change please update on jan Aadhaar)",
+                              "2." + AppLocalizations.of(context)!.permAddressJanAdhar,
                               style: Styles.semiBoldTextStyle(
                                   size: 14, color: kWhite),
                             ),
@@ -1169,7 +1170,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('District ',
+                                      labelWithStar(AppLocalizations.of(context)!.district,
                                           required: true),
 
                                       /* Padding(
@@ -1213,7 +1214,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                             horizontal: 0, vertical: 5),
                                         child: buildTextWithBorderField(
                                             provider.districtNameController,
-                                            "Select District",
+                                            AppLocalizations.of(context)!.selectDistrict,
                                             MediaQuery.of(context).size.width,
                                             50,
                                             TextInputType.emailAddress,
@@ -1231,7 +1232,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('City ', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.city, required: true),
                                       /*Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -1273,7 +1274,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                             horizontal: 0, vertical: 5),
                                         child: buildTextWithBorderField(
                                             provider.cityNameController,
-                                            "Select City",
+                                            AppLocalizations.of(context)!.selectCity,
                                             MediaQuery.of(context).size.width,
                                             50,
                                             TextInputType.emailAddress,
@@ -1301,7 +1302,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('Ward ', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.ward, required: true),
                                       /*Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -1336,7 +1337,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                             horizontal: 0, vertical: 5),
                                         child: buildTextWithBorderField(
                                             provider.wardNameController,
-                                            "Select Ward",
+                                            AppLocalizations.of(context)!.selectWard,
                                             MediaQuery.of(context).size.width,
                                             50,
                                             TextInputType.emailAddress,
@@ -1354,7 +1355,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('Territory Type ',
+                                      labelWithStar(AppLocalizations.of(context)!.territoryType,
                                           required: true),
                                       /* Padding(
                               padding:
@@ -1385,7 +1386,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 MaterialTapTargetSize
                                                     .shrinkWrap,
                                           ),
-                                          const Text("Rural"),
+                                          Text(AppLocalizations.of(context)!.rural),
                                           SizedBox(width: 10),
                                           // Add space between the radio buttons
                                           Radio<String>(
@@ -1400,7 +1401,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 MaterialTapTargetSize
                                                     .shrinkWrap,
                                           ),
-                                          const Text("Urban"),
+                                          Text(AppLocalizations.of(context)!.urban),
                                         ],
                                       )
                                     ],
@@ -1413,14 +1414,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Address', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.address, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.addressController,
-                                "Address",
+                                AppLocalizations.of(context)!.address,
                                 MediaQuery.of(context).size.width,
                                 80,
                                 TextInputType.emailAddress,
@@ -1433,14 +1434,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Pin Code', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.pincode, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.pinCodeController,
-                                "Pin Code",
+                                AppLocalizations.of(context)!.pincode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1456,7 +1457,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: Row(
                               children: [
-                                labelWithStar('Communication Address',
+                                labelWithStar(AppLocalizations.of(context)!.communicationAdd,
                                     required: false),
                                 Row(
                                   children: [
@@ -1550,7 +1551,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         },
                                       ),
                                     ),
-                                    const Text("Same As Above"),
+                                    Text(AppLocalizations.of(context)!.sameAsAbove),
                                   ],
                                 ),
                               ],
@@ -1574,7 +1575,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('District', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.district, required: true),
                                       /*  Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -1605,7 +1606,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                     .cDistrictNameController,
                                                 idController: provider
                                                     .cDistrictIdController,
-                                                hintText: "Select District",
+                                                hintText: AppLocalizations.of(context)!.selectDistrict,
                                                 // height: 50,
                                                 // color: Colors.transparent,
                                                 // width: MediaQuery.of(context)
@@ -1653,7 +1654,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                               child: buildTextWithBorderField(
                                                   provider
                                                       .cDistrictNameController,
-                                                  "Select District",
+                                                  AppLocalizations.of(context)!.selectDistrict,
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width,
@@ -1681,7 +1682,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('City', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.city, required: true),
                                       /*  Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -1713,7 +1714,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                     .cCityNameController,
                                                 idController:
                                                     provider.cCityIdController,
-                                                hintText: "Select City",
+                                                hintText: AppLocalizations.of(context)!.selectCity,
                                                 // height: 50,
                                                 // color: Colors.transparent,
                                                 // width: MediaQuery.of(context)
@@ -1754,7 +1755,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                       vertical: 5),
                                               child: buildTextWithBorderField(
                                                   provider.cCityNameController,
-                                                  "Select City",
+                                                  AppLocalizations.of(context)!.selectCity,
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width,
@@ -1792,7 +1793,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('Ward', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.ward, required: true),
                                       /* Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -1823,7 +1824,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                     .cWardNameController,
                                                 idController:
                                                     provider.cWardIdController,
-                                                hintText: "Select Ward",
+                                                hintText: AppLocalizations.of(context)!.selectWard,
                                                 // height: 50,
                                                 // color: Colors.transparent,
                                                 // width: MediaQuery.of(context)
@@ -1852,7 +1853,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                       vertical: 5),
                                               child: buildTextWithBorderField(
                                                   provider.cWardNameController,
-                                                  "Select Ward",
+                                                  AppLocalizations.of(context)!.selectWard,
                                                   MediaQuery.of(context)
                                                       .size
                                                       .width,
@@ -1880,7 +1881,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelWithStar('Territory Type',
+                                      labelWithStar(AppLocalizations.of(context)!.territoryType,
                                           required: true),
                                       /*  Padding(
                               padding:
@@ -1916,7 +1917,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                   MaterialTapTargetSize
                                                       .shrinkWrap,
                                             ),
-                                            const Text("Rural"),
+                                            Text(AppLocalizations.of(context)!.rural),
                                             SizedBox(width: 10),
                                             // Add space between the radio buttons
                                             Radio<String>(
@@ -1933,7 +1934,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                   MaterialTapTargetSize
                                                       .shrinkWrap,
                                             ),
-                                            const Text("Urban"),
+                                            Text(AppLocalizations.of(context)!.urban),
                                           ],
                                         ),
                                       )
@@ -1947,14 +1948,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Address', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.address, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.cAddressController,
-                              "Address",
+                              AppLocalizations.of(context)!.address,
                               MediaQuery.of(context).size.width,
                               80,
                               maxLine: 20,
@@ -1967,14 +1968,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Pin Code', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.pincode, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                                 provider.cPinCodeController,
-                                "Pin Code",
+                                AppLocalizations.of(context)!.pincode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -2111,13 +2112,13 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: labelWithStar(
-                                'Exchange Name/District Employment Office',
+                                AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc,
                                 required: false),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('District', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.district, required: true),
                           ),
                           IgnorePointer(
                             ignoring: true, // disables the dropdown
@@ -2127,7 +2128,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               child: buildTextWithBorderField(
                                 provider.exchangeDistrictNameController,
                                 // already has pre-selected district
-                                "Select District",
+                                AppLocalizations.of(context)!.selectDistrict,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -2140,14 +2141,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child:
-                                labelWithStar('Exchange Name', required: true),
+                                labelWithStar(AppLocalizations.of(context)!.exchangeName, required: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.exchangeNameController,
-                              "Enter Exchange Name",
+                              AppLocalizations.of(context)!.enterExchangeName,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.text,
@@ -2178,7 +2179,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "3.Education Details",
+                              "3." + AppLocalizations.of(context)!.eduDetail,
                               style: Styles.semiBoldTextStyle(
                                   size: 14, color: kWhite),
                             ),
@@ -2187,7 +2188,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Education Level',
+                            child: labelWithStar(AppLocalizations.of(context)!.eduLevel,
                                 required: true),
                           ),
 
@@ -2208,7 +2209,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       provider.educationLevelNameController,
                                   idController:
                                       provider.educationLevelIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
 
                                       onChanged: (value) async {
 
@@ -2249,7 +2250,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Choose Class',
+                                  child: labelWithStar(AppLocalizations.of(context)!.chooseClass,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2272,7 +2273,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.classNameController,
                                 idController: provider.classIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2290,7 +2291,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Board', required: true),
+                                  child: labelWithStar(AppLocalizations.of(context)!.board, required: true),
                                 )
                               : SizedBox(),
 
@@ -2313,7 +2314,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.boardNameController,
                                 idController: provider.boardIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2330,7 +2331,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('School Name',
+                                  child: labelWithStar(AppLocalizations.of(context)!.schoolName,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2345,7 +2346,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.schoolNameController,
-                                    "Enter School Name",
+                                    AppLocalizations.of(context)!.enterSchoolName,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
@@ -2358,7 +2359,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child:
-                                      labelWithStar('Stream', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.stream, required: true),
                                 )
                               : SizedBox(),
 
@@ -2379,7 +2380,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.streamNameController,
                                 idController: provider.streamIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2433,7 +2434,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     provider.graduationTypeNameController,
                                 idController:
                                     provider.graduationTypeIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2461,7 +2462,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               provider.showItiChildDropdown) ...[
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: labelWithStar('ITI Sub Trade Type', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.ITISubTradeType, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -2471,7 +2472,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 getName: (item) => item.name ?? "",
                                 controller: provider.itiChildNameController,
                                 idController: provider.itiChildIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 onChanged: (value) {
                                   provider.onSelectItiItem(context, value, 1);
                                 },
@@ -2575,7 +2576,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Stream Type',
+                                  child: labelWithStar(AppLocalizations.of(context)!.streamType,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2606,7 +2607,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     provider.graduationStreamTypeNameController,
                                 idController:
                                     provider.graduationStreamTypeIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2624,7 +2625,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Other Stream',
+                                  child: labelWithStar(AppLocalizations.of(context)!.otherStream,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2635,7 +2636,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.otherStreamController,
-                                    "Enter Other Stream",
+                                    AppLocalizations.of(context)!.enterOtherStream,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
@@ -2653,7 +2654,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('University',
+                                  child: labelWithStar(AppLocalizations.of(context)!.university,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2681,7 +2682,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.universityNameController,
                                 idController: provider.universityIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -2696,7 +2697,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Other University',
+                                  child: labelWithStar(AppLocalizations.of(context)!.otherUni,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2707,7 +2708,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.otherEducationUniversity,
-                                    "Enter Other University",
+                                    AppLocalizations.of(context)!.enterOtherUni,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
@@ -2726,7 +2727,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child:
-                                      labelWithStar('College', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.college, required: true),
                                 )
                               : SizedBox(),
 
@@ -2742,7 +2743,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.collageNameController,
-                                    "Enter College name",
+                                    AppLocalizations.of(context)!.enterCollege,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
@@ -2756,7 +2757,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Medium of Education',
+                                  child: labelWithStar(AppLocalizations.of(context)!.medEdu,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2779,7 +2780,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                           .mediumEducationNameController,
                                       idController:
                                           provider.mediumEducationIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       // height: 50,
                                       // color: Colors.transparent,
                                       // borderRadius: BorderRadius.circular(8),
@@ -2796,7 +2797,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: labelWithStar(
-                                      'Other Medium of Education',
+                                      AppLocalizations.of(context)!.otherMedEdu,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2807,7 +2808,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                       horizontal: 10, vertical: 5),
                                   child: buildTextWithBorderField(
                                     provider.otherMediumEducationController,
-                                    "Other Medium of Education",
+                                    AppLocalizations.of(context)!.otherMedEdu,
                                     MediaQuery.of(context).size.width,
                                     50,
                                     TextInputType.text,
@@ -2819,7 +2820,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Nature of Course',
+                                  child: labelWithStar(AppLocalizations.of(context)!.natureCourse,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2842,7 +2843,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                           provider.natureOfCourseNameController,
                                       idController:
                                           provider.natureOfCourseIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       // height: 50,
                                       // color: Colors.transparent,
                                       // borderRadius: BorderRadius.circular(8),
@@ -2856,7 +2857,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Year of Passing',
+                                  child: labelWithStar(AppLocalizations.of(context)!.passingYear,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2884,7 +2885,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         horizontal: 10, vertical: 5),
                                     child: buildTextWithBorderField(
                                       provider.yearOfPassingNameController,
-                                      "--Select Option--",
+                                      AppLocalizations.of(context)!.selOption,
                                       MediaQuery.of(context).size.width,
                                       50,
                                       TextInputType.text,
@@ -2899,7 +2900,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child:
-                                      labelWithStar('NCO Code', required: true),
+                                      labelWithStar(AppLocalizations.of(context)!.ncoCode, required: true),
                                 )
                               : SizedBox(),
 
@@ -2920,7 +2921,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                           provider.ncoCodeNameController,
                                       idController:
                                           provider.ncoCodeIdController,
-                                      hintText: "--Select Option--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       // height: 50,
                                       // color: Colors.transparent,
                                       // borderRadius: BorderRadius.circular(8),
@@ -2935,7 +2936,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: Text(
-                                    'Note:- Please select the NCO code based on your Qualification',
+                                    AppLocalizations.of(context)!.plzSelNocURQuali,
                                     style: TextStyle(
                                         fontSize: 12, color: Colors.red),
                                   ),
@@ -2948,7 +2949,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: labelWithStar('Result Type',
+                                  child: labelWithStar(AppLocalizations.of(context)!.resultType,
                                       required: true),
                                 )
                               : SizedBox(),
@@ -2973,7 +2974,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          'Grade',
+                                          AppLocalizations.of(context)!.grade,
                                           style: Styles.mediumTextStyle(
                                               color: kBlackColor, size: 14),
                                         ),
@@ -2997,7 +2998,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          'Percentage',
+                                          AppLocalizations.of(context)!.percent,
                                           style: Styles.mediumTextStyle(
                                               color: kBlackColor, size: 14),
                                         ),
@@ -3021,7 +3022,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          'CGPA',
+                                          AppLocalizations.of(context)!.CGPA,
                                           style: Styles.mediumTextStyle(
                                               color: kBlackColor, size: 14),
                                         ),
@@ -3099,7 +3100,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "4.Employment Details/Work Experience",
+                              "4." + AppLocalizations.of(context)!.empDetailWorkExp,
                               style: Styles.semiBoldTextStyle(
                                   size: 14, color: kWhite),
                             ),
@@ -3107,7 +3108,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Current Employment Status',
+                            child: labelWithStar(AppLocalizations.of(context)!.curEmpStatus,
                                 required: true),
                           ),
                           IgnorePointer(
@@ -3127,7 +3128,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                     .currentEmploymentStatusNameController,
                                 idController: provider
                                     .currentEmploymentStatusIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -3138,7 +3139,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Experience(In Years)',
+                            child: labelWithStar(AppLocalizations.of(context)!.expYears,
                                 required: true),
                           ),
                           Padding(
@@ -3146,7 +3147,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.expYearController,
-                              "Enter Experience(In Years)",
+                              AppLocalizations.of(context)!.expYears,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.number,
@@ -3155,7 +3156,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Experience(In Month)',
+                            child: labelWithStar(AppLocalizations.of(context)!.expMonths,
                                 required: true),
                           ),
                           Padding(
@@ -3163,7 +3164,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 horizontal: 10, vertical: 5),
                             child: buildTextWithBorderField(
                               provider.expMonthController,
-                              "Enter Experience(In Month)",
+                              AppLocalizations.of(context)!.expMonths,
                               MediaQuery.of(context).size.width,
                               50,
                               TextInputType.number,
@@ -3180,7 +3181,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: labelWithStar(
-                                'Are you interested in private jobs also?',
+                                AppLocalizations.of(context)!.intPrivateJob,
                                 required: false),
                           ),
                           Row(
@@ -3201,7 +3202,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3224,7 +3225,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3237,7 +3238,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: labelWithStar(
-                                'Are you interested in international jobs?',
+                                AppLocalizations.of(context)!.areYouIntIntJob,
                                 required: false),
                           ),
                           Row(
@@ -3261,7 +3262,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3287,7 +3288,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3300,7 +3301,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Select Region',
+                              child: labelWithStar(AppLocalizations.of(context)!.selectRegion,
                                   required: true),
                             ),
                             IgnorePointer(
@@ -3312,7 +3313,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   items: provider.preferredRegionList,
                                   controller: provider.regionNameController,
                                   idController: provider.regionIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
                                   height: 50,
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(8),
@@ -3346,7 +3347,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             padding: EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "5.Skills and Languages Details(Add Atleast one Skill)",
+                              "5." + AppLocalizations.of(context)!.skillNlangDetail,
                               style: Styles.semiBoldTextStyle(
                                   size: 14, color: kWhite),
                             ),
@@ -3354,7 +3355,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Are you Skilled',
+                            child: labelWithStar(AppLocalizations.of(context)!.areYouSkilled,
                                 required: true),
                           ),
                           Row(
@@ -3387,7 +3388,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Yes',
+                                    AppLocalizations.of(context)!.yes,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3421,7 +3422,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'No',
+                                    AppLocalizations.of(context)!.no,
                                     style: Styles.mediumTextStyle(
                                         color: kBlackColor, size: 14),
                                   ),
@@ -3435,7 +3436,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: labelWithStar(
-                                'Are you interested in RSLDC Skill training?',
+                                AppLocalizations.of(context)!.areYouIntRSLDCskillTraing,
                                 required: true,
                               ),
                             ),
@@ -3456,7 +3457,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         });
                                       },
                                     ),
-                                    Text('Yes'),
+                                    Text(AppLocalizations.of(context)!.yes),
                                   ],
                                 ),
                                 const SizedBox(width: 12),
@@ -3475,7 +3476,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                         });
                                       },
                                     ),
-                                    Text('No'),
+                                    Text(AppLocalizations.of(context)!.no),
                                   ],
                                 ),
                               ],
@@ -3486,7 +3487,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Skill Category',
+                              child: labelWithStar(AppLocalizations.of(context)!.skillCate,
                                   required: true),
                             ),
                             Padding(
@@ -3496,7 +3497,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.categoryList,
                                 controller: provider.categoryNameController,
                                 idController: provider.categoryIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -3513,7 +3514,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Skill Sub Category',
+                              child: labelWithStar(AppLocalizations.of(context)!.skillSubCate,
                                   required: true),
                             ),
                             Padding(
@@ -3523,7 +3524,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.subCategoryList,
                                 controller: provider.subCategoryNameController,
                                 idController: provider.subCategoryIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -3541,7 +3542,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Languages', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.languages, required: true),
                           ),
                           IgnorePointer(
                             ignoring: false,
@@ -3556,7 +3557,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.languageNameController,
                                 idController: provider.languageIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -3567,7 +3568,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
-                            child: labelWithStar('Proficiency', required: true),
+                            child: labelWithStar(AppLocalizations.of(context)!.proficiency, required: true),
                           ),
                           IgnorePointer(
                             ignoring: false,
@@ -3584,7 +3585,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 controller: provider.proficiencyNameController,
                                 idController: provider.proficiencyIdController,
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
                                 // height: 50,
                                 // color: Colors.transparent,
                                 // borderRadius: BorderRadius.circular(8),
@@ -3595,19 +3596,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           Column(
                             children: [
                               CheckboxListTile(
-                                title: const Text('Read'),
+                                title: Text(AppLocalizations.of(context)!.read),
                                 value: provider.read,
                                 onChanged: (v) =>
                                     setState(() => provider.read = v ?? false),
                               ),
                               CheckboxListTile(
-                                title: const Text('Write'),
+                                title: Text(AppLocalizations.of(context)!.write),
                                 value: provider.write,
                                 onChanged: (v) =>
                                     setState(() => provider.write = v ?? false),
                               ),
                               CheckboxListTile(
-                                title: const Text('Speak'),
+                                title: Text(AppLocalizations.of(context)!.speak),
                                 value: provider.speak,
                                 onChanged: (v) =>
                                     setState(() => provider.speak = v ?? false),
@@ -3624,16 +3625,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   if (provider
                                       .languageIdController.text.isEmpty) {
                                     showAlertError(
-                                        "Please select language", context);
+                                        AppLocalizations.of(context)!.plzSelLang, context);
                                   } else if (provider
                                       .proficiencyIdController.text.isEmpty) {
                                     showAlertError(
-                                        "Please select proficiency", context);
+                                        AppLocalizations.of(context)!.plzSelProf, context);
                                   } else if (provider.read == false &&
                                       provider.write == false &&
                                       provider.speak == false) {
                                     showAlertError(
-                                        "Please select al least one read|write|speak",
+                                        AppLocalizations.of(context)!.selOneRWS,
                                         context);
                                   } else {
                                     String read =
@@ -3660,7 +3661,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 // If exists, do NOT add
                                     if (exists) {
                                       showAlertError(
-                                          "Already exists!", context);
+                                          AppLocalizations.of(context)!.alreadyExist, context);
                                       print("Already exists!");
                                       return;
                                     }
@@ -3702,7 +3703,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   ),
                                   elevation: 0,
                                 ),
-                                child: const Text('Add',
+                                child: Text(AppLocalizations.of(context)!.add,
                                     maxLines: 1,
                                     //added these line for set 1 line
                                     softWrap: false,
@@ -3881,8 +3882,8 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           if (validateBasicDetails(context, provider)) {
                             confirmAlertDialog(
                               context,
-                              "Confirm Submission",
-                              "Are you sure you want to submit the form ?",
+                              AppLocalizations.of(context)!.confirmSub,
+                              AppLocalizations.of(context)!.areYouSureSubmitForm,
                               (value) {
                                 if (value.toString() == "success") {
                                   provider.sendSMSApi(
@@ -3903,7 +3904,7 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text('Save',
+                        child: Text(AppLocalizations.of(context)!.save,
                             style:
                                 TextStyle(fontSize: 16, color: Colors.white)),
                       ),
@@ -3922,19 +3923,19 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
     final provider = Provider.of<OtrFormProvider>(context, listen: false);
     switch (provider.educationLevelIdController.text) {
       case "5":
-        return "Under Graduation Type";
+        return AppLocalizations.of(context)!.underGradType;
 
       case "6":
-        return "Graduation Type";
+        return AppLocalizations.of(context)!.gradType;
 
       case "8":
-        return "Post Graduation Type";
+        return AppLocalizations.of(context)!.postGradType;
 
       case "9":
-        return "ITI Trade Type";
+        return AppLocalizations.of(context)!.ITITradeType;
 
       default:
-        return "Graduation Type";
+        return AppLocalizations.of(context)!.gradType;
     }
   }
 }
@@ -3942,71 +3943,71 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 bool validateBasicDetails(BuildContext context, provider) {
   // ✅ Image validation
   if (provider.profileFile == null) {
-    showAlertError("Please upload Photo", context);
+    showAlertError(AppLocalizations.of(context)!.plzUploadPhoto, context);
     return false;
   }
 
   // Full Name
   if (provider.fullNameController.text.isEmpty) {
-    showAlertError("Please enter Full Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterFullName, context);
     return false;
   }
 
   // DOB
   if (provider.dateOfBirthController.text.isEmpty) {
-    showAlertError("Please select Date of Birth", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelDOB, context);
     return false;
   }
 
   // Mobile Number
   if (provider.mobileNumberController.text.isEmpty) {
-    showAlertError("Please enter Mobile Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzentrmobilNo, context);
     return false;
   }
   if (provider.mobileNumberController.text.length != 10) {
-    showAlertError("Mobile number must be 10 digits", context);
+    showAlertError(AppLocalizations.of(context)!.mobile10digit, context);
     return false;
   }
 
   // Father Name
   if (provider.fatherNameController.text.isEmpty) {
-    showAlertError("Please enter Father’s Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterFName, context);
     return false;
   }
 
   // Mother Name
   if (provider.motherNameController.text.isEmpty) {
-    showAlertError("Please enter Mother’s Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterMName, context);
     return false;
   }
 
   // Email
   if (provider.emailController.text.isEmpty) {
-    showAlertError("Please enter Email Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterEmail, context);
     return false;
   }
   final emailReg = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   if (!emailReg.hasMatch(provider.emailController.text)) {
-    showAlertError("Please enter valid Email Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterValidEmail, context);
     return false;
   }
 
   // Religion Dropdown
   if (provider.religionIdController.text.isEmpty) {
-    showAlertError("Please select Religion", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelReligion, context);
     return false;
   }
 
   // Differently Abled
   if (provider.differentlyAbledController.text.isEmpty) {
-    showAlertError("Please enter Differently Abled (PWD)", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPWD, context);
     return false;
   }
 
   // Disability Validation
   if (provider.disabilityIdController.text.isNotEmpty) {
     if (provider.disabilityPercentageController.text.trim().isEmpty) {
-      showAlertError("Please enter Disability Percentage", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterDisPercent, context);
       return false;
     }
 
@@ -4014,146 +4015,146 @@ bool validateBasicDetails(BuildContext context, provider) {
         double.tryParse(provider.disabilityPercentageController.text.trim());
 
     if (percent == null) {
-      showAlertError("Please enter valid Disability Percentage", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterValidDisPercent, context);
       return false;
     }
 
     if (percent < 0 || percent > 100) {
       showAlertError(
-          "Disability Percentage must be between 0 and 100", context);
+          AppLocalizations.of(context)!.disPercent0100, context);
       return false;
     }
   }
 
   // Gender (Male / Female / Transgender)
   if (provider.genderController.text.isEmpty) {
-    showAlertError("Please select Gender", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelGender, context);
     return false;
   }
 
   // UID Type Dropdown
   if (provider.uidTypeIdController.text.isEmpty) {
-    showAlertError("Please select UID Type", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelUIDType, context);
     return false;
   }
 
   // UID Number
   if (provider.uidNOController.text.isEmpty) {
-    showAlertError("Please enter UID Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterUIDNo, context);
     return false;
   }
 
   // 1. District
   if (provider.districtNameController.text.isEmpty) {
-    showAlertError("Please select District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
     return false;
   }
 
   // 2. City
   if (provider.cityNameController.text.isEmpty) {
-    showAlertError("Please select City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
     return false;
   }
 
   // 3. Ward
   if (provider.wardNameController.text.isEmpty) {
-    showAlertError("Please select Ward", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectWard, context);
     return false;
   }
 
   // 4. Territory Type (Rural / Urban)
   if (provider.territoryType.isEmpty) {
-    showAlertError("Please select Territory Type (Rural / Urban)", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectTeriType, context);
     return false;
   }
 
   // 5. Address
   if (provider.addressController.text.trim().isEmpty) {
-    showAlertError("Please enter Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterAddress, context);
     return false;
   }
 
   // 6. Pin Code Required
   if (provider.pinCodeController.text.trim().isEmpty) {
-    showAlertError("Please enter Pin Code", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPincode, context);
     return false;
   }
 
   // 7. Validate Pin Code Length
   if (provider.pinCodeController.text.length != 6) {
-    showAlertError("Pin Code must be 6 digits", context);
+    showAlertError(AppLocalizations.of(context)!.pinCode6digit, context);
     return false;
   }
 
   if (provider.sameAsAbove == true) {
     if (provider.cDistrictNameController.text.isEmpty) {
-      showAlertError("District (Communication) is missing", context);
+      showAlertError(AppLocalizations.of(context)!.distComMising, context);
       return false;
     }
 
     if (provider.cCityNameController.text.isEmpty) {
-      showAlertError("City (Communication) is missing", context);
+      showAlertError(AppLocalizations.of(context)!.cityComMising, context);
       return false;
     }
 
     if (provider.cWardNameController.text.isEmpty) {
-      showAlertError("Ward (Communication) is missing", context);
+      showAlertError(AppLocalizations.of(context)!.wardComMising, context);
       return false;
     }
 
     if (provider.cTerritoryType.toString().isEmpty) {
-      showAlertError("Please select Territory Type (Rural / Urban)", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelectTeriType, context);
       return false;
     }
 
     if (provider.cAddressController.text.trim().isEmpty) {
-      showAlertError("Please enter Communication Address", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterComAddress, context);
       return false;
     }
 
     if (provider.cPinCodeController.text.isEmpty) {
-      showAlertError("Please enter Communication Pin Code", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterComPin, context);
       return false;
     }
 
     if (provider.cPinCodeController.text.length != 6) {
-      showAlertError("Communication Pin Code must be 6 digits", context);
+      showAlertError(AppLocalizations.of(context)!.comPin6digit, context);
       return false;
     }
   }
 
   if (provider.cDistrictNameController.text.isEmpty) {
-    showAlertError("Please select District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
     return false;
   }
 
   if (provider.cCityNameController.text.isEmpty) {
-    showAlertError("Please select City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
     return false;
   }
 
   if (provider.cWardNameController.text.isEmpty) {
-    showAlertError("Please select Ward", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectWard, context);
     return false;
   }
 
   if (provider.cTerritoryType.toString().isEmpty) {
-    showAlertError("Please select Territory Type (Rural / Urban)", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectTeriType, context);
     return false;
   }
 
   if (provider.cAddressController.text.trim().isEmpty) {
-    showAlertError("Please enter Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterAddress, context);
     return false;
   }
 
   if (provider.cPinCodeController.text.isEmpty) {
-    showAlertError("Please enter Pin Code", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPincode, context);
     return false;
   }
 
   if (provider.cPinCodeController.text.length != 6) {
-    showAlertError("Pin Code must be 6 digits", context);
+    showAlertError(AppLocalizations.of(context)!.pinCode6digit, context);
     return false;
   }
   // if (provider.assemblyNameController.text.isEmpty) {
@@ -4166,17 +4167,17 @@ bool validateBasicDetails(BuildContext context, provider) {
   //   return false;
   // }
   if (provider.exchangeDistrictNameController.text.isEmpty) {
-    showAlertError("Please select exchange district", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelExchangeDistrict, context);
     return false;
   }
   if (provider.exchangeNameController.text.isEmpty) {
-    showAlertError("Please enter exchange", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterExchange, context);
     return false;
   }
 
   // 1️⃣ Education Level Required
   if (provider.educationLevelIdController.text.isEmpty) {
-    showAlertError("Please select Education Level", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelEduLevel, context);
     return false;
   }
 
@@ -4184,34 +4185,34 @@ bool validateBasicDetails(BuildContext context, provider) {
 
   // 2️⃣ Class required for level = 2
   if (level == "2" && provider.classIdController.text.isEmpty) {
-    showAlertError("Please select Class", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelClass, context);
     return false;
   }
 
   // 3️⃣ Board required for 3 & 4
   if ((level == "3" || level == "4") &&
       provider.boardIdController.text.isEmpty) {
-    showAlertError("Please select Board", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelBoard, context);
     return false;
   }
 
   // 4️⃣ School Name required for 2,3,4
   if ((level == "2" || level == "3" || level == "4") &&
       provider.schoolNameController.text.isEmpty) {
-    showAlertError("Please enter School Name", context);
+    showAlertError(AppLocalizations.of(context)!.enterSchoolName, context);
     return false;
   }
 
   // 5️⃣ Stream required for level=4
   if (level == "4" && provider.streamIdController.text.isEmpty) {
-    showAlertError("Please select Stream", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelStream, context);
     return false;
   }
 
   // 6️⃣ Graduation Type required for 5,6,8
   if ((level == "5" || level == "6" || level == "8") &&
       provider.graduationTypeIdController.text.isEmpty) {
-    showAlertError("Please select Graduation Type", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelGraType, context);
     return false;
   }
 
@@ -4220,7 +4221,7 @@ bool validateBasicDetails(BuildContext context, provider) {
       (level == "6" && provider.graduationTypeIdController.text == "90") ||
       (level == "8" && provider.graduationTypeIdController.text == "127")) {
     if (provider.otherGraduationTypeController.text.isEmpty) {
-      showAlertError("Please enter Other Graduation Type", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterOtherGraType, context);
       return false;
     }
   }
@@ -4228,70 +4229,70 @@ bool validateBasicDetails(BuildContext context, provider) {
   // 8️⃣ University Required for 5,6,8
   if ((level == "5" || level == "6" || level == "8") &&
       provider.universityIdController.text.isEmpty) {
-    showAlertError("Please select University", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelUniv, context);
     return false;
   }
 
   // 9️⃣ Other University required only when id = 3
   if (provider.universityIdController.text == "3" &&
       provider.otherEducationUniversity.text.isEmpty) {
-    showAlertError("Please enter Other University", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterOtherUni, context);
     return false;
   }
 
   // 🔟 College Required for 5,6,8
   if ((level == "5" || level == "6" || level == "8") &&
       provider.collageNameController.text.isEmpty) {
-    showAlertError("Please enter College Name", context);
+    showAlertError(AppLocalizations.of(context)!.enterCollege, context);
     return false;
   }
 
   // 1️⃣1️⃣ Medium Required (for everything except level = 1)
   if (level != "1" && provider.mediumEducationIdController.text.isEmpty) {
-    showAlertError("Please select Medium of Education", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelMedEdu, context);
     return false;
   }
 
   if ((level == "5" || level == "6" || level == "8") &&
       provider.graduationStreamTypeIdController.text.isEmpty) {
-    showAlertError("Please select Stream Type", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelStreamType, context);
     return false;
   }
 
   if (provider.graduationStreamTypeIdController.text == "-1" &&
       provider.otherStreamController.text.isEmpty) {
-    showAlertError("Please enter Other Stream", context);
+    showAlertError(AppLocalizations.of(context)!.enterOtherStream, context);
     return false;
   }
 
   // 1️⃣2️⃣ Other Medium Required when id=70
   if (provider.mediumEducationIdController.text == "70" &&
       provider.otherMediumEducationController.text.isEmpty) {
-    showAlertError("Please enter Other Medium of Education", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterOtherMedEdu, context);
     return false;
   }
 
   // 1️⃣3️⃣ Nature of Course Required (except level = 1)
   if (level != "1" && provider.natureOfCourseIdController.text.isEmpty) {
-    showAlertError("Please select Nature of Course", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelNatCourse, context);
     return false;
   }
 
   // 1️⃣4️⃣ Year of Passing Required
   if (level != "1" && provider.yearOfPassingNameController.text.isEmpty) {
-    showAlertError("Please select Year of Passing", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelYearPass, context);
     return false;
   }
 
   // 1️⃣5️⃣ NCO Code Required
   if (level != "1" && provider.ncoCodeIdController.text.isEmpty) {
-    showAlertError("Please select NCO Code", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelNCOCode, context);
     return false;
   }
 
   // 1️⃣6️⃣ Result Type required
   if (level != "1" && provider.resultType.isEmpty) {
-    showAlertError("Please select Result Type", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelResType, context);
     return false;
   }
 
@@ -4316,13 +4317,13 @@ bool validateBasicDetails(BuildContext context, provider) {
     final value = provider.gradeTypeNameController.text.trim();
 
     if (value.isEmpty) {
-      showAlertError("Please enter Percentage", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterPerc, context);
       return false;
     }
 
     if (!isValidPercentage(value)) {
       showAlertError(
-        "Percentage can have maximum 2 digits after decimal",
+        AppLocalizations.of(context)!.perc2Digit,
         context,
       );
       return false;
@@ -4331,7 +4332,7 @@ bool validateBasicDetails(BuildContext context, provider) {
     final percent = double.tryParse(value);
     if (percent == null || percent < 0 || percent > 100) {
       showAlertError(
-        "Percentage must be between 0 and 100",
+        AppLocalizations.of(context)!.perc0100,
         context,
       );
       return false;
@@ -4343,57 +4344,57 @@ bool validateBasicDetails(BuildContext context, provider) {
     final value = provider.gradeTypeNameController.text.trim();
 
     if (value.isEmpty) {
-      showAlertError("Please enter CGPA", context);
+      showAlertError(AppLocalizations.of(context)!.plzEnterCGPA, context);
       return false;
     }
 
     final cgpa = double.tryParse(value);
 
     if (cgpa == null) {
-      showAlertError("CGPA must be a valid number", context);
+      showAlertError(AppLocalizations.of(context)!.CGPAValid, context);
       return false;
     }
 
     if (cgpa < 0 || cgpa > 10) {
-      showAlertError("CGPA must be between 0 and 10", context);
+      showAlertError(AppLocalizations.of(context)!.CGPA010, context);
       return false;
     }
   }
 
   // Current Employment Status
   if (provider.currentEmploymentStatusIdController.text.isEmpty) {
-    showAlertError("Please select Current Employment Status", context);
+    showAlertError(AppLocalizations.of(context)!.selCurEmpStatus, context);
     return false;
   }
 
   // Experience (Year)
   if (provider.expYearController.text.isEmpty) {
-    showAlertError("Please enter Experience in Years", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterExpYear, context);
     return false;
   }
   if (int.tryParse(provider.expYearController.text) == null) {
-    showAlertError("Experience in Years must be a valid number", context);
+    showAlertError(AppLocalizations.of(context)!.expYearValid, context);
     return false;
   }
 
   // Experience (Month)
   if (provider.expMonthController.text.isEmpty) {
-    showAlertError("Please enter Experience in Months", context);
+    showAlertError(AppLocalizations.of(context)!.expMonth, context);
     return false;
   }
   if (int.tryParse(provider.expMonthController.text) == null) {
-    showAlertError("Experience in Months must be a valid number", context);
+    showAlertError(AppLocalizations.of(context)!.expMonthValid, context);
     return false;
   }
   if (int.parse(provider.expMonthController.text) > 11) {
-    showAlertError("Experience in Months must be between 0 and 11", context);
+    showAlertError(AppLocalizations.of(context)!.expMonth011, context);
     return false;
   }
 
   // International Job Interest (Yes/No)
   if (provider.areYouInterestedInternational.text.isEmpty) {
     showAlertError(
-        "Please select whether you are interested in international jobs",
+        AppLocalizations.of(context)!.plzSelIntIntJobs,
         context);
     return false;
   }
@@ -4401,13 +4402,13 @@ bool validateBasicDetails(BuildContext context, provider) {
   // Preferred Region
   if (provider.areYouInterestedInternational.text == 'Yes' &&
       provider.regionIdController.text.isEmpty) {
-    showAlertError("Please select Preferred Region", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelPrefRegion, context);
     return false;
   }
 
   // 1. Are You Skilled
   if (provider.areYouSkilledController.text.isEmpty) {
-    showAlertError("Please select Are You Skilled (Rural / Urban)", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelRUskilled, context);
     return false;
   }
 
@@ -4415,7 +4416,7 @@ bool validateBasicDetails(BuildContext context, provider) {
   if (provider.areYouSkilledController.text == 'No') {
     if (provider.areYouInterestedRsldcNameController.text.isEmpty) {
       showAlertError(
-        "Please select Are you interested in RSLDC Skill Training",
+        AppLocalizations.of(context)!.plzSelRUIntRSLDCTraing,
         context,
       );
       return false;
@@ -4425,12 +4426,12 @@ bool validateBasicDetails(BuildContext context, provider) {
 // 🔹 CASE 2: Are You Skilled = YES
   if (provider.areYouSkilledController.text == 'Yes') {
     if (provider.categoryIdController.text.isEmpty) {
-      showAlertError("Please select Skill Category", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelSkillCate, context);
       return false;
     }
 
     if (provider.subCategoryIdController.text.isEmpty) {
-      showAlertError("Please select Skill Sub Category", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelSkillSubCate, context);
       return false;
     }
   }
@@ -4438,14 +4439,14 @@ bool validateBasicDetails(BuildContext context, provider) {
   // 4. Language
   if (provider.languageIdController.text.isEmpty &&
       provider.languageDataList.isEmpty) {
-    showAlertError("Please select a Language", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelLang, context);
     return false;
   }
 
   // 5. Proficiency
   if (provider.proficiencyIdController.text.isEmpty &&
       provider.languageDataList.isEmpty) {
-    showAlertError("Please select Proficiency", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelProf, context);
     return false;
   }
 
@@ -4455,13 +4456,13 @@ bool validateBasicDetails(BuildContext context, provider) {
       provider.speak == false &&
       provider.languageDataList.isEmpty) {
     showAlertError(
-        "Please select at least one option: Read / Write / Speak", context);
+        AppLocalizations.of(context)!.selOneRWS, context);
     return false;
   }
 
   // 7. At least one skill/language must be added in list
   if (provider.languageDataList.isEmpty) {
-    showAlertError("Please click on add button", context);
+    showAlertError(AppLocalizations.of(context)!.clickAddBtn, context);
     return false;
   }
 
