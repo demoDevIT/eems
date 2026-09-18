@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../repo/common_repo.dart';
 import '../../../constants/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -88,7 +89,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
     final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Scaffold(
         appBar: commonAppBar2(
-          "Employer OTR Form",
+          AppLocalizations.of(context)!.empOTRForm,
           context,
           localeProvider.currentLanguage,
           "",
@@ -115,14 +116,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
-                        child: labelWithStar('SSOID', required: false),
+                        child: labelWithStar(AppLocalizations.of(context)!.ssoId, required: false),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         child: buildTextWithBorderField(
                             provider.ssoController,
-                            "Enter sso id",
+                            AppLocalizations.of(context)!.enterSSOID,
                             MediaQuery.of(context).size.width,
                             50,
                             TextInputType.text,
@@ -152,7 +153,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "1. Basic Details",
+                                "1. " + AppLocalizations.of(context)!.basicDetails + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -160,14 +161,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('BRN', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.brn, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.brnController,
-                                "Enter BRN",
+                                AppLocalizations.of(context)!.enterBRN,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -185,14 +186,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('District', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.district, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.districtController,
-                                "Enter District",
+                                AppLocalizations.of(context)!.enterDistrict,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -207,7 +208,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length > 0 && value.length < 4) {
                                     provider.districtError =
-                                        "Minimum 3 characters required.";
+                                        AppLocalizations.of(context)!.min3Char;
                                   } else {
                                     provider.districtError = null;
                                   }
@@ -228,7 +229,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Area', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.area, required: true),
                             ),
                             Row(
                               children: [
@@ -243,7 +244,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      'Rural',
+                                      AppLocalizations.of(context)!.rural,
                                       style: Styles.mediumTextStyle(
                                           color: kBlackColor, size: 14),
                                     ),
@@ -264,7 +265,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      'Urban',
+                                      AppLocalizations.of(context)!.urban,
                                       style: Styles.mediumTextStyle(
                                           color: kBlackColor, size: 14),
                                     ),
@@ -276,14 +277,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Tehsil', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.tehsil, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.tehsilController,
-                                "Enter Tehsil",
+                                AppLocalizations.of(context)!.enterTehsil,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -297,14 +298,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: labelWithStar('Village', required: true),
+                                child: labelWithStar(AppLocalizations.of(context)!.village, required: true),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: buildTextWithBorderField(
                                   provider.villageController,
-                                  "Enter Village",
+                                  AppLocalizations.of(context)!.enterVillage,
                                   MediaQuery.of(context).size.width,
                                   50,
                                   TextInputType.text,
@@ -322,14 +323,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Local Body', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.localBody, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.localBodyController,
-                                "Enter Local Body",
+                                AppLocalizations.of(context)!.enterLocalBody,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -347,14 +348,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: labelWithStar('Ward', required: true),
+                                child: labelWithStar(AppLocalizations.of(context)!.ward, required: true),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: buildTextWithBorderField(
                                   provider.wardController,
-                                  "Enter Ward",
+                                  AppLocalizations.of(context)!.enterWard,
                                   MediaQuery.of(context).size.width,
                                   50,
                                   TextInputType.text,
@@ -394,7 +395,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "2. Branch Office Details (As on Sanstha Aadhaar) :-",
+                                // "2. Branch Office Details (As on Sanstha Aadhaar) :-",
+                                "2. " + AppLocalizations.of(context)!.branchOffDetailAsSansthaadhar + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -403,14 +405,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Company Name', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.companyName, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.companyNameController,
-                                "Company Name",
+                                AppLocalizations.of(context)!.companyName,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -424,14 +426,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('House Number', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.houseNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.houseNoController,
-                                "House Number",
+                                AppLocalizations.of(context)!.houseNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -444,14 +446,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Lane', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.lane, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.laneController,
-                                "Lane",
+                                AppLocalizations.of(context)!.lane,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -464,14 +466,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Locality', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.locality, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.localityController,
-                                "Locality",
+                                AppLocalizations.of(context)!.locality,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -484,14 +486,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Pin Code', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.pincode, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.pinCodeController,
-                                "Pin Code",
+                                AppLocalizations.of(context)!.pincode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -507,7 +509,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length != 6) {
                                     provider.pinCodeError =
-                                        "Pin Code must be 6 digits";
+                                        AppLocalizations.of(context)!.pinCode6digit;
                                   } else {
                                     provider.pinCodeError = null;
                                   }
@@ -525,14 +527,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Tel No', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.telNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.telNoController,
-                                "Tel No",
+                                AppLocalizations.of(context)!.telNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
@@ -546,7 +548,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length != 10) {
                                     provider.telError =
-                                        "Telephone number must be 15 digits";
+                                        AppLocalizations.of(context)!.telNo15digit;
                                   } else {
                                     provider.telError = null;
                                   }
@@ -557,14 +559,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Email', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.email, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.emailController,
-                                "Email",
+                                AppLocalizations.of(context)!.email,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -586,14 +588,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('GST Number', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.gstNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.gstController,
-                                "GST Number",
+                                AppLocalizations.of(context)!.gstNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -620,14 +622,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('PAN Number', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.panNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.panController,
-                                "PAN Number",
+                                AppLocalizations.of(context)!.panNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -652,7 +654,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     provider.panErrorText = null;
                                   } else {
                                     provider.panErrorText =
-                                        "Invalid PAN number";
+                                        AppLocalizations.of(context)!.invalidPANNo;
                                   }
 
                                   provider.panVerifiedController.text = pan;
@@ -668,14 +670,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('PAN Holder', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.panHolder, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.panHolderController,
-                                "PAN Holder",
+                                AppLocalizations.of(context)!.panHolder,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -687,14 +689,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('PAN Verified', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.panVerified, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.panVerifiedController,
-                                "PAN Verified",
+                                AppLocalizations.of(context)!.panVerified,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -719,14 +721,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('TAN Number', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.tanNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.tanController,
-                                "TAN Number",
+                                AppLocalizations.of(context)!.tanNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -744,7 +746,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   final tan = value.toUpperCase();
                                   provider.tanErrorText = tan.isValidTan()
                                       ? null
-                                      : "Enter valid TAN (e.g. DELA12345B)";
+                                      : AppLocalizations.of(context)!.enterValidTAN;
                                   provider.notifyListeners();
                                 },
                               ),
@@ -779,7 +781,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "3. Head Office Details (As on Sanstha Aadhaar) :-",
+                                "3. " + AppLocalizations.of(context)!.headOfficeDetailAsSansthaAdhar + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -788,14 +790,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Company Name', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.companyName, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoCompanyNameController,
-                                "Company Name",
+                                AppLocalizations.of(context)!.companyName,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -812,14 +814,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Tel No', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.telNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoTelNoController,
-                                "Tel No",
+                                AppLocalizations.of(context)!.telNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
@@ -835,7 +837,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length != 10) {
                                     provider.telNoError =
-                                    "Telephone number must be 10 digits";
+                                        AppLocalizations.of(context)!.telNo10digit;
                                   } else {
                                     provider.telNoError = null;
                                   }
@@ -846,14 +848,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Email', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.email, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoEmailController,
-                                "Email",
+                                AppLocalizations.of(context)!.email,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -876,14 +878,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('PAN No.', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.panNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoPanController,
-                                "PAN No.",
+                                AppLocalizations.of(context)!.panNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -906,7 +908,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   provider.panErrorText =
                                       pan.length == 10 && pan.isValidPanCardNo()
                                           ? null
-                                          : "Invalid PAN number";
+                                          : AppLocalizations.of(context)!.invalidPANNo;
 
                                   provider.notifyListeners();
                                 },
@@ -920,14 +922,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('House Number', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.houseNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoHouseNoController,
-                                "House Number",
+                                AppLocalizations.of(context)!.houseNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -940,14 +942,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Lane', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.lane, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoLaneController,
-                                "Lane",
+                                AppLocalizations.of(context)!.lane,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -960,14 +962,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Locality', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.locality, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoLocalityController,
-                                "Locality",
+                                AppLocalizations.of(context)!.locality,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -984,14 +986,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Pincode', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.pincode, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoPincodeController,
-                                "Pincode",
+                                AppLocalizations.of(context)!.pincode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1032,7 +1034,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "4. Head Office Applicant Details (As on Sanstha Aadhaar) :-",
+                                "4. " + AppLocalizations.of(context)!.headOffAppDetailAsSansthaAdhar + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -1040,7 +1042,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Applicant Name',
+                              child: labelWithStar(AppLocalizations.of(context)!.applicantName,
                                   required: true),
                             ),
                             Padding(
@@ -1048,7 +1050,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.applicantNameController,
-                                "Applicant Name",
+                                AppLocalizations.of(context)!.applicantName,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1065,7 +1067,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Applicant Mobile',
+                              child: labelWithStar(AppLocalizations.of(context)!.applicantMobNo,
                                   required: true),
                             ),
                             Padding(
@@ -1073,7 +1075,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.applicantMobileController,
-                                "Applicant Mobile",
+                                AppLocalizations.of(context)!.applicantMobNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1090,7 +1092,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Applicant Email',
+                              child: labelWithStar(AppLocalizations.of(context)!.applicantEmail,
                                   required: true),
                             ),
                             Padding(
@@ -1098,7 +1100,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.applicantEmailController,
-                                "Applicant Email",
+                                AppLocalizations.of(context)!.applicantEmail,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -1110,7 +1112,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   provider.applicantEmailError =
                                       value.isNotEmpty && value.isValidEmail()
                                           ? null
-                                          : "Invalid email address";
+                                          : AppLocalizations.of(context)!.invalidEmail;
                                   provider.notifyListeners();
                                 },
                               ),
@@ -1128,14 +1130,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Year', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.year, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.yearController,
-                                "Year",
+                                AppLocalizations.of(context)!.year,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1152,14 +1154,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Ownership', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.ownership, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.ownershipController,
-                                "Ownership",
+                                AppLocalizations.of(context)!.ownership,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1173,14 +1175,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Total Person', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.totalPer, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.totalPersonController,
-                                "Total Person",
+                                AppLocalizations.of(context)!.totalPer,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1197,7 +1199,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Act Authority Reg',
+                              child: labelWithStar(AppLocalizations.of(context)!.actAuthReg,
                                   required: true),
                             ),
                             Padding(
@@ -1205,7 +1207,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.actAuthorityRegController,
-                                "Act Authority Reg",
+                                AppLocalizations.of(context)!.actAuthReg,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1218,14 +1220,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('TAN No', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.tanNo, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.tanNoController,
-                                "TAN No",
+                                AppLocalizations.of(context)!.tanNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1248,7 +1250,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   provider.hoTanErrorText =
                                       tan.length == 10 && tan.isValidTan()
                                           ? null
-                                          : "Invalid TAN number";
+                                          : AppLocalizations.of(context)!.invalidTANNo;
 
                                   provider.notifyListeners();
                                 },
@@ -1267,14 +1269,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Email', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.email, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.hoApplicantEmailController,
-                                "Email",
+                                AppLocalizations.of(context)!.email,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -1284,7 +1286,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   provider.hoApplicantEmailError =
                                       value.isNotEmpty && value.isValidEmail()
                                           ? null
-                                          : "Invalid email address";
+                                          : AppLocalizations.of(context)!.invalidEmail;
                                   provider.notifyListeners();
                                 },
                               ),
@@ -1302,7 +1304,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('State', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.state, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1316,7 +1318,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 controller: provider.stateController,
                                 idController: provider.stateIdController,
-                                hintText: "--Select State--",
+                                hintText: AppLocalizations.of(context)!.selectState,
                                 // height: 50,
                                 // selectedValue: provider.selectedState,
                                 // getLabel: (e) => e.name ?? "",
@@ -1340,7 +1342,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('District', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.district, required: true),
                             ),
                             provider.isDistrictLoading
                                 ? const Center(
@@ -1360,7 +1362,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                       controller: provider.districtHoController,
                                       idController:
                                           provider.districtIdController,
-                                      hintText: "--Select District--",
+                                      hintText: AppLocalizations.of(context)!.selectDistrict,
                                       // height: 50,
                                       // selectedValue: provider.selectedDistrict,
                                       // getLabel: (e) => e.name ?? "",
@@ -1387,7 +1389,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('City', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.city, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1402,7 +1404,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 controller: provider.cityHoController,
                                 idController: provider.cityIdController,
-                                hintText: "--Select City--",
+                                hintText: AppLocalizations.of(context)!.selectCity,
                                 // height: 50,
                                 // selectedValue: provider.selectedCity,
                                 // getLabel: (e) => e.nameEng ?? "",
@@ -1421,14 +1423,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Website'),
+                              child: labelWithStar(AppLocalizations.of(context)!.website),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.websiteController,
-                                "Website",
+                                AppLocalizations.of(context)!.website,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1439,7 +1441,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Applicant Address',
+                              child: labelWithStar(AppLocalizations.of(context)!.applicantAddress,
                                   required: true),
                             ),
                             Padding(
@@ -1447,7 +1449,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.applicantAddressController,
-                                "Applicant Address",
+                                AppLocalizations.of(context)!.applicantAddress,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1460,14 +1462,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('NIC Code', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.nicCode, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.nicCodeController,
-                                "NIC Code",
+                                AppLocalizations.of(context)!.nicCode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1503,7 +1505,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "5. Contact Person Details :-",
+                                "5. " + AppLocalizations.of(context)!.contactPerDetail + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -1511,14 +1513,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('PAN No'),
+                              child: labelWithStar(AppLocalizations.of(context)!.panNo),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactPanController,
-                                "PAN No",
+                                AppLocalizations.of(context)!.panNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1546,7 +1548,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   provider.contactPanError =
                                       pan.length == 10 && pan.isValidPanCardNo()
                                           ? null
-                                          : "Invalid PAN number";
+                                          : AppLocalizations.of(context)!.invalidPANNo;
 
                                   provider.notifyListeners();
                                 },
@@ -1565,14 +1567,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Full Name', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.fullName, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactNameController,
-                                "Full Name",
+                                AppLocalizations.of(context)!.fullName,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1587,7 +1589,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Mobile Number',
+                              child: labelWithStar(AppLocalizations.of(context)!.mobileNo,
                                   required: true),
                             ),
                             Padding(
@@ -1595,7 +1597,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactMobileController,
-                                "Mobile Number",
+                                AppLocalizations.of(context)!.mobileNo,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
@@ -1609,7 +1611,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length != 10) {
                                     provider.contactMobileError =
-                                        "Telephone number must be 10 digits";
+                                        AppLocalizations.of(context)!.telNo10digit;
                                   } else {
                                     provider.contactMobileError = null;
                                   }
@@ -1620,7 +1622,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Alternate Mobile',
+                              child: labelWithStar(AppLocalizations.of(context)!.alterMobile,
                                   required: true),
                             ),
                             Padding(
@@ -1628,7 +1630,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactAltMobileController,
-                                "Alternate Mobile",
+                                AppLocalizations.of(context)!.alterMobile,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.phone,
@@ -1642,7 +1644,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 fun: (value) {
                                   if (value.length != 10) {
                                     provider.contactAlterMobileError =
-                                        "Telephone number must be 10 digits";
+                                        AppLocalizations.of(context)!.telNo10digit;
                                   } else {
                                     provider.contactAlterMobileError = null;
                                   }
@@ -1653,14 +1655,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Email', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.email, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactEmailController,
-                                "Email",
+                                AppLocalizations.of(context)!.email,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.emailAddress,
@@ -1681,7 +1683,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('State', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.state, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1695,7 +1697,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 controller: provider.coStateController,
                                 idController: provider.coStateIdController,
-                                hintText: "--Select State--",
+                                hintText: AppLocalizations.of(context)!.selectState,
                                 // height: 50,
                                 // selectedValue: provider.coSelectedState,
                                 // getLabel: (e) => e.name ?? "",
@@ -1719,7 +1721,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('District', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.district, required: true),
                             ),
                             provider.iscoDistrictLoading
                                 ? const Center(
@@ -1739,7 +1741,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                       controller: provider.coDistrictController,
                                       idController:
                                           provider.coDistrictIdController,
-                                      hintText: "--Select District--",
+                                      hintText: AppLocalizations.of(context)!.selOption,
                                       // height: 50,
                                       // selectedValue:
                                       //     provider.coSelectedDistrict,
@@ -1767,7 +1769,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('City', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.city, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -1781,7 +1783,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 getName: (item) => item.nameEng ?? "",
                                 controller: provider.coCityController,
                                 idController: provider.coCityIdController,
-                                hintText: "--Select City--",
+                                hintText: AppLocalizations.of(context)!.selectCity,
                                 // height: 50,
                                 // selectedValue: provider.coSelectedCity,
                                 // getLabel: (e) => e.nameEng ?? "",
@@ -1800,14 +1802,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Pincode', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.pincode, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactPincodeController,
-                                "Pincode",
+                                AppLocalizations.of(context)!.pincode,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -1823,14 +1825,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Designation', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.designation, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactDesignationController,
-                                "Designation",
+                                AppLocalizations.of(context)!.designation,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1842,14 +1844,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child:
-                                  labelWithStar('Department', required: true),
+                                  labelWithStar(AppLocalizations.of(context)!.department, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactDepartmentController,
-                                "Department",
+                                AppLocalizations.of(context)!.department,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1864,14 +1866,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Address', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.address, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.contactAddressController,
-                                "Address",
+                                AppLocalizations.of(context)!.address,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1906,7 +1908,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "6. Exchange Name / District Employment Office :-",
+                                "6. " + AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc +" :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -1914,7 +1916,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Exchange Name',
+                              child: labelWithStar(AppLocalizations.of(context)!.exchangeName,
                                   required: true),
                             ),
                             Padding(
@@ -1922,7 +1924,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.exchangeNameController,
-                                "Exchange Name",
+                                AppLocalizations.of(context)!.exchangeName,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.text,
@@ -1956,7 +1958,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "7. Exchange Market Information Program :-",
+                                "7. " + AppLocalizations.of(context)!.exchangeMarInfoProg + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -1964,7 +1966,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Type of Organization',
+                              child: labelWithStar(AppLocalizations.of(context)!.typeOfOrg,
                                   required: true),
                             ),
                             Padding(
@@ -1995,7 +1997,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 controller: provider.organisationTypeController,
                                 idController: provider.organisationTypeIdController,
 
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
 
                                 onChanged: (value) {
                                   provider.organisationType = value;
@@ -2011,7 +2013,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: labelWithStar('Government Body',
+                                child: labelWithStar(AppLocalizations.of(context)!.govtBody,
                                     required: true),
                               ),
                               Padding(
@@ -2033,7 +2035,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   controller: provider.govtBodyController,
                                   idController: provider.govtBodyIdController,
 
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
 
                                   onChanged: (value) {
                                     provider.govtBody = value;
@@ -2074,7 +2076,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Male Employee',
+                              child: labelWithStar(AppLocalizations.of(context)!.noOfMaleEmp,
                                   required: true),
                             ),
                             Padding(
@@ -2082,7 +2084,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.noOfMaleEmpController,
-                                "No of Male Employee",
+                                AppLocalizations.of(context)!.noOfMaleEmp,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -2097,7 +2099,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Female Employee',
+                              child: labelWithStar(AppLocalizations.of(context)!.noOfFemaleEmp,
                                   required: true),
                             ),
                             Padding(
@@ -2105,7 +2107,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.noOfFemaleEmpController,
-                                "No of Female Employee",
+                                AppLocalizations.of(context)!.noOfFemaleEmp,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -2120,7 +2122,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('No of Transgender',
+                              child: labelWithStar(AppLocalizations.of(context)!.noOfTransEmp,
                                   required: true),
                             ),
                             Padding(
@@ -2128,7 +2130,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.noOfTransEmpController,
-                                "No of Transgender",
+                                AppLocalizations.of(context)!.noOfTransEmp,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -2143,7 +2145,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Total No of Employee',
+                              child: labelWithStar(AppLocalizations.of(context)!.totalNoEmp,
                                   required: true),
                             ),
                             Padding(
@@ -2151,7 +2153,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   horizontal: 10, vertical: 5),
                               child: buildTextWithBorderField(
                                 provider.noOfTotalEmpController,
-                                "Total No of Employee",
+                                AppLocalizations.of(context)!.totalNoEmp,
                                 MediaQuery.of(context).size.width,
                                 50,
                                 TextInputType.number,
@@ -2164,7 +2166,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
-                                child: labelWithStar('Act Establishment',
+                                child: labelWithStar(AppLocalizations.of(context)!.actEst,
                                     required: true),
                               ),
                               Padding(
@@ -2181,7 +2183,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  hint: const Text("--Select Option--"),
+                                  hint: Text(AppLocalizations.of(context)!.selOption),
                                   items: provider.actEstList
                                       .map(
                                         (e) => DropdownMenuItem<
@@ -2200,7 +2202,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Industry Type',
+                              child: labelWithStar(AppLocalizations.of(context)!.indusType,
                                   required: true),
                             ),
                             Padding(
@@ -2219,7 +2221,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 controller: provider.industryTypeController,
                                 idController: provider.industryTypeIdController,
 
-                                hintText: "--Select Option--",
+                                hintText: AppLocalizations.of(context)!.selOption,
 
                                 onChanged: (value) {
                                   provider.industryType = value;
@@ -2249,7 +2251,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
-                              child: labelWithStar('Sector', required: true),
+                              child: labelWithStar(AppLocalizations.of(context)!.sector, required: true),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -2264,7 +2266,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                hint: const Text("--Select Option--"),
+                                hint: Text(AppLocalizations.of(context)!.selOption),
                                 items: provider.sectorList
                                     .map(
                                       (e) => DropdownMenuItem<SectorData>(
@@ -2304,7 +2306,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "8. Upload Organization/Company Documents :-",
+                                "8. " + AppLocalizations.of(context)!.uploadOrgCompDoc + " :-",
                                 style: Styles.semiBoldTextStyle(
                                     size: 14, color: kWhite),
                               ),
@@ -2435,8 +2437,8 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                 context, provider)) {
                               confirmAlertDialog(
                                 context,
-                                "Confirm Submission",
-                                "Are you sure you want to submit the form ?",
+                                AppLocalizations.of(context)!.confirmSub,
+                                AppLocalizations.of(context)!.areYouSureSubmitForm,
                                 (value) {
                                   if (value.toString() == "success") {
                                     provider.submitEmpOTRForm(context);
@@ -2453,7 +2455,7 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                             ),
                             elevation: 0,
                           ),
-                          child: const Text('Save',
+                          child: Text(AppLocalizations.of(context)!.save,
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white)),
                         ),
@@ -2545,22 +2547,22 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// =========================
 
   if (provider.brnController.text.trim().isEmpty) {
-    showAlertError("Please enter BRN", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterBRN, context);
     return false;
   }
 
   if (provider.districtController.text.trim().isEmpty) {
-    showAlertError("Please enter District", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterDistrict, context);
     return false;
   }
 
   if (provider.areaType == null || provider.areaType!.isEmpty) {
-    showAlertError("Please select Area (Rural / Urban)", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelAreaRU, context);
     return false;
   }
 
   if (provider.tehsilController.text.trim().isEmpty) {
-    showAlertError("Please enter Tehsil", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterTehsil, context);
     return false;
   }
 
@@ -2579,7 +2581,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
 
   if (provider.areaType == 'Urban' &&
       provider.wardController.text.trim().isEmpty) {
-    showAlertError("Please enter Ward", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterWard, context);
     return false;
   }
 
@@ -2588,37 +2590,37 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// =========================
 
   if (provider.companyNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Company Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterCompName, context);
     return false;
   }
 
   if (provider.houseNoController.text.trim().isEmpty) {
-    showAlertError("Please enter House Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHouseNo, context);
     return false;
   }
 
   if (provider.laneController.text.trim().isEmpty) {
-    showAlertError("Please enter Lane", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterLane, context);
     return false;
   }
 
   if (provider.localityController.text.trim().isEmpty) {
-    showAlertError("Please enter Locality", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterLocality, context);
     return false;
   }
 
   if (provider.pinCodeController.text.trim().isEmpty) {
-    showAlertError("Please enter Pin Code", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPinCode, context);
     return false;
   }
 
   if (provider.pinCodeController.text.length != 6) {
-    showAlertError("Pin Code must be 6 digits", context);
+    showAlertError(AppLocalizations.of(context)!.pinCode6digit, context);
     return false;
   }
 
   if (provider.telNoController.text.trim().isEmpty) {
-    showAlertError("Please enter Telephone Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterTelNo, context);
     return false;
   }
 
@@ -2628,7 +2630,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.emailController.text.trim().isEmpty) {
-    showAlertError("Please enter Email", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterEmail, context);
     return false;
   }
 
@@ -2638,7 +2640,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.gstController.text.trim().isEmpty) {
-    showAlertError("Please enter GST Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterGSTNo, context);
     return false;
   }
 
@@ -2651,7 +2653,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.panController.text.trim().isEmpty) {
-    showAlertError("Please enter PAN Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPANNo, context);
     return false;
   }
 
@@ -2661,17 +2663,17 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.panHolderController.text.trim().isEmpty) {
-    showAlertError("Please enter PAN Holder Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterPANHolderName, context);
     return false;
   }
 
   if (provider.panVerifiedController.text.trim().isEmpty) {
-    showAlertError("Please verify PAN", context);
+    showAlertError(AppLocalizations.of(context)!.plzVerifyPAN, context);
     return false;
   }
 
   if (provider.tanController.text.trim().isEmpty) {
-    showAlertError("Please enter TAN Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterTANNo, context);
     return false;
   }
 
@@ -2685,17 +2687,17 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// =========================
 
   if (provider.hoCompanyNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Company Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeCompName, context);
     return false;
   }
 
   if (provider.hoTelNoController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Telephone Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeTelNo, context);
     return false;
   }
 
   if (provider.hoEmailController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Email", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeEmail, context);
     return false;
   }
 
@@ -2705,7 +2707,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.hoPanController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office PAN Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficePANNo, context);
     return false;
   }
 
@@ -2715,27 +2717,27 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.hoHouseNoController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office House Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeHouseNo, context);
     return false;
   }
 
   if (provider.hoLaneController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Lane", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeLane, context);
     return false;
   }
 
   if (provider.hoLocalityController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Locality", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficeLocality, context);
     return false;
   }
 
   if (provider.hoPincodeController.text.trim().isEmpty) {
-    showAlertError("Please enter Head Office Pincode", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterHeadOfficePincode, context);
     return false;
   }
 
   if (provider.hoPincodeController.text.length != 6) {
-    showAlertError("Head Office Pincode must be 6 digits", context);
+    showAlertError(AppLocalizations.of(context)!.headOffPin6Digit, context);
     return false;
   }
 
@@ -2743,22 +2745,22 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// 4️⃣ HEAD OFFICE APPLICANT DETAILS
   /// =========================
   if (provider.applicantNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Applicant Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterApplicantName, context);
     return false;
   }
 
   if (provider.applicantMobileController.text.trim().isEmpty) {
-    showAlertError("Please enter Applicant Mobile Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterAppMobileNo, context);
     return false;
   }
 
   if (provider.applicantMobileController.text.length != 10) {
-    showAlertError("Applicant Mobile must be 10 digits", context);
+    showAlertError(AppLocalizations.of(context)!.applicantMobile10Digit, context);
     return false;
   }
 
   if (provider.applicantEmailController.text.trim().isEmpty) {
-    showAlertError("Please enter Applicant Email", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterApplicantEmail, context);
     return false;
   }
 
@@ -2770,46 +2772,46 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// STATE
   if (provider.selectedState == null ||
       provider.stateController.text.trim().isEmpty) {
-    showAlertError("Please select State", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectState, context);
     return false;
   }
 
   /// DISTRICT
   if (provider.selectedDistrict == null ||
       provider.districtHoController.text.trim().isEmpty) {
-    showAlertError("Please select District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
     return false;
   }
 
   /// CITY
   if (provider.selectedCity == null ||
       provider.cityHoController.text.trim().isEmpty) {
-    showAlertError("Please select City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
     return false;
   }
 
   if (provider.yearController.text.trim().isEmpty) {
-    showAlertError("Please enter Year", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterYear, context);
     return false;
   }
 
   if (provider.ownershipController.text.trim().isEmpty) {
-    showAlertError("Please enter Ownership", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterOwnership, context);
     return false;
   }
 
   if (provider.totalPersonController.text.trim().isEmpty) {
-    showAlertError("Please enter Total Person", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterTotalPer, context);
     return false;
   }
 
   if (provider.actAuthorityRegController.text.trim().isEmpty) {
-    showAlertError("Please enter Act Authority Reg", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterActAuthReg, context);
     return false;
   }
 
   if (provider.tanNoController.text.trim().isEmpty) {
-    showAlertError("Please enter TAN Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterTANNo, context);
     return false;
   }
 
@@ -2819,7 +2821,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.hoApplicantEmailController.text.trim().isEmpty) {
-    showAlertError("Please enter Email", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterEmail, context);
     return false;
   }
 
@@ -2829,17 +2831,17 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.stateController.text.trim().isEmpty) {
-    showAlertError("Please select State", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectState, context);
     return false;
   }
 
   if (provider.districtHoController.text.trim().isEmpty) {
-    showAlertError("Please select District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
     return false;
   }
 
   if (provider.cityHoController.text.trim().isEmpty) {
-    showAlertError("Please select City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
     return false;
   }
 
@@ -2849,12 +2851,12 @@ bool validateEmpOTRBasicAndOfficeDetails(
   // }
 
   if (provider.applicantAddressController.text.trim().isEmpty) {
-    showAlertError("Please enter Applicant Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterApplicantAddress, context);
     return false;
   }
 
   if (provider.nicCodeController.text.trim().isEmpty) {
-    showAlertError("Please enter NIC Code", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterNicCode, context);
     return false;
   }
 
@@ -2872,12 +2874,12 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.contactNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Full Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactFullName, context);
     return false;
   }
 
   if (provider.contactMobileController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Mobile Number", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactMobileNo, context);
     return false;
   }
 
@@ -2897,7 +2899,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   }
 
   if (provider.contactEmailController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Email", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactEmail, context);
     return false;
   }
 
@@ -2909,56 +2911,56 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// CONTACT STATE
   if (provider.coSelectedState == null ||
       provider.coStateController.text.trim().isEmpty) {
-    showAlertError("Please select Contact State", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactState, context);
     return false;
   }
 
   /// CONTACT DISTRICT
   if (provider.coSelectedDistrict == null ||
       provider.coDistrictController.text.trim().isEmpty) {
-    showAlertError("Please select Contact District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactDistrict, context);
     return false;
   }
 
   /// CONTACT CITY
   if (provider.coSelectedCity == null ||
       provider.coCityController.text.trim().isEmpty) {
-    showAlertError("Please select Contact City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactCity, context);
     return false;
   }
 
   if (provider.coStateController.text.trim().isEmpty) {
-    showAlertError("Please select Contact State", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactState, context);
     return false;
   }
 
   if (provider.coDistrictController.text.trim().isEmpty) {
-    showAlertError("Please select Contact District", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactDistrict, context);
     return false;
   }
 
   if (provider.coCityController.text.trim().isEmpty) {
-    showAlertError("Please select Contact City", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelContactCity, context);
     return false;
   }
 
   if (provider.contactPincodeController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Pincode", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactPincode, context);
     return false;
   }
 
   if (provider.contactDesignationController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Designation", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactDesig, context);
     return false;
   }
 
   if (provider.contactDepartmentController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Department", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactDept, context);
     return false;
   }
 
   if (provider.contactAddressController.text.trim().isEmpty) {
-    showAlertError("Please enter Contact Address", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterContactAddress, context);
     return false;
   }
 
@@ -2966,7 +2968,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// 6️⃣ EXCHANGE / DISTRICT EMPLOYMENT OFFICE
   /// =========================
   if (provider.exchangeNameController.text.trim().isEmpty) {
-    showAlertError("Please enter Exchange Name", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterExchangeName, context);
     return false;
   }
 
@@ -2978,32 +2980,32 @@ bool validateEmpOTRBasicAndOfficeDetails(
 
   /// MALE
   if (provider.noOfMaleEmpController.text.trim().isEmpty) {
-    showAlertError("Please enter No of Male Employee", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterNoOfMaleEmp, context);
     return false;
   }
 
   /// FEMALE
   if (provider.noOfFemaleEmpController.text.trim().isEmpty) {
-    showAlertError("Please enter No of Female Employee", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterNoOfFemaleEmp, context);
     return false;
   }
 
   /// TRANSGENDER
   if (provider.noOfTransEmpController.text.trim().isEmpty) {
-    showAlertError("Please enter No of Transgender Employee", context);
+    showAlertError(AppLocalizations.of(context)!.plzEnterNoOfTransEmp, context);
     return false;
   }
 
   /// TOTAL CHECK
   if (total != (male + female + trans)) {
-    showAlertError("Total employees count is incorrect", context);
+    showAlertError(AppLocalizations.of(context)!.totalEmpCountIncorrect, context);
     return false;
   }
 
   /// ORGANIZATION TYPE
   if (provider.organisationType == null ||
       provider.organisationType!.isEmpty) {
-    showAlertError("Please select Type of Organization", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelTypeOrg, context);
     return false;
   }
 
@@ -3011,7 +3013,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   if (provider.showGovtBody &&
       provider.organisationType != null) {
     if (provider.govtBody == null || provider.govtBody!.isEmpty) {
-      showAlertError("Please select Government Body", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelGovtBody, context);
       return false;
     }
   }
@@ -3020,7 +3022,7 @@ bool validateEmpOTRBasicAndOfficeDetails(
   if (provider.showActEst &&
       provider.organisationType != null) {
     if (provider.selectedActEst == null) {
-      showAlertError("Please select Act Establishment", context);
+      showAlertError(AppLocalizations.of(context)!.plzSelActEst, context);
       return false;
     }
   }
@@ -3029,13 +3031,13 @@ bool validateEmpOTRBasicAndOfficeDetails(
   /// INDUSTRY TYPE
   if (provider.industryType == null ||
       provider.industryType!.isEmpty) {
-    showAlertError("Please select Industry Type", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelIndusType, context);
     return false;
   }
 
   /// SECTOR
   if (provider.selectedSector == null) {
-    showAlertError("Please select Sector", context);
+    showAlertError(AppLocalizations.of(context)!.plzSelectSector, context);
     return false;
   }
 

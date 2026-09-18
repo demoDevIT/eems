@@ -89,8 +89,8 @@ class _CounselorDashboard extends State<CounselorDashboard> {
     return Scaffold(
       drawer: _buildSideDrawer(),
       appBar: AppBar(
-        title: const Text(
-          "Counselor Dashboard",
+        title: Text(
+          AppLocalizations.of(context)!.counseDash,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -159,7 +159,7 @@ class _CounselorDashboard extends State<CounselorDashboard> {
 
           /// Apply Job Fair (same as employer)
           _dashboardListTile(
-            title: "Apply for Job Fair",
+            title: AppLocalizations.of(context)!.applyJobFair,
             iconPath: "assets/images/aplyjobfair.svg",
             color: const Color(0xFF2DBE8D),
             onTap: () {
@@ -330,8 +330,8 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                           ),
                         );
                       },
-                      child: const Text(
-                        "Apply Now",
+                      child: Text(
+                        AppLocalizations.of(context)!.applynow,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -455,8 +455,8 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                             //   ),
                             // );
                           },
-                          child: const Text(
-                            "Update Profile",
+                          child: Text(
+                            AppLocalizations.of(context)!.updateProfile,
                             style: TextStyle(
                               fontSize: 14,
                               color: kViewAllColor,
@@ -511,7 +511,7 @@ class _CounselorDashboard extends State<CounselorDashboard> {
           /// Logout (same as employer)
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text("Logout"),
+            title: Text(AppLocalizations.of(context)!.logout),
             onTap: () async {
               Navigator.pop(context);
 

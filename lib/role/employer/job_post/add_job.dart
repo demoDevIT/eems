@@ -624,7 +624,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 15),
 
                           /// AGE SLIDER
-                          Text(AppLocalizations.of(context)!.ageGroupLimit "Age Group Limit"),
+                          Text(AppLocalizations.of(context)!.ageGroupLimit),
 
                           Row(
                             mainAxisAlignment:
@@ -653,7 +653,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           const SizedBox(height: 10),
 
                           /// EX SERVICEMAN
-                          const Text("Ex-Serviceman Preferred"),
+                          Text(AppLocalizations.of(context)!.exSerPref),
 
                           Row(
                             children: [
@@ -664,7 +664,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setExServiceman(v!);
                                   }),
-                              const Text("Yes"),
+                              Text(AppLocalizations.of(context)!.yes),
 
                               Radio(
                                   value: "No",
@@ -672,14 +672,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setExServiceman(v!);
                                   }),
-                              const Text("No"),
+                              Text(AppLocalizations.of(context)!.no),
                             ],
                           ),
 
                           const SizedBox(height: 10),
 
                           /// NIGHT SHIFT
-                          const Text("This is a Night Shift Job"),
+                          Text(AppLocalizations.of(context)!.nightShiftJob),
 
                           Row(
                             children: [
@@ -690,7 +690,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setNightShift(v!);
                                   }),
-                              const Text("Yes"),
+                              Text(AppLocalizations.of(context)!.yes),
 
                               Radio(
                                   value: "No",
@@ -698,14 +698,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setNightShift(v!);
                                   }),
-                              const Text("No"),
+                              Text(AppLocalizations.of(context)!.no),
                             ],
                           ),
 
                           const SizedBox(height: 10),
 
                           /// PWD JOB
-                          const Text("Job Post For PWD?"),
+                          Text(AppLocalizations.of(context)!.jobPostPWD),
 
                           Row(
                             children: [
@@ -716,7 +716,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setPwdJob(v!);
                                   }),
-                              const Text("Yes"),
+                              Text(AppLocalizations.of(context)!.yes),
 
                               Radio(
                                   value: "No",
@@ -724,7 +724,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                                   onChanged: (v) {
                                     provider.setPwdJob(v!);
                                   }),
-                              const Text("No"),
+                              Text(AppLocalizations.of(context)!.no),
                             ],
                           ),
                         ],
@@ -742,7 +742,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          labelWithStar('Salary Range', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.salaryRange, required: false),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -755,7 +755,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                               controller: provider.salaryRangeController,
                               idController: provider.salaryRangeIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               // height: 50,
                               // borderRadius: BorderRadius.circular(8),
                               onChanged: (value) {
@@ -769,8 +769,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           TextField(
                             controller: provider.salaryController,
-                            decoration: const InputDecoration(
-                              labelText: "Salary",
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.salary,
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -790,13 +790,13 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text(
-                            "Required Skill",
+                          Text(
+                            AppLocalizations.of(context)!.reqSkill,
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
 
                           const SizedBox(height: 12),
-                          labelWithStar('Skill Category', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.skillCate, required: false),
                           const SizedBox(height: 4),
                           /// CATEGORY DROPDOWN
                           buildSearchableDropdown<GetCategoryTypeDetailsData>(
@@ -808,7 +808,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                             controller: provider.categoryNameController,
                             idController: provider.categoryIdController,
-                            hintText: "--Select Option--",
+                            hintText: AppLocalizations.of(context)!.selOption,
                             // height: 50,
                             // color: Colors.transparent,
                             // borderRadius: BorderRadius.circular(8),
@@ -826,7 +826,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           /// SUBCATEGORY + ADD BUTTON
 
-                          labelWithStar('Skill Subcategory', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.skillSubCate, required: false),
                           const SizedBox(height: 5),
                           Row(
                             children: [
@@ -840,7 +840,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                                   controller: provider.subCategoryNameController,
                                   idController: provider.subCategoryIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
                                   // height: 50,
                                   // color: Colors.transparent,
                                   // borderRadius: BorderRadius.circular(8),
@@ -909,13 +909,13 @@ class _AddJobScreenState extends State<AddJobScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          const Text(
-                            "Essential Qualification",
+                          Text(
+                            AppLocalizations.of(context)!.essentQualifi,
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
 
                           const SizedBox(height: 12),
-                          labelWithStar('Education Type', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.eduType, required: false),
                           const SizedBox(height: 4),
                           buildSearchableDropdown<GetEducationTypeData>(
                             items: provider.educationTypeList,
@@ -926,7 +926,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                             controller: provider.educationNameController,
                             idController: provider.educationIdController,
-                            hintText: "--Select Option--",
+                            hintText: AppLocalizations.of(context)!.selOption,
                             // height: 50,
                             // color: Colors.transparent,
                             // borderRadius: BorderRadius.circular(8),
@@ -943,7 +943,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                           const SizedBox(height: 10),
 
-                          labelWithStar('Course', required: false),
+                          labelWithStar(AppLocalizations.of(context)!.course, required: false),
                           const SizedBox(height: 5),
                           Row(
                             children: [
@@ -957,7 +957,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
                                   controller: provider.courseNameController,
                                   idController: provider.courseIdController,
-                                  hintText: "--Select Option--",
+                                  hintText: AppLocalizations.of(context)!.selOption,
                                   // height: 50,
                                   // color: Colors.transparent,
                                   // borderRadius: BorderRadius.circular(8),
@@ -1014,8 +1014,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                           TextField(
                             controller: provider.descriptionController,
                             maxLines: 3,
-                            decoration: const InputDecoration(
-                              labelText: "Description",
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.description,
                               border: OutlineInputBorder(),
                             ),
                           )

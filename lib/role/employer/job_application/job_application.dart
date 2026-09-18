@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/user_new.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
@@ -55,7 +56,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: commonAppBar2("Job Application List", context, "en", "", false, "", onTapClick: () {}),
+      appBar: commonAppBar2(AppLocalizations.of(context)!.jobAppList, context, "en", "", false, "", onTapClick: () {}),
 
       body: Consumer<JobApplicationProvider>(
         builder: (context, provider, child) {
@@ -72,7 +73,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                       _openQRScanner(context);
                     },
                     icon: const Icon(Icons.qr_code_scanner),
-                    label: const Text("Scan QR"),
+                    label: Text(AppLocalizations.of(context)!.scanQR),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -91,8 +92,8 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ExpansionTile(
-                    title: const Text(
-                      "Filters",
+                    title: Text(
+                      AppLocalizations.of(context)!.filters,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     leading: const Icon(Icons.filter_list),
@@ -123,13 +124,13 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             // const SizedBox(height: 10),
 
                             /// Event Name
-                            labelWithStar('Event Name', required: false),
+                            labelWithStar(AppLocalizations.of(context)!.eventName, required: false),
 
                             buildDropdownWithBorderField(
                               items: provider.eventNameList,
                               controller: provider.eventNameController,
                               idController: provider.eventIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               height: 50,
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
@@ -149,13 +150,13 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             const SizedBox(height: 10),
 
                             /// Job Post
-                            labelWithStar('Job Post', required: false),
+                            labelWithStar(AppLocalizations.of(context)!.jobPost, required: false),
 
                             buildDropdownWithBorderFieldOnlyThisPage(
                               items: provider.postList,
                               controller: provider.postNameController,
                               idController: provider.postIdController,
-                              hintText: "--Select Option--",
+                              hintText: AppLocalizations.of(context)!.selOption,
                               height: 50,
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
@@ -197,13 +198,13 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                             //   decoration: _inputDecoration("Enter Applicant Name"),
                             // ),
 
-                            labelWithStar("Search By", required: false),
+                            labelWithStar(AppLocalizations.of(context)!.searchBy, required: false),
 
                             Column(
                               children: [
 
                                 RadioListTile<SearchType>(
-                                  title: const Text("Mobile"),
+                                  title: Text(AppLocalizations.of(context)!.mobile),
                                   value: SearchType.mobile,
                                   groupValue: selectedSearchType,
                                   onChanged: (value) {
@@ -218,7 +219,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                 ),
 
                                 RadioListTile<SearchType>(
-                                  title: const Text("Registration No"),
+                                  title: Text(AppLocalizations.of(context)!.registrationNo),
                                   value: SearchType.regNo,
                                   groupValue: selectedSearchType,
                                   onChanged: (value) {
@@ -233,7 +234,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                 ),
 
                                 RadioListTile<SearchType>(
-                                  title: const Text("Name of Applicant"),
+                                  title: Text(AppLocalizations.of(context)!.nameApplicant),
                                   value: SearchType.applicantName,
                                   groupValue: selectedSearchType,
                                   onChanged: (value) {
@@ -253,19 +254,19 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                   TextFormField(
                                     controller: provider.mobileController,
                                     keyboardType: TextInputType.phone,
-                                    decoration: _inputDecoration("Enter Mobile Number"),
+                                    decoration: _inputDecoration(AppLocalizations.of(context)!.enterMobileNo),
                                   ),
 
                                 if (selectedSearchType == SearchType.regNo)
                                   TextFormField(
                                     controller: provider.registrationController,
-                                    decoration: _inputDecoration("Enter Registration Number"),
+                                    decoration: _inputDecoration(AppLocalizations.of(context)!.enterRegNo),
                                   ),
 
                                 if (selectedSearchType == SearchType.applicantName)
                                   TextFormField(
                                     controller: provider.applicantNameController,
-                                    decoration: _inputDecoration("Enter Applicant Name"),
+                                    decoration: _inputDecoration(AppLocalizations.of(context)!.enterApplicantName),
                                   ),
                               ],
                             ),
@@ -286,34 +287,34 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
 
                                   /// Event
                                   if (provider.eventIdController.text.trim().isEmpty) {
-                                    showAlertError("Please select Event Name", context);
+                                    showAlertError(AppLocalizations.of(context)!.plzSelEventName, context);
                                     return;
                                   }
 
                                   /// Job Post
                                   if (selectedJobPostID == null || selectedJobPostID!.isEmpty) {
-                                    showAlertError("Please select Job Post", context);
+                                    showAlertError(AppLocalizations.of(context)!.plzSelJobPost, context);
                                     return;
                                   }
 
                                   /// Mobile
                                   if (selectedSearchType == SearchType.mobile &&
                                       provider.mobileController.text.trim().isEmpty) {
-                                    showAlertError("Please enter Mobile Number", context);
+                                    showAlertError(AppLocalizations.of(context)!.plzEnterMobileNo, context);
                                     return;
                                   }
 
                                   /// Registration No
                                   if (selectedSearchType == SearchType.regNo &&
                                       provider.registrationController.text.trim().isEmpty) {
-                                    showAlertError("Please enter Registration Number", context);
+                                    showAlertError(AppLocalizations.of(context)!.plzEnterRegNo, context);
                                     return;
                                   }
 
                                   /// Applicant Name
                                   if (selectedSearchType == SearchType.applicantName &&
                                       provider.applicantNameController.text.trim().isEmpty) {
-                                    showAlertError("Please enter Applicant Name", context);
+                                    showAlertError(AppLocalizations.of(context)!.plzEnterApplicantName, context);
                                     return;
                                   }
 
@@ -327,7 +328,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                                     applicantName: provider.applicantNameController.text,
                                   );
                                 },
-                                child: const Text("Search"),
+                                child: Text(AppLocalizations.of(context)!.search),
                               ),
                             ),
                           ],
@@ -385,10 +386,10 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
 
                           const Divider(),
 
-                          _buildRow("Mobile No.", data.mobileNo),
-                          _buildRow("Email", data.email),
-                          _buildRow("Job Position", data.jobPositionTitle),
-                          _buildRow("Status", data.candidateStatus),
+                          _buildRow(AppLocalizations.of(context)!.mobileNo, data.mobileNo),
+                          _buildRow(AppLocalizations.of(context)!.email, data.email),
+                          _buildRow(AppLocalizations.of(context)!.jobPosition, data.jobPositionTitle),
+                          _buildRow(AppLocalizations.of(context)!.status, data.candidateStatus),
 
                           if ((data.candidateStatus ?? "").toLowerCase() == "pending")
                             Align(
@@ -453,7 +454,7 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
               // Ensured valid
               isExpanded: true,
               hint: Text(
-                hintText ?? 'Select an option',
+                hintText ?? AppLocalizations.of(context)!.selOption,
                 style: Styles.regularTextStyle(
                     size: 14, color:fontGrayColor),
               ),
@@ -469,9 +470,9 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
               //   );
               // }).toList(),
               items: [
-                const DropdownMenuItem<String>(
+                DropdownMenuItem<String>(
                   value: "",
-                  child: Text("--Select Option--"),
+                  child: Text(AppLocalizations.of(context)!.selOption),
                 ),
                 ...items.map((dynamic item) {
                   return DropdownMenuItem<String>(
@@ -631,8 +632,8 @@ void _openActionDialog(BuildContext context, data) {
                     ),
 
                     /// Reached Stall
-                    const Text(
-                      "Reached at Stall?",
+                    Text(
+                      AppLocalizations.of(context)!.reachAtStall,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
 
@@ -651,7 +652,7 @@ void _openActionDialog(BuildContext context, data) {
                             });
                           },
                         ),
-                        const Text("Yes"),
+                        Text(AppLocalizations.of(context)!.yes),
 
                         Radio(
                           value: 0,
@@ -666,7 +667,7 @@ void _openActionDialog(BuildContext context, data) {
                             });
                           },
                         ),
-                        const Text("No"),
+                        Text(AppLocalizations.of(context)!.no),
                       ],
                     ),
 
@@ -675,8 +676,8 @@ void _openActionDialog(BuildContext context, data) {
 
                       const SizedBox(height: 15),
 
-                      const Text(
-                        "Candidate Shortlisted?",
+                      Text(
+                        AppLocalizations.of(context)!.candStortList,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
 
@@ -696,7 +697,7 @@ void _openActionDialog(BuildContext context, data) {
                               });
                             },
                           ),
-                          const Text("Yes"),
+                          Text(AppLocalizations.of(context)!.yes),
 
                           Radio(
                             value: 0,
@@ -710,7 +711,7 @@ void _openActionDialog(BuildContext context, data) {
                               });
                             },
                           ),
-                          const Text("No"),
+                          Text(AppLocalizations.of(context)!.no),
                         ],
                       ),
                     ],
@@ -720,7 +721,7 @@ void _openActionDialog(BuildContext context, data) {
 
                       const SizedBox(height: 15),
 
-                      const Text("Selection type"),
+                      Text(AppLocalizations.of(context)!.selectionType),
 
                       Wrap(
                         spacing: 10,
@@ -739,7 +740,7 @@ void _openActionDialog(BuildContext context, data) {
                                   });
                                 },
                               ),
-                              const Text("Job Offer Letter Given"),
+                              Text(AppLocalizations.of(context)!.jobOfferLetterGiven),
                             ],
                           ),
 
@@ -755,7 +756,7 @@ void _openActionDialog(BuildContext context, data) {
                                   });
                                 },
                               ),
-                              const Text("Preliminary Selected"),
+                              Text(AppLocalizations.of(context)!.preliSelected),
                             ],
                           ),
                         ],
@@ -767,8 +768,8 @@ void _openActionDialog(BuildContext context, data) {
                       TextField(
                         controller: salaryController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: "Salary Offered (Per Month)",
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.salOfferPerMonth,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -779,8 +780,8 @@ void _openActionDialog(BuildContext context, data) {
                       TextField(
                         controller: dateController,
                         readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: "Tentative date of joining",
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.tentDateJoin,
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.calendar_today),
                         ),
@@ -807,8 +808,8 @@ void _openActionDialog(BuildContext context, data) {
                       /// Joining Place
                       TextField(
                         controller: joiningPlaceController,
-                        decoration: const InputDecoration(
-                          labelText: "Joining Place",
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.joinPlace,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -830,7 +831,7 @@ void _openActionDialog(BuildContext context, data) {
                           Consumer<JobApplicationProvider>(
                             builder: (context, provider, _) {
                               return buildImageUploadBox(
-                                title: "Upload Offer Letter",
+                                title: AppLocalizations.of(context)!.uploadOfferLetter,
                                 imageFile: provider.selectedDocumentFile,
                                 onTap: () {
                                   provider.pickAndUploadSingleDocument(context: context);
@@ -847,8 +848,8 @@ void _openActionDialog(BuildContext context, data) {
                       TextField(
                         controller: remarksController,
                         maxLines: 3,
-                        decoration: const InputDecoration(
-                          labelText: "Remarks",
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.remarks,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -865,7 +866,7 @@ void _openActionDialog(BuildContext context, data) {
 
                           /// Validation
                           if (reachedStall == -1) {
-                            showAlertError("Please select Reached at Stall", context);
+                            showAlertError(AppLocalizations.of(context)!.plzSelReachStall, context);
                             return;
                           }
 
@@ -882,9 +883,9 @@ void _openActionDialog(BuildContext context, data) {
 
                           String selectionText = "";
                           if (selectionType == 1) {
-                            selectionText = "Job Offer Letter Given";
+                            selectionText = "Job Offer Letter Given"; //AppLocalizations.of(context)!.jobOfferLetterGiven
                           } else if (selectionType == 2) {
-                            selectionText = "Preliminary Selected";
+                            selectionText = "Preliminary Selected"; //AppLocalizations.of(context)!.preliSelected
                           }
 
                           bool success = await provider.saveCandidateStatusApi(
@@ -908,7 +909,7 @@ void _openActionDialog(BuildContext context, data) {
                             /// 2️⃣ SHOW SUCCESS
                             successDialog(
                               context,
-                              "Saved Successfully",
+                              AppLocalizations.of(context)!.saveSuccess,
                                   (value) async {
                                 if (value.toString() == "success") {
 
@@ -927,7 +928,7 @@ void _openActionDialog(BuildContext context, data) {
                             );
                           }
                         },
-                        child: const Text("Submit"),
+                        child: Text(AppLocalizations.of(context)!.submit),
                       ),
                     )
                   ],

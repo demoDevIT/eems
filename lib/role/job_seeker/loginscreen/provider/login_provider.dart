@@ -367,13 +367,13 @@ class LoginProvider with ChangeNotifier {
                     ),
                   );
 
-                  await getJobFairUserDetails(
-                    context,
-                    switchRoleID: sm.data!.roleID,
-                    switchOfficeID: sm.data!.officeID,
-                    intDeptTypeID: sm.data!.internshipDeptTypeID,
-                    intDeptID: sm.data!.internshipDeptID,
-                  );
+                  // await getJobFairUserDetails(
+                  //   context,
+                  //   switchRoleID: sm.data!.roleID,
+                  //   switchOfficeID: sm.data!.officeID,
+                  //   intDeptTypeID: sm.data!.internshipDeptTypeID,
+                  //   intDeptID: sm.data!.internshipDeptID,
+                  // );
 
                   // bool otpSent = await loginHistoryMessagesApi(
                   //   context,

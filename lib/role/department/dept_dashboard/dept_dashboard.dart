@@ -52,6 +52,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       provider.getRoleApi(context, "");
       provider.clearData();
       provider.getJoiningOverview(context);
+      provider.getAttendanceOverview(context);
     });
   }
 
@@ -1046,177 +1047,265 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   }
 
   Widget _buildAttendanceOverview() {
-    return Column(
-      key: const ValueKey("attendance"),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: const BoxDecoration(
-                color: Color(0xffE2F0FF),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.badge_outlined,
-                color: Color(0xff1683FF),
-                size: 22,
-              ),
+    return Consumer<DepartmentDashboardProvider>(
+      builder: (context, provider, _) {
+        if (provider.isAttendanceOverviewLoading) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(30),
+              child: CircularProgressIndicator(),
             ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Attendance Overview",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff152238),
+          );
+        }
+
+        final verified = provider.attendanceVerified;
+        final submitted = provider.attendanceSubmitted;
+        final sendback = provider.attendanceSendback;
+        final pending = provider.attendancePending;
+        final total = provider.attendanceTotalApplications;
+
+        return Column(
+          key: const ValueKey("attendance"),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffE2F0FF),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.badge_outlined,
+                    color: Color(0xff1683FF),
+                    size: 22,
                   ),
                 ),
-                SizedBox(height: 2),
-                Text(
-                  "Monthly attendance completion & pending progress",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xff718096),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 18),
-        Row(
-          children: [
-            Expanded(
-              child: _buildDropdownBox(
-                title: "YEAR",
-                value: "2026",
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: _buildDropdownBox(
-                title: "MONTH",
-                value: "January",
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: _buildAttendanceCountCard(
-                title: "Verified",
-                value: "3",
-                icon: Icons.badge_outlined,
-                backgroundColor: const Color(0xffDDF2FF),
-                color: const Color(0xff1683FF),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: _buildAttendanceCountCard(
-                title: "Submitted",
-                value: "0",
-                icon: Icons.check,
-                backgroundColor: const Color(0xffD7F7E2),
-                color: const Color(0xff00A65A),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildAttendanceCountCard(
-                title: "Sendback",
-                value: "0",
-                icon: Icons.undo,
-                backgroundColor: const Color(0xffF0E5FF),
-                color: const Color(0xff8B5CF6),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: _buildAttendanceCountCard(
-                title: "Pending",
-                value: "0",
-                icon: Icons.access_time,
-                backgroundColor: const Color(0xfffff0ce),
-                color: const Color(0xffff9800),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 14,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: const Color(0xffD7E1F0),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                blurRadius: 8,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xffE2F0FF),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.person_outline,
-                  color: Color(0xff1683FF),
-                ),
-              ),
-              const SizedBox(width: 14),
-              const Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _AttendanceBottomValue(
-                        value: "3",
-                        label: "Total Applications",
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Attendance Overview",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff152238),
                       ),
                     ),
-                    SizedBox(
-                      height: 42,
-                      child: VerticalDivider(
-                        color: Color(0xffD7E1F0),
-                        width: 1,
-                      ),
-                    ),
-                    Expanded(
-                      child: _AttendanceBottomValue(
-                        value: "3",
-                        label: "Attendance Eligible",
+                    SizedBox(height: 2),
+                    Text(
+                      "Monthly attendance completion & pending progress",
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Color(0xff718096),
                       ),
                     ),
                   ],
                 ),
+              ],
+            ),
+
+            const SizedBox(height: 18),
+
+            /// YEAR + MONTH
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDropdownBox(
+                    title: "YEAR",
+                    value: "2026",
+                    onTap: () {
+                      // Year selection can be implemented later.
+                    },
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: _buildAttendanceMonthDropdown(
+                    provider,
+                    context,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            /// VERIFIED + SUBMITTED
+            Row(
+              children: [
+                Expanded(
+                  child: _buildAttendanceCountCard(
+                    title: "Verified",
+                    value: verified.toString(),
+                    icon: Icons.badge_outlined,
+                    backgroundColor:
+                    const Color(0xffDDF2FF),
+                    color: const Color(0xff1683FF),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: _buildAttendanceCountCard(
+                    title: "Submitted",
+                    value: submitted.toString(),
+                    icon: Icons.check,
+                    backgroundColor:
+                    const Color(0xffD7F7E2),
+                    color: const Color(0xff00A65A),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 12),
+
+            /// SENDBACK + PENDING
+            Row(
+              children: [
+                Expanded(
+                  child: _buildAttendanceCountCard(
+                    title: "Sendback",
+                    value: sendback.toString(),
+                    icon: Icons.undo,
+                    backgroundColor:
+                    const Color(0xffF0E5FF),
+                    color: const Color(0xff8B5CF6),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: _buildAttendanceCountCard(
+                    title: "Pending",
+                    value: pending.toString(),
+                    icon: Icons.access_time,
+                    backgroundColor:
+                    const Color(0xfffff0ce),
+                    color: const Color(0xffff9800),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            /// TOTAL APPLICATIONS
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 14,
               ),
-            ],
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: const Color(0xffD7E1F0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: Color(0xffE2F0FF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.person_outline,
+                      color: Color(0xff1683FF),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _AttendanceBottomValue(
+                      value: total.toString(),
+                      label: "Total Applications",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildAttendanceMonthDropdown(
+      DepartmentDashboardProvider provider,
+      BuildContext context,
+      ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "MONTH",
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff667085),
+          ),
+        ),
+        const SizedBox(height: 6),
+
+        Container(
+          height: 44,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color(0xffD7E1F0),
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: provider.selectedAttendanceMonth,
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                size: 20,
+                color: Color(0xff667085),
+              ),
+              items: provider.attendanceMonths
+                  .map(
+                    (month) => DropdownMenuItem<String>(
+                  value: month,
+                  child: Text(
+                    month,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff152238),
+                    ),
+                  ),
+                ),
+              )
+                  .toList(),
+              onChanged: (value) async {
+                if (value == null) return;
+
+                await provider.selectAttendanceMonth(
+                  context,
+                  value,
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -1226,6 +1315,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   Widget _buildDropdownBox({
     required String title,
     required String value,
+    VoidCallback? onTap,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1239,33 +1329,40 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           ),
         ),
         const SizedBox(height: 6),
-        Container(
-          height: 44,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: const Color(0xffD7E1F0),
+        InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            height: 44,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
             ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff152238),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: const Color(0xffD7E1F0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff152238),
+                  ),
                 ),
-              ),
-              const Icon(
-                Icons.keyboard_arrow_down,
-                size: 20,
-                color: Color(0xff667085),
-              ),
-            ],
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 20,
+                  color: Color(0xff667085),
+                ),
+              ],
+            ),
           ),
         ),
       ],

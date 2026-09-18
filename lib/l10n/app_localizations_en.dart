@@ -2048,4 +2048,319 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get expLimit => "Experience Limit";
 
+  @override
+  String get ageGroupLimit => "Age Group Limit";
+
+  @override
+  String get exSerPref => "Ex-Serviceman Preferred";
+
+  @override
+  String get nightShiftJob => "This is a Night Shift Job";
+
+  @override
+  String get jobPostPWD => "Job Post For PWD?";
+
+  @override
+  String get salaryRange => "Salary Range";
+
+  @override
+  String get reqSkill => "Required Skill";
+
+  @override
+  String get essentQualifi => "Essential Qualification";
+
+  @override
+  String get eduType => "Education Type";
+
+  @override
+  String get course => "Course";
+
+  @override
+  String get description => "Description";
+
+  @override
+  String get jobAppList => "Job Application List";
+
+  @override
+  String get scanQR => "Scan QR";
+
+  @override
+  String get filters => "Filters";
+
+  @override
+  String get jobPost => "Job Post";
+
+  @override
+  String get searchBy => "Search By";
+
+  @override
+  String get mobile => "Mobile";
+
+  @override
+  String get nameApplicant => "Name of Applicant";
+
+  @override
+  String get plzSelEventName => "Please select Event Name";
+
+  @override
+  String get plzSelJobPost => "Please select Job Post";
+
+  @override
+  String get plzEnterMobileNo => "Please Enter Mobile No.";
+
+  @override
+  String get plzEnterRegNo => "Please enter Registration Number";
+
+  @override
+  String get plzEnterApplicantName => "Please enter Applicant Name";
+
+  @override
+  String get jobPosition => "Job Position";
+
+  @override
+  String get reachAtStall => "Reached at Stall?";
+
+  @override
+  String get candStortList => "Candidate Shortlisted?";
+
+  @override
+  String get selectionType => "Selection Type";
+
+  @override
+  String get jobOfferLetterGiven => "Job Offer Letter Given";
+
+  @override
+  String get preliSelected => "Preliminary Selected";
+
+  @override
+  String get salOfferPerMonth => "Salary Offered (Per Month)";
+
+  @override
+  String get tentDateJoin => "Tentative date of joining";
+
+  @override
+  String get joinPlace => "Joining Place";
+
+  @override
+  String get uploadOfferLetter => "Upload Offer Letter";
+
+  @override
+  String get plzSelReachStall => "Please select Reached at Stall";
+
+  @override
+  String get saveSuccess => "Saved Successfully";
+
+  @override
+  String get empOTRForm => "Employer OTR Form";
+
+  @override
+  String get min3Char => "Minimum 3 characters required";
+
+  @override
+  String get village => "Village";
+
+  @override
+  String get enterVillage => "Enter Village";
+
+  @override
+  String get enterWard => "Enter Ward";
+
+  @override
+  String get branchOffDetailAsSansthaadhar => "Branch Office Details (As on Sanstha Aadhaar)";
+
+  @override
+  String get telNo15digit => "Telephone number must be 15 digits";
+
+  @override
+  String get invalidPANNo => "Invalid PAN number";
+
+  @override
+  String get enterValidTAN => "Enter valid TAN (e.g. DELA12345B)";
+
+  @override
+  String get headOfficeDetailAsSansthaAdhar => "Head Office Details (As on Sanstha Aadhaar)";
+
+  @override
+  String get telNo10digit => "Telephone number must be 10 digits";
+
+  @override
+  String get headOffAppDetailAsSansthaAdhar => "Head Office Applicant Details (As on Sanstha Aadhaar)";
+
+  @override
+  String get invalidEmail => "Invalid email address";
+
+  @override
+  String get actAuthReg => "Act Authority Reg";
+
+  @override
+  String get invalidTANNo => "Invalid TAN number";
+
+  @override
+  String get alterMobile => "Alternate Mobile";
+
+  @override
+  String get plzEnterBRN => "Please Enter BRN";
+
+  @override
+  String get plzEnterDistrict => "Please enter District";
+
+  @override
+  String get plzSelAreaRU => "Please select Area (Rural / Urban)";
+
+  @override
+  String get plzEnterTehsil => "Please Enter Tehsil";
+
+  @override
+  String get plzEnterWard => "Please Enter Ward";
+
+  @override
+  String get plzEnterHouseNo => "Please Enter House Number";
+
+  @override
+  String get plzEnterLane => "Please Enter Lane";
+
+  @override
+  String get plzEnterLocality => "Please Enter Locality";
+
+  @override
+  String get plzEnterPinCode => "Please Enter Pincode";
+
+  @override
+  String get plzEnterTelNo => "Please enter Telephone Number";
+
+  @override
+  String get plzEnterGSTNo => "Please enter GST Number";
+
+  @override
+  String get plzEnterPANNo => "Please enter PAN Number";
+
+  @override
+  String get plzEnterPANHolderName => "Please enter PAN Holder Name";
+
+  @override
+  String get plzVerifyPAN => "Please Verify PAN";
+
+  @override
+  String get plzEnterTANNo => "Please Enter TAN Number";
+
+  @override
+  String get plzEnterHeadOfficeCompName => "Please enter Head Office Company Name";
+
+  @override
+  String get plzEnterHeadOfficeTelNo => "Please enter Head Office Telephone Number";
+
+  @override
+  String get plzEnterHeadOfficeEmail => "Please enter Head Office Email";
+
+  @override
+  String get plzEnterHeadOfficePANNo => "Please enter Head Office PAN Number";
+
+  @override
+  String get plzEnterHeadOfficeHouseNo => "Please enter Head Office House Number";
+
+  @override
+  String get plzEnterHeadOfficeLane => "Please enter Head Office Lane";
+
+  @override
+  String get plzEnterHeadOfficeLocality => "Please enter Head Office Locality";
+
+  @override
+  String get plzEnterHeadOfficePincode => "Please enter Head Office Pincode";
+
+  @override
+  String get headOffPin6Digit => "Head Office Pincode must be 6 digits";
+
+  @override
+  String get plzEnterAppMobileNo => "Please enter Applicant Mobile Number";
+
+  @override
+  String get applicantMobile10Digit => "Applicant Mobile must be 10 digits";
+
+  @override
+  String get plzEnterApplicantEmail => "Please Enter Applicant Email";
+
+  @override
+  String get plzEnterYear => "Please Enter Year";
+
+  @override
+  String get plzEnterOwnership => "Please Enter Ownership";
+
+  @override
+  String get plzEnterTotalPer => "Please enter Total Person";
+
+  @override
+  String get plzEnterActAuthReg => "Please enter Act Authority Reg";
+
+  @override
+  String get plzEnterApplicantAddress => "Please Enter Applicant Address";
+
+  @override
+  String get plzEnterNicCode => "Please Enter NIC Code";
+
+  @override
+  String get plzEnterContactFullName => "Please enter Contact Full Name";
+
+  @override
+  String get plzEnterContactMobileNo => "Please enter Contact Mobile Number";
+
+  @override
+  String get plzEnterContactEmail => "Please enter Contact Email";
+
+  @override
+  String get plzSelContactState => "Please select Contact State";
+
+  @override
+  String get plzSelContactDistrict => "Please select Contact District";
+
+  @override
+  String get plzSelContactCity => "Please select Contact City";
+
+  @override
+  String get plzEnterContactPincode => "Please enter Contact Pincode";
+
+  @override
+  String get plzEnterContactDesig => "Please enter Contact Designation";
+
+  @override
+  String get plzEnterContactDept => "Please enter Contact Department";
+
+  @override
+  String get plzEnterContactAddress => "Please enter Contact Address";
+
+  @override
+  String get plzEnterExchangeName => "Please enter Exchange Name";
+
+  @override
+  String get plzEnterNoOfMaleEmp => "Please enter No of Male Employee";
+
+  @override
+  String get plzEnterNoOfFemaleEmp => "Please enter No of Female Employee";
+
+  @override
+  String get plzEnterNoOfTransEmp => "Please enter No of Transgender Employee";
+
+  @override
+  String get totalEmpCountIncorrect => "Total employees count is incorrect";
+
+  @override
+  String get plzSelTypeOrg => "Please select Type of Organization";
+
+  @override
+  String get plzSelGovtBody => "Please select Government Body";
+
+  @override
+  String get plzSelActEst => "Please select Act Establishment";
+
+  @override
+  String get plzSelIndusType => "Please select Industry Type";
+
+  @override
+  String get plzSelectSector => "Please select Sector";
+
+  @override
+  String get counseDash => "Counselor Dashboard";
+
+  @override
+  String get applyJobFair => "Apply for Job Fair";
+
 }

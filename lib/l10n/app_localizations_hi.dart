@@ -1869,7 +1869,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get enterOwnership => "ओनरशिप दर्ज करें";
 
   @override
-  String get totalPer => "संपूर्ण व्यक्ति";
+  String get totalPer => "कुल व्यक्ति";
 
   @override
   String get enterTotalPer => "कुल लोगों की संख्या डालें";
@@ -2047,5 +2047,320 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get expLimit => "अनुभव सीमा";
+
+  @override
+  String get ageGroupLimit => "आयु वर्ग की सीमा";
+
+  @override
+  String get exSerPref => "पूर्व सैनिकों को प्राथमिकता दी जाएगी";
+
+  @override
+  String get nightShiftJob => "यह नाइट शिफ्ट की नौकरी है";
+
+  @override
+  String get jobPostPWD => "क्या PWD के लिए नौकरी की पोस्ट है?";
+
+  @override
+  String get salaryRange => "सैलरी रेंज";
+
+  @override
+  String get reqSkill => "ज़रूरी स्किल";
+
+  @override
+  String get essentQualifi => "आवश्यक योग्यता";
+
+  @override
+  String get eduType => "शिक्षा का प्रकार";
+
+  @override
+  String get course => "कार्यप्रणाली"; //"अवधि";
+
+  @override
+  String get description => "विवरण";
+
+  @override
+  String get jobAppList => "नौकरी के लिए आवेदन की सूची";
+
+  @override
+  String get scanQR => "QR स्कैन करें";
+
+  @override
+  String get filters => "फिल्टर";
+
+  @override
+  String get jobPost => "नौकरी की पोस्ट";
+
+  @override
+  String get searchBy => "खोज से";
+
+  @override
+  String get mobile => "मोबाइल";
+
+  @override
+  String get nameApplicant => "आवेदक का नाम";
+
+  @override
+  String get plzSelEventName => "कृपया इवेंट का नाम चुनें";
+
+  @override
+  String get plzSelJobPost => "कृपया जॉब पोस्ट चुनें";
+
+  @override
+  String get plzEnterMobileNo => "कृपया मोबाइल नंबर डालें";
+
+  @override
+  String get plzEnterRegNo => "कृपया रजिस्ट्रेशन नंबर डालें";
+
+  @override
+  String get plzEnterApplicantName => "कृपया आवेदक का नाम दर्ज करें";
+
+  @override
+  String get jobPosition => "काम की स्थिति";
+
+  @override
+  String get reachAtStall => "स्टॉल पर पहुँच गए?";
+
+  @override
+  String get candStortList => "क्या उम्मीदवार शॉर्टलिस्ट हो गया है?";
+
+  @override
+  String get selectionType => "चयन का प्रकार";
+
+  @override
+  String get jobOfferLetterGiven => "नौकरी का ऑफ़र लेटर दिया गया";
+
+  @override
+  String get preliSelected => "प्रारंभिक रूप से चयनित";
+
+  @override
+  String get salOfferPerMonth => "दी जाने वाली सैलरी (प्रति माह)";
+
+  @override
+  String get tentDateJoin => "शामिल होने की संभावित तारीख";
+
+  @override
+  String get joinPlace => "जॉइनिंग की जगह";
+
+  @override
+  String get uploadOfferLetter => "ऑफ़र लेटर अपलोड करें";
+
+  @override
+  String get plzSelReachStall => "कृपया 'स्टॉल पर पहुंच गए' विकल्प चुनें";
+
+  @override
+  String get saveSuccess => "सफलतापूर्वक सेव";
+
+  @override
+  String get empOTRForm => "एम्प्लॉयर OTR फ़ॉर्म";
+
+  @override
+  String get min3Char => "कम से कम 3 कैरेक्टर ज़रूरी हैं";
+
+  @override
+  String get village => "गाँव";
+
+  @override
+  String get enterVillage => "गाँव दर्ज करें";
+
+  @override
+  String get enterWard => "वार्ड दर्ज करें";
+
+  @override
+  String get branchOffDetailAsSansthaadhar => "शाखा कार्यालय विवरण (संस्था आधार के अनुसार)";
+
+  @override
+  String get telNo15digit => "टेलीफ़ोन नंबर 15 अंकों का होना चाहिए";
+
+  @override
+  String get invalidPANNo => "अमान्य PAN नंबर";
+
+  @override
+  String get enterValidTAN => "वैलिड TAN डालें (जैसे DELA12345B)";
+
+  @override
+  String get headOfficeDetailAsSansthaAdhar => "प्रधान कार्यालय विवरण (संस्था आधार के अनुसार)";
+
+  @override
+  String get telNo10digit => "टेलीफ़ोन नंबर 10 अंकों का होना चाहिए";
+
+  @override
+  String get headOffAppDetailAsSansthaAdhar => "प्रधान कार्यालय आवेदक का विवरण (संस्था आधार के अनुसार)";
+
+  @override
+  String get invalidEmail => "अमान्य ईमेल पता";
+
+  @override
+  String get actAuthReg => "एक्ट अथॉरिटी रजिस्ट्रेशन";
+
+  @override
+  String get invalidTANNo => "अमान्य TAN नंबर";
+
+  @override
+  String get alterMobile => "वैकल्पिक मोबाइल";
+
+  @override
+  String get plzEnterBRN => "कृपया BRN दर्ज करें";
+
+  @override
+  String get plzEnterDistrict => "कृपया ज़िला दर्ज करें";
+
+  @override
+  String get plzSelAreaRU => "कृपया क्षेत्र (ग्रामीण / शहरी) चुनें";
+
+  @override
+  String get plzEnterTehsil => "कृपया तहसील दर्ज करें";
+
+  @override
+  String get plzEnterWard => "कृपया वार्ड दर्ज करें";
+
+  @override
+  String get plzEnterHouseNo => "कृपया घर का नंबर डालें";
+
+  @override
+  String get plzEnterLane => "कृपया लेन डालेंं";
+
+  @override
+  String get plzEnterLocality => "कृपया इलाका दर्ज करें";
+
+  @override
+  String get plzEnterPinCode => "कृपया पिनकोड डालें";
+
+  @override
+  String get plzEnterTelNo => "कृपया टेलीफ़ोन नंबर दर्ज करें";
+
+  @override
+  String get plzEnterGSTNo => "कृपया GST नंबर डालें";
+
+  @override
+  String get plzEnterPANNo => "कृपया PAN नंबर डालें";
+
+  @override
+  String get plzEnterPANHolderName => "कृपया पैन धारक का नाम दर्ज करें";
+
+  @override
+  String get plzVerifyPAN => "कृपया PAN वेरिफ़ाई करें";
+
+  @override
+  String get plzEnterTANNo => "कृपया TAN नंबर डालें";
+
+  @override
+  String get plzEnterHeadOfficeCompName => "कृपया हेड ऑफिस की कंपनी का नाम दर्ज करें";
+
+  @override
+  String get plzEnterHeadOfficeTelNo => "कृपया हेड ऑफिस का टेलीफ़ोन नंबर डालें";
+
+  @override
+  String get plzEnterHeadOfficeEmail => "कृपया हेड ऑफिस का ईमेल डालें";
+
+  @override
+  String get plzEnterHeadOfficePANNo => "कृपया हेड ऑफिस का PAN नंबर डालें";
+
+  @override
+  String get plzEnterHeadOfficeHouseNo => "कृपया हेड ऑफिस का हाउस नंबर डालें";
+
+  @override
+  String get plzEnterHeadOfficeLane => "कृपया हेड ऑफिस लेन में प्रवेश करें";
+
+  @override
+  String get plzEnterHeadOfficeLocality => "कृपया हेड ऑफिस का इलाका दर्ज करें";
+
+  @override
+  String get plzEnterHeadOfficePincode => "कृपया हेड ऑफिस का पिनकोड डालें";
+
+  @override
+  String get headOffPin6Digit => "हेड ऑफिस का पिनकोड 6 अंकों का होना चाहिए";
+
+  @override
+  String get plzEnterAppMobileNo => "कृपया आवेदक का मोबाइल नंबर दर्ज करें";
+
+  @override
+  String get applicantMobile10Digit => "आवेदक का मोबाइल नंबर 10 अंकों का होना चाहिए";
+
+  @override
+  String get plzEnterApplicantEmail => "कृपया आवेदक का ईमेल दर्ज करें";
+
+  @override
+  String get plzEnterYear => "कृपया वर्ष दर्ज करें";
+
+  @override
+  String get plzEnterOwnership => "कृपया मालिकाना हक दर्ज करें";
+
+  @override
+  String get plzEnterTotalPer => "कृपया कुल व्यक्तियों की संख्या दर्ज करें";
+
+  @override
+  String get plzEnterActAuthReg => "कृपया एक्ट अथॉरिटी रजिस्ट्रेशन दर्ज करें";
+
+  @override
+  String get plzEnterApplicantAddress => "कृपया आवेदक का पता दर्ज करें";
+
+  @override
+  String get plzEnterNicCode => "कृपया NIC कोड डालें";
+
+  @override
+  String get plzEnterContactFullName => "कृपया संपर्क व्यक्ति का पूरा नाम दर्ज करें";
+
+  @override
+  String get plzEnterContactMobileNo => "कृपया संपर्क मोबाइल नंबर दर्ज करें";
+
+  @override
+  String get plzEnterContactEmail => "कृपया संपर्क ईमेल दर्ज करें";
+
+  @override
+  String get plzSelContactState => "कृपया संपर्क राज्य चुनें";
+
+  @override
+  String get plzSelContactDistrict => "कृपया संपर्क ज़िला चुनें";
+
+  @override
+  String get plzSelContactCity => "कृपया संपर्क शहर चुनें";
+
+  @override
+  String get plzEnterContactPincode => "कृपया संपर्क पिनकोड दर्ज करें";
+
+  @override
+  String get plzEnterContactDesig => "कृपया संपर्क पद दर्ज करें";
+
+  @override
+  String get plzEnterContactDept => "कृपया संपर्क विभाग दर्ज करें";
+
+  @override
+  String get plzEnterContactAddress => "कृपया संपर्क का पता दर्ज करें";
+
+  @override
+  String get plzEnterExchangeName => "कृपया एक्सचेंज का नाम डालें";
+
+  @override
+  String get plzEnterNoOfMaleEmp => "कृपया पुरुष कर्मचारियों की संख्या दर्ज करें";
+
+  @override
+  String get plzEnterNoOfFemaleEmp => "कृपया महिला कर्मचारियों की संख्या दर्ज करें";
+
+  @override
+  String get plzEnterNoOfTransEmp => "कृपया ट्रांसजेंडर कर्मचारियों की संख्या दर्ज करें";
+
+  @override
+  String get totalEmpCountIncorrect => "कुल कर्मचारियों की संख्या गलत है";
+
+  @override
+  String get plzSelTypeOrg => "कृपया संगठन का प्रकार चुनें";
+
+  @override
+  String get plzSelGovtBody => "कृपया सरकारी निकाय चुनें";
+
+  @override
+  String get plzSelActEst => "कृपया एक्ट एस्टैब्लिशमेंट चुनें";
+
+  @override
+  String get plzSelIndusType => "कृपया इंडस्ट्री का प्रकार चुनें";
+
+  @override
+  String get plzSelectSector => "कृपया सेक्टर चुनें";
+
+  @override
+  String get counseDash => "काउंसलर डैशबोर्ड";
+
+  @override
+  String get applyJobFair => "जॉब फेयर के लिए अप्लाई करें";
 
 }

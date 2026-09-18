@@ -6,6 +6,7 @@ import 'package:rajemployment/role/counselor/counselor_job_details/provider/coun
 import 'package:rajemployment/utils/global.dart';
 import 'package:rajemployment/utils/images.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/button.dart';
 import '../../../utils/textstyles.dart';
 
@@ -29,8 +30,8 @@ class _CounselorJobDetailsScreenState extends State<CounselorJobDetailsScreen> {
             icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: const Text(
-            "Jobs Details",
+          title: Text(
+            AppLocalizations.of(context)!.jobDetails,
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,

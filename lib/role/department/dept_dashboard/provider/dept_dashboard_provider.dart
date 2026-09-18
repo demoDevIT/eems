@@ -17,6 +17,7 @@ import '../../../job_seeker/candidate_attendance/provider/dashboard_provider.dar
 import '../../dept_join_attendance_list/dept_join_attendance_list.dart';
 import '../../dept_join_pending_list/dept_join_pending_list.dart';
 import '../dept_dashboard.dart';
+import '../modal/attendance_overview_modal.dart';
 import '../modal/dept_info_modal.dart';
 import '../modal/joining_overview_modal.dart';
 import '../modal/role_modal.dart';
@@ -67,6 +68,97 @@ class DepartmentDashboardProvider extends ChangeNotifier {
 
    String get joiningCompletionPercentageText {
      return "${(joiningCompletionPercentage * 100).round()}%";
+   }
+
+   bool isAttendanceOverviewLoading = false;
+
+   List<AttendanceOverviewData> attendanceOverviewList = [];
+
+   String selectedAttendanceMonth = "All";
+
+   final List<String> attendanceMonths = [
+     "All",
+     "January",
+     "February",
+     "March",
+     "April",
+     "May",
+     "June",
+     "July",
+     "August",
+     "September",
+     "October",
+     "November",
+     "December",
+   ];
+
+   AttendanceOverviewData? get selectedAttendanceData {
+     if (selectedAttendanceMonth == "All") {
+       return null;
+     }
+
+     try {
+       return attendanceOverviewList.firstWhere(
+             (item) => item.monthName == selectedAttendanceMonth,
+       );
+     } catch (_) {
+       return null;
+     }
+   }
+
+   int get attendanceVerified {
+     if (selectedAttendanceMonth == "All") {
+       return attendanceOverviewList.fold(
+         0,
+             (sum, item) => sum + (item.verified ?? 0),
+       );
+     }
+
+     return selectedAttendanceData?.verified ?? 0;
+   }
+
+   int get attendanceSubmitted {
+     if (selectedAttendanceMonth == "All") {
+       return attendanceOverviewList.fold(
+         0,
+             (sum, item) => sum + (item.completed ?? 0),
+       );
+     }
+
+     return selectedAttendanceData?.completed ?? 0;
+   }
+
+   int get attendanceSendback {
+     if (selectedAttendanceMonth == "All") {
+       return attendanceOverviewList.fold(
+         0,
+             (sum, item) => sum + (item.sendback ?? 0),
+       );
+     }
+
+     return selectedAttendanceData?.sendback ?? 0;
+   }
+
+   int get attendancePending {
+     if (selectedAttendanceMonth == "All") {
+       return attendanceOverviewList.fold(
+         0,
+             (sum, item) => sum + (item.pending ?? 0),
+       );
+     }
+
+     return selectedAttendanceData?.pending ?? 0;
+   }
+
+   int get attendanceTotalApplications {
+     if (selectedAttendanceMonth == "All") {
+       return attendanceOverviewList.fold(
+         0,
+             (sum, item) => sum + (item.totalApplications ?? 0),
+       );
+     }
+
+     return selectedAttendanceData?.totalApplications ?? 0;
    }
 
    Future<void> searchByRegistration(BuildContext context) async {
@@ -559,6 +651,133 @@ class DepartmentDashboardProvider extends ChangeNotifier {
        isJoiningOverviewLoading = false;
        notifyListeners();
      }
+   }
+
+   Future<void> getAttendanceOverview(BuildContext context) async {
+     final isInternet =
+     await UtilityClass.checkInternetConnectivity();
+
+     if (!isInternet) {
+       showAlertError("No Internet Connection", context);
+       return;
+     }
+
+     try {
+       isAttendanceOverviewLoading = true;
+       notifyListeners();
+
+       final userData = UserData().model.value;
+
+       final Map<String, dynamic> body = {
+         "ActionName": "AttendanceOverview",
+         "UserId": userData.userId ?? 0,
+         "RoleId": userData.roleId ?? 0,
+         "InternDepartmentTypeID":
+         userData.internshipDeptTypeID ?? 0,
+         "AllotmentDeptId":
+         userData.internshipDeptID ?? 0,
+         "OfficeID":
+         userData.officeID ?? 0,
+
+         // All means API receives 0.
+         // Single month will send month number.
+         "AttendanceMonthID": selectedAttendanceMonth == "All"
+             ? 0
+             : _getMonthNumber(selectedAttendanceMonth),
+
+         // Keep 0 for now as per your payload.
+         "WorkingYear": 0,
+       };
+
+       print(
+         "Attendance Overview API Request Body: $body",
+       );
+
+       final ApiResponse apiResponse = await commonRepo.post(
+         "Dashboard/GetAttendanceOverview",
+         body,
+       );
+
+       if (apiResponse.response?.statusCode == 200) {
+         dynamic responseData = apiResponse.response!.data;
+
+         if (responseData is String) {
+           responseData = jsonDecode(responseData);
+         }
+
+         print(
+           "Attendance Overview API Response: $responseData",
+         );
+
+         if (responseData['State'] != 200 ||
+             responseData['Data'] == null) {
+           attendanceOverviewList.clear();
+
+           final String errorMsg =
+               responseData['ErrorMessage'] ??
+                   responseData['Message'] ??
+                   "Something went wrong";
+
+           showAlertError(errorMsg, context);
+           return;
+         }
+
+         final AttendanceOverviewModal modal =
+         AttendanceOverviewModal.fromJson(responseData);
+
+         attendanceOverviewList =
+             modal.data ?? <AttendanceOverviewData>[];
+       } else {
+         attendanceOverviewList.clear();
+
+         showAlertError(
+           "Something went wrong",
+           context,
+         );
+       }
+     } catch (e) {
+       print("Attendance Overview API Error: $e");
+
+       attendanceOverviewList.clear();
+
+       showAlertError(
+         e.toString(),
+         context,
+       );
+     } finally {
+       isAttendanceOverviewLoading = false;
+       notifyListeners();
+     }
+   }
+
+   int _getMonthNumber(String month) {
+     const months = {
+       "January": 1,
+       "February": 2,
+       "March": 3,
+       "April": 4,
+       "May": 5,
+       "June": 6,
+       "July": 7,
+       "August": 8,
+       "September": 9,
+       "October": 10,
+       "November": 11,
+       "December": 12,
+     };
+
+     return months[month] ?? 0;
+   }
+
+   Future<void> selectAttendanceMonth(
+       BuildContext context,
+       String month,
+       ) async {
+     selectedAttendanceMonth = month;
+
+     notifyListeners();
+
+     await getAttendanceOverview(context);
    }
 
    void clearData() {

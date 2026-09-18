@@ -532,10 +532,11 @@ class _DeptJoinAttendanceListScreenState
                       child: Text(year.name?.toString() ?? ""),
                     );
                   }).toList(),
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     provider.selectedYearObj = value;
                     provider.filterSelectedYear = value?.dropID;
-                    provider.notifyListeners();
+
+                    await provider.search(context);
                   },
                 ),
               ),
@@ -558,10 +559,11 @@ class _DeptJoinAttendanceListScreenState
                     child: Text(m.name ?? ""),
                   ))
                       .toList(),
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     provider.selectedMonthObj = value;
-                    provider.filterSelectedMonthNumber = value?.dropID; // 👈 IMPORTANT
-                    provider.notifyListeners();
+                    provider.filterSelectedMonthNumber = value?.dropID;
+
+                    await provider.search(context);
                   },
                 ),
               ),
