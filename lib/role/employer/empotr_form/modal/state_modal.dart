@@ -45,6 +45,7 @@ class StateModal {
 class StateData {
   int? iD;
   String? name;
+  String? nameHI;
   String? code;
   dynamic unit;
   dynamic quantity;
@@ -53,6 +54,7 @@ class StateData {
   StateData({
     this.iD,
     this.name,
+    this.nameHI,
     this.code,
     this.unit,
     this.quantity,
@@ -62,6 +64,7 @@ class StateData {
   StateData.fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
     name = json['Name'];
+    nameHI = json['Name_Hin'];
     code = json['Code'];
     unit = json['Unit'];
     quantity = json['Quantity'];
@@ -72,6 +75,7 @@ class StateData {
     final Map<String, dynamic> json = {};
     json['ID'] = iD;
     json['Name'] = name;
+    json['Name_Hin'] = nameHI;
     json['Code'] = code;
     json['Unit'] = unit;
     json['Quantity'] = quantity;

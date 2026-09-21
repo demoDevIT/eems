@@ -44,12 +44,14 @@ class CityData {
   int? iD;
   String? code;
   String? nameEng;
+  String? nameHi;
   String? nameMangal;
 
   CityData({
     this.iD,
     this.code,
     this.nameEng,
+    this.nameHi,
     this.nameMangal,
   });
 
@@ -58,6 +60,7 @@ class CityData {
       iD: json['ID'],
       code: json['CODE'],
       nameEng: json['Name_ENG'],
+      nameHi: json['Name_Hi'],
       nameMangal: json['Name_MANGAL'],
     );
   }
@@ -67,6 +70,7 @@ class CityData {
     json['ID'] = iD;
     json['CODE'] = code;
     json['Name_ENG'] = nameEng;
+    json['Name_Hi'] = nameHi;
     json['Name_MANGAL'] = nameMangal;
     return json;
   }

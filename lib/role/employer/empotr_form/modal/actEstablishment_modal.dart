@@ -45,12 +45,14 @@ class ActEstablishmentData {
   int? minEmployees;
   int? maxEmployees;
   String? actEstablishment;
+  String? nameHi;
 
   ActEstablishmentData({
     this.rangeId,
     this.minEmployees,
     this.maxEmployees,
     this.actEstablishment,
+    this.nameHi,
   });
 
   ActEstablishmentData.fromJson(Map<String, dynamic> json) {
@@ -58,6 +60,7 @@ class ActEstablishmentData {
     minEmployees = json['MinEmployees'];
     maxEmployees = json['MaxEmployees'];
     actEstablishment = json['ActEstablishment'];
+    nameHi = json['Name_Hin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +69,7 @@ class ActEstablishmentData {
     json['MinEmployees'] = minEmployees;
     json['MaxEmployees'] = maxEmployees;
     json['ActEstablishment'] = actEstablishment;
+    json['Name_Hin'] = nameHi;
     return json;
   }
 

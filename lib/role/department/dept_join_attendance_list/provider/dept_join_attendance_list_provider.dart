@@ -239,6 +239,10 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
 
     if (resetPage) {
       currentPage = 1;
+      // IMPORTANT:
+      // Clear old records immediately when a new search starts
+      attendanceList.clear();
+      hasNextPage = false;
     }
 
     final requestedPage = page ?? currentPage;
@@ -249,6 +253,15 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           AppLocalizations.of(context)!.internet_connection, context);
       return null;
     }
+
+    // Show loader before API call
+    if (requestedPage == 1) {
+      isAttendanceLoading = true;
+    } else {
+      isPaginationLoading = true;
+    }
+
+    notifyListeners();
 
     try {
       // Map<String, dynamic> body = {
@@ -298,13 +311,13 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "PageSize": pageSize,
       };
 
-      if (requestedPage == 1) {
-        isAttendanceLoading = true;
-      } else {
-        isPaginationLoading = true;
-      }
-
-      notifyListeners();
+      // if (requestedPage == 1) {
+      //   isAttendanceLoading = true;
+      // } else {
+      //   isPaginationLoading = true;
+      // }
+      //
+      // notifyListeners();
 
       //  ProgressDialog.showLoadingDialog(context);
 
@@ -327,7 +340,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         if (sm.state == 200) {
           attendanceList.clear();
 
-          if (sm.data != null) {
+          if (sm.data != null && sm.data!.isNotEmpty) {
             attendanceList.addAll(sm.data!);
           }
 
@@ -337,7 +350,19 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
           // assume another page may exist.
           hasNextPage = (sm.data?.length ?? 0) >= pageSize;
         } else {
+          // VERY IMPORTANT: remove previous search results
+          attendanceList.clear();
+
           hasNextPage = false;
+          currentPage = 1;
+
+          // Show exact API message
+          final message =
+              responseData["Message"]?.toString() ??
+                  sm.message ??
+                  "No record found";
+
+          showAlertError(message, context);
         }
 
         isAttendanceLoading = false;
@@ -345,17 +370,24 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         notifyListeners();
         return sm;
       } else {
+        attendanceList.clear();
+
         isAttendanceLoading = false;
         isPaginationLoading = false;
         hasNextPage = false;
+        currentPage = 1;
 
         notifyListeners();
         return DeptJoinAttendanceModal(
             state: 0, message: "Something went wrong");
       }
     } catch (e) {
+      attendanceList.clear();
+
       isAttendanceLoading = false;
       isPaginationLoading = false;
+      hasNextPage = false;
+      currentPage = 1;
 
       notifyListeners();
 
@@ -1390,7 +1422,16 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
   }
 
   void clearData() {
+    regNoController.clear();
+
+    registrationNumber = null;
+    jobSeekerId = null;
+    userId = null;
+
     attendanceList.clear();
+
+    currentPage = 1;
+    hasNextPage = false;
     notifyListeners();
   }
 }

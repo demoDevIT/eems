@@ -1602,6 +1602,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 getName: (item) =>
                                                     item.name ?? "",
 
+                                                // getName: (item) {
+                                                //   final locale = AppLocalizations.of(context)!.localeName;
+                                                //
+                                                //   return locale == 'hi'
+                                                //       ? (item.nameHi ?? item.name ?? "")
+                                                //       : (item.name ?? "");
+                                                // },
+
                                                 controller: provider
                                                     .cDistrictNameController,
                                                 idController: provider
@@ -1707,8 +1715,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 // ✅ MAP YOUR MODEL HERE
                                                 getId: (item) =>
                                                     item.dropID.toString(),
-                                                getName: (item) =>
-                                                    item.name ?? "",
+                                                // getName: (item) =>
+                                                //     item.name ?? "",
+
+                                                getName: (item) {
+                                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                                  return locale == 'hi'
+                                                      ? (item.nameHi ?? item.name ?? "")
+                                                      : (item.name ?? "");
+                                                },
 
                                                 controller: provider
                                                     .cCityNameController,

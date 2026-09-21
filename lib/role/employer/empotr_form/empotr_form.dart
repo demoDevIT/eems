@@ -1314,8 +1314,14 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.iD.toString(),
-                                getName: (item) => item.name ?? "",
+                                // getName: (item) => item.name ?? "",
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
 
+                                  return locale == 'hi'
+                                      ? (item.nameHI ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
                                 controller: provider.stateController,
                                 idController: provider.stateIdController,
                                 hintText: AppLocalizations.of(context)!.selectState,
@@ -1357,7 +1363,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                       // ✅ MAP YOUR MODEL HERE
                                       getId: (item) => item.iD.toString(),
-                                      getName: (item) => item.name ?? "",
+                                     // getName: (item) => item.name ?? "",
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? "")
+                                            : (item.name ?? "");
+                                      },
 
                                       controller: provider.districtHoController,
                                       idController:
@@ -1400,7 +1414,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.iD.toString(),
-                                getName: (item) => item.nameEng ?? "",
+                                //getName: (item) => item.nameEng ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.nameEng ?? "")
+                                      : (item.nameEng ?? "");
+                                },
 
                                 controller: provider.cityHoController,
                                 idController: provider.cityIdController,
@@ -1693,7 +1715,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.iD.toString(),
-                                getName: (item) => item.name ?? "",
+                                // getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHI ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider.coStateController,
                                 idController: provider.coStateIdController,
@@ -1736,7 +1766,15 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                       // ✅ MAP YOUR MODEL HERE
                                       getId: (item) => item.iD.toString(),
-                                      getName: (item) => item.name ?? "",
+                                      //getName: (item) => item.name ?? "",
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? "")
+                                            : (item.name ?? "");
+                                      },
 
                                       controller: provider.coDistrictController,
                                       idController:
@@ -1780,7 +1818,16 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.iD.toString(),
-                                getName: (item) => item.nameEng ?? "",
+                                //getName: (item) => item.nameEng ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.nameEng ?? "")
+                                      : (item.nameEng ?? "");
+                                },
+
                                 controller: provider.coCityController,
                                 idController: provider.coCityIdController,
                                 hintText: AppLocalizations.of(context)!.selectCity,
@@ -2184,15 +2231,30 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                     ),
                                   ),
                                   hint: Text(AppLocalizations.of(context)!.selOption),
-                                  items: provider.actEstList
-                                      .map(
-                                        (e) => DropdownMenuItem<
-                                            ActEstablishmentData>(
-                                          value: e,
-                                          child: Text(e.actEstablishment ?? ""),
+                                  // items: provider.actEstList
+                                  //     .map(
+                                  //       (e) => DropdownMenuItem<
+                                  //           ActEstablishmentData>(
+                                  //         value: e,
+                                  //         child: Text(e.actEstablishment ?? ""),
+                                  //       ),
+                                  //     )
+                                  //     .toList(),
+
+                                  items: provider.actEstList.map(
+                                        (e) {
+                                      final locale = AppLocalizations.of(context)!.localeName;
+
+                                      return DropdownMenuItem<ActEstablishmentData>(
+                                        value: e,
+                                        child: Text(
+                                          locale == 'hi'
+                                              ? (e.nameHi ?? e.actEstablishment ?? "")
+                                              : (e.actEstablishment ?? ""),
                                         ),
-                                      )
-                                      .toList(),
+                                      );
+                                    },
+                                  ).toList(),
 
                                   // 🔒 ALWAYS DISABLED
                                   onChanged: null,

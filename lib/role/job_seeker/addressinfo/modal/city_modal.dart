@@ -39,6 +39,7 @@ class CityData {
   dynamic lGCODE;
   String? dropID;
   String? name;
+  String? nameHi;
   String? nameMANGAL;
 
   CityData({this.iD, this.lGCODE, this.dropID, this.name, this.nameMANGAL});
@@ -48,6 +49,7 @@ class CityData {
     lGCODE = json['LGCODE'];
     dropID = json['CODE'];
     name = json['Name_ENG'];
+    nameHi = json['Name_Hi'];
     nameMANGAL = json['Name_MANGAL'];
   }
 
@@ -57,6 +59,7 @@ class CityData {
     data['LGCODE'] = this.lGCODE;
     data['CODE'] = this.dropID;
     data['Name_ENG'] = this.name;
+    data['Name_Hi'] = this.nameHi;
     data['Name_MANGAL'] = this.nameMANGAL;
     return data;
   }

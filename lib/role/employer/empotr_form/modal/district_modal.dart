@@ -43,6 +43,7 @@ class DistrictModal {
 class DistrictData {
   int? iD;
   String? name;
+  String? nameHi;
   String? code;
   dynamic unit;
   dynamic quantity;
@@ -51,6 +52,7 @@ class DistrictData {
   DistrictData({
     this.iD,
     this.name,
+    this.nameHi,
     this.code,
     this.unit,
     this.quantity,
@@ -60,6 +62,7 @@ class DistrictData {
   DistrictData.fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
     name = json['Name'];
+    nameHi = json['Name_Hin'];
     code = json['Code'];
     unit = json['Unit'];
     quantity = json['Quantity'];
@@ -70,6 +73,7 @@ class DistrictData {
     final Map<String, dynamic> json = {};
     json['ID'] = iD;
     json['Name'] = name;
+    json['Name_Hin'] = nameHi;
     json['Code'] = code;
     json['Unit'] = unit;
     json['Quantity'] = quantity;
