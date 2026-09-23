@@ -2329,14 +2329,29 @@ class _EmpOTRFormScreenState extends State<EmpOTRFormScreen> {
                                   ),
                                 ),
                                 hint: Text(AppLocalizations.of(context)!.selOption),
-                                items: provider.sectorList
-                                    .map(
-                                      (e) => DropdownMenuItem<SectorData>(
-                                        value: e,
-                                        child: Text(e.name ?? ""),
+                                // items: provider.sectorList
+                                //     .map(
+                                //       (e) => DropdownMenuItem<SectorData>(
+                                //         value: e,
+                                //         child: Text(e.name ?? ""),
+                                //       ),
+                                //     )
+                                //     .toList(),
+
+                                items: provider.sectorList.map(
+                                      (e) {
+                                    final locale = AppLocalizations.of(context)!.localeName;
+
+                                    return DropdownMenuItem<SectorData>(
+                                      value: e,
+                                      child: Text(
+                                        locale == 'hi'
+                                            ? (e.nameHi ?? e.name ?? "")
+                                            : (e.name ?? ""),
                                       ),
-                                    )
-                                    .toList(),
+                                    );
+                                  },
+                                ).toList(),
 
                                 // ✅ ALWAYS ENABLED
                                 onChanged: (val) => provider.setSector(val),

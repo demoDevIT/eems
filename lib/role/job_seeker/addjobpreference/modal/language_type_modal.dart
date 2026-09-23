@@ -37,21 +37,21 @@ class LanguageTypeModal {
 class LanguageTypeData {
   int? dropID;
   String? name;
-  String? nameENG1;
+  String? nameHi;
 
-  LanguageTypeData({this.dropID, this.name, this.nameENG1});
+  LanguageTypeData({this.dropID, this.name, this.nameHi});
 
   LanguageTypeData.fromJson(Map<String, dynamic> json) {
     dropID = json['ID'];
     name = json['Name_ENG'];
-    nameENG1 = json['Name_ENG1'];
+    nameHi = json['Name_HIN'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['ID'] = this.dropID;
     data['Name_ENG'] = this.name;
-    data['Name_ENG1'] = this.nameENG1;
+    data['Name_HIN'] = this.nameHi;
     return data;
   }
 }

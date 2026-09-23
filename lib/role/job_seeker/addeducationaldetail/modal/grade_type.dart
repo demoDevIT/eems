@@ -37,18 +37,21 @@ class GradeTypeModal {
 class GradeTypeData {
   int? dropID;
   String? name;
+  String? nameHi;
 
   GradeTypeData({this.dropID, this.name});
 
   GradeTypeData.fromJson(Map<String, dynamic> json) {
     dropID = json['CommonID'];
     name = json['Name'];
+    nameHi = json['Name_HI'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['CommonID'] = this.dropID;
     data['Name'] = this.name;
+    data['Name_HI'] = this.nameHi;
     return data;
   }
 }

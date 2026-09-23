@@ -36,18 +36,21 @@ class NcoCodeModal {
 
 class NcoCodeData {
   String? name;
+  String? nameHi;
   String? dropID;
 
   NcoCodeData({this.name, this.dropID});
 
   NcoCodeData.fromJson(Map<String, dynamic> json) {
     name = json['NCOName'];
+    nameHi = json['NCOName_HI'];
     dropID = json['NCOCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['NCOName'] = this.name;
+    data['NCOName_HI'] = this.nameHi;
     data['NCOCode'] = this.dropID;
     return data;
   }

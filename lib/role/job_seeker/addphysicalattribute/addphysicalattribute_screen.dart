@@ -141,6 +141,15 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                         items: provider.bloodGroupList,
                         controller: provider.bloodNameController,
                         idController: provider.bloodIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -215,6 +224,15 @@ class _PhysicalattributeScreenState extends State<AddphysicalattributeScreen> {
                         items: provider.disabilityTypeList, // model list
                         controller: provider.disabilityTypeNameController,
                         idController: provider.disabilityTypeIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selectDisabilityType,
                         height: 50,
                         color: Colors.transparent,

@@ -1110,6 +1110,23 @@ abstract class AppLocalizations {
   String get plzSelectSector;
   String get counseDash;
   String get applyJobFair;
+  String get quickActs;
+  String get scanQRInstantCheckIn;
+  String get eventRegNoMobNo;
+  String get enterRegNoMobile;
+  String get newReg;
+  String get regNewForEvent;
+  String get roleName;
+  String get ofcName;
+  String get helloThere;
+  String get welcomeBack;
+  String get manageEventsScanQR;
+  String get appNo;
+  String get incharge;
+  String get contact;
+  String get document;
+  String get doYouMoreInfo;
+  String get thankNiceDay;
 
 }
 

@@ -467,6 +467,15 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                 items: provider.cDistrictList,
                                 controller: provider.cDistrictNameController,
                                 idController: provider.cDistrictIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText:AppLocalizations.of(context)!.selectDistrict,
                                 height: 50,
                                 color: Colors.transparent,
@@ -523,6 +532,15 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                               items: provider.cCityList,
                               controller: provider.cCityNameController,
                               idController: provider.cCityIdController,
+
+                              getName: (item) {
+                                final locale = AppLocalizations.of(context)!.localeName;
+
+                                return locale == 'hi'
+                                    ? (item.nameHi ?? item.name ?? '')
+                                    : (item.name ?? '');
+                              },
+
                               hintText: AppLocalizations.of(context)!.selectCity,
                               height: 50,
                               color: Colors.transparent,
@@ -613,6 +631,15 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                                   items: provider.cWardList,
                                   controller: provider.cWardNameController,
                                   idController: provider.cWardIdController,
+
+                                  getName: (item) {
+                                    final locale = AppLocalizations.of(context)!.localeName;
+
+                                    return locale == 'hi'
+                                        ? (item.nameHi ?? item.name ?? '')
+                                        : (item.name ?? '');
+                                  },
+
                                   hintText: AppLocalizations.of(context)!.selectWard,
                                   height: 50,
                                   color: Colors.transparent,

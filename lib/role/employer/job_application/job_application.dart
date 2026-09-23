@@ -130,6 +130,16 @@ class _JobApplicationScreenState extends State<JobApplicationScreen> {
                               items: provider.eventNameList,
                               controller: provider.eventNameController,
                               idController: provider.eventIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.eventNameHI ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
+
                               hintText: AppLocalizations.of(context)!.selOption,
                               height: 50,
                               color: Colors.transparent,

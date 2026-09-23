@@ -245,6 +245,64 @@ void showAlertError(String message, BuildContext context) {
   );
 }
 
+void showAlert(String message, BuildContext context) {
+  print("correctMsg1->$message");
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: kWhite,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (BuildContext context) {
+      print("correctMsg2->$message");
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.error, color: kDarkOrangeColor),
+                SizedBox(width: 8),
+                Text(
+                  "Warning",
+                  style: Styles.semiBoldTextStyle(
+                    size: 16,
+                    color: kDarkOrangeColor,
+                  ),
+                ),
+              ],
+            ),
+             SizedBox(height: 6),
+            Text(
+              message,
+              style: Styles.regularTextStyle(
+                size: 14,
+                color: kBlackColor,
+              ),
+            ),
+            SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  "OK",
+                  style: Styles.regularTextStyle(
+                    size: 16,
+                    color: kBlackColor,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    },
+  );
+}
+
 showAlertSuccess(
   String message,
   BuildContext context,

@@ -180,8 +180,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     Column(
                       children: [
                         const SizedBox(height: 15),
-                        const Text(
-                          "Do you want more information?",
+                        Text(
+                          AppLocalizations.of(context)!.doYouMoreInfo,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
@@ -191,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             Expanded(
                               child: modernActionButton(
                                 context: context,
-                                label: "Yes",
+                                label: AppLocalizations.of(context)!.yes,
                                 icon: CupertinoIcons.check_mark_circled_solid,
                                 baseColor: kPrimaryColor,
                                 isPrimary: true,
@@ -207,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             Expanded(
                               child: modernActionButton(
                                 context: context,
-                                label: "No",
+                                label: AppLocalizations.of(context)!.no,
                                 icon: CupertinoIcons.xmark_circle,
                                 baseColor: Colors.blueGrey,
                                 isPrimary: false,
@@ -217,8 +217,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       behavior: SnackBarBehavior.floating,
                                       backgroundColor:
                                       Colors.blueGrey.shade900,
-                                      content: const Text(
-                                          "Thank you, Have a nice day."),
+                                      content: Text(
+                                          AppLocalizations.of(context)!.thankNiceDay),
                                     ),
                                   );
 
@@ -504,7 +504,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (officeName.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.business_outlined,
-                          label: "Office Name",
+                          label: AppLocalizations.of(context)!.officeName,
                           value: officeName,
                           iconColor: accentColor,
                         ),
@@ -515,7 +515,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (applicationNo.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.assignment_ind_outlined,
-                          label: "App No",
+                          label: AppLocalizations.of(context)!.appNo,
                           value: applicationNo,
                           iconColor: accentColor,
                         ),
@@ -526,7 +526,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (venue.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.location_on_outlined,
-                          label: "Venue",
+                          label: AppLocalizations.of(context)!.venue,
                           value: venue,
                           iconColor: accentColor,
                         ),
@@ -537,7 +537,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (inchargeName.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.person_outline,
-                          label: "Incharge",
+                          label: AppLocalizations.of(context)!.incharge,
                           value: inchargeName,
                           iconColor: accentColor,
                         ),
@@ -548,7 +548,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (contactNumber.isNotEmpty)
                         _buildInfoRow(
                           icon: Icons.phone_outlined,
-                          label: "Contact",
+                          label: AppLocalizations.of(context)!.contact,
                           value: contactNumber,
                           iconColor: accentColor,
                         ),
@@ -559,7 +559,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if (hasDate)
                         _buildInfoRow(
                           icon: Icons.calendar_month_outlined,
-                          label: "Date",
+                          label: AppLocalizations.of(context)!.date,
                           value: hasDate
                               ? "${formattedStartDate.isNotEmpty ? formattedStartDate : "-"}"
                               " To "
@@ -635,8 +635,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
           const SizedBox(width: 8),
 
-          const Text(
-            "Document: ",
+          Text(
+            AppLocalizations.of(context)!.document,
             style: TextStyle(
               color: Color(0xFF4A4A4A),
               fontSize: 11.5,

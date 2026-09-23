@@ -609,7 +609,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
 
        if (apiResponse.response?.statusCode == 200) {
          dynamic responseData = apiResponse.response!.data;
-
+         print("cc");
          if (responseData is String) {
            responseData = jsonDecode(responseData);
          }
@@ -628,7 +628,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            showAlertError(errorMsg, context);
            return;
          }
-
+         print("bb");
          final JoiningOverviewModal modal =
          JoiningOverviewModal.fromJson(responseData);
 
@@ -638,6 +638,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
            joiningOverviewData = null;
          }
        } else {
+         print("aa");
          joiningOverviewData = null;
          showAlertError("Something went wrong", context);
        }
@@ -700,7 +701,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
 
        if (apiResponse.response?.statusCode == 200) {
          dynamic responseData = apiResponse.response!.data;
-
+  print("pp");
          if (responseData is String) {
            responseData = jsonDecode(responseData);
          }
@@ -708,26 +709,27 @@ class DepartmentDashboardProvider extends ChangeNotifier {
          print(
            "Attendance Overview API Response: $responseData",
          );
-
+         print("qq");
          if (responseData['State'] != 200 ||
              responseData['Data'] == null) {
            attendanceOverviewList.clear();
-
+           print("yy");
            final String errorMsg =
                responseData['ErrorMessage'] ??
                    responseData['Message'] ??
                    "Something went wrong";
 
-           showAlertError(errorMsg, context);
+           showAlert(errorMsg, context);
            return;
          }
-
+         print("vv");
          final AttendanceOverviewModal modal =
          AttendanceOverviewModal.fromJson(responseData);
 
          attendanceOverviewList =
              modal.data ?? <AttendanceOverviewData>[];
        } else {
+         print("ff");
          attendanceOverviewList.clear();
 
          showAlertError(
@@ -737,7 +739,7 @@ class DepartmentDashboardProvider extends ChangeNotifier {
        }
      } catch (e) {
        print("Attendance Overview API Error: $e");
-
+       print("ss");
        attendanceOverviewList.clear();
 
        showAlertError(

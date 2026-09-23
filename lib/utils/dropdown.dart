@@ -63,6 +63,7 @@ Widget buildDropdownWithBorderField({
   required List<dynamic> items,
   required TextEditingController controller,
   required TextEditingController idController,
+  required String Function(dynamic item) getName,
   String? hintText,
   double? width,
   double? height,
@@ -73,10 +74,17 @@ Widget buildDropdownWithBorderField({
   Function(String?)? onChanged,
   BorderRadius? borderRadius,
 }) {
-  String? selectedValue =
-  items.any((item) => item.name.toString() == controller.text)
+  // String? selectedValue =
+  // items.any((item) => item.name.toString() == controller.text)
+  //     ? controller.text
+  //     : null;
+
+  String? selectedValue = items.any(
+        (item) => getName(item) == controller.text,
+  )
       ? controller.text
       : null;
+
   return StatefulBuilder(
     builder: (BuildContext context, StateSetter setState) {
       return  Container(
@@ -105,23 +113,38 @@ Widget buildDropdownWithBorderField({
             underline: const SizedBox(),
             // Removes the default underline
             items: items.map((dynamic item) {
+              final displayName = getName(item);
+
               return DropdownMenuItem<String>(
-                value: item.name.toString() ?? "Unknown",
+               // value: item.name.toString() ?? "Unknown",
+               //  child: Text(item.name.toString() ?? "Unknown"),
                 // Ensure it's not null
-                child: Text(item.name.toString() ?? "Unknown"),
+                value: displayName,
+                child: Text(displayName),
               );
             }).toList(),
-            onChanged: (String? newValue) {
+            onChanged: //isEnable ?
+                (String? newValue) {
               setState(() {
                 selectedValue = newValue;
-                final selectedItem = items.firstWhere((item) => item.name.toString() == newValue);
+                //final selectedItem = items.firstWhere((item) => item.name.toString() == newValue);
+
+                final selectedItem = items.firstWhere(
+                      (item) => getName(item) == newValue,
+                );
+
                 controller.text = newValue ?? '';
                 idController.text = selectedItem.dropID.toString();
+
+                //onChanged?.call(newValue);
+
                 if (onChanged != null) {
                   onChanged(newValue);
                 }
               });
-            },
+            }
+            //: null
+            ,
           ),
         ) ,
       ) ;

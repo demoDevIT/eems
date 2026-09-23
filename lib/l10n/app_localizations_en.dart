@@ -2363,4 +2363,55 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get applyJobFair => "Apply for Job Fair";
 
+  @override
+  String get quickActs => "QUICK ACTIONS";
+
+  @override
+  String get scanQRInstantCheckIn => "Scan your event QR code for instant check-in";
+
+  @override
+  String get eventRegNoMobNo => "Event Reg. No. / Mobile No.";
+
+  @override
+  String get enterRegNoMobile => "Enter your Registration No./Mobile No. to find details";
+
+  @override
+  String get newReg => "New Registration";
+
+  @override
+  String get regNewForEvent => "Register a new candidate for the event";
+
+  @override
+  String get roleName => "Role Name :-";
+
+  @override
+  String get ofcName => "Office Name :-";
+
+  @override
+  String get helloThere => "Hello there 👋";
+
+  @override
+  String get welcomeBack => "Welcome Back!";
+
+  @override
+  String get manageEventsScanQR => "Manage your events, scan QR codes,\nand stay connected.";
+
+  @override
+  String get appNo => "App No";
+
+  @override
+  String get incharge => "Incharge";
+
+  @override
+  String get contact => "Contact";
+
+  @override
+  String get document => "Document:";
+
+  @override
+  String get doYouMoreInfo => "Do you want more information?";
+
+  @override
+  String get thankNiceDay => "Thank you, Have a nice day.";
+
 }

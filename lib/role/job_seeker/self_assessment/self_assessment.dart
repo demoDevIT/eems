@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/user_new.dart';
 import 'assessment_test.dart';
 import 'modal/self_assessment_modal.dart';
 import 'provider/self_assessment_provider.dart';
@@ -28,7 +29,7 @@ class _SelfAssessmentScreenState
     Future.microtask(() {
       context
           .read<SelfAssessmentProvider>()
-          .getAssessmentListApi(context, 2234); // pass dynamic jobSeekerId
+          .getAssessmentListApi(context, UserData().model.value.userId!); // pass dynamic jobSeekerId // 2234
     });
   }
 

@@ -73,6 +73,15 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                         items: provider.eventNameList,
                         controller: provider.eventNameController,
                         idController: provider.eventIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -94,6 +103,15 @@ class _JobApplyListScreenState extends State<JobApplyListScreen> {
                         items: provider.sectorList,
                         controller: provider.sectorNameController,
                         idController: provider.sectorIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,

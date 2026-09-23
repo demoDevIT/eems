@@ -44,21 +44,25 @@ class SectorModal {
 class SectorData {
   int? iD;
   String? name;
+  String? nameHi;
 
   SectorData({
     this.iD,
     this.name,
+    this.nameHi,
   });
 
   SectorData.fromJson(Map<String, dynamic> json) {
     iD = json['ID'];
     name = json['Name_ENG'];
+    nameHi = json['Name_HI'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {};
     json['ID'] = iD;
     json['Name_ENG'] = name;
+    json['Name_HI'] = nameHi;
     return json;
   }
 

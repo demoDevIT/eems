@@ -37,7 +37,7 @@ class DistrictModal {
 class DistrictData {
   int? dISTRICTID;
   String? name;
- // String? nameHi;
+  String? nameHi;
   int? dIVISIONID;
   String? status;
   int? dropID;
@@ -45,7 +45,7 @@ class DistrictData {
   DistrictData(
       {this.dISTRICTID,
         this.name,
-       // this.nameHi,
+        this.nameHi,
         this.dIVISIONID,
         this.status,
         this.dropID});
@@ -53,7 +53,7 @@ class DistrictData {
   DistrictData.fromJson(Map<String, dynamic> json) {
     dISTRICTID = json['DISTRICT_ID'];
     name = json['DISTRICT_ENG'];
-   // nameHi = json['Name_Hin'];
+    nameHi = json['Name_HI'];
     dIVISIONID = json['DIVISION_ID'];
     status = json['Status'];
     dropID = json['DISTRICT_CODE'];
@@ -63,7 +63,7 @@ class DistrictData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['DISTRICT_ID'] = this.dISTRICTID;
     data['DISTRICT_ENG'] = this.name;
-    // data['Name_Hin'] = this.nameHi;
+    data['Name_HI'] = this.nameHi;
     data['DIVISION_ID'] = this.dIVISIONID;
     data['Status'] = this.status;
     data['DISTRICT_CODE'] = this.dropID;

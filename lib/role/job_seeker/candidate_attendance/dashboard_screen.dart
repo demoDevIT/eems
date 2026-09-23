@@ -11,6 +11,7 @@ import '../../../repo/common_repo.dart';
 import '../../../utils/app_shared_prefrence.dart';
 import '../../../utils/global.dart';
 import '../../../utils/images.dart';
+import '../../../utils/language_toggle_switch.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/user_new.dart';
 import '../../department/dept_dashboard/modal/role_modal.dart';
@@ -61,8 +62,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         drawer: _buildSideDrawer(), // ✅ KEEP drawer
 
         appBar: AppBar(
-          title: const Text(
-            "Dashboard",
+          title: Text(
+            AppLocalizations.of(context)!.dashboard,
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -71,7 +72,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
+          //iconTheme: const IconThemeData(color: Colors.black),
 
           actions: [
             if (!hideRoleSection)
@@ -94,14 +95,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.manage_accounts,
                             color: Colors.white, size: 18),
                         SizedBox(width: 6),
                         Text(
-                          "Role",
+                          AppLocalizations.of(context)!.role,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -172,12 +173,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      role.roleName ?? "",
+                                      //role.roleName ?? "",
+                                      Localizations.localeOf(context)
+                                          .languageCode ==
+                                          'hi'
+                                          ? (role.roleNameHi ??
+                                          role.roleName ??
+                                          "")
+                                          : (role.roleName ?? ""),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
                                       ),
                                     ),
+
+                                    // Text(
+                                    //   role.roleName ?? "",
+                                    //   style: const TextStyle(
+                                    //     fontWeight: FontWeight.w600,
+                                    //     fontSize: 15,
+                                    //   ),
+                                    // ),
+
                                     // const SizedBox(height: 4),
                                     // Text(
                                     //   role.officeNameEn ?? "",
@@ -197,6 +214,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   },
                 );
               },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: SizedBox(
+                width: 80,
+                child: LanguageToggleSwitch(),
+              ),
             ),
           ],
         ),
@@ -219,8 +243,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "QUICK ACTIONS",
+                  child: Text(
+                    AppLocalizations.of(context)!.quickActs,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -234,8 +258,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 /// ACTION CARDS
                 _actionCard(
                   iconPath: "assets/images/QRsvg.svg",
-                  title: "Scan QR",
-                  subTitle: "Scan your event QR code for instant check-in",
+                  title: AppLocalizations.of(context)!.scanQR,
+                  subTitle: AppLocalizations.of(context)!.scanQRInstantCheckIn,
                   iconBg: const Color(0xff5B5CEB),
                   onTap: () {
                     Navigator.of(context).push(
@@ -253,8 +277,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 _actionCard(
                   iconPath: "assets/images/eventRegsvg.svg",
-                  title: "Event Reg. No. / Mobile No.",
-                  subTitle: "Enter your Registration No./Mobile No. to find details",
+                  title: AppLocalizations.of(context)!.eventRegNoMobNo,
+                  subTitle: AppLocalizations.of(context)!.enterRegNoMobile,
                   iconBg: const Color(0xff8D4AF2),
                   onTap: () {
                     Navigator.of(context).push(
@@ -271,8 +295,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 _actionCard(
                   iconPath: "assets/images/BackgroundPlus.svg",
-                  title: "New Registration",
-                  subTitle: "Register a new candidate for the event",
+                  title: AppLocalizations.of(context)!.newReg,
+                  subTitle: AppLocalizations.of(context)!.regNewForEvent,
                   iconBg: const Color(0xff8D4AF2),
                   onTap: () {
                     Navigator.of(context).push(
@@ -400,10 +424,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 3,
                           child: Text(
-                            "Role Name :-",
+                            AppLocalizations.of(context)!.roleName,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -430,10 +454,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Expanded(
+                        Expanded(
                           flex: 3,
                           child: Text(
-                            "Office Name :-",
+                            AppLocalizations.of(context)!.ofcName,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -606,7 +630,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             title: Text(AppLocalizations.of(context)!.logout,style: Styles.mediumTextStyle(size: 14),),
             onTap: () async {
               Navigator.pop(context); // Close the drawer
-              showLogoutDialog(context, "Logout","Are you sure want to Logout ?", "Thank you and see you again!", (value) async {
+              showLogoutDialog(context, AppLocalizations.of(context)!.logout,AppLocalizations.of(context)!.logoutConfirmMsg, AppLocalizations.of(context)!.logoutThankYouText, (value) async {
                 if (value.toString() == "success") {
                   final pref = AppSharedPref();
                   // Clear login session only
@@ -658,9 +682,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "Hello there 👋",
+                  AppLocalizations.of(context)!.helloThere,
                   style: TextStyle(
                     fontSize: 13,
                     color: Color(0xff7C849B),
@@ -668,7 +692,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  "Welcome Back!",
+                  AppLocalizations.of(context)!.welcomeBack,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
@@ -677,7 +701,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "Manage your events, scan QR codes,\nand stay connected.",
+                  AppLocalizations.of(context)!.manageEventsScanQR,
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.5,

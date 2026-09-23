@@ -37,18 +37,21 @@ class ProficiencyTypeModal {
 class ProficiencyTypeData {
   dynamic dropID;
   dynamic name;
+  dynamic nameHi;
 
-  ProficiencyTypeData({this.dropID, this.name});
+  ProficiencyTypeData({this.dropID, this.name, this.nameHi});
 
   ProficiencyTypeData.fromJson(Map<String, dynamic> json) {
     dropID = json['CommonID'];
     name = json['Name'];
+    nameHi = json['Name_HI'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['CommonID'] = this.dropID;
     data['Name'] = this.name;
+    data['Name_HI'] = this.nameHi;
     return data;
   }
 }

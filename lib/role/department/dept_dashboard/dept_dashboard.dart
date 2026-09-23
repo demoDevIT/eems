@@ -51,8 +51,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       final provider = context.read<DepartmentDashboardProvider>();
       provider.getRoleApi(context, "");
       provider.clearData();
+
       provider.getJoiningOverview(context);
-      provider.getAttendanceOverview(context);
+
+      // provider.getJoiningOverview(context);
+      // provider.getAttendanceOverview(context);
     });
   }
 
@@ -507,10 +510,24 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     final bool selected = _selectedOverviewTab == index;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (_selectedOverviewTab == index) {
+          return;
+        }
+
         setState(() {
           _selectedOverviewTab = index;
         });
+
+        final provider = context.read<DepartmentDashboardProvider>();
+
+        if (index == 0) {
+          // Joining tab
+          await provider.getJoiningOverview(context);
+        } else if (index == 1) {
+          // Attendance tab
+          await provider.getAttendanceOverview(context);
+        }
       },
       // child: AnimatedContainer(
       child: Container(

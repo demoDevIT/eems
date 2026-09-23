@@ -149,6 +149,15 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                       items: provider.employmentTypesList,
                       controller: provider.employmentTypeNameController,
                       idController: provider.employmentTypeIdController,
+
+                      getName: (item) {
+                        final locale = AppLocalizations.of(context)!.localeName;
+
+                        return locale == 'hi'
+                            ? (item.nameHi ?? item.name ?? '')
+                            : (item.name ?? '');
+                      },
+
                       hintText: AppLocalizations.of(context)!.selOption,
                       height: 50,
                       color: Colors.transparent,
@@ -536,6 +545,15 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           provider.jobTypeNameController,
                                       idController:
                                           provider.jobTypeIdController,
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? '')
+                                            : (item.name ?? '');
+                                      },
+
                                       hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,
@@ -555,6 +573,15 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                           .employmentNatureNameController,
                                       idController:
                                           provider.employmentNatureIdController,
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? '')
+                                            : (item.name ?? '');
+                                      },
+
                                       hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,
@@ -571,6 +598,15 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                       items: provider.ncoCodeList,
                                       controller: provider.ncoNameController,
                                       idController: provider.ncoIdController,
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? '')
+                                            : (item.name ?? '');
+                                      },
+
                                       hintText: AppLocalizations.of(context)!.selOption,
                                       height: 50,
                                       color: Colors.transparent,

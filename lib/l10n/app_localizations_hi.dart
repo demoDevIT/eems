@@ -2363,4 +2363,55 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get applyJobFair => "जॉब फेयर के लिए अप्लाई करें";
 
+  @override
+  String get quickActs => "त्वरित कार्रवाई";
+
+  @override
+  String get scanQRInstantCheckIn => "तुरंत चेक-इन के लिए अपने इवेंट का QR कोड स्कैन करें।";
+
+  @override
+  String get eventRegNoMobNo => "इवेंट रजिस्ट्रेशन नंबर / मोबाइल नंबर";
+
+  @override
+  String get enterRegNoMobile => "विवरण जानने के लिए अपना रजिस्ट्रेशन नंबर/मोबाइल नंबर दर्ज करें।";
+
+  @override
+  String get newReg => "नया रजिस्ट्रेशन";
+
+  @override
+  String get regNewForEvent => "इवेंट के लिए एक नए उम्मीदवार का रजिस्ट्रेशन करें।";
+
+  @override
+  String get roleName => "भूमिका का नाम :-";
+
+  @override
+  String get ofcName => "कार्यालय का नाम :-";
+
+  @override
+  String get helloThere => "नमस्ते 👋";
+
+  @override
+  String get welcomeBack => "वापसी पर स्वागत है!";
+
+  @override
+  String get manageEventsScanQR => "अपने इवेंट्स मैनेज करें, QR कोड स्कैन करें और जुड़े रहें।";
+
+  @override
+  String get appNo => "ऐप नंबर";
+
+  @override
+  String get incharge => "प्रभारी";
+
+  @override
+  String get contact => "संपर्क";
+
+  @override
+  String get document => "दस्तावेज़:";
+
+  @override
+  String get doYouMoreInfo => "क्या आपको अधिक जानकारी चाहिए?";
+
+  @override
+  String get thankNiceDay => "धन्यवाद आपका दिन अच्छा है।";
+
 }

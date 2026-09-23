@@ -137,7 +137,15 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         // ✅ MAP YOUR MODEL HERE
                         getId: (item) => item.dropID.toString(),
-                        getName: (item) => item.name ?? "",
+                        //getName: (item) => item.name ?? "",
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.moduleNameHi ?? item.name ?? "")
+                              : (item.name ?? "");
+                        },
 
                         controller: provider.moduleNameController,
                         idController: provider.moduleIdController,
@@ -168,7 +176,16 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                         // ✅ MAP YOUR MODEL HERE
                         getId: (item) => item.dropID.toString(),
-                        getName: (item) => item.name ?? "",
+                        //getName: (item) => item.name ?? "",
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.subModuleNameHi ?? item.name ?? "")
+                              : (item.name ?? "");
+                        },
+
 
                         controller: provider.subModuleNameController,
                         idController: provider.subModuleIdController,

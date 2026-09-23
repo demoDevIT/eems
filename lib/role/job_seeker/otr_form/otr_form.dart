@@ -678,7 +678,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                // getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider.religionNameController,
                                 idController: provider.religionIdController,
@@ -929,7 +937,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                              //  getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider.uidTypeNameController,
                                 idController: provider.uidTypeIdController,
@@ -1599,16 +1615,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 // ✅ MAP YOUR MODEL HERE
                                                 getId: (item) =>
                                                     item.dropID.toString(),
-                                                getName: (item) =>
-                                                    item.name ?? "",
+                                                // getName: (item) =>
+                                                //     item.name ?? "",
 
-                                                // getName: (item) {
-                                                //   final locale = AppLocalizations.of(context)!.localeName;
-                                                //
-                                                //   return locale == 'hi'
-                                                //       ? (item.nameHi ?? item.name ?? "")
-                                                //       : (item.name ?? "");
-                                                // },
+                                                getName: (item) {
+                                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                                  return locale == 'hi'
+                                                      ? (item.nameHi ?? item.name ?? "")
+                                                      : (item.name ?? "");
+                                                },
 
                                                 controller: provider
                                                     .cDistrictNameController,
@@ -1833,8 +1849,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                                 // ✅ MAP YOUR MODEL HERE
                                                 getId: (item) =>
                                                     item.dropID.toString(),
-                                                getName: (item) =>
-                                                    item.name ?? "",
+                                               // getName: (item) => item.name ?? "",
+
+                                                getName: (item) {
+                                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                                  return locale == 'hi'
+                                                      ? (item.nameMANGAL ?? item.name ?? "")
+                                                      : (item.name ?? "");
+                                                },
 
                                                 controller: provider
                                                     .cWardNameController,
@@ -2219,7 +2242,16 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                   // ✅ MAP YOUR MODEL HERE
                                   getId: (item) => item.dropID.toString(),
-                                  getName: (item) => item.name ?? "",
+                                 // getName: (item) => item.name ?? "",
+
+                                  getName: (item) {
+                                    final locale = AppLocalizations.of(context)!.localeName;
+
+                                    return locale == 'hi'
+                                        ? (item.qualificationHI ?? item.name ?? "")
+                                        : (item.name ?? "");
+                                  },
+
 
                                   controller:
                                       provider.educationLevelNameController,
@@ -2285,7 +2317,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+
+                                    getName: (item) {
+                                      final locale = AppLocalizations.of(context)!.localeName;
+
+                                      return locale == 'hi'
+                                          ? (item.nameHi ?? item.name ?? "")
+                                          : (item.name ?? "");
+                                    },
 
                                 controller: provider.classNameController,
                                 idController: provider.classIdController,
@@ -2326,7 +2366,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.boardMANGAL ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider.boardNameController,
                                 idController: provider.boardIdController,
@@ -2444,7 +2492,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller:
                                     provider.graduationTypeNameController,
@@ -2485,7 +2541,14 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                               child: buildSearchableDropdown<GraduationTypeData>(
                                 items: provider.itiChildList,
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
                                 controller: provider.itiChildNameController,
                                 idController: provider.itiChildIdController,
                                 hintText: AppLocalizations.of(context)!.selOption,
@@ -2694,7 +2757,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.universityNameHin ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider.universityNameController,
                                 idController: provider.universityIdController,
@@ -2790,7 +2861,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                       // ✅ MAP YOUR MODEL HERE
                                       getId: (item) => item.dropID.toString(),
-                                      getName: (item) => item.name ?? "",
+                                      //getName: (item) => item.name ?? "",
+
+                                        getName: (item) {
+                                          final locale = AppLocalizations.of(context)!.localeName;
+
+                                          return locale == 'hi'
+                                              ? (item.nameHi ?? item.name ?? "")
+                                              : (item.name ?? "");
+                                        },
 
                                       controller: provider
                                           .mediumEducationNameController,
@@ -2853,7 +2932,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                       // ✅ MAP YOUR MODEL HERE
                                       getId: (item) => item.dropID.toString(),
-                                      getName: (item) => item.name ?? "",
+                                      // getName: (item) => item.name ?? "",
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? "")
+                                            : (item.name ?? "");
+                                      },
 
                                       controller:
                                           provider.natureOfCourseNameController,
@@ -2931,7 +3018,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                       // ✅ MAP YOUR MODEL HERE
                                       getId: (item) => item.dropID.toString(),
-                                      getName: (item) => item.name ?? "",
+                                      // getName: (item) => item.name ?? "",
+
+                                      getName: (item) {
+                                        final locale = AppLocalizations.of(context)!.localeName;
+
+                                        return locale == 'hi'
+                                            ? (item.nameHi ?? item.name ?? "")
+                                            : (item.name ?? "");
+                                      },
 
                                       controller:
                                           provider.ncoCodeNameController,
@@ -3082,6 +3177,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.gradeTypeList,
                                 controller: provider.gradeTypeNameController,
                                 idController: provider.gradeTypeIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: "--Select Option--",
                                 height: 50,
                                 color: Colors.transparent,
@@ -3138,7 +3242,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                                //getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.employmentNameHindi ?? item.name ?? "")
+                                      : (item.name ?? "");
+                                },
 
                                 controller: provider
                                     .currentEmploymentStatusNameController,
@@ -3329,6 +3441,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                   items: provider.preferredRegionList,
                                   controller: provider.regionNameController,
                                   idController: provider.regionIdController,
+
+                                  getName: (item) {
+                                    final locale = AppLocalizations.of(context)!.localeName;
+
+                                    return locale == 'hi'
+                                        ? (item.nameHi ?? item.name ?? '')
+                                        : (item.name ?? '');
+                                  },
+
                                   hintText: AppLocalizations.of(context)!.selOption,
                                   height: 50,
                                   color: Colors.transparent,
@@ -3513,6 +3634,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.categoryList,
                                 controller: provider.categoryNameController,
                                 idController: provider.categoryIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHIN ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
@@ -3540,6 +3670,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.subCategoryList,
                                 controller: provider.subCategoryNameController,
                                 idController: provider.subCategoryIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHIN ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
@@ -3569,7 +3708,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
                                 items: provider.languageKnownList,
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                              //  getName: (item) => item.name ?? "",
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
 
                                 controller: provider.languageNameController,
                                 idController: provider.languageIdController,
@@ -3597,7 +3744,15 @@ class _OtrFormScreenState extends State<OtrFormScreen> {
 
                                 // ✅ MAP YOUR MODEL HERE
                                 getId: (item) => item.dropID.toString(),
-                                getName: (item) => item.name ?? "",
+                               // getName: (item) => item.name ?? "",
+
+                                    getName: (item) {
+                                      final locale = AppLocalizations.of(context)!.localeName;
+
+                                      return locale == 'hi'
+                                          ? (item.nameHi ?? item.name ?? '')
+                                          : (item.name ?? '');
+                                    },
 
                                 controller: provider.proficiencyNameController,
                                 idController: provider.proficiencyIdController,

@@ -209,6 +209,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.classList,
                           controller: provider.classNameController,
                           idController: provider.classIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
@@ -251,6 +260,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.boardList,
                           controller: provider.boardNameController,
                           idController: provider.boardIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
@@ -323,6 +341,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.streamTypeList,
                           controller: provider.streamNameController,
                           idController: provider.streamIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
@@ -606,6 +633,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.universityList,
                           controller: provider.universityNameController,
                           idController: provider.universityIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
@@ -708,6 +744,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                     provider.mediumEducationNameController,
                                 idController:
                                     provider.mediumEducationIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
@@ -777,6 +822,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                     provider.natureOfCourseNameController,
                                 idController:
                                     provider.natureOfCourseIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
@@ -876,6 +930,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                                 items: provider.ncoCodeList,
                                 controller: provider.ncoCodeNameController,
                                 idController: provider.ncoCodeIdController,
+
+                                getName: (item) {
+                                  final locale = AppLocalizations.of(context)!.localeName;
+
+                                  return locale == 'hi'
+                                      ? (item.nameHi ?? item.name ?? '')
+                                      : (item.name ?? '');
+                                },
+
                                 hintText: AppLocalizations.of(context)!.selOption,
                                 height: 50,
                                 color: Colors.transparent,
@@ -1028,6 +1091,15 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           items: provider.gradeTypeList,
                           controller: provider.gradeTypeNameController,
                           idController: provider.gradeTypeIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,

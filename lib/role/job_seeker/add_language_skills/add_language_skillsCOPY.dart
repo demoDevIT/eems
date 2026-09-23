@@ -6,6 +6,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/add_language_skills/provider/add_language_skills_provider.dart';
 import 'package:rajemployment/role/job_seeker/addjobpreference/provider/add_job_preference_provider.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
@@ -126,6 +127,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.categoryList,
                         controller: provider.categoryNameController,
                         idController: provider.categoryIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,
@@ -148,6 +158,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.subCategoryList,
                         controller: provider.subCategoryNameController,
                         idController: provider.subCategoryIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,
@@ -168,6 +187,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.acquiredTypeList,
                         controller: provider.acquiredThroughNameController,
                         idController: provider.acquiredThroughIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,
@@ -220,6 +248,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.ncoCodeList,
                         controller: provider.ncoNameController,
                         idController: provider.ncoIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,
@@ -320,6 +357,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.languageKnownList,
                         controller: provider.languageNameController,
                         idController: provider.languageIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,
@@ -339,6 +385,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                         items: provider.proficiencyTypeList,
                         controller: provider.proficiencyNameController,
                         idController: provider.proficiencyIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: "--Select Option--",
                         height: 50,
                         color: Colors.transparent,

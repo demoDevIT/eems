@@ -428,6 +428,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                           items: provider.languageKnownList,
                           controller: provider.languageNameController,
                           idController: provider.languageIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,
@@ -444,6 +453,15 @@ class _AddLanguageSkillsScreenState extends State<AddLanguageSkillsScreen> {
                           items: provider.proficiencyTypeList,
                           controller: provider.proficiencyNameController,
                           idController: provider.proficiencyIdController,
+
+                          getName: (item) {
+                            final locale = AppLocalizations.of(context)!.localeName;
+
+                            return locale == 'hi'
+                                ? (item.nameHi ?? item.name ?? '')
+                                : (item.name ?? '');
+                          },
+
                           hintText: AppLocalizations.of(context)!.selOption,
                           height: 50,
                           color: Colors.transparent,

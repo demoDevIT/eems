@@ -126,6 +126,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.sectorList,
                         controller: provider.sectorNameController,
                         idController: provider.sectorIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -149,6 +158,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.preferredLocationList,
                         controller: provider.preferredLocationNameController,
                         idController: provider.preferredLocationIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -172,6 +190,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.employmentTypeList,
                         controller: provider.employmentTypeNameController,
                         idController: provider.employmentTypeIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -194,6 +221,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.jobTypeList,
                         controller: provider.jobTypeNameController,
                         idController: provider.jobTypeIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -245,6 +281,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.salaryRangeList,
                         controller: provider.salaryRangeNameController,
                         idController: provider.salaryRangeIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -267,6 +312,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.shiftList,
                         controller: provider.shiftNameController,
                         idController: provider.shiftIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
@@ -288,6 +342,15 @@ class _AddJobPreferenceScreenState extends State<AddJobPreferenceScreen> {
                         items: provider.ncoCodeList,
                         controller: provider.ncoCodeNameController,
                         idController: provider.ncoCodeIdController,
+
+                        getName: (item) {
+                          final locale = AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
                         hintText: AppLocalizations.of(context)!.selOption,
                         height: 50,
                         color: Colors.transparent,
