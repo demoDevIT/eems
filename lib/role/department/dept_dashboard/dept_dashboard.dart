@@ -15,6 +15,7 @@ import '../../../utils/global.dart';
 import '../../../utils/language_toggle_switch.dart';
 import '../../../utils/right_to_left_route.dart';
 import '../../../utils/user_new.dart';
+import '../../job_seeker/grievance/grievance_list.dart';
 import '../../job_seeker/loginscreen/screen/login_screen.dart';
 import '../dept_QR_scan/dept_QR_scan.dart';
 import '../dept_join_attendance_list/dept_join_attendance_list.dart';
@@ -1743,6 +1744,23 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const RequestMapScreen(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.request_page),
+            title: Text(AppLocalizations.of(context)!.grievfeedbak,
+                style: TextStyle(fontSize: 14)),
+            // onTap: () {
+            //   Navigator.pop(context); // Already on dashboard
+            // },
+            onTap: () async {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GrievanceScreen(),
                 ),
               );
             },

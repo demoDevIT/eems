@@ -14,6 +14,7 @@ import '../../../utils/right_to_left_route.dart';
 import '../../../utils/size_config.dart';
 import '../../../utils/user_new.dart';
 import '../../employer/job_fair/job_fair.dart';
+import '../../job_seeker/grievance/grievance_list.dart';
 import '../../job_seeker/homescreen/home_screen.dart';
 import '../../job_seeker/job_fair_event/job_fair_event_details.dart';
 import '../../job_seeker/job_fair_event/modal/running_event_modal.dart';
@@ -167,6 +168,19 @@ class _CounselorDashboard extends State<CounselorDashboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const JobFairScreen(),
+                ),
+              );
+            },
+          ),
+          _dashboardListTile(
+            title: AppLocalizations.of(context)!.grievfeedbak,
+            iconPath: "assets/images/grievances.svg",
+            color: const Color(0xFF2DBE8D),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GrievanceScreen(),
                 ),
               );
             },

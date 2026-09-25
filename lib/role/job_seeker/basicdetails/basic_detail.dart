@@ -74,13 +74,17 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        showImagePicker(context,
-                                (pickedImage) async {
-                              if (pickedImage != null) {
-                                provider.profileFile = pickedImage;
-                                setState(() {});
-                              }
-                            });
+                        showImagePicker(
+                          context,
+                              (pickedImage) async {
+                            if (pickedImage != null) {
+                              provider.profileFile = pickedImage;
+                              provider.notifyListeners();
+
+                              await provider.uploadProfileImage(context);
+                            }
+                          },
+                        );
                       },
                       child: DashedBorderContainer(
                         color: const Color(0xFFF3E5F9),
@@ -124,13 +128,17 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                       right: -6,   // slightly outside
                       child: GestureDetector(
                         onTap: () {
-                          showImagePicker(context,
-                                  (pickedImage) async {
-                                if (pickedImage != null) {
-                                  provider.profileFile = pickedImage;
-                                  setState(() {});
-                                }
-                              });
+                          showImagePicker(
+                            context,
+                                (pickedImage) async {
+                              if (pickedImage != null) {
+                                provider.profileFile = pickedImage;
+                                provider.notifyListeners();
+
+                                await provider.uploadProfileImage(context);
+                              }
+                            },
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -339,6 +347,20 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     ),
                   ),
                 ],
+              ),
+
+              labelWithStar("Alternate Mobile No.",required: false),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                child: buildTextWithBorderField(
+                  provider.alternateMobileController,
+                  "Enter alternate mobile number",
+                  MediaQuery.of(context).size.width,
+                  50,
+                  isEnabled: false,
+                  TextInputType.text,
+                ),
               ),
 
               labelWithStar(AppLocalizations.of(context)!.email,required: false),
@@ -638,8 +660,11 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           Radio<String>(
                             value: "yes",
                             groupValue:  provider.isExServiceMan,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isExServiceMan = val;
+                                provider.notifyListeners();
+                              }
                             },
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -648,8 +673,11 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           Radio<String>(
                             value: "no",
                             groupValue:  provider.isExServiceMan,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isExServiceMan = val;
+                                provider.notifyListeners();
+                              }
                             },
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -677,8 +705,11 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           Radio<String>(
                             value: "yes",
                             groupValue:  provider.isEWSCategory,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isEWSCategory = val;
+                                provider.notifyListeners();
+                              }
                             },
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -687,13 +718,72 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                           Radio<String>(
                             value: "no",
                             groupValue:  provider.isEWSCategory,
-                            onChanged: (val) => () {
-                              //setState(() =>  provider.gender = val!);
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isEWSCategory = val;
+                                provider.notifyListeners();
+                              }
                             },
                             visualDensity: VisualDensity.compact, // reduce space inside
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           Text(AppLocalizations.of(context)!.no),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelWithStar(
+                        "Is Retired Government Employee",
+                        required: false,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Row(
+                        children: [
+                          Radio<String>(
+                            value: "yes",
+                            groupValue: provider.isRetiredGovtServant,
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isRetiredGovtServant = val;
+                                provider.notifyListeners();
+                              }
+                            },
+                            visualDensity: VisualDensity.compact,
+                            materialTapTargetSize:
+                            MaterialTapTargetSize.shrinkWrap,
+                          ),
+
+                          const Text("Yes"),
+
+                          Radio<String>(
+                            value: "no",
+                            groupValue: provider.isRetiredGovtServant,
+                            onChanged: (val) {
+                              if (val != null) {
+                                provider.isRetiredGovtServant = val;
+                                provider.notifyListeners();
+                              }
+                            },
+                            visualDensity: VisualDensity.compact,
+                            materialTapTargetSize:
+                            MaterialTapTargetSize.shrinkWrap,
+                          ),
+
+                          const Text("No"),
                         ],
                       ),
                     ],
@@ -825,7 +915,7 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
 
               const SizedBox(height: 30),
 
-              /*SizedBox(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -836,15 +926,70 @@ class _BasicDetailsScreenState extends State<BasicDetailsScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // Save logic here
-                    // Validate and submit data
+                   // if (!validateForm(context, provider)) return;
+
+                    confirmAlertDialog(
+                      context,
+                      AppLocalizations.of(context)!.alert,
+                      AppLocalizations.of(context)!.areYouSureSubmitForm,
+                          (value) {
+                        if (value.toString() == "success") {
+                          provider.saveBasicInfoApi(context);
+                        }
+                      },
+                    );
                   },
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+
+                  //validation of image upload
+                  // onPressed: () {
+                  //   if (provider.isUploadingProfile) {
+                  //     showAlertError(
+                  //       "Please wait for profile image upload to complete.",
+                  //       context,
+                  //     );
+                  //     return;
+                  //   }
+                  //
+                  //   if (provider.profileFile != null &&
+                  //       provider.fileName.isEmpty) {
+                  //     showAlertError(
+                  //       "Profile image upload failed. Please select the image again.",
+                  //       context,
+                  //     );
+                  //     return;
+                  //   }
+                  //
+                  //   confirmAlertDialog(
+                  //     context,
+                  //     AppLocalizations.of(context)!.alert,
+                  //     AppLocalizations.of(context)!.areYouSureSubmitForm,
+                  //         (value) {
+                  //       if (value.toString() == "success") {
+                  //         provider.saveBasicInfoApi(context);
+                  //       }
+                  //     },
+                  //   );
+                  // },
+
+                  child: provider.isLoading
+                      ? const SizedBox(
+                    height: 22,
+                    width: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                      : Text(
+                    AppLocalizations.of(context)!.save,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),*/
+              ),
               SizedBox(height: SizeConfig.screenHeight! * 0.02),
             ],
 

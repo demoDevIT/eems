@@ -553,27 +553,27 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
               margin: EdgeInsets.only(left: 50),
               child: Divider(height: 1,color: E3E5F9Color,)),
 
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/star.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(AppLocalizations.of(context)!.grievfeedbak,style: Styles.mediumTextStyle(size: 14),),
-            onTap: () async {
-              final result = await  Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>  GrievanceScreen(),
-                ),
-              );
-              if (result != null) {
-
-              }
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   leading: SvgPicture.asset(
+          //     'assets/icons/star.svg',
+          //     width: 20,
+          //     height: 20,
+          //     fit: BoxFit.cover,
+          //   ),
+          //   title: Text(AppLocalizations.of(context)!.grievfeedbak,style: Styles.mediumTextStyle(size: 14),),
+          //   onTap: () async {
+          //     final result = await  Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) =>  GrievanceScreen(),
+          //       ),
+          //     );
+          //     if (result != null) {
+          //
+          //     }
+          //     Navigator.pop(context);
+          //   },
+          // ),
           // Container(
           //     margin: EdgeInsets.only(left: 50),
           //     child: Divider(height: 1,color: E3E5F9Color,)),

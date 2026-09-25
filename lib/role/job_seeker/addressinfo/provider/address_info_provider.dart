@@ -10,6 +10,9 @@ import '../../../../repo/common_repo.dart';
 import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
+import '../../../department/register_form/modal/block_modal.dart';
+import '../../../department/register_form/modal/gp_modal.dart';
+import '../../../department/register_form/modal/village_modal.dart';
 import '../modal/assembly_list_modal.dart';
 import '../modal/city_modal.dart';
 import '../modal/district_modal.dart';
@@ -25,7 +28,7 @@ class AddressInfoProvider extends ChangeNotifier {
   String territoryTypeID = "2";
   String cTerritoryType = "Urban";
   String cTerritoryTypeID = "2";
-  bool sameAsAbove = false;
+  bool sameAsAbove = true;
   List<DistrictData> districtList = [];
   List<DistrictData> cDistrictList = [];
   List<CityData> cityList = [];
@@ -64,6 +67,26 @@ class AddressInfoProvider extends ChangeNotifier {
       TextEditingController(text: "");
   final TextEditingController pinCodeController =
       TextEditingController(text: "");
+
+  // ================= RURAL COMMUNICATION ADDRESS =================
+
+  bool isBlockLoading = false;
+  List<BlockData> blockList = [];
+  BlockData? selectedBlock;
+  final TextEditingController blockNameController = TextEditingController();
+  final TextEditingController blockIdController = TextEditingController();
+
+  bool isGpLoading = false;
+  List<GramPanchayatData> gpList = [];
+  GramPanchayatData? selectedGp;
+  final TextEditingController gpNameController = TextEditingController();
+  final TextEditingController gpIdController = TextEditingController();
+
+  bool isVillageLoading = false;
+  List<VillageData> villageList = [];
+  VillageData? selectedVillage;
+  final TextEditingController villageNameController = TextEditingController();
+  final TextEditingController villageIdController = TextEditingController();
 
   Future<DistrictModal?> getDistrictMasterApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
@@ -455,6 +478,25 @@ class AddressInfoProvider extends ChangeNotifier {
             territoryType =
                 addressInfoList[0].territoryType == 1 ? "Rural" : "Urban";
             territoryTypeID = addressInfoList[0].territoryType.toString();
+
+            // Copy permanent address to communication initially
+            sameAsAbove = true;
+
+            cDistrictIdController.text = districtIdController.text;
+            cDistrictNameController.text = districtNameController.text;
+
+            cTerritoryType = territoryType;
+            cTerritoryTypeID = territoryTypeID;
+
+            cCityIdController.text = cityIdController.text;
+            cCityNameController.text = cityNameController.text;
+
+            cWardIdController.text = wardIdController.text;
+            cWardNameController.text = wardNameController.text;
+
+            cAddressController.text = addressController.text;
+            cPinCodeController.text = pinCodeController.text;
+
             final selectedRole = districtList.firstWhere(
                 (item) => item.dropID.toString() == districtIdController.text);
             //assemblyListApi(context, selectedRole.dISTRICTID.toString());
@@ -544,12 +586,12 @@ class AddressInfoProvider extends ChangeNotifier {
             final selectedRole = districtList.firstWhere((item) =>
                 item.dropID.toString() ==
                 communicationAddressInfoList[0].dISTRICTCODE.toString());
-            getCityMasterApi(context,
-                communicationAddressInfoList[0].dISTRICTCODE.toString(), true);
+            // getCityMasterApi(context,
+            //     communicationAddressInfoList[0].dISTRICTCODE.toString(), true);
             getWardMasterApi(context,
                 communicationAddressInfoList[0].cITYCODE.toString(), true);
             //assemblyListApi(context, selectedRole.dISTRICTID.toString());
-            await assemblyListApi(context, selectedRole.dISTRICTID.toString());
+           // await assemblyListApi(context, selectedRole.dISTRICTID.toString());
 
             final assemblyCode =
             communicationAddressInfoList[0].assemblyCode.toString();
@@ -568,12 +610,12 @@ class AddressInfoProvider extends ChangeNotifier {
               debugPrint("Assembly not found");
             }
 
-            getParliamentListApi(
-                context,
-                communicationAddressInfoList[0].assemblyCode.toString(),
-                selectedRole.dISTRICTID.toString(),
-                communicationAddressInfoList[0].parliamentCode.toString(),
-                communicationAddressInfoList[0].pCENG.toString());
+            // getParliamentListApi(
+            //     context,
+            //     communicationAddressInfoList[0].assemblyCode.toString(),
+            //     selectedRole.dISTRICTID.toString(),
+            //     communicationAddressInfoList[0].parliamentCode.toString(),
+            //     communicationAddressInfoList[0].pCENG.toString());
             notifyListeners();
             return sm;
           } else {
@@ -605,30 +647,325 @@ class AddressInfoProvider extends ChangeNotifier {
     }
   }
 
+  void setSameAsAbove(BuildContext context, bool value) {
+    sameAsAbove = value;
+
+    if (value) {
+      // ================= COPY PERMANENT -> COMMUNICATION =================
+
+      cDistrictIdController.text = districtIdController.text;
+      cDistrictNameController.text = districtNameController.text;
+
+      cTerritoryType = territoryType;
+      cTerritoryTypeID = territoryTypeID;
+
+      cCityIdController.text = cityIdController.text;
+      cCityNameController.text = cityNameController.text;
+
+      cWardIdController.text = wardIdController.text;
+      cWardNameController.text = wardNameController.text;
+
+      cAddressController.text = addressController.text;
+      cPinCodeController.text = pinCodeController.text;
+
+      // Clear rural fields
+      clearRuralFields();
+
+      notifyListeners();
+    } else {
+      // ================= RESET COMMUNICATION =================
+
+      cDistrictIdController.clear();
+      cDistrictNameController.clear();
+
+      cCityIdController.clear();
+      cCityNameController.clear();
+
+      cWardIdController.clear();
+      cWardNameController.clear();
+
+      cAddressController.clear();
+      cPinCodeController.clear();
+
+      cTerritoryType = "";
+      cTerritoryTypeID = "";
+
+      clearRuralFields();
+
+      notifyListeners();
+    }
+  }
+
+  void clearRuralFields() {
+    selectedBlock = null;
+    blockList.clear();
+    blockNameController.clear();
+    blockIdController.clear();
+
+    selectedGp = null;
+    gpList.clear();
+    gpNameController.clear();
+    gpIdController.clear();
+
+    selectedVillage = null;
+    villageList.clear();
+    villageNameController.clear();
+    villageIdController.clear();
+  }
+
+  void setCommunicationTerritoryType(
+      BuildContext context,
+      String value,
+      ) {
+    cTerritoryType = value;
+    cTerritoryTypeID = value == "Rural" ? "1" : "2";
+
+    // Clear both Urban and Rural dependent fields first
+    cCityIdController.clear();
+    cCityNameController.clear();
+
+    cWardIdController.clear();
+    cWardNameController.clear();
+
+    clearRuralFields();
+
+    if (value == "Rural") {
+      // Load blocks based on communication district
+      if (cDistrictIdController.text.isNotEmpty) {
+        getBlockApi(
+          context,
+          cDistrictIdController.text,
+        );
+      }
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> getBlockApi(
+      BuildContext context,
+      String districtCode,
+      ) async {
+    isBlockLoading = true;
+
+    selectedBlock = null;
+    blockList.clear();
+    blockNameController.clear();
+    blockIdController.clear();
+
+    selectedGp = null;
+    gpList.clear();
+    gpNameController.clear();
+    gpIdController.clear();
+
+    selectedVillage = null;
+    villageList.clear();
+    villageNameController.clear();
+    villageIdController.clear();
+
+    notifyListeners();
+
+    try {
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": districtCode,
+        "GPId": "",
+      };
+
+      ApiResponse apiResponse =
+      await commonRepo.post("Common/GetBlockMaster", body);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic data = apiResponse.response!.data;
+
+        if (data is String) {
+          data = jsonDecode(data);
+        }
+
+        if (data["Data"] != null) {
+          for (var e in data["Data"]) {
+            blockList.add(BlockData.fromJson(e));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("getBlockApi error: $e");
+    }
+
+    isBlockLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getGpApi(
+      BuildContext context,
+      String blockCode,
+      ) async {
+    isGpLoading = true;
+
+    selectedGp = null;
+    gpList.clear();
+    gpNameController.clear();
+    gpIdController.clear();
+
+    selectedVillage = null;
+    villageList.clear();
+    villageNameController.clear();
+    villageIdController.clear();
+
+    notifyListeners();
+
+    try {
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": blockCode,
+        "DistrictId": 0,
+        "GPId": 0,
+      };
+
+      ApiResponse apiResponse =
+      await commonRepo.post("Common/GetGrampanchyatMaster", body);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic data = apiResponse.response!.data;
+
+        if (data is String) {
+          data = jsonDecode(data);
+        }
+
+        if (data["Data"] != null) {
+          for (var e in data["Data"]) {
+            gpList.add(GramPanchayatData.fromJson(e));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("getGpApi error: $e");
+    }
+
+    isGpLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getVillageApi(
+      BuildContext context,
+      String gpCode,
+      ) async {
+    isVillageLoading = true;
+
+    selectedVillage = null;
+    villageList.clear();
+    villageNameController.clear();
+    villageIdController.clear();
+
+    notifyListeners();
+
+    try {
+      Map<String, dynamic> body = {
+        "ActionName": "",
+        "MasterCode": "",
+        "UserID": 0,
+        "DepartmentID": 0,
+        "RoleID": 0,
+        "SchemeId": 0,
+        "CityId": 0,
+        "BlockId": "",
+        "DistrictId": "",
+        "GPId": gpCode,
+      };
+
+      ApiResponse apiResponse =
+      await commonRepo.post("Common/GetVillageMaster", body);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic data = apiResponse.response!.data;
+
+        if (data is String) {
+          data = jsonDecode(data);
+        }
+
+        if (data["Data"] != null) {
+          for (var e in data["Data"]) {
+            villageList.add(VillageData.fromJson(e));
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("getVillageApi error: $e");
+    }
+
+    isVillageLoading = false;
+    notifyListeners();
+  }
+
   Future<SaveDataAddressModal?> saveDataAddressApi(BuildContext context) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
         String? IpAddress = await UtilityClass.getIpAddress();
+
+        // Last API
+        // Map<String, dynamic> body = {
+        //   "UserID": UserData().model.value.userId.toString(),
+        //   "DistrictId": cDistrictIdController.text,
+        //   "BlockId": null,
+        //   "PanchayatId": null,
+        //   "VillageId": null,
+        //   "CityId": cCityIdController.text,
+        //   "WardId": cWardIdController.text,
+        //   "Pincode": cPinCodeController.text,
+        //   "TerritoryType": territoryType == "Rural" ? "1" : "2",
+        //   "ParliamentCode": constituencyIDController.text,
+        //   "AssemblyCode": assemblyIDController.text,
+        //   "Address": cAddressController.text,
+        //   "CreatedBy": UserData().model.value.userId.toString(),
+        //   "IsActive": 1,
+        //   "IPAddress": IpAddress,
+        //   "IPAddressv6": IpAddress,
+        // };
+        // String url = "MobileProfile/SaveDataAddress";
+
+        //updated API on 25-09-26 (get from Renu)
+
         Map<String, dynamic> body = {
+          "ID": 0,
           "UserID": UserData().model.value.userId.toString(),
-          "DistrictId": cDistrictIdController.text,
-          "BlockId": null,
-          "PanchayatId": null,
-          "VillageId": null,
-          "CityId": cCityIdController.text,
-          "WardId": cWardIdController.text,
+          "BlockId": cTerritoryType == "Rural"
+              ? blockIdController.text
+              : null,
+          "PanchayatId": cTerritoryType == "Rural"
+              ? gpIdController.text
+              : null,
+          "VillageId": cTerritoryType == "Rural"
+              ? villageIdController.text
+              : null,
+          "CityId": cTerritoryType == "Urban"
+              ? cCityIdController.text
+              : null,
+          "WardId": cTerritoryType == "Urban"
+              ? cWardIdController.text
+              : null,
           "Pincode": cPinCodeController.text,
-          "TerritoryType": territoryType == "Rural" ? "1" : "2",
-          "ParliamentCode": constituencyIDController.text,
-          "AssemblyCode": assemblyIDController.text,
           "Address": cAddressController.text,
-          "CreatedBy": UserData().model.value.userId.toString(),
-          "IsActive": 1,
-          "IPAddress": IpAddress,
-          "IPAddressv6": IpAddress,
+          "TerritoryType": territoryType == "Rural" ? "1" : "2",
+          "DistrictId": cDistrictIdController.text,
+          "ParliamentCode": null, //constituencyIDController.text,
+          "AssemblyCode": null, //assemblyIDController.text,
         };
-        String url = "MobileProfile/SaveDataAddress";
+        String url = "ProfilJobSeekar/SaveDataAddress";
+
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(url, body);
         ProgressDialog.closeLoadingDialog(context);
@@ -688,35 +1025,55 @@ class AddressInfoProvider extends ChangeNotifier {
 
   clearData() {
     territoryType = "Urban";
+    territoryTypeID = "2";
+
     cTerritoryType = "Urban";
-    sameAsAbove = false;
+    cTerritoryTypeID = "2";
+    sameAsAbove = true;
+
     districtList.clear();
     cDistrictList.clear();
+
     cityList.clear();
+
     wardList.clear();
+    cWardList.clear();
+
     assemblyList.clear();
     parliamentListDataList.clear();
+
     districtNameController.clear();
     districtIdController.clear();
+
     cityNameController.clear();
     cityIdController.clear();
+
     wardNameController.clear();
     wardIdController.clear();
+
     cDistrictNameController.clear();
     cDistrictIdController.clear();
+
     cCityNameController.clear();
     cCityIdController.clear();
+
     cWardNameController.clear();
     cWardIdController.clear();
+
     assemblyController.clear();
     assemblyNameController.clear();
     assemblyIDController.clear();
+
     constituencyNameController.clear();
     constituencyIDController.clear();
+
     addressController.clear();
     cAddressController.clear();
+
     cPinCodeController.clear();
     pinCodeController.clear();
+
+    clearRuralFields();
     notifyListeners();
   }
 }

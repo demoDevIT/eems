@@ -238,8 +238,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ],
                 ):  Center(
-              child: const Text(
-                "No Data Available",
+              child: Text(
+                AppLocalizations.of(context)!.noDataFound,
                 style: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.w600),
               ),

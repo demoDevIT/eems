@@ -110,7 +110,7 @@ class GrievanceListProvider extends ChangeNotifier {
             // final smmm = GrievanceModal(state: 0, message: sm.message.toString());
             // showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid", context);
             // return smmm;
-            showAlertError(sm.message ?? "Error", context);
+            showAlert(sm.message ?? "Error", context);
           }
           isLoading = false;
           notifyListeners();

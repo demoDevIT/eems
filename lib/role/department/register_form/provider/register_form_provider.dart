@@ -1097,30 +1097,32 @@ class RegisterFormProvider extends ChangeNotifier {
     ssoIdController.text = sso;
     displayNameController.text = name;
     mobileController.text = mobile;
+    designationController.text = designation;
+    adminDeptNameController.text = dept;
 
-    if (approval != null) {
-
-      nameAAdhaarController.text =
-          approval.nameAsPerAadhar ?? "";
-
-      designationController.text =
-          approval.designationName ?? "";
-
-      adminDeptNameController.text =
-          approval.administrationDepartmentName ?? "";
-
-      departmentNameController.text =
-          approval.departmentName ?? "";
-
-      officeNameController.text =
-          approval.allotedDepartmentName ?? "";
-
-      districtController.text =
-          approval.districtName ?? "";
-
-      districtIdController.text =
-          approval.districtCode ?? "";
-    }
+    // if (approval != null) {
+    //
+    //   nameAAdhaarController.text =
+    //       approval.nameAsPerAadhar ?? "";
+    //
+    //   designationController.text =
+    //       approval.designationName ?? "";
+    //
+    //   adminDeptNameController.text =
+    //       approval.administrationDepartmentName ?? "";
+    //
+    //   departmentNameController.text =
+    //       approval.departmentName ?? "";
+    //
+    //   officeNameController.text =
+    //       approval.allotedDepartmentName ?? "";
+    //
+    //   districtController.text =
+    //       approval.districtName ?? "";
+    //
+    //   districtIdController.text =
+    //       approval.districtCode ?? "";
+    // }
   }
 
   void clearData() {

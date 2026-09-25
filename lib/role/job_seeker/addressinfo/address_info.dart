@@ -12,6 +12,10 @@ import '../../../utils/dropdown.dart';
 import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
 import '../../../utils/textstyles.dart';
+import '../../department/dept_join_attendance_list/dept_join_attendance_list.dart';
+import '../../department/register_form/modal/block_modal.dart';
+import '../../department/register_form/modal/gp_modal.dart';
+import '../../department/register_form/modal/village_modal.dart';
 import '../loginscreen/provider/locale_provider.dart';
 
 class AddressInfoScreen extends StatefulWidget {
@@ -367,250 +371,239 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                 hSpace(4),
 
                 /// Communication Address
+                /// Communication Address
+
                 Row(
                   children: [
+                    labelWithStar(
+                      AppLocalizations.of(context)!.communicationAdd,
+                      required: false,
+                    ),
 
-                    labelWithStar(AppLocalizations.of(context)!.communicationAdd,required: false),
-
+                    const SizedBox(width: 10),
 
                     Row(
-
                       children: [
                         Checkbox(
-                          value:  provider.sameAsAbove,
-                          onChanged: null,
-                          // onChanged: (value) {
-                          //   provider.sameAsAbove = value!;
-                          //  // print(value);
-                          //   if(value == true){
-                          //     provider.cDistrictIdController.text = provider.districtIdController.text;
-                          //     provider.cDistrictNameController.text = provider.districtNameController.text;
-                          //     provider.cCityNameController.text = provider.cityNameController.text;
-                          //     provider.cCityIdController.text =  provider.cityIdController.text;
-                          //     provider.cWardIdController.text = provider.wardIdController.text;
-                          //     provider.cWardNameController.text =  provider.wardNameController.text;
-                          //     provider.cTerritoryType = provider.territoryType;
-                          //     provider.cTerritoryTypeID = provider.territoryTypeID;
-                          //     provider.cAddressController.text = provider.addressController.text;
-                          //     provider.cPinCodeController.text = provider.pinCodeController.text;
-                          //   }
-                          //   else{
-                          //     provider.cDistrictIdController.text =  "";
-                          //     provider.cDistrictNameController.text =  "";
-                          //     provider.cCityNameController.text =  "";
-                          //     provider.cCityIdController.text =  "";
-                          //     provider.cWardIdController.text =  "";
-                          //     provider.cWardNameController.text =  "";
-                          //     provider.cTerritoryType = "";
-                          //     provider.cTerritoryTypeID = "";
-                          //     provider.cAddressController.text = "";
-                          //     provider.cPinCodeController.text = "";
-                          //   }
-                          //   setState(() {
-                          //   });
-                          // },
+                          value: provider.sameAsAbove,
+                          onChanged: (value) {
+                            if (value == null) return;
+
+                            provider.setSameAsAbove(context, value);
+                          },
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6), // adjust radius
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                          side: const BorderSide(color:kDartGrayColor, width: 2,), // border color
+                          side: const BorderSide(
+                            color: kDartGrayColor,
+                            width: 2,
+                          ),
                           activeColor: kPrimaryColor,
                           checkColor: Colors.white,
-                          fillColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return kPrimaryColor;
-                              }
-                              return kTextColor1;
-                            },
-                          ),
                         ),
-
-                        Text(AppLocalizations.of(context)!.sameAsAbove),
+                        Text(
+                          AppLocalizations.of(context)!.sameAsAbove,
+                        ),
                       ],
                     ),
-
-
-
-
-
                   ],
                 ),
-                hSpace(4),
+
+                hSpace(12),
+
+// ======================================================
+// DISTRICT
+// ======================================================
+
+                labelWithStar(
+                  AppLocalizations.of(context)!.district,
+                  required: false,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: IgnorePointer(
+                    ignoring: provider.sameAsAbove,
+                    child: Opacity(
+                      opacity: provider.sameAsAbove ? 0.6 : 1,
+                      child: buildDropdownWithBorderField(
+                        items: provider.cDistrictList,
+                        controller: provider.cDistrictNameController,
+                        idController: provider.cDistrictIdController,
+
+                        getName: (item) {
+                          final locale =
+                              AppLocalizations.of(context)!.localeName;
+
+                          return locale == 'hi'
+                              ? (item.nameHi ?? item.name ?? '')
+                              : (item.name ?? '');
+                        },
+
+                        hintText:
+                        AppLocalizations.of(context)!.selectDistrict,
+
+                        height: 50,
+                        color: Colors.transparent,
+                        width: double.infinity,
+                        borderRadius: BorderRadius.circular(8),
+
+                        onChanged: (value) {
+                          final id = provider.cDistrictIdController.text;
+
+                          if (id.isEmpty) return;
+
+                          provider.getCityMasterApi(
+                            context,
+                            id,
+                            true,
+                          );
+
+                          // provider.assemblyListApi(
+                          //   context,
+                          //   id,
+                          // );
+
+                          provider.getBlockApi(
+                            context,
+                            id,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+                hSpace(8),
+
+// ======================================================
+// TERRITORY TYPE
+// ======================================================
+
+                labelWithStar(
+                  AppLocalizations.of(context)!.territoryType,
+                  required: false,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    children: [
+                      Radio<String>(
+                        value: "Rural",
+                        groupValue: provider.cTerritoryType,
+                        onChanged: provider.sameAsAbove
+                            ? null
+                            : (value) {
+                          if (value == null) return;
+
+                          provider.setCommunicationTerritoryType(
+                            context,
+                            value,
+                          );
+                        },
+                      ),
+
+                      Text(
+                        AppLocalizations.of(context)!.rural,
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      Radio<String>(
+                        value: "Urban",
+                        groupValue: provider.cTerritoryType,
+                        onChanged: provider.sameAsAbove
+                            ? null
+                            : (value) {
+                          if (value == null) return;
+
+                          provider.setCommunicationTerritoryType(
+                            context,
+                            value,
+                          );
+                        },
+                      ),
+
+                      Text(
+                        AppLocalizations.of(context)!.urban,
+                      ),
+                    ],
+                  ),
+                ),
+
+                hSpace(8),
 
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width  * 0.90/ 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          labelWithStar(AppLocalizations.of(context)!.district,required: false),
-                        /*  Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text( "District",
-                                  style: Styles.mediumTextStyle(
-                                      color: kBlackColor, size: 14)),
-                            ),
-                          ),*/
-                          IgnorePointer(
-                            //ignoring: provider.sameAsAbove,
-                            ignoring: true,
-                            child: Padding(
-                              padding:  const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                              child: buildDropdownWithBorderField(
-                                items: provider.cDistrictList,
-                                controller: provider.cDistrictNameController,
-                                idController: provider.cDistrictIdController,
+          if (provider.cTerritoryType == "Urban") ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width * 0.90 / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            labelWithStar(AppLocalizations.of(context)!.city,
+                                required: false),
+                            IgnorePointer(
+                              ignoring: provider.sameAsAbove, //true - disables all taps/interactions
+                              child: Opacity(
+                                opacity: provider.sameAsAbove ? 0.6 : 1,
+                                // optional: visually indicate it's disabled
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 5),
+                                  child: buildDropdownWithBorderField(
+                                    items: provider.cCityList,
+                                    controller: provider.cCityNameController,
+                                    idController: provider.cCityIdController,
+                                    getName: (item) {
+                                      final locale =
+                                          AppLocalizations.of(context)!
+                                              .localeName;
 
-                                getName: (item) {
-                                  final locale = AppLocalizations.of(context)!.localeName;
+                                      return locale == 'hi'
+                                          ? (item.nameHi ?? item.name ?? '')
+                                          : (item.name ?? '');
+                                    },
+                                    hintText: AppLocalizations.of(context)!
+                                        .selectCity,
+                                    height: 50,
+                                    color: Colors.transparent,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.90 /
+                                        2,
+                                    borderRadius: BorderRadius.circular(8),
+                                    onChanged: (value) {
+                                      final id = provider.cCityIdController.text;
 
-                                  return locale == 'hi'
-                                      ? (item.nameHi ?? item.name ?? '')
-                                      : (item.name ?? '');
-                                },
+                                      if (id.isEmpty) return;
 
-                                hintText:AppLocalizations.of(context)!.selectDistrict,
-                                height: 50,
-                                color: Colors.transparent,
-                                width: MediaQuery.of(context).size.width * 0.90 / 2,
-                                borderRadius: BorderRadius.circular(8),
-                                onChanged: (value) {
-                                  final id = provider.cDistrictIdController.text;
-                                  if (id.isEmpty) return;
-                                  try {
-                                    final selectedRole = provider.cDistrictList.firstWhere((item) => item.dropID.toString() == id);
-                                    provider.getCityMasterApi(context, selectedRole.dropID.toString(),true);
-                                    provider.assemblyListApi(context, selectedRole.dISTRICTID.toString());
-
-                                    setState(() {});
-                                  } catch (e) {
-                                    debugPrint("Error finding selected role: $e");
-                                  }
-
-                                },
+                                      provider.getWardMasterApi(
+                                        context,
+                                        id,
+                                        true,
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
-                        )
-
-
-
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width  * 0.90/ 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          labelWithStar(AppLocalizations.of(context)!.city,required: false),
-                        /*  Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text( "City",
-                                  style: Styles.mediumTextStyle(
-                                      color: kBlackColor, size: 14)),
-                            ),
-                          ),
-*/
-                      IgnorePointer(
-                        ignoring: true, // disables all taps/interactions
-                        child: Opacity(
-                          opacity: 0.6, // optional: visually indicate it's disabled
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                            child: buildDropdownWithBorderField(
-                              items: provider.cCityList,
-                              controller: provider.cCityNameController,
-                              idController: provider.cCityIdController,
-
-                              getName: (item) {
-                                final locale = AppLocalizations.of(context)!.localeName;
-
-                                return locale == 'hi'
-                                    ? (item.nameHi ?? item.name ?? '')
-                                    : (item.name ?? '');
-                              },
-
-                              hintText: AppLocalizations.of(context)!.selectCity,
-                              height: 50,
-                              color: Colors.transparent,
-                              width: MediaQuery.of(context).size.width * 0.90 / 2,
-                              borderRadius: BorderRadius.circular(8),
-                              onChanged: (value) {
-                                // Won't be called because IgnorePointer is true
-                              },
-                            ),
-                          ),
+                          ],
                         ),
                       ),
-
-                          // provider.sameAsAbove == false ?  Padding(
-                          //   padding:  const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                          //   child: buildDropdownWithBorderField(
-                          //     items: provider.cCityList,
-                          //     controller: provider.cCityNameController,
-                          //     idController: provider.cCityIdController,
-                          //     hintText:"Select City",
-                          //     height: 50,
-                          //     color: Colors.transparent,
-                          //     width: MediaQuery.of(context).size.width * 0.90 / 2,
-                          //     borderRadius: BorderRadius.circular(8),
-                          //     onChanged: (value) {
-                          //       final id = provider.cCityIdController.text;
-                          //       if (id.isEmpty) return;
-                          //       try {
-                          //         final selectedRole = provider.cCityList.firstWhere((item) => item.dropID.toString() == id);
-                          //         provider.getWardMasterApi(context, selectedRole.dropID.toString(),true);
-                          //         setState(() {});
-                          //       } catch (e) {
-                          //         debugPrint("Error finding selected role: $e");
-                          //       }
-                          //     },
-                          //   ),
-                          //  : Padding(
-                          //   padding:
-                          //   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                          //   child: buildTextWithBorderField(
-                          //     provider.cCityNameController,
-                          //     "Select City",
-                          //     MediaQuery.of(context).size.width,
-                          //     50,
-                          //     isEnabled: provider.sameAsAbove == true ? false : true,
-                          //     TextInputType.emailAddress,
-                          //     postfixIcon: Icon(Icons.arrow_drop_down,color: fontGrayColor,)
-                          //
-                          //   ),),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-
-                hSpace(4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width  * 0.90/ 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          labelWithStar(AppLocalizations.of(context)!.ward,required: false),
-                         /* Padding(
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width * 0.90 / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            labelWithStar(AppLocalizations.of(context)!.ward,
+                                required: false),
+                            /* Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                             child: Align(
@@ -621,176 +614,315 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                             ),
                           ),*/
 
-                          IgnorePointer(
-                            ignoring: true, // disables all interactions
-                            child: Opacity(
-                              opacity: 0.6, // optional: visually indicate it's disabled
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                child: buildDropdownWithBorderField(
-                                  items: provider.cWardList,
-                                  controller: provider.cWardNameController,
-                                  idController: provider.cWardIdController,
+                            IgnorePointer(
+                              ignoring: provider.sameAsAbove, // disables all interactions
+                              child: Opacity(
+                                opacity: provider.sameAsAbove ? 0.6 : 1,
+                                // optional: visually indicate it's disabled
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 5),
+                                  child: buildDropdownWithBorderField(
+                                    items: provider.cWardList,
+                                    controller: provider.cWardNameController,
+                                    idController: provider.cWardIdController,
+                                    getName: (item) {
+                                      final locale =
+                                          AppLocalizations.of(context)!
+                                              .localeName;
 
-                                  getName: (item) {
-                                    final locale = AppLocalizations.of(context)!.localeName;
-
-                                    return locale == 'hi'
-                                        ? (item.nameHi ?? item.name ?? '')
-                                        : (item.name ?? '');
-                                  },
-
-                                  hintText: AppLocalizations.of(context)!.selectWard,
-                                  height: 50,
-                                  color: Colors.transparent,
-                                  width: MediaQuery.of(context).size.width * 0.90 / 2,
-                                  borderRadius: BorderRadius.circular(8),
-                                  onChanged: (value) {
-                                    // This will not be called because IgnorePointer is true
-                                  },
+                                      return locale == 'hi'
+                                          ? (item.nameHi ?? item.name ?? '')
+                                          : (item.name ?? '');
+                                    },
+                                    hintText: AppLocalizations.of(context)!
+                                        .selectWard,
+                                    height: 50,
+                                    color: Colors.transparent,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.90 /
+                                        2,
+                                    borderRadius: BorderRadius.circular(8),
+                                    onChanged: (value) {
+                                      // This will not be called because IgnorePointer is true
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
 
-                          // provider.sameAsAbove == false ? Padding(
-                          //   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                          //   child: buildDropdownWithBorderField(
-                          //     items: provider.cWardList,
-                          //     controller: provider.cWardNameController,
-                          //     idController: provider.cWardIdController,
-                          //     hintText:"Select Ward",
-                          //     height: 50,
-                          //     color: Colors.transparent,
-                          //     width: MediaQuery.of(context).size.width * 0.90 / 2,
-                          //     borderRadius: BorderRadius.circular(8),
-                          //     onChanged: (value) {
-                          //       },
-                          //   ),
-                          // ) :  Padding(
-                          //   padding:
-                          //   const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                          //   child: buildTextWithBorderField(
-                          //     provider.cWardNameController,
-                          //     "Select Ward",
-                          //     MediaQuery.of(context).size.width,
-                          //     50,
-                          //     isEnabled: provider.sameAsAbove == true ? false : true,
-                          //     TextInputType.emailAddress,
-                          //     postfixIcon: Icon(Icons.arrow_drop_down,color: fontGrayColor,)
-                          //   ),),
+          if (provider.cTerritoryType == "Rural") ...[
+// ======================================================
+// BLOCK
+// ======================================================
 
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width  * 0.90/ 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          labelWithStar(AppLocalizations.of(context)!.territoryType,required: false),
-                        /*  Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text( "Territory Type",
-                                  style: Styles.mediumTextStyle(
-                                      color: kBlackColor, size: 14)),
-                            ),
-                          ),*/
+            labelWithStar(
+              "Block",
+              required: false,
+            ),
 
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Radio<String>(
-                                  value: "Rural",
-                                  groupValue:  provider.cTerritoryType,
-                                  onChanged: null,
-                                 // onChanged: (val) =>
-                                  //    setState(() =>  provider.cTerritoryType = val!),
-                                  visualDensity: VisualDensity.compact, // reduce space inside
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                Text(AppLocalizations.of(context)!.rural),
-                                SizedBox(width: 10), // Add space between the radio buttons
-                                Radio<String>(
-                                  value: "Urban",
-                                  groupValue:  provider.cTerritoryType,
-                                  onChanged: null,
-                                  // onChanged: (val) =>
-                                  //     setState(() =>  provider.cTerritoryType = val!),
-                                  visualDensity: VisualDensity.compact, // reduce space inside
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                Text(AppLocalizations.of(context)!.urban),
-                              ],
+            provider.isBlockLoading
+                ? const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+                : IgnorePointer(
+              ignoring: provider.sameAsAbove,
+              child: Opacity(
+                opacity: provider.sameAsAbove ? 0.6 : 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child:
+                  buildDropdownWithBorderFieldOnlyThisPage<BlockData>(
+                    items: provider.blockList,
+                    controller: provider.blockNameController,
+                    idController: provider.blockIdController,
+                    hintText: "--Select Block--",
+                    height: 50,
+                    selectedValue: provider.selectedBlock,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      if (value == null) return;
 
-                            ),
-                          )
+                      provider.selectedBlock = value;
 
-                        ],
-                      ),
-                    ),
-                  ],
+                      provider.blockNameController.text =
+                          value.nameEng ?? "";
+
+                      provider.blockIdController.text =
+                          value.iD?.toString() ?? "";
+
+                      provider.getGpApi(
+                        context,
+                        value.code!,
+                      );
+
+                      provider.notifyListeners();
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            hSpace(8),
+
+// ======================================================
+// GRAM PANCHAYAT
+// ======================================================
+
+            labelWithStar(
+              "Gram Panchayat",
+              required: false,
+            ),
+
+            provider.isGpLoading
+                ? const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+                : IgnorePointer(
+              ignoring: provider.sameAsAbove,
+              child: Opacity(
+                opacity: provider.sameAsAbove ? 0.6 : 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child:
+                  buildDropdownWithBorderFieldOnlyThisPage<
+                      GramPanchayatData>(
+                    items: provider.gpList,
+                    controller: provider.gpNameController,
+                    idController: provider.gpIdController,
+                    hintText: "--Select Gram Panchayat--",
+                    height: 50,
+                    selectedValue: provider.selectedGp,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      if (value == null) return;
+
+                      provider.selectedGp = value;
+
+                      provider.gpNameController.text =
+                          value.nameEng ?? "";
+
+                      provider.gpIdController.text =
+                          value.iD?.toString() ?? "";
+
+                      provider.getVillageApi(
+                        context,
+                        value.code!,
+                      );
+
+                      provider.notifyListeners();
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            hSpace(8),
+
+// ======================================================
+// VILLAGE
+// ======================================================
+
+            labelWithStar(
+              "Village",
+              required: false,
+            ),
+
+            provider.isVillageLoading
+                ? const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+                : IgnorePointer(
+              ignoring: provider.sameAsAbove,
+              child: Opacity(
+                opacity: provider.sameAsAbove ? 0.6 : 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child:
+                  buildDropdownWithBorderFieldOnlyThisPage<
+                      VillageData>(
+                    items: provider.villageList,
+                    controller: provider.villageNameController,
+                    idController: provider.villageIdController,
+                    hintText: "--Select Village--",
+                    height: 50,
+                    selectedValue: provider.selectedVillage,
+                    getLabel: (e) => e.nameEng ?? "",
+                    onChanged: (value) {
+                      if (value == null) return;
+
+                      provider.selectedVillage = value;
+
+                      provider.villageNameController.text =
+                          value.nameEng ?? "";
+
+                      provider.villageIdController.text =
+                          value.iD?.toString() ?? "";
+
+                      provider.notifyListeners();
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            hSpace(8),
+          ],
+
+                // ======================================================
+// ADDRESS
+// ======================================================
+
+                labelWithStar(
+                  AppLocalizations.of(context)!.address,
+                  required: false,
                 ),
 
-                hSpace(4),
-                labelWithStar(AppLocalizations.of(context)!.address,required: false),
-               /* Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text( "Address",
-                        style: Styles.mediumTextStyle(
-                            color: kBlackColor, size: 14)),
-                  ),
-                ),*/
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   child: buildTextWithBorderField(
                     provider.cAddressController,
                     AppLocalizations.of(context)!.address,
                     MediaQuery.of(context).size.width,
                     80,
-                    maxLine: 20,
-                    //isEnabled: provider.sameAsAbove == true ? false : true,
-                    isEnabled: false,
                     TextInputType.emailAddress,
+                    maxLine: 20,
+                    isEnabled: !provider.sameAsAbove,
                   ),
                 ),
 
                 hSpace(4),
-                labelWithStar(AppLocalizations.of(context)!.pincode,required: false),
-               /* Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text( "Pin Code",
-                        style: Styles.mediumTextStyle(
-                            color: kBlackColor, size: 14)),
-                  ),
-                ),*/
+
+// ======================================================
+// PINCODE
+// ======================================================
+
+                labelWithStar(
+                  AppLocalizations.of(context)!.pincode,
+                  required: false,
+                ),
+
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   child: buildTextWithBorderField(
                     provider.cPinCodeController,
                     AppLocalizations.of(context)!.pincode,
                     MediaQuery.of(context).size.width,
                     50,
                     TextInputType.number,
-                    //isEnabled: provider.sameAsAbove == true ? false : true,
-                    isEnabled: false,
+                    isEnabled: !provider.sameAsAbove,
                   ),
                 ),
+
+               //  hSpace(4),
+               //  labelWithStar(AppLocalizations.of(context)!.address,required: false),
+               // /* Padding(
+               //    padding:
+               //    const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+               //    child: Align(
+               //      alignment: Alignment.topLeft,
+               //      child: Text( "Address",
+               //          style: Styles.mediumTextStyle(
+               //              color: kBlackColor, size: 14)),
+               //    ),
+               //  ),*/
+               //
+               //
+               //  Padding(
+               //    padding:
+               //    const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+               //    child: buildTextWithBorderField(
+               //      provider.cAddressController,
+               //      AppLocalizations.of(context)!.address,
+               //      MediaQuery.of(context).size.width,
+               //      80,
+               //      maxLine: 20,
+               //      //isEnabled: provider.sameAsAbove == true ? false : true,
+               //      isEnabled: false,
+               //      TextInputType.emailAddress,
+               //    ),
+               //  ),
+               //
+               //  hSpace(4),
+               //  labelWithStar(AppLocalizations.of(context)!.pincode,required: false),
+               // /* Padding(
+               //    padding:
+               //    const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+               //    child: Align(
+               //      alignment: Alignment.topLeft,
+               //      child: Text( "Pin Code",
+               //          style: Styles.mediumTextStyle(
+               //              color: kBlackColor, size: 14)),
+               //    ),
+               //  ),*/
+               //  Padding(
+               //    padding:
+               //    const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+               //    child: buildTextWithBorderField(
+               //      provider.cPinCodeController,
+               //      AppLocalizations.of(context)!.pincode,
+               //      MediaQuery.of(context).size.width,
+               //      50,
+               //      TextInputType.number,
+               //      //isEnabled: provider.sameAsAbove == true ? false : true,
+               //      isEnabled: false,
+               //    ),
+               //  ),
 
                 hSpace(4),
                 /// Constituency
@@ -931,39 +1063,86 @@ class _AddressInfoScreenState extends State<AddressInfoScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                    if(provider.cDistrictIdController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectDistrict, context);
-                    }
-                    else if(provider.cCityIdController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectCity, context);
-                    }
-                    else if(provider.cWardIdController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectWard, context);
-                    }
-                    else if(provider.cTerritoryType.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectTeriType, context);
-                    }
-                    else if(provider.cAddressController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzEnterAddress, context);
-                    }
-                    else if(provider.pinCodeController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzEnterPincode, context);
-                    }
-                    else if(provider.assemblyIDController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectAssemConsti, context);
-                    }
-                    else if(provider.constituencyIDController.text.isEmpty){
-                      showAlertError(AppLocalizations.of(context)!.plzSelectParliConsti, context);
-                    }
-                    else{
-                      confirmAlertDialog(context, AppLocalizations.of(context)!.alert,AppLocalizations.of(context)!.areYouSureSubmitForm, (value) {
-                        if (value.toString() == "success") {
-                          provider.saveDataAddressApi(context);
-                        }
-                      },
-                      );
-
-                    }
+                      if (provider.cDistrictIdController.text.isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzSelectDistrict,
+                          context,
+                        );
+                      }
+                      else if (provider.cTerritoryType.isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzSelectTeriType,
+                          context,
+                        );
+                      }
+// ==================== URBAN VALIDATION ====================
+                      else if (provider.cTerritoryType == "Urban" &&
+                          provider.cCityIdController.text.isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzSelectCity,
+                          context,
+                        );
+                      }
+                      else if (provider.cTerritoryType == "Urban" &&
+                          provider.cWardIdController.text.isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzSelectWard,
+                          context,
+                        );
+                      }
+// ==================== RURAL VALIDATION ====================
+                      else if (provider.cTerritoryType == "Rural" &&
+                          provider.blockIdController.text.isEmpty) {
+                        showAlertError(
+                          "Please select Block",
+                          context,
+                        );
+                      }
+                      else if (provider.cTerritoryType == "Rural" &&
+                          provider.gpIdController.text.isEmpty) {
+                        showAlertError(
+                          "Please select Gram Panchayat",
+                          context,
+                        );
+                      }
+                      else if (provider.cTerritoryType == "Rural" &&
+                          provider.villageIdController.text.isEmpty) {
+                        showAlertError(
+                          "Please select Village",
+                          context,
+                        );
+                      }
+// ==================== COMMON VALIDATION ====================
+                      else if (provider.cAddressController.text.trim().isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzEnterAddress,
+                          context,
+                        );
+                      }
+                      else if (provider.cPinCodeController.text.trim().isEmpty) {
+                        showAlertError(
+                          AppLocalizations.of(context)!.plzEnterPincode,
+                          context,
+                        );
+                      }
+                      else if (int.tryParse(provider.cPinCodeController.text.trim()) == null) {
+                        showAlertError(
+                          "Pincode should be a number",
+                          context,
+                        );
+                      }
+                      else {
+                        confirmAlertDialog(
+                          context,
+                          AppLocalizations.of(context)!.alert,
+                          AppLocalizations.of(context)!.areYouSureSubmitForm,
+                              (value) {
+                            if (value.toString() == "success") {
+                              provider.saveDataAddressApi(context);
+                            }
+                          },
+                        );
+                      }
 
                     },
                     style: ElevatedButton.styleFrom(
