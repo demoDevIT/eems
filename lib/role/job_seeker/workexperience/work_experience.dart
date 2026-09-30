@@ -309,29 +309,31 @@ class WorkExperienceCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // InkWell(
-                        //   onTap: () async {
-                        //     final result = await Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => AddWorkExperienceScreen(
-                        //           isUpdate: true,
-                        //           workExperienceListData: provider.workExperienceList[index],
-                        //           hideExperienceQuestion: true, // ✅ ADD THIS
-                        //         ),
-                        //
-                        //       ),
-                        //     );
-                        //
-                        //     if (result != null) {
-                        //       provider.profileWorkExperienceDataApi(context);
-                        //     }
-                        //   },
-                        //   child: SvgPicture.asset(
-                        //     'assets/icons/edit.svg',
-                        //     height: 20,
-                        //   ),
-                        // ),
+                      //  if (!isStudent)
+                        InkWell(
+                          onTap: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddWorkExperienceScreen(
+                                  isUpdate: true,
+                                  workExperienceListData: provider.workExperienceList[index],
+                                  hideExperienceQuestion: true, // ✅ ADD THIS
+                                  existingExperiences: provider.workExperienceList,
+                                ),
+
+                              ),
+                            );
+
+                            if (result != null) {
+                              provider.profileWorkExperienceDataApi(context);
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            'assets/icons/edit.svg',
+                            height: 20,
+                          ),
+                        ),
                         SizedBox(width: 10),
                         InkWell(
                           onTap: () {

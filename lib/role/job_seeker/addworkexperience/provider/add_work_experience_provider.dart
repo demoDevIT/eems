@@ -557,37 +557,63 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         String? IpAddress = await UtilityClass.getIpAddress();
-        Map<String, dynamic> body = {
-          "CompanyName": companyNameController.text,
-          "EmployedInPast": "0",
-          "EmploymentID": isUpdate == true ? employmentID : "0",
-          "Employmenttype": employmentTypeIdController.text.isNotEmpty
-              ? employmentTypeIdController.text
-              : "0",
-          "EndDate": toDateController.text,
-          "JobType": jobTypeIdController.text.isNotEmpty
-              ? jobTypeIdController.text
-              : "0",
-          "FirstDate": fromDateController.text,
-          "IsCurrentWorking": workingCompanyType == "Yes" ? "1" : "0",
-          "IsExperinced": experienceTypes == "Yes" ? "1" : "0",
-          "JobTitle": jobTitleNameController.text,
-          // "Location": locationController.text,
-          "NCOCode":
-              ncoIdController.text.isNotEmpty ? ncoIdController.text : "0",
-          "NatureofEmployment": employmentNatureIdController.text.isNotEmpty
-              ? employmentNatureIdController.text
-              : "0",
-          "Responsibilities": "Testinf",
-          "UserID": UserData().model.value.userId.toString(),
-          "stateId": stateIdController.text,
-          "DistrictId": districtIdController.text,
-          "Location": locationIdController.text,
-        };
+        // Map<String, dynamic> body = {
+        //   "CompanyName": companyNameController.text,
+        //   "EmployedInPast": "0",
+        //   "EmploymentID": isUpdate == true ? employmentID : "0",
+        //   "Employmenttype": employmentTypeIdController.text.isNotEmpty
+        //       ? employmentTypeIdController.text
+        //       : "0",
+        //   "EndDate": toDateController.text,
+        //   "JobType": jobTypeIdController.text.isNotEmpty
+        //       ? jobTypeIdController.text
+        //       : "0",
+        //   "FirstDate": fromDateController.text,
+        //   "IsCurrentWorking": workingCompanyType == "Yes" ? "1" : "0",
+        //   "IsExperinced": experienceTypes == "Yes" ? "1" : "0",
+        //   "JobTitle": jobTitleNameController.text,
+        //   // "Location": locationController.text,
+        //   "NCOCode":
+        //       ncoIdController.text.isNotEmpty ? ncoIdController.text : "0",
+        //   "NatureofEmployment": employmentNatureIdController.text.isNotEmpty
+        //       ? employmentNatureIdController.text
+        //       : "0",
+        //   "Responsibilities": "Testinf",
+        //   "UserID": UserData().model.value.userId.toString(),
+        //   "stateId": stateIdController.text,
+        //   "DistrictId": districtIdController.text,
+        //   "Location": locationIdController.text,
+        // };
 
 /*
         {"UserID":324,"qualification":"2","Class":"9","School":"cccc","university":"0","stream":"0","medium":"69","Grade":"75","percentage":"0","passingyear":"2025-01","CGPA":"0","board":"0","Course":"73","NCOCode":"8223.72","ResultType":"146","Graduationtype":"0","College":null,"EducationID":"0","OtherEducationUniversity":"","OtherMediumEducation":"","OtherGraduationType":""};
 */
+
+        Map<String, dynamic> body = {
+          "UserID": UserData().model.value.userId.toString(),
+          "JobTitle": jobTitleNameController.text,
+          "Location": locationIdController.text,
+          "EndDate": toDateController.text,
+          "IsCurrentWorking": workingCompanyType == "Yes" ? "1" : "0",
+          "CompanyName": companyNameController.text,
+          "FirstDate": fromDateController.text,
+          "JobType": jobTypeIdController.text.isNotEmpty
+              ? jobTypeIdController.text
+              : "0",
+          "NatureofEmployment": employmentNatureIdController.text.isNotEmpty
+              ? employmentNatureIdController.text
+              : "0",
+          "NCOCode": ncoIdController.text.isNotEmpty ? ncoIdController.text : "0",
+          "Responsibilities": "Test",
+          "EmploymentID": isUpdate == true ? employmentID : "0",
+          "IsExperinced": experienceTypes == "Yes" ? "1" : "0",
+          "Employmenttype": employmentTypeIdController.text.isNotEmpty
+              ? employmentTypeIdController.text
+              : "0",
+          "EmployedInPast": "0",
+          "stateId": stateIdController.text,
+          "DistrictId": districtIdController.text,
+        };
 
         String url = "MobileProfile/SaveWorkExperience";
         ProgressDialog.showLoadingDialog(context);
@@ -703,7 +729,8 @@ class AddWorkExperienceProvider extends ChangeNotifier {
     workingCompanyType =
         workExperience.isCurrentWorking.toString() == "true" ? "Yes" : "No";
     employmentFilterList();
-    employmentTypeIdController.text = workExperience.employmentID.toString();
+    // employmentTypeIdController.text = workExperience.employmentID.toString(); // this employmentID was records unique ID which you edit
+    employmentTypeIdController.text = workExperience.employmentStatusID.toString();
     employmentTypeNameController.text =
         workExperience.employmentName.toString();
     jobTitleNameController.text = workExperience.jobTitle.toString();

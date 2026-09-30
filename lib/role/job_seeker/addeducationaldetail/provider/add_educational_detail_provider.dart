@@ -28,15 +28,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
 
   AddEducationalDetailProvider({required this.commonRepo});
 
-
-
-
   // Result type
   String resultType = 'Percentage';
   TextEditingController percentageController = TextEditingController();
   TextEditingController cgpaController = TextEditingController();
- // String resultType = "Percentage"; // default
 
+  // String resultType = "Percentage"; // default
 
   List<EducationLevelData> educationLevelsList = [];
   List<NcoCodeData> ncoCodeList = [];
@@ -45,11 +42,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   // ITI child dropdowns
   List<GraduationTypeData> itiMainList = [];
   List<GraduationTypeData> itiChildList = [];
+
   // List<GraduationTypeData> itiSubChildList = [];
 
   bool isItiSelected = false;
 
   bool showItiChildDropdown = false;
+
   // bool showItiSubChildDropdown = false;
 
   // controllers
@@ -64,53 +63,65 @@ class AddEducationalDetailProvider extends ChangeNotifier {
   List<UniversityData> universityList = [];
   List<CourseNatureData> courseNatureList = [];
   List<MediumTypeData> mediumTypeList = [];
-  List<PassingYearData> passingYearList= [];
+  List<PassingYearData> passingYearList = [];
   List<StreamTypeData> streamTypeList = [];
   List<GradeTypeData> gradeTypeList = [];
 
   List<GraduationStreamTypeData> graduationStreamTypeList = [];
   final TextEditingController graduationStreamTypeNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController graduationStreamTypeIdController =
-  TextEditingController();
+      TextEditingController();
 
-  final TextEditingController otherStreamController =
-  TextEditingController();
+  final TextEditingController otherStreamController = TextEditingController();
 
-  final TextEditingController educationLevelIdController = TextEditingController();
-  final TextEditingController educationLevelNameController = TextEditingController();
+  final TextEditingController educationLevelIdController =
+      TextEditingController();
+  final TextEditingController educationLevelNameController =
+      TextEditingController();
   final TextEditingController classIdController = TextEditingController();
   final TextEditingController classNameController = TextEditingController();
   final TextEditingController ncoCodeIdController = TextEditingController();
   final TextEditingController ncoCodeNameController = TextEditingController();
   final TextEditingController schoolNameController = TextEditingController();
-  final TextEditingController mediumEducationIdController = TextEditingController();
-  final TextEditingController mediumEducationNameController = TextEditingController();
-  final TextEditingController natureOfCourseIdController = TextEditingController();
-  final TextEditingController natureOfCourseNameController = TextEditingController();
-  final TextEditingController yearOfPassingIdController = TextEditingController();
-  final TextEditingController yearOfPassingNameController = TextEditingController();
+  final TextEditingController mediumEducationIdController =
+      TextEditingController();
+  final TextEditingController mediumEducationNameController =
+      TextEditingController();
+  final TextEditingController natureOfCourseIdController =
+      TextEditingController();
+  final TextEditingController natureOfCourseNameController =
+      TextEditingController();
+  final TextEditingController yearOfPassingIdController =
+      TextEditingController();
+  final TextEditingController yearOfPassingNameController =
+      TextEditingController();
   final TextEditingController boardIdController = TextEditingController();
   final TextEditingController boardNameController = TextEditingController();
   final TextEditingController streamIdController = TextEditingController();
   final TextEditingController streamNameController = TextEditingController();
-  final TextEditingController graduationTypeIdController = TextEditingController();
-  final TextEditingController graduationTypeNameController = TextEditingController();
+  final TextEditingController graduationTypeIdController =
+      TextEditingController();
+  final TextEditingController graduationTypeNameController =
+      TextEditingController();
   final TextEditingController universityIdController = TextEditingController();
-  final TextEditingController universityNameController = TextEditingController();
+  final TextEditingController universityNameController =
+      TextEditingController();
   final TextEditingController collageIdController = TextEditingController();
   final TextEditingController collageNameController = TextEditingController();
   final TextEditingController gradeTypeIdController = TextEditingController();
   final TextEditingController gradeTypeNameController = TextEditingController();
-  final TextEditingController otherMediumEducationController = TextEditingController();
-  final TextEditingController otherGraduationTypeController = TextEditingController();
-  final TextEditingController otherEducationUniversity = TextEditingController();
+  final TextEditingController otherMediumEducationController =
+      TextEditingController();
+  final TextEditingController otherGraduationTypeController =
+      TextEditingController();
+  final TextEditingController otherEducationUniversity =
+      TextEditingController();
 
+  int educationID = 0;
 
-
-
-
-  Future<EducationLevelModal?> educationLevelApi(BuildContext context, bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<EducationLevelModal?> educationLevelApi(BuildContext context,
+      bool isUpdate, ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -118,10 +129,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         //ApiResponse apiResponse = await commonRepo.get("Common/GetQualificationList");
 
         Map<String, dynamic> body = {};
-        ApiResponse apiResponse = await commonRepo.post("Common/GetQualificationList",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/GetQualificationList", body);
 
         ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -132,21 +145,25 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             educationLevelsList.clear();
             educationLevelsList.addAll(sm.data!);
             for (var item in educationLevelsList) {
-              item.name = item.qualificationHI?.replaceAll(RegExp(r'[\r\n]+'), '').trim();
-              item.qualificationHI = item.qualificationHI?.replaceAll(RegExp(r'[\r\n]+'), '').trim();
+              item.name = item.qualificationHI
+                  ?.replaceAll(RegExp(r'[\r\n]+'), '')
+                  .trim();
+              item.qualificationHI = item.qualificationHI
+                  ?.replaceAll(RegExp(r'[\r\n]+'), '')
+                  .trim();
             }
             if (isUpdate && profileData != null) {
               // 🔥 FIND MATCHING ITEM
               final selectedItem = educationLevelsList.firstWhere(
-                    (e) => e.dropID.toString() == profileData.hightestEducationLevelID.toString(),
+                (e) =>
+                    e.dropID.toString() ==
+                    profileData.hightestEducationLevelID.toString(),
                 orElse: () => educationLevelsList.first,
               );
 
               print("isUpdate && profileData != null");
-              educationLevelIdController.text =
-                  selectedItem.dropID.toString();
-              educationLevelNameController.text =
-                  selectedItem.name.toString();
+              educationLevelIdController.text = selectedItem.dropID.toString();
+              educationLevelNameController.text = selectedItem.name.toString();
             } else {
               print("elseee isUpdate && profileData != null");
               // default selection
@@ -156,16 +173,22 @@ class AddEducationalDetailProvider extends ChangeNotifier {
                   educationLevelsList.first.name.toString();
             }
 
-             notifyListeners();
+            notifyListeners();
             return sm;
           } else {
-            final smmm = EducationLevelModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                EducationLevelModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return EducationLevelModal(state: 0, message: 'Something went wrong',
+          return EducationLevelModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -175,22 +198,26 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-  Future<NcoCodeModal?> ncoCodeApi(BuildContext context, bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<NcoCodeModal?> ncoCodeApi(BuildContext context, bool isUpdate,
+      ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-       // ProgressDialog.showLoadingDialog(context);
-       //  ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
+        // ProgressDialog.showLoadingDialog(context);
+        //  ApiResponse apiResponse = await commonRepo.get("Common/GetNCOTreeData");
 
         Map<String, dynamic> body = {};
-        ApiResponse apiResponse = await commonRepo.post("Common/GetNCOTreeData",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/GetNCOTreeData", body);
 
-       // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -204,14 +231,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             /// 🔥 PRESELECT AFTER LIST LOADED
             if (isUpdate && profileData?.nCO != null) {
               final selectedItem = ncoCodeList.firstWhere(
-                    (e) => e.dropID == profileData!.nCO,
+                (e) => e.dropID == profileData!.nCO,
                 orElse: () => ncoCodeList.first,
               );
 
-              ncoCodeIdController.text =
-                  selectedItem.dropID.toString();
-              ncoCodeNameController.text =
-                  selectedItem.name.toString();
+              ncoCodeIdController.text = selectedItem.dropID.toString();
+              ncoCodeNameController.text = selectedItem.name.toString();
             }
             // else if (ncoCodeIdController.text.isEmpty) {
             //   ncoCodeIdController.text =
@@ -220,31 +245,38 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             //       ncoCodeList.first.name.toString();
             // }
 
-
             notifyListeners();
             return sm;
           } else {
             final smmm = NcoCodeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return NcoCodeModal(state: 0, message: 'Something went wrong',
+          return NcoCodeModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
-       // ProgressDialog.closeLoadingDialog(context);
+        // ProgressDialog.closeLoadingDialog(context);
         final sm = NcoCodeModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-  Future<GraduationTypeModal?> graduationTypeApi(BuildContext context,String id,[
+  Future<GraduationTypeModal?> graduationTypeApi(
+    BuildContext context,
+    String id, [
     bool isUpdate = false,
     ProfileQualicationInfoData? profileData,
   ]) async {
@@ -252,17 +284,17 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-      //  ProgressDialog.showLoadingDialog(context);
-      //   String url = "Common/GetGraduationType/$id";
-      //   ApiResponse apiResponse = await commonRepo.get(url);
+        //  ProgressDialog.showLoadingDialog(context);
+        //   String url = "Common/GetGraduationType/$id";
+        //   ApiResponse apiResponse = await commonRepo.get(url);
 
-        Map<String, dynamic> body = {
-          "QualificationID": id
-        };
-        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+        Map<String, dynamic> body = {"QualificationID": id};
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/GetGraduationType", body);
 
-      //  ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        //  ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -270,24 +302,24 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           final sm = GraduationTypeModal.fromJson(responseData);
 
           if (sm.state == 200) {
-            if(id == "2"){
+            print("bbbb");
+            if (id == "2") {
               print("graduationTypeApi function ID 2");
               classList.clear();
               classList.addAll(sm.data!);
-              classList.sort((a, b) => a.dropID!.compareTo(b.dropID!));  // ascending
+              classList
+                  .sort((a, b) => a.dropID!.compareTo(b.dropID!)); // ascending
 
               if (isUpdate && profileData?.classID != null) {
                 final selectedClass = classList.firstWhere(
-                      (e) => e.dropID == profileData!.classID,
+                  (e) => e.dropID == profileData!.classID,
                   orElse: () => classList.first,
                 );
 
                 classIdController.text = selectedClass.dropID.toString();
                 classNameController.text = selectedClass.name.toString();
               }
-
-            }
-            else{
+            } else {
               print("graduationTypeApi function ID not 2 - $id");
               graduationTypeList.clear();
               graduationTypeList.addAll(sm.data!);
@@ -299,38 +331,46 @@ class AddEducationalDetailProvider extends ChangeNotifier {
               }
             }
 
-
-
             notifyListeners();
             return sm;
           } else {
-            final smmm = GraduationTypeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            print("aaaa");
+            final smmm =
+                GraduationTypeModal(state: 0, message: sm.message.toString());
+            // showAlertError(
+            //     smmm.message.toString().isNotEmpty
+            //         ? smmm.message.toString()
+            //         : "Invalid SSO ID and Password",
+            //     context);
             return smmm;
           }
-
         } else {
-          return GraduationTypeModal(state: 0, message: 'Something went wrong',
+          print("cccc");
+          return GraduationTypeModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
+        print("dddd");
         //ProgressDialog.closeLoadingDialog(context);
         final sm = GraduationTypeModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-  Future<BoardModal?> boardApi(BuildContext context,bool isUpdate) async {
+  Future<BoardModal?> boardApi(BuildContext context, bool isUpdate) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
-       // ProgressDialog.showLoadingDialog(context);
-       //  String url = "Common/Board_UniversityMaster/Board";
-       //  ApiResponse apiResponse = await commonRepo.get(url);
+        // ProgressDialog.showLoadingDialog(context);
+        //  String url = "Common/Board_UniversityMaster/Board";
+        //  ApiResponse apiResponse = await commonRepo.get(url);
 
         Map<String, dynamic> body = {
           "ActionName": "",
@@ -344,10 +384,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": "",
           "GPId": ""
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/Board_UniversityMaster",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/Board_UniversityMaster", body);
 
-      //  ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        //  ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -362,22 +404,28 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             return sm;
           } else {
             final smmm = BoardModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return BoardModal(state: 0, message: 'Something went wrong',
+          return BoardModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
-       // ProgressDialog.closeLoadingDialog(context);
+        // ProgressDialog.closeLoadingDialog(context);
         final sm = BoardModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
@@ -392,10 +440,9 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         // String url = "Common/GetGraduationType/$id"; //changed with this one
         // ApiResponse apiResponse = await commonRepo.get(url);
 
-        Map<String, dynamic> body = {
-          "QualificationID": id
-        };
-        ApiResponse apiResponse = await commonRepo.post("Common/GetGraduationType",body);
+        Map<String, dynamic> body = {"QualificationID": id};
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/GetGraduationType", body);
 
         //  ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
@@ -413,8 +460,8 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm =
-            GraduationStreamTypeModal(state: 0, message: sm.message.toString());
+            final smmm = GraduationStreamTypeModal(
+                state: 0, message: sm.message.toString());
             showAlertError(
                 smmm.message.toString().isNotEmpty
                     ? smmm.message.toString()
@@ -440,12 +487,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     }
   }
 
-  Future<StreamTypeModal?> streamTypeApi(BuildContext context,bool isUpdate) async {
+  Future<StreamTypeModal?> streamTypeApi(
+      BuildContext context, bool isUpdate) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
         //ProgressDialog.showLoadingDialog(context);
-       // String url = "Common/CommonMasterDataByCode/StreamType/1";
+        // String url = "Common/CommonMasterDataByCode/StreamType/1";
         //ApiResponse apiResponse = await commonRepo.get(url);
 
         Map<String, dynamic> body = {
@@ -460,10 +508,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": 0,
           "GPId": 0
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/CommonMasterDataByCode", body);
 
-       // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        // ProgressDialog.closeLoadingDialog(context);
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -477,28 +527,35 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm = StreamTypeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                StreamTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return StreamTypeModal(state: 0, message: 'Something went wrong',
+          return StreamTypeModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
-       // ProgressDialog.closeLoadingDialog(context);
+        // ProgressDialog.closeLoadingDialog(context);
         final sm = StreamTypeModal(state: 0, message: err.toString());
         showAlertError(sm.message.toString(), context);
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-
-  Future<UniversityModal?> universityApi(BuildContext context,bool isUpdate) async {
+  Future<UniversityModal?> universityApi(
+      BuildContext context, bool isUpdate) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -518,10 +575,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": "",
           "GPId": ""
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/Board_UniversityMaster",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/Board_UniversityMaster", body);
 
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -534,13 +593,19 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm = UniversityModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                UniversityModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return UniversityModal(state: 0, message: 'Something went wrong',
+          return UniversityModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -550,12 +615,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-
-  Future<MediumTypeModal?> mediumOfEducationApi(BuildContext context,bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<MediumTypeModal?> mediumOfEducationApi(BuildContext context,
+      bool isUpdate, ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -575,10 +641,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": 0,
           "GPId": 0
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/CommonMasterDataByCode", body);
 
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -591,13 +659,19 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm = MediumTypeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                MediumTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return MediumTypeModal(state: 0, message: 'Something went wrong',
+          return MediumTypeModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -607,12 +681,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-
-  Future<CourseNatureModal?> courseNatureApi(BuildContext context,bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<CourseNatureModal?> courseNatureApi(BuildContext context,
+      bool isUpdate, ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -632,32 +707,32 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": 0,
           "GPId": 0
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/CommonMasterDataByCode", body);
 
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = CourseNatureModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             courseNatureList.clear();
             courseNatureList.addAll(sm.data!);
 
             /// 🔥 PRESELECT HERE (AFTER LIST LOADED)
             if (isUpdate && profileData?.courseNature != null) {
               final selectedItem = courseNatureList.firstWhere(
-                    (e) => e.dropID.toString() ==
-                    profileData!.courseNature.toString(),
+                (e) =>
+                    e.dropID.toString() == profileData!.courseNature.toString(),
                 orElse: () => courseNatureList.first,
               );
 
-              natureOfCourseIdController.text =
-                  selectedItem.dropID.toString();
-              natureOfCourseNameController.text =
-                  selectedItem.name.toString();
+              natureOfCourseIdController.text = selectedItem.dropID.toString();
+              natureOfCourseNameController.text = selectedItem.name.toString();
             }
             // else if (natureOfCourseIdController.text.isEmpty) {
             //   natureOfCourseIdController.text =
@@ -669,13 +744,19 @@ class AddEducationalDetailProvider extends ChangeNotifier {
             notifyListeners();
             return sm;
           } else {
-            final smmm = CourseNatureModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                CourseNatureModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return CourseNatureModal(state: 0, message: 'Something went wrong',
+          return CourseNatureModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -685,12 +766,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-
-  Future<PassingYearModal?> passingYearModalApi(BuildContext context,bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<PassingYearModal?> passingYearModalApi(BuildContext context,
+      bool isUpdate, ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -710,30 +792,38 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": 0,
           "GPId": 0
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/CommonMasterDataByCode", body);
 
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = PassingYearModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             passingYearList.clear();
             passingYearList.addAll(sm.data!);
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = PassingYearModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                PassingYearModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return PassingYearModal(state: 0, message: 'Something went wrong',
+          return PassingYearModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -743,11 +833,13 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
-  Future<GradeTypeModal?> gradeTypeApi(BuildContext context,bool isUpdate, ProfileQualicationInfoData? profileData) async {
+  Future<GradeTypeModal?> gradeTypeApi(BuildContext context, bool isUpdate,
+      ProfileQualicationInfoData? profileData) async {
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -767,17 +859,19 @@ class AddEducationalDetailProvider extends ChangeNotifier {
           "DistrictId": 0,
           "GPId": 0
         };
-        ApiResponse apiResponse = await commonRepo.post("Common/CommonMasterDataByCode",body);
+        ApiResponse apiResponse =
+            await commonRepo.post("Common/CommonMasterDataByCode", body);
 
         // ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+        if (apiResponse.response != null &&
+            apiResponse.response?.statusCode == 200) {
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
           }
           final sm = GradeTypeModal.fromJson(responseData);
 
-          if(sm.state == 200) {
+          if (sm.state == 200) {
             gradeTypeList.clear();
             gradeTypeList.addAll(sm.data!);
 
@@ -785,26 +879,30 @@ class AddEducationalDetailProvider extends ChangeNotifier {
                 profileData?.gradeID != null &&
                 resultType == "Grade") {
               final selectedGrade = gradeTypeList.firstWhere(
-                    (e) => e.dropID == profileData!.gradeID,
+                (e) => e.dropID == profileData!.gradeID,
                 orElse: () => gradeTypeList.first,
               );
 
-              gradeTypeIdController.text =
-                  selectedGrade.dropID.toString();
-              gradeTypeNameController.text =
-                  selectedGrade.name.toString();
+              gradeTypeIdController.text = selectedGrade.dropID.toString();
+              gradeTypeNameController.text = selectedGrade.name.toString();
             }
 
             notifyListeners();
             return sm;
           } else {
-            final smmm = GradeTypeModal(state: 0, message: sm.message.toString());
-            showAlertError(smmm.message.toString().isNotEmpty ? smmm.message.toString() : "Invalid SSO ID and Password", context);
+            final smmm =
+                GradeTypeModal(state: 0, message: sm.message.toString());
+            showAlertError(
+                smmm.message.toString().isNotEmpty
+                    ? smmm.message.toString()
+                    : "Invalid SSO ID and Password",
+                context);
             return smmm;
           }
-
         } else {
-          return GradeTypeModal(state: 0, message: 'Something went wrong',
+          return GradeTypeModal(
+            state: 0,
+            message: 'Something went wrong',
           );
         }
       } on Exception catch (err) {
@@ -814,139 +912,289 @@ class AddEducationalDetailProvider extends ChangeNotifier {
         return sm;
       }
     } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+      showAlertError(
+          AppLocalizations.of(context)!.internet_connection, context);
     }
   }
 
+//   Future<SaveDataEducationModal?> saveDataEducationDetailsApi(BuildContext context) async {
+//     var isInternet = await UtilityClass.checkInternetConnectivity();
+//     if (isInternet) {
+//       try {
+//         String ? IpAddress =  await UtilityClass.getIpAddress();
+//         List<Map<String, dynamic>> body = [
+//          /* {
+//             "qualification": educationLevelIdController.text,
+//             "Class": classIdController.text.isNotEmpty ? classIdController.text : "0",
+//             "UserID": UserData().model.value.userId.toString(),
+//             "board": boardIdController.text.isNotEmpty ? boardIdController.text : "0",
+//             "university": universityIdController.text.isNotEmpty ? universityIdController.text : "0",
+//             "stream": streamIdController.text.isNotEmpty ? streamIdController.text : "0",
+//             "medium": mediumEducationIdController.text.isNotEmpty ? mediumEducationIdController.text : "0",
+//             "Grade": gradeTypeIdController.text.isNotEmpty ? gradeTypeIdController.text : "0",
+//             "percentage": resultType == "Percentage" ? gradeTypeNameController.text : "0",
+//             "CGPA": resultType == "CGPA" ? gradeTypeNameController.text : "0",
+//             "ResultType": resultType == "Grade" ? "146" :resultType == "Percentage" ? "147" : "148",
+//             "School": schoolNameController.text.isNotEmpty ? schoolNameController.text :"",
+//             "Course": natureOfCourseIdController.text.isNotEmpty ? natureOfCourseIdController.text : "0",
+//             "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text : "0",
+//             "Graduationtype": graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
+//             "College": collageNameController.text.isNotEmpty ? collageNameController.text : "",
+//             "passingyear":"2025-11",
+//             "OtherMediumEducation": otherMediumEducationController.text.isNotEmpty ? otherMediumEducationController.text :"",
+//             "OtherGraduationType": otherGraduationTypeController.text.isNotEmpty ? otherGraduationTypeController.text : "",
+//             "OtherEducationUniversity": otherEducationUniversity.text.isNotEmpty ? otherEducationUniversity.text : "",
+//             "CreatedBy": UserData().model.value.userId.toString(),
+//             "EducationID": "0",
+//             "IsActive": 1,
+//             "IPAddress": IpAddress.toString(),
+//             "IPAddressv6": IpAddress.toString()
+//           }*/
+//
+//         ];
+//         Map<String, dynamic> bodyy =
+//           {
+//             "qualification": educationLevelIdController.text,
+//             "Class": classIdController.text.isNotEmpty ? classIdController.text : "0",
+//             "UserID": UserData().model.value.userId.toString(),
+//             "board": boardIdController.text.isNotEmpty ? boardIdController.text : "0",
+//             "university": universityIdController.text.isNotEmpty ? universityIdController.text : "0",
+//             "stream": streamIdController.text.isNotEmpty ? streamIdController.text : "0",
+//             "medium": mediumEducationIdController.text.isNotEmpty ? mediumEducationIdController.text : "0",
+//             "Grade": gradeTypeIdController.text.isNotEmpty ? gradeTypeIdController.text : "0",
+//           //  "percentage": resultType == "Percentage" && gradeTypeNameController.text.isNotEmpty ? gradeTypeNameController.text : "0",
+//             "percentage": resultType == "Percentage" && percentageController.text.isNotEmpty
+//                 ? percentageController.text
+//                 : "0",
+//
+//            // "CGPA": resultType == "CGPA" && gradeTypeNameController.text.isNotEmpty ? gradeTypeNameController.text : "0",
+//             "CGPA": resultType == "CGPA" && cgpaController.text.isNotEmpty
+//                 ? cgpaController.text
+//                 : "0",
+//
+//             "ResultType": resultType == "Grade" ? "146" :resultType == "Percentage" ? "147" : "148",
+//             "School": schoolNameController.text.isNotEmpty ? schoolNameController.text :"",
+//             "Course": natureOfCourseIdController.text.isNotEmpty ? natureOfCourseIdController.text : "0",
+//             "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text : "0",
+//             "Graduationtype": graduationStreamTypeIdController.text, //graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
+//             "College": collageNameController.text.isNotEmpty ? collageNameController.text : "",
+//             "passingyear":yearOfPassingNameController.text.isNotEmpty ? yearOfPassingNameController.text :"0",
+//             "OtherMediumEducation": otherMediumEducationController.text.isNotEmpty ? otherMediumEducationController.text :"",
+//             "OtherGraduationType": otherGraduationTypeController.text.isNotEmpty ? otherGraduationTypeController.text : "",
+//             "OtherEducationUniversity": otherEducationUniversity.text.isNotEmpty ? otherEducationUniversity.text : "",
+//             "CreatedBy": UserData().model.value.userId.toString(),
+//             "EducationID": "0",
+//             "IsActive": 1,
+//             "IPAddress": IpAddress.toString(),
+//             "IPAddressv6": IpAddress.toString()
+//
+//         };
+//
+// /*
+//         {"UserID":324,"qualification":"2","Class":"9","School":"cccc","university":"0","stream":"0","medium":"69","Grade":"75","percentage":"0","passingyear":"2025-01","CGPA":"0","board":"0","Course":"73","NCOCode":"8223.72","ResultType":"146","Graduationtype":"0","College":null,"EducationID":"0","OtherEducationUniversity":"","OtherMediumEducation":"","OtherGraduationType":""};
+// */
+//
+//         print("bodyy=>$bodyy");
+//
+//
+//         String url = "MobileProfile/SaveDataQualification";
+//         ProgressDialog.showLoadingDialog(context);
+//        // ApiResponse apiResponse = await commonRepo.postArray(url,body);
+//         ApiResponse apiResponse = await commonRepo.post(url,bodyy);
+//         ProgressDialog.closeLoadingDialog(context);
+//         if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
+//           var responseData = apiResponse.response?.data;
+//           if (responseData is String) {
+//             responseData = jsonDecode(responseData);
+//           }
+//           final sm = SaveDataEducationModal.fromJson(responseData);
+//           if (sm.state == 200) {
+//             successDialog(
+//               context,sm.message.toString(), (value) {
+//               print(value);
+//               if (value.toString() == "success") {
+//                 Navigator.of(context).pop("success");
+//                 //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
+//               }
+//             },
+//             );
+//
+//             return sm;
+//           } else {
+//             final smmm = SaveDataEducationModal(state: 0, message: sm.message.toString());
+//             showAlertError( sm.message.toString() , context); // previously sm.errorMessage.toString() was working , as changed in API by Amit Tripathi so i changed this errorMessage to message
+//             return smmm;
+//           }
+//         } else {
+//           return SaveDataEducationModal(state: 0, message: 'Something went wrong',
+//           );
+//         }
+//       } on Exception catch (err) {
+//         ProgressDialog.closeLoadingDialog(context);
+//         final sm = SaveDataEducationModal(state: 0, message: err.toString());
+//         showAlertError(sm.message.toString(), context);
+//         return sm;
+//       }
+//     } else {
+//       showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+//     }
+//   }
 
-  Future<SaveDataEducationModal?> saveDataEducationDetailsApi(BuildContext context) async {
-    var isInternet = await UtilityClass.checkInternetConnectivity();
-    if (isInternet) {
-      try {
-        String ? IpAddress =  await UtilityClass.getIpAddress();
-        List<Map<String, dynamic>> body = [
-         /* {
-            "qualification": educationLevelIdController.text,
-            "Class": classIdController.text.isNotEmpty ? classIdController.text : "0",
-            "UserID": UserData().model.value.userId.toString(),
-            "board": boardIdController.text.isNotEmpty ? boardIdController.text : "0",
-            "university": universityIdController.text.isNotEmpty ? universityIdController.text : "0",
-            "stream": streamIdController.text.isNotEmpty ? streamIdController.text : "0",
-            "medium": mediumEducationIdController.text.isNotEmpty ? mediumEducationIdController.text : "0",
-            "Grade": gradeTypeIdController.text.isNotEmpty ? gradeTypeIdController.text : "0",
-            "percentage": resultType == "Percentage" ? gradeTypeNameController.text : "0",
-            "CGPA": resultType == "CGPA" ? gradeTypeNameController.text : "0",
-            "ResultType": resultType == "Grade" ? "146" :resultType == "Percentage" ? "147" : "148",
-            "School": schoolNameController.text.isNotEmpty ? schoolNameController.text :"",
-            "Course": natureOfCourseIdController.text.isNotEmpty ? natureOfCourseIdController.text : "0",
-            "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text : "0",
-            "Graduationtype": graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
-            "College": collageNameController.text.isNotEmpty ? collageNameController.text : "",
-            "passingyear":"2025-11",
-            "OtherMediumEducation": otherMediumEducationController.text.isNotEmpty ? otherMediumEducationController.text :"",
-            "OtherGraduationType": otherGraduationTypeController.text.isNotEmpty ? otherGraduationTypeController.text : "",
-            "OtherEducationUniversity": otherEducationUniversity.text.isNotEmpty ? otherEducationUniversity.text : "",
-            "CreatedBy": UserData().model.value.userId.toString(),
-            "EducationID": "0",
-            "IsActive": 1,
-            "IPAddress": IpAddress.toString(),
-            "IPAddressv6": IpAddress.toString()
-          }*/
+  Future<SaveDataEducationModal?> saveDataEducationDetailsApi(
+      BuildContext context, ProfileQualicationInfoData? profileData) async {
+    final isInternet = await UtilityClass.checkInternetConnectivity();
 
-        ];
-        Map<String, dynamic> bodyy =
-          {
-            "qualification": educationLevelIdController.text,
-            "Class": classIdController.text.isNotEmpty ? classIdController.text : "0",
-            "UserID": UserData().model.value.userId.toString(),
-            "board": boardIdController.text.isNotEmpty ? boardIdController.text : "0",
-            "university": universityIdController.text.isNotEmpty ? universityIdController.text : "0",
-            "stream": streamIdController.text.isNotEmpty ? streamIdController.text : "0",
-            "medium": mediumEducationIdController.text.isNotEmpty ? mediumEducationIdController.text : "0",
-            "Grade": gradeTypeIdController.text.isNotEmpty ? gradeTypeIdController.text : "0",
-          //  "percentage": resultType == "Percentage" && gradeTypeNameController.text.isNotEmpty ? gradeTypeNameController.text : "0",
-            "percentage": resultType == "Percentage" && percentageController.text.isNotEmpty
-                ? percentageController.text
-                : "0",
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return null;
+    }
 
-           // "CGPA": resultType == "CGPA" && gradeTypeNameController.text.isNotEmpty ? gradeTypeNameController.text : "0",
-            "CGPA": resultType == "CGPA" && cgpaController.text.isNotEmpty
-                ? cgpaController.text
-                : "0",
+    try {
+      final int userId =
+          int.tryParse(UserData().model.value.userId.toString()) ?? 0;
 
-            "ResultType": resultType == "Grade" ? "146" :resultType == "Percentage" ? "147" : "148",
-            "School": schoolNameController.text.isNotEmpty ? schoolNameController.text :"",
-            "Course": natureOfCourseIdController.text.isNotEmpty ? natureOfCourseIdController.text : "0",
-            "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text : "0",
-            "Graduationtype": graduationStreamTypeIdController.text, //graduationTypeIdController.text.isNotEmpty ? graduationTypeIdController.text : "0",
-            "College": collageNameController.text.isNotEmpty ? collageNameController.text : "",
-            "passingyear":yearOfPassingNameController.text.isNotEmpty ? yearOfPassingNameController.text :"0",
-            "OtherMediumEducation": otherMediumEducationController.text.isNotEmpty ? otherMediumEducationController.text :"",
-            "OtherGraduationType": otherGraduationTypeController.text.isNotEmpty ? otherGraduationTypeController.text : "",
-            "OtherEducationUniversity": otherEducationUniversity.text.isNotEmpty ? otherEducationUniversity.text : "",
-            "CreatedBy": UserData().model.value.userId.toString(),
-            "EducationID": "0",
-            "IsActive": 1,
-            "IPAddress": IpAddress.toString(),
-            "IPAddressv6": IpAddress.toString()
+      final Map<String, dynamic> body = {
+        "ActionName": "",
+        // "EducationID": profileData?.educationID,
+        "EducationID": educationID,
+        "qualification": educationLevelIdController.text.isNotEmpty
+            ? educationLevelIdController.text
+            : "0",
+        "Class":
+            classIdController.text.isNotEmpty ? classIdController.text : "0",
+        "UserId": userId,
+        "Board":
+            boardIdController.text.isNotEmpty ? boardIdController.text : "0",
+        "University": universityIdController.text.isNotEmpty
+            ? universityIdController.text
+            : "0",
+        "Stream":
+            streamIdController.text.isNotEmpty ? streamIdController.text : "0",
+        "Medium": mediumEducationIdController.text.isNotEmpty
+            ? mediumEducationIdController.text
+            : "0",
+        "Grade": gradeTypeIdController.text.isNotEmpty
+            ? gradeTypeIdController.text
+            : "0",
+        "Percentage": resultType == "Percentage" &&
+                percentageController.text.trim().isNotEmpty
+            ? percentageController.text.trim()
+            : "0",
+        "CGPA": resultType == "CGPA" && cgpaController.text.trim().isNotEmpty
+            ? cgpaController.text.trim()
+            : "",
+        "ResultType": resultType == "Grade"
+            ? "146"
+            : resultType == "Percentage"
+                ? "147"
+                : "148",
+        "School": schoolNameController.text.trim(),
+        "Course": natureOfCourseIdController.text.isNotEmpty
+            ? natureOfCourseIdController.text
+            : "0",
+        "NCOCode": ncoCodeIdController.text.isNotEmpty
+            ? ncoCodeIdController.text
+            : "0",
+        "Graduationtype": graduationStreamTypeIdController.text.isNotEmpty
+            ? graduationStreamTypeIdController.text
+            : "0",
+        "College": collageNameController.text.trim(),
+        "passingyear": yearOfPassingNameController.text.isNotEmpty
+            ? yearOfPassingNameController.text
+            : "0",
+        "OtherMediumEducation": otherMediumEducationController.text.trim(),
+        "OtherGraduationType": otherGraduationTypeController.text.trim(),
+        "OtherEducationUniversity": otherEducationUniversity.text.trim(),
+        "CreatedBy": userId,
+        "IsActive": 1,
+      };
 
-        };
+      debugPrint("SaveDataQualification BODY => $body");
 
-/*
-        {"UserID":324,"qualification":"2","Class":"9","School":"cccc","university":"0","stream":"0","medium":"69","Grade":"75","percentage":"0","passingyear":"2025-01","CGPA":"0","board":"0","Course":"73","NCOCode":"8223.72","ResultType":"146","Graduationtype":"0","College":null,"EducationID":"0","OtherEducationUniversity":"","OtherMediumEducation":"","OtherGraduationType":""};
-*/
+      const String url = "ProfilJobSeekar/SaveDataQualification";
 
-        print("bodyy=>$bodyy");
+      ProgressDialog.showLoadingDialog(context);
 
+      final ApiResponse apiResponse = await commonRepo.post(url, body);
 
-        String url = "MobileProfile/SaveDataQualification";
-        ProgressDialog.showLoadingDialog(context);
-       // ApiResponse apiResponse = await commonRepo.postArray(url,body);
-        ApiResponse apiResponse = await commonRepo.post(url,bodyy);
-        ProgressDialog.closeLoadingDialog(context);
-        if (apiResponse.response != null && apiResponse.response?.statusCode == 200) {
-          var responseData = apiResponse.response?.data;
-          if (responseData is String) {
-            responseData = jsonDecode(responseData);
-          }
-          final sm = SaveDataEducationModal.fromJson(responseData);
-          if (sm.state == 200) {
-            successDialog(
-              context,sm.message.toString(), (value) {
-              print(value);
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final SaveDataEducationModal response =
+            SaveDataEducationModal.fromJson(responseData);
+
+        if (response.state == 200) {
+          successDialog(
+            context,
+            response.message.toString(),
+            (value) {
               if (value.toString() == "success") {
                 Navigator.of(context).pop("success");
-                //showAlertSuccess(AppLocalizations.of(context)!.login_successfully, context);
               }
             },
-            );
-
-            return sm;
-          } else {
-            final smmm = SaveDataEducationModal(state: 0, message: sm.message.toString());
-            showAlertError( sm.message.toString() , context); // previously sm.errorMessage.toString() was working , as changed in API by Amit Tripathi so i changed this errorMessage to message
-            return smmm;
-          }
-        } else {
-          return SaveDataEducationModal(state: 0, message: 'Something went wrong',
           );
+
+          return response;
         }
-      } on Exception catch (err) {
-        ProgressDialog.closeLoadingDialog(context);
-        final sm = SaveDataEducationModal(state: 0, message: err.toString());
-        showAlertError(sm.message.toString(), context);
-        return sm;
+
+        final errorResponse = SaveDataEducationModal(
+          state: 0,
+          message: response.message.toString(),
+        );
+
+        showAlertError(
+          response.message.toString().isNotEmpty
+              ? response.message.toString()
+              : "Something went wrong",
+          context,
+        );
+
+        return errorResponse;
       }
-    } else {
-      showAlertError(AppLocalizations.of(context)!.internet_connection, context);
+
+      final errorResponse = SaveDataEducationModal(
+        state: 0,
+        message: "Something went wrong",
+      );
+
+      showAlertError(
+        "Something went wrong",
+        context,
+      );
+
+      return errorResponse;
+    } on Exception catch (err) {
+      ProgressDialog.closeLoadingDialog(context);
+
+      final errorResponse = SaveDataEducationModal(
+        state: 0,
+        message: err.toString(),
+      );
+
+      showAlertError(
+        err.toString(),
+        context,
+      );
+
+      return errorResponse;
     }
   }
 
   Future<void> onSelectItiItem(
-      BuildContext context,
-      GraduationTypeData value,
-      int level,
-      ) async {
+    BuildContext context,
+    GraduationTypeData value,
+    int level,
+  ) async {
     int selectedId = value.dropID ?? 0;
     int childCount = value.childCount ?? 0;
 
@@ -973,9 +1221,7 @@ class AddEducationalDetailProvider extends ChangeNotifier {
       } else {
         await graduationStreamTypeApi(context, selectedId.toString());
       }
-    }
-
-    else if (level == 1) {
+    } else if (level == 1) {
       // ✅ FINAL LEVEL → DIRECT STREAM
       graduationStreamTypeList.clear();
       graduationStreamTypeNameController.clear();
@@ -987,17 +1233,25 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  updateData(ProfileQualicationInfoData? profileData){
-
+  updateData(ProfileQualicationInfoData? profileData) {
     if (profileData != null) {
       debugPrint("Profile Data JSON:");
       debugPrint(jsonEncode(profileData.toJson()));
+
+      final data = profileData.toJson();
+
+      educationID = int.tryParse(
+        (data['EducationID'] ?? data['educationID'] ?? 0).toString(),
+      ) ??
+          0;
+
     } else {
       debugPrint("Profile Data is null");
     }
-    educationLevelIdController.text = profileData!.hightestEducationLevelID.toString();
-    educationLevelNameController.text =  profileData.qualificationName.toString();
+    educationLevelIdController.text =
+        profileData!.hightestEducationLevelID.toString();
+    educationLevelNameController.text =
+        profileData.qualificationName.toString();
     classIdController.text = profileData.classID.toString();
     classNameController.text = profileData.className.toString();
     // ncoCodeIdController.text = profileData!.nCO.toString();
@@ -1013,11 +1267,12 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     boardNameController.text = profileData.boardName.toString();
     streamIdController.text = profileData.streamID.toString();
     streamNameController.text = profileData.streamName.toString();
-    graduationTypeIdController.text = "";
-    graduationTypeNameController.text = "";
+    graduationTypeIdController.text = profileData.educationTypeID.toString();
+    graduationTypeNameController.text =
+        profileData.educationTypeName.toString();
     universityIdController.text = profileData.universityID.toString();
     universityNameController.text = profileData.universityName.toString();
-    collageIdController.text ="";
+    collageIdController.text = "";
     collageNameController.text = profileData.collegeName.toString();
     // gradeTypeIdController.text = profileData.gradeID.toString();
     // gradeTypeNameController.text = profileData.gradeName.toString();
@@ -1029,44 +1284,30 @@ class AddEducationalDetailProvider extends ChangeNotifier {
     resultType = profileData.resultTypeName ?? "Percentage";
 
     if (resultType == "Grade") {
-      gradeTypeIdController.text =
-          profileData.gradeID?.toString() ?? "";
-      gradeTypeNameController.text =
-          profileData.gradeName ?? "";
+      gradeTypeIdController.text = profileData.gradeID?.toString() ?? "";
+      gradeTypeNameController.text = profileData.gradeName ?? "";
     }
 
     if (resultType == "Percentage") {
-      percentageController.text =
-          profileData.percentage?.toString() ?? "";
+      percentageController.text = profileData.percentage?.toString() ?? "";
     }
 
     if (resultType == "CGPA") {
-      cgpaController.text =
-          profileData.cGPA?.toString() ?? "";
+      cgpaController.text = profileData.cGPA?.toString() ?? "";
     }
 
     notifyListeners();
-
-
-
-
   }
-
-
-
-
-
-
 
   @override
   void dispose() {
     super.dispose();
   }
 
-
-
-
   clearData() {
+
+    educationID = 0;
+
     // ---------- Reset result type ----------
     resultType = 'Percentage';
     // ---------- Clear lists ----------

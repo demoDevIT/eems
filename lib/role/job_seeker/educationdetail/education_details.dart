@@ -262,25 +262,25 @@ class EducationCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // InkWell(
-                        //   onTap:  () async {
-                        //     final result = await Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => AddEducationalDetail(
-                        //           isUpdate: true,
-                        //           profileData:provider.educationList[index]),
-                        //         ),
-                        //     );
-                        //     if (result != null) {
-                        //       provider.profileQualicationInfoApi(context);
-                        //     }
-                        //  },
-                        //   child: SvgPicture.asset(
-                        //     'assets/icons/edit.svg',
-                        //     height: 20,
-                        //   ),
-                        // ),
+                        InkWell(
+                          onTap:  () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddEducationalDetail(
+                                  isUpdate: true,
+                                  profileData:provider.educationList[index]),
+                                ),
+                            );
+                            if (result != null) {
+                              provider.profileQualicationInfoApi(context);
+                            }
+                         },
+                          child: SvgPicture.asset(
+                            'assets/icons/edit.svg',
+                            height: 20,
+                          ),
+                        ),
                         SizedBox(width: 10),
                         InkWell(
                           onTap:  () {

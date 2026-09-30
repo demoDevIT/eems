@@ -412,26 +412,27 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
 
         List<Map<String, dynamic>> body = [
           {
-            "ActionName": "Skills",
+            //"ActionName": "Skills",
             "UserID": UserData().model.value.userId.toString(),
+            "Category": categoryIdController.text,
+            "SubCategory": subCategoryIdController.text,
+            "SkillDetailID": isUpdateSkill == true ? skillID:"0",
+            "Acquired": acquiredThroughIdController.text,
+            "Years": yearController.text,
+            "Months": monthController.text,
+            "Remark": remarkController.text,
+            "UploadCertificate":certificateController.text,
+            "NCOCode": ncoIdController.text,
+
             // "ModifyBy": UserData().model.value.userId.toString(),
-             "CreatedBy": UserData().model.value.userId.toString(),
-             "IsActive": 1,
-             "Category": categoryIdController.text,
-             "SubCategory": subCategoryIdController.text,
-             "Acquired": acquiredThroughIdController.text,
-             "Years": yearController.text,
-             "Months": monthController.text,
-             "Remark": remarkController.text,
-             "NCOCode": ncoIdController.text,
-             "UploadCertificate":certificateController.text,
-             "SkillDetailID": isUpdateSkill == true ? skillID:"0",
-             "IPAddress": "1",
-             "IPAddressv6": "1"
+            //  "CreatedBy": UserData().model.value.userId.toString(),
+            //  "IsActive": 1,
+            //  "IPAddress": "1",
+            //  "IPAddressv6": "1"
           }
         ];
 
-        String url = "MobileProfile/SaveDataSkills";
+        String url = "ProfilJobSeekar/SaveDataSkills";
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.postArray(url,body);
         ProgressDialog.closeLoadingDialog(context);
@@ -482,7 +483,7 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
 
         List<Map<String, dynamic>> body = [
           {
-            "ActionName": "Language & Skills",
+           // "ActionName": "Language & Skills",
             "UserID": UserData().model.value.userId.toString(),
             "Language": languageIdController.text,
             "Proficiency": proficiencyIdController.text,
@@ -490,13 +491,14 @@ class AddLanguageSkillsProvider extends ChangeNotifier {
             "Write": write == true ? "1" : "0",
             "Speak": speak == true ? "1" : "0",
            // "ModifyBy": UserData().model.value.userId.toString(),
-            "CreatedBy": UserData().model.value.userId.toString(),
-            "IsActive": 1,
+           //  "CreatedBy": UserData().model.value.userId.toString(),
+           //  "IsActive": 1,
             "LanguageDetailID": isUpdateLanguage == true ? languageId:"0",
           }
         ];
 
-        String url = "MobileProfile/SaveDataLanguage";
+        // String url = "MobileProfile/SaveDataLanguage";
+        String url = "ProfilJobSeekar/SaveDataLanguage";
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.postArray(url,body);
         ProgressDialog.closeLoadingDialog(context);

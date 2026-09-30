@@ -47,6 +47,8 @@ class EducationDetailsProvider extends ChangeNotifier {
           educationList.clear();
           if (sm.state == 200) {
             educationList.addAll(sm.data!);
+
+            print("educationList--2233->" + educationList.length.toString());
             notifyListeners();
             return sm;
           } else {

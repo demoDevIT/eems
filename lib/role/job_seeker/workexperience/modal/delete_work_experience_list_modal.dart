@@ -36,6 +36,7 @@ class WorkExperienceListModal {
 
 class WorkExperienceListData {
   dynamic employmentID;
+  dynamic employmentStatusID;
   dynamic jobTitle;
   dynamic empolyer;
   dynamic jobStartDate;
@@ -59,6 +60,7 @@ class WorkExperienceListData {
 
   WorkExperienceListData(
       {this.employmentID,
+        this.employmentStatusID,
         this.jobTitle,
         this.empolyer,
         this.jobStartDate,
@@ -83,6 +85,7 @@ class WorkExperienceListData {
 
   WorkExperienceListData.fromJson(Map<String, dynamic> json) {
     employmentID = json['EmploymentID'];
+    employmentStatusID = json['EmploymentStatusID'];
     jobTitle = json['JobTitle'];
     empolyer = json['Empolyer'];
     jobStartDate = json['JobStartDate'];
@@ -108,6 +111,7 @@ class WorkExperienceListData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['EmploymentID'] = this.employmentID;
+    data['EmploymentStatusID'] = this.employmentStatusID;
     data['JobTitle'] = this.jobTitle;
     data['Empolyer'] = this.empolyer;
     data['JobStartDate'] = this.jobStartDate;

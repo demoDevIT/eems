@@ -194,9 +194,29 @@ class AddphysicalattributeProvider extends ChangeNotifier {
           }
         ];*/
 
+        // Map<String, dynamic> bodyy =
+        // {
+        //   "PhysicalDetailID":isUpdate == true ? physicalDetailID :"0",
+        //   "UserID":UserData().model.value.userId.toString(),
+        //   "Height":heightController.text,
+        //   "Weight":weightController.text,
+        //   "Chest":UserData().model.value.gENDER == "Female" ? "0" : chestController.text,
+        //   "BloodGroup":bloodIdController.text.isNotEmpty ? bloodIdController.text : "0",
+        //   "EyeSight":eyesController.text,
+        //   "IsPWD":diffAbled == "Yes" ? "1" : "0",
+        //   "Disability": diffAbled == "Yes" ? disabilityTypeIdController.text : "0",
+        //   "DisabilityPercentage": diffAbled == "Yes" ? disabilityPercentageController.text : "0",
+        //
+        // };
+
+/*
+        {"UserID":324,"qualification":"2","Class":"9","School":"cccc","university":"0","stream":"0","medium":"69","Grade":"75","percentage":"0","passingyear":"2025-01","CGPA":"0","board":"0","Course":"73","NCOCode":"8223.72","ResultType":"146","Graduationtype":"0","College":null,"EducationID":"0","OtherEducationUniversity":"","OtherMediumEducation":"","OtherGraduationType":""};
+*/
+
         Map<String, dynamic> bodyy =
         {
-          "PhysicalDetailID":isUpdate == true ? physicalDetailID :"0",
+          "ID": 0,
+          "AID": 0,
           "UserID":UserData().model.value.userId.toString(),
           "Height":heightController.text,
           "Weight":weightController.text,
@@ -206,15 +226,11 @@ class AddphysicalattributeProvider extends ChangeNotifier {
           "IsPWD":diffAbled == "Yes" ? "1" : "0",
           "Disability": diffAbled == "Yes" ? disabilityTypeIdController.text : "0",
           "DisabilityPercentage": diffAbled == "Yes" ? disabilityPercentageController.text : "0",
-
         };
 
-/*
-        {"UserID":324,"qualification":"2","Class":"9","School":"cccc","university":"0","stream":"0","medium":"69","Grade":"75","percentage":"0","passingyear":"2025-01","CGPA":"0","board":"0","Course":"73","NCOCode":"8223.72","ResultType":"146","Graduationtype":"0","College":null,"EducationID":"0","OtherEducationUniversity":"","OtherMediumEducation":"","OtherGraduationType":""};
-*/
 
-
-        String url = "MobileProfile/SavePhysicalAttributeData";
+        // String url = "MobileProfile/SavePhysicalAttributeData";
+        String url = "ProfilJobSeekar/SavePhysicalAttributeData";
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(url,bodyy);
         ProgressDialog.closeLoadingDialog(context);

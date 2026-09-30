@@ -1124,7 +1124,7 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                               AppLocalizations.of(context)!.areYouSureSubmitForm,
                               (value) {
                                 if (value.toString() == "success") {
-                                  provider.saveDataEducationDetailsApi(context);
+                                  provider.saveDataEducationDetailsApi(context, profileData);
                                 }
                               },
                             );
@@ -1145,7 +1145,9 @@ class _AddEducationalDetailState extends State<AddEducationalDetail> {
                           ),
                           elevation: 0,
                         ),
-                        child: Text(AppLocalizations.of(context)!.add,
+                        child:
+                        Text(
+                        provider.educationID != 0 ? AppLocalizations.of(context)!.update : AppLocalizations.of(context)!.add,
                             style:
                                 TextStyle(fontSize: 16, color: Colors.white)),
                       ),

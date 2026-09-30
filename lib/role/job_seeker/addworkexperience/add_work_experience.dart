@@ -214,7 +214,7 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                       : SizedBox(),
                   hSpace(20),
 
-              showWorkForm ? Container(
+              Container(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -616,8 +616,8 @@ class _AddWorkExperienceScreenState extends State<AddWorkExperienceScreen> {
                                   ),
                                 ],
                               ),
-                            )
-                          : SizedBox(),
+                            ),
+                          // : SizedBox(),
                   hSpace(30),
                   SizedBox(
                     width: double.infinity,

@@ -191,36 +191,59 @@ class AddJobPreferenceProvider extends ChangeNotifier {
     if (isInternet) {
       try {
         String ? IpAddress =  await UtilityClass.getIpAddress();
+        // Map<String, dynamic> body =
+        //
+        // //last these parameters got from Amit Tripathi
+        // {
+        //   "ActionName":"Job Preference",
+        //   "UserId": UserData().model.value.userId.toString(),
+        //   "JobSeekarId": UserData().model.value.jobSeekerID.toString(),
+        //   "CreatedBy" : UserData().model.value.userId.toString(),
+        //   "Sector": sectorIdController.text.isNotEmpty ? sectorIdController.text : "0",
+        //   "PreRole": "0",
+        //   "PreLocation": preferredLocationIdController.text.isNotEmpty ? preferredLocationIdController.text:"0",
+        //   "Employmenttype": employmentTypeIdController.text.isNotEmpty ? employmentTypeIdController.text:"0",
+        //   "JobType": jobTypeIdController.text.isNotEmpty ? jobTypeIdController.text :"0",
+        //   "Shift": shiftIdController.text.isNotEmpty ? shiftIdController.text : "0",
+        //   "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text:"0",
+        //   "IsInternationalJob": isInternationalJob,
+        //   "PreferredRegion": preferredRegionIdController.text.isNotEmpty ? preferredRegionIdController.text :"0",
+        //   "ForeignLanguageKnown": languageKnownIdController.text.isNotEmpty ? languageKnownIdController.text : "0",
+        //   "JobPreferenceID": isUpdate == true ? jobPreferenceID : "0",
+        //   //"Salary": [salaryRange.start.toInt(), salaryRange.end.toInt()],
+        //   "SalaryEnumValue":
+        //   salaryRangeIdController.text.isNotEmpty
+        //       ? salaryRangeIdController.text
+        //       : "0",
+        //   "IsActive":"1",
+        //   "IPAddress":"192.168.10.58",
+        //   "IPAddressv6":"fe80::dd8f:3204:9dba:62ba%2"
+        // }
+        // ;
+
         Map<String, dynamic> body =
 
-        //last these parameters got from Amit Tripathi
+        //last these parameters got from Renu
         {
-          "ActionName":"Job Preference",
           "UserId": UserData().model.value.userId.toString(),
-          "JobSeekarId": UserData().model.value.jobSeekerID.toString(),
-          "CreatedBy" : UserData().model.value.userId.toString(),
+          "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text:"0",
+          "EmploymentID": 0,
+          "IsExperinced": 0,
+          "EducationID": 0,
           "Sector": sectorIdController.text.isNotEmpty ? sectorIdController.text : "0",
           "PreRole": "0",
           "PreLocation": preferredLocationIdController.text.isNotEmpty ? preferredLocationIdController.text:"0",
           "Employmenttype": employmentTypeIdController.text.isNotEmpty ? employmentTypeIdController.text:"0",
-          "JobType": jobTypeIdController.text.isNotEmpty ? jobTypeIdController.text :"0",
           "Shift": shiftIdController.text.isNotEmpty ? shiftIdController.text : "0",
-          "NCOCode": ncoCodeIdController.text.isNotEmpty ? ncoCodeIdController.text:"0",
           "IsInternationalJob": isInternationalJob,
           "PreferredRegion": preferredRegionIdController.text.isNotEmpty ? preferredRegionIdController.text :"0",
           "ForeignLanguageKnown": languageKnownIdController.text.isNotEmpty ? languageKnownIdController.text : "0",
           "JobPreferenceID": isUpdate == true ? jobPreferenceID : "0",
-          //"Salary": [salaryRange.start.toInt(), salaryRange.end.toInt()],
-          "SalaryEnumValue":
-          salaryRangeIdController.text.isNotEmpty
-              ? salaryRangeIdController.text
-              : "0",
-          "IsActive":"1",
-          "IPAddress":"192.168.10.58",
-          "IPAddressv6":"fe80::dd8f:3204:9dba:62ba%2"
         }
         ;
-        String url = "MobileProfile/SaveJobPreference";
+
+        // String url = "MobileProfile/SaveJobPreference";
+        String url = "ProfilJobSeekar/SaveJobPreference";
         ProgressDialog.showLoadingDialog(context);
         ApiResponse apiResponse = await commonRepo.post(url,body);
         ProgressDialog.closeLoadingDialog(context);
