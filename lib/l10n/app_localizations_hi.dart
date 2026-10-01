@@ -2414,4 +2414,10 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get thankNiceDay => "धन्यवाद आपका दिन अच्छा है।";
 
+  @override
+  String get internDept => "इंटर्नशिप विभाग";
+
+  @override
+  String get internOffice => "इंटर्नशिप कार्यालय";
+
 }

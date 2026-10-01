@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
+import '../../../utils/global.dart';
+import '../loginscreen/provider/locale_provider.dart';
 import 'provider/applied_jobs_provider.dart';
 
 class AppliedJobsScreen extends StatefulWidget {
@@ -25,15 +27,27 @@ class _AppliedJobsScreenState extends State<AppliedJobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Consumer<AppliedJobsProvider>(
       builder: (context, provider, _) {
         return Scaffold(
           backgroundColor: const Color(0xfff5f6fa),
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.appJobs),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            foregroundColor: Colors.black,
+          // appBar: AppBar(
+          //   title: Text(AppLocalizations.of(context)!.appJobs),
+          //   backgroundColor: Colors.white,
+          //   elevation: 0,
+          //   foregroundColor: Colors.black,
+          // ),
+          appBar: commonAppBar2(
+            AppLocalizations.of(context)!.appJobs,
+            context,
+            localeProvider.currentLanguage,
+            "",
+            false,
+            "",
+            onTapClick: () {
+              localeProvider.toggleLocale();
+            },
           ),
           body: provider.isLoading
               ? const Center(child: CircularProgressIndicator())

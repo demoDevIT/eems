@@ -1127,6 +1127,8 @@ abstract class AppLocalizations {
   String get document;
   String get doYouMoreInfo;
   String get thankNiceDay;
+  String get internDept;
+  String get internOffice;
 
 }
 

@@ -230,10 +230,28 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       body: Consumer<DepartmentDashboardProvider>(
         builder: (context, provider, _) {
           return SafeArea(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              child: Column(
+            child:
+            // SingleChildScrollView(
+            //   physics: const BouncingScrollPhysics(),
+            //   padding: const EdgeInsets.all(16),
+            //   // padding: const EdgeInsets.symmetric(
+            //   //   horizontal: 12,
+            //   //   vertical: 10,
+            //   // ),
+            //   child: Column(
+            RefreshIndicator(
+              onRefresh: _refreshDashboard,
+              color: const Color(0xff1683FF),
+              backgroundColor: Colors.white,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _buildRoleSection(),
@@ -253,7 +271,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: _actionButton(
                           title: AppLocalizations.of(context)!.scanQRCode,
@@ -273,87 +291,217 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
-                  /// Reg No Search Field
+                   /// Reg No Search Field
+                  // if (provider.showRegSearch) ...[
+                  //   Container(
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(14),
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.black.withOpacity(0.05),
+                  //           blurRadius: 6,
+                  //           offset: const Offset(0, 3),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     child: TextField(
+                  //       controller: provider.regNoController,
+                  //       keyboardType: TextInputType.text,
+                  //       style: const TextStyle(fontSize: 14),
+                  //       decoration: InputDecoration(
+                  //         hintText: AppLocalizations.of(context)!.enterRegNo,
+                  //         //"Enter Registration Number",
+                  //         prefixIcon: const Icon(Icons.badge_outlined),
+                  //         filled: true,
+                  //         fillColor: Colors.white,
+                  //
+                  //         contentPadding: const EdgeInsets.symmetric(
+                  //           vertical: 14,
+                  //           horizontal: 12,
+                  //         ),
+                  //
+                  //         border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(14),
+                  //           borderSide: BorderSide.none,
+                  //         ),
+                  //
+                  //         enabledBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(14),
+                  //           borderSide: BorderSide(
+                  //             color: Colors.grey.shade300,
+                  //             width: 1,
+                  //           ),
+                  //         ),
+                  //
+                  //         focusedBorder: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.circular(14),
+                  //           borderSide: BorderSide(
+                  //             color: Colors.blue.shade600,
+                  //             width: 1.5,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   const SizedBox(height: 10),
+                  //   SizedBox(
+                  //     width: double.infinity,
+                  //     height: 50,
+                  //     child: ElevatedButton.icon(
+                  //       onPressed: () {
+                  //         provider.searchByRegistration(context);
+                  //       },
+                  //       icon: const Icon(Icons.send, size: 18),
+                  //       label: Text(
+                  //         AppLocalizations.of(context)!.submit,
+                  //         style: TextStyle(
+                  //           fontWeight: FontWeight.w600,
+                  //           fontSize: 15,
+                  //         ),
+                  //       ),
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: Colors.blue.shade600,
+                  //         foregroundColor: Colors.white,
+                  //         elevation: 3,
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(12),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   )
+                  // ],
+
                   if (provider.showRegSearch) ...[
                     Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
+                        border: Border.all(
+                          color: const Color(0xffE7EBF3),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          /// HEADER + CLOSE BUTTON
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(context)!.enterRegNo,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff344054),
+                                  ),
+                                ),
+                              ),
+
+                              InkWell(
+                                onTap: () {
+                                  provider.showRegSearch = false;
+                                  provider.regNoController.clear();
+                                  provider.notifyListeners();
+                                },
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xffF2F4F7),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: const Icon(
+                                    Icons.close,
+                                    size: 18,
+                                    color: Color(0xff667085),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          /// REGISTRATION NUMBER
+                          TextField(
+                            controller: provider.regNoController,
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(
+                              fontSize: 13,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)!.enterRegNo,
+                              prefixIcon: const Icon(
+                                Icons.badge_outlined,
+                                size: 19,
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 11,
+                                horizontal: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.blue.shade600,
+                                  width: 1.2,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          /// SUBMIT
+                          SizedBox(
+                            width: double.infinity,
+                            height: 44,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                provider.searchByRegistration(context);
+                              },
+                              icon: const Icon(
+                                Icons.send,
+                                size: 16,
+                              ),
+                              label: Text(
+                                AppLocalizations.of(context)!.submit,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue.shade600,
+                                foregroundColor: Colors.white,
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      child: TextField(
-                        controller: provider.regNoController,
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(fontSize: 14),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.enterRegNo,
-                          //"Enter Registration Number",
-                          prefixIcon: const Icon(Icons.badge_outlined),
-                          filled: true,
-                          fillColor: Colors.white,
-
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 14,
-                            horizontal: 12,
-                          ),
-
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide.none,
-                          ),
-
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300,
-                              width: 1,
-                            ),
-                          ),
-
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(
-                              color: Colors.blue.shade600,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          provider.searchByRegistration(context);
-                        },
-                        icon: const Icon(Icons.send, size: 18),
-                        label: Text(
-                          AppLocalizations.of(context)!.submit,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade600,
-                          foregroundColor: Colors.white,
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    )
                   ],
 
                   const SizedBox(height: 20),
@@ -361,7 +509,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   /// Result Card (Static)
                   if (provider.showResult) _resultCard(),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 5),
                   // _dashboardButton(
                   //   title: "Register yourself for MYSY",
                   //  // icon: Icons.app_registration_rounded,
@@ -396,7 +544,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           },
                         ),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: _dashboardCard(
                           title: AppLocalizations.of(context)!.internAttend,
@@ -449,6 +597,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 ],
               ),
             ),
+            )
           );
         },
       ),
@@ -1496,10 +1645,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   Widget _buildRoleSection() {
     return Consumer<DepartmentDashboardProvider>(
       builder: (context, provider, _) {
-        final officeName = UserData().model.value.roleId == 22
-            ? "${UserData().model.value.office ?? ""} "
-                "${UserData().model.value.deptNameEn ?? ""}"
-            : (UserData().model.value.exchangeName ?? "");
+        // final officeName = UserData().model.value.roleId == 22
+        //     ? "${UserData().model.value.office ?? ""} "
+        //         "${UserData().model.value.deptNameEn ?? ""}"
+        //     : (UserData().model.value.exchangeName ?? "");
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1579,7 +1729,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(14),
+                    //padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1597,8 +1751,13 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           flex: 5,
                           child: Text(
                             UserData().model.value.roleName ?? "",
+                            // style: const TextStyle(
+                            //   fontWeight: FontWeight.w500,
+                            // ),
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              height: 1.2,
                             ),
                           ),
                         ),
@@ -1607,32 +1766,136 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   ),
                   const Divider(height: 1),
                   Padding(
-                    padding: const EdgeInsets.all(14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 3,
                           child: Text(
-                            AppLocalizations.of(context)!.officeName + " :-",
-                            //"Office Name :-",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.internDept + " :-",
+                            style: const TextStyle(
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
                             ),
                           ),
                         ),
                         Expanded(
-                            flex: 5,
-                            child: Text(
-                              officeName,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            )),
+                          flex: 5,
+                          child: Text(
+                            UserData().model.value.deptNameEn,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff344054),
+                              height: 1.25,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
+                  const Divider(height: 1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            AppLocalizations.of(context)!.internOffice + " :-",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff344054),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Text(
+                            UserData().model.value.allotDeptName,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff344054),
+                              height: 1.25,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // const Divider(height: 1),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 12,
+                  //     vertical: 10,
+                  //   ),
+                  //   child: Row(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Expanded(
+                  //         flex: 3,
+                  //         child: Text(
+                  //           AppLocalizations.of(context)!.officeName + " :-",
+                  //           style: const TextStyle(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.w600,
+                  //             color: Color(0xff344054),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         flex: 5,
+                  //         child: Text(
+                  //           officeName,
+                  //           style: const TextStyle(
+                  //             fontSize: 11,
+                  //             fontWeight: FontWeight.w500,
+                  //             color: Color(0xff344054),
+                  //             height: 1.25,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(14),
+                  //   child: Row(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Expanded(
+                  //         flex: 3,
+                  //         child: Text(
+                  //           AppLocalizations.of(context)!.officeName + " :-",
+                  //           //"Office Name :-",
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.w600,
+                  //             color: Color(0xff344054),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //           flex: 5,
+                  //           child: Text(
+                  //             officeName,
+                  //             style: const TextStyle(
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -1653,64 +1916,128 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
             color: Colors.white,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        UserData().model.value.latestPhotoPath.toString(),
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
+                // Profile + User Information
+                Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            UserData().model.value.latestPhotoPath.toString(),
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          UserData().model.value.name.toString(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/placeholder.png',
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    DeptProfileScreen(isAppBarHide: true),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              UserData().model.value.name.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
-                          },
-                          child: Text(
-                            AppLocalizations.of(context)!.updateProfile,
-                            //"Update Profile",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: kViewAllColor,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.none,
                             ),
+                            const SizedBox(height: 4),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DeptProfileScreen(isAppBarHide: true),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.updateProfile,
+                                //"Update Profile",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kViewAllColor,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ],
                           ),
                         ),
                       ],
-                    ),
-                  ],
+                    )
                 ),
+                // Row(
+                //   children: [
+                //     ClipOval(
+                //       child: Image.network(
+                //         UserData().model.value.latestPhotoPath.toString(),
+                //         width: 60,
+                //         height: 60,
+                //         fit: BoxFit.cover,
+                //         errorBuilder: (context, error, stackTrace) {
+                //           return Image.asset(
+                //             'assets/images/placeholder.png',
+                //             width: 60,
+                //             height: 60,
+                //             fit: BoxFit.cover,
+                //           );
+                //         },
+                //       ),
+                //     ),
+                //     const SizedBox(width: 12),
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           UserData().model.value.name.toString(),
+                //           style: const TextStyle(
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //         const SizedBox(height: 4),
+                //         GestureDetector(
+                //           onTap: () {
+                //             Navigator.pop(context);
+                //             Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                 builder: (context) =>
+                //                     DeptProfileScreen(isAppBarHide: true),
+                //               ),
+                //             );
+                //           },
+                //           child: Text(
+                //             AppLocalizations.of(context)!.updateProfile,
+                //             //"Update Profile",
+                //             style: TextStyle(
+                //               fontSize: 14,
+                //               color: kViewAllColor,
+                //               fontWeight: FontWeight.w600,
+                //               decoration: TextDecoration.none,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
+                const SizedBox(width: 8),
                 InkWell(
                   onTap: () => Navigator.pop(context),
                   child: SvgPicture.asset(
@@ -1722,7 +2049,100 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               ],
             ),
           ),
-          const Divider(),
+          const Divider(height: 1),
+
+// ===== Internship Details =====
+          Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xffF7F9FC),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: const Color(0xffE4E9F2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  children: [
+                    Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffE8F2FF),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.school_outlined,
+                        size: 19,
+                        color: Color(0xff1683FF),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "Internship Details",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff152238),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 14),
+
+                // Internship Department
+                _drawerInfoRow(
+                  icon: Icons.account_balance_outlined,
+                  label: AppLocalizations.of(context)!.internDept,
+                  value: UserData().model.value.deptNameEn,
+                ),
+
+                const SizedBox(height: 12),
+
+                // Divider
+                Container(
+                  height: 1,
+                  color: const Color(0xffE5EAF2),
+                ),
+
+                const SizedBox(height: 12),
+
+                // Internship Office
+                _drawerInfoRow(
+                  icon: Icons.business_outlined,
+                  label: AppLocalizations.of(context)!.internOffice,
+                  value: UserData().model.value.allotDeptName,
+                ),
+
+                const SizedBox(height: 12),
+
+                // Divider
+                Container(
+                  height: 1,
+                  color: const Color(0xffE5EAF2),
+                ),
+
+                const SizedBox(height: 12),
+
+                // Internship Office
+                _drawerInfoRow(
+                  icon: Icons.business_outlined,
+                  label: AppLocalizations.of(context)!.exchangeName,
+                  value: UserData().model.value.exchangeName,
+                ),
+
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 4),
           ListTile(
             leading: const Icon(Icons.dashboard),
             title: Text(AppLocalizations.of(context)!.dashboard,
@@ -1832,6 +2252,63 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     );
   }
 
+  Widget _drawerInfoRow({
+    required IconData icon,
+    required String label,
+    required String? value,
+  }) {
+    final displayValue =
+    (value == null || value.trim().isEmpty) ? "-" : value.trim();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            size: 17,
+            color: const Color(0xff667085),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff667085),
+                  letterSpacing: 0.2,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                displayValue,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff344054),
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _dashboardCard({
     required String title,
     required String iconPath,
@@ -1841,16 +2318,19 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(14),
       child: Container(
-        height: 170,
-        padding: const EdgeInsets.all(14),
+        height: 125,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 8,
+        ),
         decoration: BoxDecoration(
           color: bgColor,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: borderColor,
-            width: 1.3,
+            width: 1.1,
           ),
         ),
         child: Column(
@@ -1858,19 +2338,23 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           children: [
             Image.asset(
               iconPath,
-              width: 70,
-              height: 70,
+              width: 50,
+              height: 50,
               fit: BoxFit.contain,
             ),
-            const SizedBox(height: 14),
+
+            const SizedBox(height: 7),
+
             Text(
               title,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
                 color: Colors.black87,
-                height: 1.3,
+                height: 1.2,
               ),
             ),
           ],
@@ -1878,6 +2362,53 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       ),
     );
   }
+
+  // Widget _dashboardCard({
+  //   required String title,
+  //   required String iconPath,
+  //   required Color borderColor,
+  //   required Color bgColor,
+  //   required VoidCallback onTap,
+  // }) {
+  //   return InkWell(
+  //     onTap: onTap,
+  //     borderRadius: BorderRadius.circular(18),
+  //     child: Container(
+  //       height: 170,
+  //       padding: const EdgeInsets.all(14),
+  //       decoration: BoxDecoration(
+  //         color: bgColor,
+  //         borderRadius: BorderRadius.circular(18),
+  //         border: Border.all(
+  //           color: borderColor,
+  //           width: 1.3,
+  //         ),
+  //       ),
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Image.asset(
+  //             iconPath,
+  //             width: 70,
+  //             height: 70,
+  //             fit: BoxFit.contain,
+  //           ),
+  //           const SizedBox(height: 14),
+  //           Text(
+  //             title,
+  //             textAlign: TextAlign.center,
+  //             style: const TextStyle(
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w700,
+  //               color: Colors.black87,
+  //               height: 1.3,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _actionButton({
     required String title,
@@ -2030,6 +2561,24 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _refreshDashboard() async {
+    final provider = context.read<DepartmentDashboardProvider>();
+
+    try {
+      // Refresh role data
+      await provider.getRoleApi(context, "");
+
+      // Refresh currently visible overview
+      if (_selectedOverviewTab == 0) {
+        await provider.getJoiningOverview(context);
+      } else {
+        await provider.getAttendanceOverview(context);
+      }
+    } catch (e) {
+      debugPrint("Dashboard refresh error: $e");
+    }
   }
 }
 

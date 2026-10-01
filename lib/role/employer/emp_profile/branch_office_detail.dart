@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import '../../job_seeker/loginscreen/provider/locale_provider.dart';
 import 'provider/branch_office_detail_provider.dart';
 
 class BranchOfficeDetailScreen extends StatefulWidget {
@@ -54,25 +56,39 @@ class _BranchOfficeDetailScreenState
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: kWhite,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.branchOffDetail,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   title: Text(
+      //     AppLocalizations.of(context)!.branchOffDetail,
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      // ),
+
+      appBar: commonAppBar2(
+        AppLocalizations.of(context)!.branchOffDetail,
+        context,
+        localeProvider.currentLanguage,
+        "",
+        false,
+        "",
+        onTapClick: () {
+          localeProvider.toggleLocale();
+        },
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -4,7 +4,9 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/employer/emp_profile/provider/exchange_name_provider.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
 import '../../../utils/textfeild.dart';
+import '../../job_seeker/loginscreen/provider/locale_provider.dart';
 
 class ExchangeNameDetail extends StatefulWidget {
   const ExchangeNameDetail({super.key});
@@ -38,25 +40,41 @@ class _ExchangeNameDetailState extends State<ExchangeNameDetail> {
 
   @override
   Widget build(BuildContext context) {
+
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: kWhite,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   title: Text(
+      //     AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc,
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      // ),
+
+      appBar: commonAppBar2(
+        AppLocalizations.of(context)!.exchangeNameDistrictEmpOfc,
+        context,
+        localeProvider.currentLanguage,
+        "",
+        false,
+        "",
+        onTapClick: () {
+          localeProvider.toggleLocale();
+        },
       ),
+
       body: Consumer<ExchangeNameProvider>(
           builder: (context, provider, _) {
             return SingleChildScrollView(

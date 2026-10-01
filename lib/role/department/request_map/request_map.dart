@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/utils/textstyles.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/user_new.dart';
 import 'provider/request_map_provider.dart';
 import '../../../utils/textfeild.dart';
 
@@ -70,7 +71,75 @@ class _RequestMapScreenState extends State<RequestMapScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+// Internship information
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 14),
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF7F9FC),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: const Color(0xffE4E9F2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       width: 34,
+                      //       height: 34,
+                      //       decoration: BoxDecoration(
+                      //         color: const Color(0xffE8F2FF),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: const Icon(
+                      //         Icons.school_outlined,
+                      //         size: 19,
+                      //         color: Color(0xff1683FF),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 10),
+                      //     Text(
+                      //       'Internship Information',
+                      //       style: const TextStyle(
+                      //         fontSize: 14,
+                      //         fontWeight: FontWeight.w700,
+                      //         color: Color(0xff152238),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
 
+                      const SizedBox(height: 14),
+
+                      // Internship Department
+                      _infoRow(
+                        icon: Icons.account_balance_outlined,
+                        label: 'Internship Department',
+                        value: UserData().model.value.deptNameEn,
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Container(
+                        height: 1,
+                        color: const Color(0xffE5EAF2),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // Internship Office
+                      _infoRow(
+                        icon: Icons.business_outlined,
+                        label: 'Internship Office',
+                        value: UserData().model.value.allotDeptName,
+                      ),
+                    ],
+                  ),
+                ),
                 if (provider.statusMessage.isNotEmpty)
                   Container(
                     width: double.infinity,
@@ -219,6 +288,61 @@ class _RequestMapScreenState extends State<RequestMapScreen> {
       50,
       TextInputType.text,
       isEnabled: isEnabled,
+    );
+  }
+
+  Widget _infoRow({
+    required IconData icon,
+    required String label,
+    required String? value,
+  }) {
+    final displayValue =
+    (value == null || value.trim().isEmpty) ? '-' : value.trim();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            size: 17,
+            color: const Color(0xff667085),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff667085),
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                displayValue,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff344054),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

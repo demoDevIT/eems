@@ -874,7 +874,25 @@ commonAppBar2(title, mContext, currentLanguage, userId, isBack, type, {Function?
       style: Styles.boldTextStyle(color: kBlackColor, size: 18),
     ),
 
-
+    actions: [
+      InkWell(
+        onTap: () {
+          onTapClick?.call();
+        },
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: SizedBox(
+                width: 80,
+                child: LanguageToggleSwitch(),
+              ),
+            ),
+            const SizedBox(width: 12),
+          ],
+        ),
+      ),
+    ],
 
   );
 

@@ -60,11 +60,16 @@ class _DeptJoinAttendanceListScreenState
       //   resetPage: true,
       // );
 
-      provider.regNoController.clear();
+     // provider.regNoController.clear();
+
+      provider.regNoController.text =
+      (widget.registrationNumber?.isNotEmpty == true)
+          ? widget.registrationNumber!
+          : "";
 
       await provider.getDeptJoinAttendanceListApi(
         context,
-        registrationNumber: "",
+        registrationNumber: widget.registrationNumber ?? "",
         jobSeekerId: null,
         userId: null,
         page: 1,
@@ -140,9 +145,14 @@ class _DeptJoinAttendanceListScreenState
                     ),
 
                     /// PAGINATION
-                    _paginationControls(
-                      context,
-                      provider,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).padding.bottom + 10,
+                      ),
+                      child: _paginationControls(
+                        context,
+                        provider,
+                      ),
                     ),
                   ],
                 ),

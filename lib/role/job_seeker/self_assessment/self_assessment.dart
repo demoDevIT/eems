@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
 import '../../../utils/user_new.dart';
+import '../loginscreen/provider/locale_provider.dart';
 import 'assessment_test.dart';
 import 'modal/self_assessment_modal.dart';
 import 'provider/self_assessment_provider.dart';
@@ -35,21 +37,35 @@ class _SelfAssessmentScreenState
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xffF3F4F6),
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.selfAssessTest,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
+      // appBar: AppBar(
+      //   title: Text(
+      //     AppLocalizations.of(context)!.selfAssessTest,
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //       fontWeight: FontWeight.w600,
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   iconTheme: const IconThemeData(color: Colors.black),
+      // ),
+
+      appBar: commonAppBar2(
+        AppLocalizations.of(context)!.selfAssessTest,
+        context,
+        localeProvider.currentLanguage,
+        "",
+        false,
+        "",
+        onTapClick: () {
+          localeProvider.toggleLocale();
+        },
       ),
+
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(20),

@@ -2414,4 +2414,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get thankNiceDay => "Thank you, Have a nice day.";
 
+  @override
+  String get internDept => "Internship Dept";
+
+  @override
+  String get internOffice => "Internship Office";
+
 }

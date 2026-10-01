@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../repo/common_repo.dart';
+import '../../../utils/global.dart';
 import '../../../utils/user_new.dart';
+import '../loginscreen/provider/locale_provider.dart';
 import 'modal/all_job_sector_list_modal.dart';
 import 'provider/preferred_jobs_provider.dart';
 
@@ -38,15 +40,27 @@ class _PreferredJobsScreenState extends State<PreferredJobsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Consumer<PreferredJobsProvider>(
         builder: (context, provider, _) {
           return Scaffold(
             backgroundColor: const Color(0xfff5f6fa),
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.prefJobs),
-              backgroundColor: Colors.white,
-              elevation: 0,
-              foregroundColor: Colors.black,
+            // appBar: AppBar(
+            //   title: Text(AppLocalizations.of(context)!.prefJobs),
+            //   backgroundColor: Colors.white,
+            //   elevation: 0,
+            //   foregroundColor: Colors.black,
+            // ),
+            appBar: commonAppBar2(
+              AppLocalizations.of(context)!.prefJobs,
+              context,
+              localeProvider.currentLanguage,
+              "",
+              false,
+              "",
+              onTapClick: () {
+                localeProvider.toggleLocale();
+              },
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),

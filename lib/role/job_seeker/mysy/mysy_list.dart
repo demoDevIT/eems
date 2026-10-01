@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:rajemployment/role/job_seeker/mysy/payment_logs.dart';
 import '../../../constants/constants.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
+import '../loginscreen/provider/locale_provider.dart';
 import 'allot_dept_mysy.dart';
 import 'attendance_logs.dart';
 import 'document_logs.dart';
@@ -30,16 +32,31 @@ class _MysyListScreenState extends State<MysyListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+
     return Consumer<MysyListProvider>(
       builder: (context, provider, _) {
         return Scaffold(
           backgroundColor: const Color(0xfff5f6fa),
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.mysyList),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            foregroundColor: Colors.black,
+          // appBar: AppBar(
+          //   title: Text(AppLocalizations.of(context)!.mysyList),
+          //   backgroundColor: Colors.white,
+          //   elevation: 0,
+          //   foregroundColor: Colors.black,
+          // ),
+
+          appBar: commonAppBar2(
+            AppLocalizations.of(context)!.mysyList,
+            context,
+            localeProvider.currentLanguage,
+            "",
+            false,
+            "",
+            onTapClick: () {
+              localeProvider.toggleLocale();
+            },
           ),
+
           body: provider.isLoading
               ? const Center(
             child: CircularProgressIndicator(),

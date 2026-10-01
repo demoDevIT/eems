@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
 import '../../../utils/user_new.dart';
 import '../../../constants/colors.dart';
 import '../../../utils/textstyles.dart';
+import '../../job_seeker/loginscreen/provider/locale_provider.dart';
 import 'contact_person_detail.dart';
 import 'emp_basic_detail.dart';
 import 'branch_office_detail.dart';
@@ -18,24 +20,39 @@ class EmployerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.compltprofle,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   title: Text(
+      //     AppLocalizations.of(context)!.compltprofle,
+      //     style: const TextStyle(
+      //       color: Colors.black,
+      //       fontSize: 18,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   centerTitle: true,
+      // ),
+
+      appBar: commonAppBar2(
+        AppLocalizations.of(context)!.compltprofle,
+        context,
+        localeProvider.currentLanguage,
+        "",
+        false,
+        "",
+        onTapClick: () {
+          localeProvider.toggleLocale();
+        },
       ),
+
       backgroundColor: const Color(0xFFF2F4F8),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

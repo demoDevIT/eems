@@ -4,6 +4,7 @@ import 'package:rajemployment/constants/colors.dart';
 import 'package:rajemployment/role/job_seeker/profile/provider/profile_provider.dart';
 import 'package:rajemployment/utils/user_new.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../utils/global.dart';
 import '../../../utils/images.dart';
 import '../../../utils/textstyles.dart';
 import '../addressinfo/address_info.dart';
@@ -11,6 +12,7 @@ import '../basicdetails/basic_detail.dart';
 import '../educationdetail/education_details.dart';
 import '../jobpreference/job_preference.dart';
 import '../languageandskill/language_and_skill.dart';
+import '../loginscreen/provider/locale_provider.dart';
 import '../physicalattribute/physicalattribute_screen.dart';
 import '../share_feedback/share_feedback_details.dart';
 import '../videoprofile/videoprofile_screen.dart';
@@ -27,23 +29,37 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+
     print("LatestPhoto" + UserData().model.value.latestPhotoPath.toString());
     return Scaffold(
-      appBar: widget.isAppBarHide ?  AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context); // go back to previous screen
+      // appBar: widget.isAppBarHide ?  AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+      //     onPressed: () {
+      //       Navigator.pop(context); // go back to previous screen
+      //     },
+      //   ),
+      //   title: Text(
+      //     AppLocalizations.of(context)!.compltprofle,
+      //     style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+      //   ),
+      //   centerTitle: true,
+      // ) : null,
+
+        appBar: commonAppBar2(
+          AppLocalizations.of(context)!.compltprofle,
+          context,
+          localeProvider.currentLanguage,
+          "",
+          false,
+          "",
+          onTapClick: () {
+            localeProvider.toggleLocale();
           },
         ),
-        title: Text(
-          AppLocalizations.of(context)!.compltprofle,
-          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ) : null,
 
         body: Consumer<ProfileProvider>(builder: (context, provider, child) {
           return   SingleChildScrollView(
