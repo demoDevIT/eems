@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -231,59 +233,208 @@ class _AddGrievanceScreenState extends State<AddGrievanceScreen> {
 
                     hSpace(10),
                     labelWithStar(AppLocalizations.of(context)!.uploadAttachment),
+                    // InkWell(
+                    //   // onTap: () {
+                    //   //   showImagePicker(context,
+                    //   //           (pickedImage) async {
+                    //   //         if (pickedImage != null) {
+                    //   //           // First update the file path (optional)
+                    //   //           provider.attachments = pickedImage;
+                    //   //
+                    //   //           // Do async work here
+                    //   //           String timestamp =
+                    //   //               "${DateTime.now().millisecondsSinceEpoch}.jpg";
+                    //   //           String fileName = timestamp;
+                    //   //
+                    //   //           Map<String, dynamic> fields = {
+                    //   //             "file":
+                    //   //             await MultipartFile.fromFile(
+                    //   //               provider
+                    //   //                   .attachments!.path,
+                    //   //               filename: fileName,
+                    //   //             ),
+                    //   //           };
+                    //   //
+                    //   //           FormData param =
+                    //   //           FormData.fromMap(fields);
+                    //   //
+                    //   //           // Call upload API
+                    //   //           await provider
+                    //   //               .uploadDocumentApi(
+                    //   //               context, param);
+                    //   //
+                    //   //           // Now update state if needed
+                    //   //           setState(() {
+                    //   //             // Update UI-related state if needed
+                    //   //           });
+                    //   //         }
+                    //   //       });
+                    //   // },
+                    //   onTap: () async {
+                    //     try {
+                    //       FilePickerResult? result = await FilePicker.platform.pickFiles(
+                    //         type: FileType.custom,
+                    //         allowedExtensions: [
+                    //           'pdf',
+                    //           'jpg',
+                    //           'jpeg',
+                    //           'png',
+                    //         ],
+                    //         allowMultiple: false,
+                    //       );
+                    //
+                    //       if (result == null || result.files.isEmpty) {
+                    //         return;
+                    //       }
+                    //
+                    //       PlatformFile pickedFile = result.files.first;
+                    //
+                    //       // Validate file type and size
+                    //       bool isValid = await provider.validateAttachment(
+                    //         context,
+                    //         pickedFile,
+                    //       );
+                    //
+                    //       if (!isValid) {
+                    //         return;
+                    //       }
+                    //
+                    //       if (pickedFile.path == null) {
+                    //         showAlertError(
+                    //           "Unable to access selected file.",
+                    //           context,
+                    //         );
+                    //         return;
+                    //       }
+                    //
+                    //       // Store selected file
+                    //       provider.fileName = pickedFile.name;
+                    //       provider.attachments = XFile(pickedFile.path!);
+                    //
+                    //       Map<String, dynamic> fields = {
+                    //         "file": await MultipartFile.fromFile(
+                    //           pickedFile.path!,
+                    //           filename: pickedFile.name,
+                    //         ),
+                    //       };
+                    //
+                    //       FormData param = FormData.fromMap(fields);
+                    //
+                    //       // Upload only after validation succeeds
+                    //       await provider.uploadDocumentApi(
+                    //         context,
+                    //         param,
+                    //       );
+                    //
+                    //       setState(() {});
+                    //     } catch (e) {
+                    //       showAlertError(
+                    //         "Unable to select/upload attachment.",
+                    //         context,
+                    //       );
+                    //     }
+                    //   },
+                    //   child: Padding(
+                    //     padding:
+                    //     const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                    //     child: buildTextWithBorderField(
+                    //       provider.certificateController,
+                    //         AppLocalizations.of(context)!.selectUploadAttachment,
+                    //       MediaQuery.of(context).size.width,
+                    //       50,
+                    //       TextInputType.number,
+                    //       isEnabled: false,
+                    //       postfixIcon: Icon(Icons.attach_file,color: grayBorderColor,)
+                    //     ),
+                    //   ),
+                    // ),
+
                     InkWell(
                       onTap: () {
-                        showImagePicker(context,
-                                (pickedImage) async {
-                              if (pickedImage != null) {
-                                // First update the file path (optional)
-                                provider.attachments = pickedImage;
+                        showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (sheetContext) {
+                            return SafeArea(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
 
-                                // Do async work here
-                                String timestamp =
-                                    "${DateTime.now().millisecondsSinceEpoch}.jpg";
-                                String fileName = timestamp;
+                                    const Text(
+                                      "Select Attachment",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
 
-                                Map<String, dynamic> fields = {
-                                  "file":
-                                  await MultipartFile.fromFile(
-                                    provider
-                                        .attachments!.path,
-                                    filename: fileName,
-                                  ),
-                                };
+                                    const SizedBox(height: 20),
 
-                                FormData param =
-                                FormData.fromMap(fields);
+                                    // CAMERA
+                                    ListTile(
+                                      leading: const Icon(Icons.camera_alt),
+                                      title: const Text("Camera"),
+                                      onTap: () async {
+                                        Navigator.pop(sheetContext);
 
-                                // Call upload API
-                                await provider
-                                    .uploadDocumentApi(
-                                    context, param);
+                                        await provider.captureImage(context);
+                                      },
+                                    ),
 
-                                // Now update state if needed
-                                setState(() {
-                                  // Update UI-related state if needed
-                                });
-                              }
-                            });
+                                    // GALLERY
+                                    ListTile(
+                                      leading: const Icon(Icons.photo_library),
+                                      title: const Text("Gallery"),
+                                      onTap: () async {
+                                        Navigator.pop(sheetContext);
+
+                                        await provider.pickImageFromGallery(context);
+                                      },
+                                    ),
+
+                                    // FILE / PDF
+                                    ListTile(
+                                      leading: const Icon(Icons.attach_file),
+                                      title: const Text("Choose PDF / Image"),
+                                      onTap: () async {
+                                        Navigator.pop(sheetContext);
+
+                                        await provider.pickDocument(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       child: Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 0,
+                          vertical: 5,
+                        ),
                         child: buildTextWithBorderField(
                           provider.certificateController,
-                            AppLocalizations.of(context)!.selectUploadAttachment,
+                          AppLocalizations.of(context)!
+                              .selectUploadAttachment,
                           MediaQuery.of(context).size.width,
                           50,
-                          TextInputType.number,
+                          TextInputType.text,
                           isEnabled: false,
-                          postfixIcon: Icon(Icons.attach_file,color: grayBorderColor,)
+                          postfixIcon: Icon(
+                            Icons.attach_file,
+                            color: grayBorderColor,
+                          ),
                         ),
                       ),
                     ),
-
-
 
                     hSpace(30),
                     SizedBox(

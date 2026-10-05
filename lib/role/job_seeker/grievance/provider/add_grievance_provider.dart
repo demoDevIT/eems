@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:file_picker/file_picker.dart';
 import '../../../../api_service/model/base/api_response.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../repo/common_repo.dart';
@@ -183,6 +184,274 @@ class AddGrievanceProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> uploadAttachment(
+      BuildContext context,
+      String path,
+      String originalFileName,
+      ) async {
+    try {
+      final File file = File(path);
+
+      if (!await file.exists()) {
+        showAlertError(
+          "Unable to access selected file.",
+          context,
+        );
+        return false;
+      }
+
+      const int maxFileSize = 300 * 1024;
+
+      final int fileSize = await file.length();
+
+      if (fileSize > maxFileSize) {
+        showAlertError(
+          "File size must not exceed 300 KB.",
+          context,
+        );
+        return false;
+      }
+
+      final String extension =
+      originalFileName.split('.').last.toLowerCase();
+
+      const List<String> allowedExtensions = [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+      ];
+
+      if (!allowedExtensions.contains(extension)) {
+        showAlertError(
+          "Only PDF, JPG, JPEG and PNG files are allowed.",
+          context,
+        );
+        return false;
+      }
+
+      attachments = XFile(path);
+      filePath = path;
+      fileName = originalFileName;
+
+      final FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(
+          path,
+          filename: originalFileName,
+        ),
+      });
+
+      final UploadDocumentModal? response =
+      await uploadDocumentApi(context, formData);
+
+      if (response != null && response.state == 200) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      showAlertError(
+        "Unable to upload attachment.",
+        context,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> validateXFile(
+      BuildContext context,
+      XFile file,
+      ) async {
+    const int maxFileSize = 300 * 1024; // 300 KB
+
+    final String extension = file.path.split('.').last.toLowerCase();
+
+    const List<String> allowedExtensions = [
+      'jpg',
+      'jpeg',
+      'png',
+    ];
+
+    if (!allowedExtensions.contains(extension)) {
+      showAlertError(
+        "Only JPG, JPEG and PNG images are allowed.",
+        context,
+      );
+      return false;
+    }
+
+    final int fileSize = await File(file.path).length();
+
+    if (fileSize > maxFileSize) {
+      showAlertError(
+        "File size must not exceed 300 KB.",
+        context,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> validateAttachment(
+      BuildContext context,
+      PlatformFile file,
+      ) async {
+    const int maxFileSize = 300 * 1024; // 300 KB
+
+    final String extension = (file.extension ?? '').toLowerCase();
+
+    const List<String> allowedExtensions = [
+      'pdf',
+      'jpg',
+      'jpeg',
+      'png',
+    ];
+
+    if (!allowedExtensions.contains(extension)) {
+      showAlertError(
+        "Only PDF, JPG, JPEG and PNG files are allowed.",
+        context,
+      );
+      return false;
+    }
+
+    if (file.size > maxFileSize) {
+      showAlertError(
+        "File size must not exceed 300 KB.",
+        context,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+
+
+  Future<bool> captureImage(BuildContext context) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 80,
+      );
+
+      if (image == null) {
+        return false;
+      }
+
+      final bool isValid = await validateXFile(
+        context,
+        image,
+      );
+
+      if (!isValid) {
+        return false;
+      }
+
+      return await uploadAttachment(
+        context,
+        image.path,
+        image.name,
+      );
+    } catch (e) {
+      showAlertError(
+        "Unable to capture image.",
+        context,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> pickImageFromGallery(BuildContext context) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+
+      if (image == null) {
+        return false;
+      }
+
+      final bool isValid = await validateXFile(
+        context,
+        image,
+      );
+
+      if (!isValid) {
+        return false;
+      }
+
+      return await uploadAttachment(
+        context,
+        image.path,
+        image.name,
+      );
+    } catch (e) {
+      showAlertError(
+        "Unable to select image.",
+        context,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> pickDocument(BuildContext context) async {
+    try {
+      final FilePickerResult? result =
+      await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: [
+          'pdf',
+          'jpg',
+          'jpeg',
+          'png',
+        ],
+        allowMultiple: false,
+        withData: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return false;
+      }
+
+      final PlatformFile pickedFile = result.files.first;
+
+      final bool isValid = await validateAttachment(
+        context,
+        pickedFile,
+      );
+
+      if (!isValid) {
+        return false;
+      }
+
+      if (pickedFile.path == null) {
+        showAlertError(
+          "Unable to access selected file.",
+          context,
+        );
+        return false;
+      }
+
+      return await uploadAttachment(
+        context,
+        pickedFile.path!,
+        pickedFile.name,
+      );
+    } catch (e) {
+      showAlertError(
+        "Unable to select/upload attachment.",
+        context,
+      );
+      return false;
+    }
+  }
 
   Future<UploadDocumentModal?> uploadDocumentApi(
       BuildContext context, FormData inputText) async {

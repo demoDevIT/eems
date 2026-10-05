@@ -172,133 +172,214 @@ class _JobSeekerDashboard extends State<JobSeekerDashboard> {
     return Drawer(
       child: ListView(
         children: [
+          // ===== Header =====
           Container(
-            padding:
-                const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 16,
+              right: 16,
+              bottom: 20,
+            ),
             color: Colors.white,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Profile avatar + progress
-                  Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Transform.rotate(
-                            angle: 2.00,
-                            child: SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: CircularProgressIndicator(
-                                value: profilePercentage,
-                                strokeWidth: 7,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(kViewAllColor),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Application Logo
+                    Image.asset(
+                      "assets/logos/logo.png",
+                      height: 60,
+                      fit: BoxFit.contain,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Application Name
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff152238),
+                            height: 1.3,
+                            letterSpacing: 0.3,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Employment Exchange Management System\n",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
-                          ),
-                          ClipOval(
-                            child: Image.network(
-                              UserData().model.value.latestPhotoPath.toString(),
-                              width: MediaQuery.of(context).size.width * 0.18,
-                              height: MediaQuery.of(context).size.width * 0.18,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  Images.placeholder,
-                                  width: MediaQuery.of(context).size.width * 0.18,
-                                  height: MediaQuery.of(context).size.width * 0.18,
-                                  fit: BoxFit.cover,
-                                );
-                              },
+                            TextSpan(
+                              text: "(EEMS 2.0)",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff1683FF),
+                                letterSpacing: 0.8,
+                              ),
                             ),
-                          ),
-                          // ✅ Moved and adjusted this Positioned widget
-                          Positioned(
-                            right: -10, // half outside
-                            top: 5, // vertically centered on right side
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: FFF2EDColor,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 2,
-                                    offset: Offset(1, 1),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Profile + Completion Percentage
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          clipBehavior: Clip.none,
+                          children: [
+                            // Progress Ring
+                            Transform.rotate(
+                              angle: 2.00,
+                              child: SizedBox(
+                                width: 90,
+                                height: 90,
+                                child: CircularProgressIndicator(
+                                  value: profilePercentage,
+                                  strokeWidth: 7,
+                                  backgroundColor: Colors.grey[300],
+                                  valueColor:
+                                  const AlwaysStoppedAnimation<Color>(
+                                    kViewAllColor,
                                   ),
-                                ],
-                              ),
-                              child: Text(
-                                // "${(profilePercentage * 100).toInt()}%",
-                                "${(profilePercentage * 100)}%",
-                                style: TextStyle(
-                                  color: kDarkOrangeColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                  const SizedBox(width: 12),
-                  Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width :MediaQuery.of(context).size.width * 0.20,
-                            child:  Text(
-                              UserData().model.value.nAMEENG.toString(),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+
+                            // Profile Image
+                            ClipOval(
+                              child: Image.network(
+                                UserData()
+                                    .model
+                                    .value
+                                    .latestPhotoPath
+                                    .toString(),
+                                width: 65,
+                                height: 65,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    Images.placeholder,
+                                    width: 65,
+                                    height: 65,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>  ProfileScreen(isAppBarHide: true,)),
-                              );
-                            },
-                            child: Text(
-                              // AppLocalizations.of(context)!.updateprofile,
-                              AppLocalizations.of(context)!.viewProfile,
-                              style: TextStyle(
-                                fontSize: 14,
-                                //color: Colors.blue,
-                                color: kViewAllColor,
-                                fontWeight: FontWeight.w600,
-                                decoration: TextDecoration.none,
+
+                            // Profile Completion %
+                            Positioned(
+                              right: -10,
+                              top: 5,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: FFF2EDColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 2,
+                                      offset: Offset(1, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  "${(profilePercentage * 100)}%",
+                                  style: const TextStyle(
+                                    color: kDarkOrangeColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
+                          ],
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        // Name + View Profile
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                UserData().model.value.nAMEENG.toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff152238),
+                                ),
+                              ),
+
+                              const SizedBox(height: 4),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfileScreen(
+                                        isAppBarHide: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.viewProfile,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: kViewAllColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                // Close button
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    'assets/icons/close.svg',
-                    width: 25,
-                    height: 25,
+
+                // Close Button
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SvgPicture.asset(
+                        'assets/icons/close.svg',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
                   ),
                 ),
               ],

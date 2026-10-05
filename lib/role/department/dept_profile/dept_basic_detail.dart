@@ -348,7 +348,11 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
 
                   const SizedBox(height: 30),
 
-                  SizedBox(
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom + 20,
+              ),
+              child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     child: ElevatedButton(
@@ -379,7 +383,7 @@ class _DeptBasicDetailsScreenState extends State<DeptBasicDetailsScreen> {
                           style: TextStyle(fontSize: 16, color: Colors.white)),
                     ),
                   ),
-
+            ),
                   SizedBox(height: SizeConfig.screenHeight! * 0.02),
 
 

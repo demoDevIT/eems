@@ -254,6 +254,25 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  /// Scheme Title
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.MYSY2021,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff1683FF),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
                   _buildRoleSection(),
 
                   const SizedBox(height: 18),
@@ -752,9 +771,10 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 const SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Joining Overview",
+                      AppLocalizations.of(context)!.joinOver,
+                      //"Joining Overview",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -763,7 +783,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      "Internship Joining",
+                      AppLocalizations.of(context)!.internJoin, // "Internship Joining",
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xff718096),
@@ -784,9 +804,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               icon: Icons.check,
               iconBackground: const Color(0xffD5F7E1),
               iconColor: const Color(0xff00A65A),
-              title: "JOINING COMPLETED",
+              title: AppLocalizations.of(context)!.joinComp, //"JOINING COMPLETED",
               value: completed.toString(),
-              subtitle: "Applications successfully joined",
+              subtitle: AppLocalizations.of(context)!.appSuccJoin, //"Applications successfully joined",
               percentage: percentage,
               percentageColor: const Color(0xff00A65A),
             ),
@@ -797,9 +817,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               icon: Icons.access_time,
               iconBackground: const Color(0xfffff0ce),
               iconColor: const Color(0xffff9800),
-              title: "JOINING PENDING",
+              title: AppLocalizations.of(context)!.joinPend, //"JOINING PENDING",
               value: pending.toString(),
-              subtitle: "Applications waiting for joining",
+              subtitle: AppLocalizations.of(context)!.appWaitJoin, //"Applications waiting for joining",
               percentage: total == 0
                   ? "0%"
                   : "${((pending / total) * 100).round()}%",
@@ -859,8 +879,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          "Total",
+                        Text(
+                          AppLocalizations.of(context)!.total, // "Total",
                           style: TextStyle(
                             fontSize: 11,
                             color: Color(0xff718096),
@@ -876,8 +896,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           ),
                         ),
 
-                        const Text(
-                          "Applications",
+                        Text(
+                          AppLocalizations.of(context)!.applications, //"Applications",
                           style: TextStyle(
                             fontSize: 11,
                             color: Color(0xff718096),
@@ -914,7 +934,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 children: [
                   Expanded(
                     child: _buildJoiningSummaryBox(
-                      title: "COMPLETED",
+                      title: AppLocalizations.of(context)!.completed, //"COMPLETED",
                       value: completed.toString(),
                       percentage: total == 0
                           ? "0%"
@@ -930,7 +950,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                   Expanded(
                     child: _buildJoiningSummaryBox(
-                      title: "PENDING",
+                      title: AppLocalizations.of(context)!.pending, //"PENDING",
                       value: pending.toString(),
                       percentage: total == 0
                           ? "0%"
@@ -1122,8 +1142,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       crossAxisAlignment:
                       CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "OVERALL COMPLETION",
+                        Text(
+                          AppLocalizations.of(context)!.overComp, //"OVERALL COMPLETION",
                           style: TextStyle(
                             fontSize: 10,
                             color: Color(0xff667085),
@@ -1254,9 +1274,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 Column(
                   crossAxisAlignment:
                   CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Attendance Overview",
+                      AppLocalizations.of(context)!.attendOver, //"Attendance Overview",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -1265,7 +1285,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      "Monthly attendance completion & pending progress",
+                      AppLocalizations.of(context)!.monthlyAttendStatus, //"Monthly attendance completion & pending progress",
                       style: TextStyle(
                         fontSize: 11,
                         color: Color(0xff718096),
@@ -1418,8 +1438,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "MONTH",
+        Text(
+          AppLocalizations.of(context)!.month, //"MONTH",
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w500,
@@ -1789,7 +1809,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           child: Text(
                             UserData().model.value.deptNameEn,
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff344054),
                               height: 1.25,
@@ -1824,7 +1844,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           child: Text(
                             UserData().model.value.allotDeptName,
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff344054),
                               height: 1.25,
@@ -1911,18 +1931,74 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       child: ListView(
         children: [
           // ===== Header =====
+          // ===== Header =====
           Container(
-            padding:
-                const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 16,
+              right: 16,
+              bottom: 20,
+            ),
             color: Colors.white,
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                // Profile + User Information
-                Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // =========================
+                    // Application Logo
+                    // =========================
+                    Image.asset(
+                      "assets/logos/logo.png",
+                      height: 60,
+                      fit: BoxFit.contain,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // =========================
+                    // Application Name
+                    // =========================
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff152238),
+                            height: 1.3,
+                            letterSpacing: 0.3,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Employment Exchange Management System\n",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "(EEMS 2.0)",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff1683FF),
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // =========================
+                    // Profile + User Information
+                    // =========================
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ClipOval(
                           child: Image.network(
@@ -1940,110 +2016,72 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             },
                           ),
                         ),
+
                         const SizedBox(width: 12),
+
                         Expanded(
                           child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              UserData().model.value.name.toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        DeptProfileScreen(isAppBarHide: true),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.updateProfile,
-                                //"Update Profile",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: kViewAllColor,
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.none,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                UserData().model.value.name.toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          ],
+
+                              const SizedBox(height: 4),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DeptProfileScreen(isAppBarHide: true),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.updateProfile,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: kViewAllColor,
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    )
+                    ),
+                  ],
                 ),
-                // Row(
-                //   children: [
-                //     ClipOval(
-                //       child: Image.network(
-                //         UserData().model.value.latestPhotoPath.toString(),
-                //         width: 60,
-                //         height: 60,
-                //         fit: BoxFit.cover,
-                //         errorBuilder: (context, error, stackTrace) {
-                //           return Image.asset(
-                //             'assets/images/placeholder.png',
-                //             width: 60,
-                //             height: 60,
-                //             fit: BoxFit.cover,
-                //           );
-                //         },
-                //       ),
-                //     ),
-                //     const SizedBox(width: 12),
-                //     Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           UserData().model.value.name.toString(),
-                //           style: const TextStyle(
-                //             fontSize: 16,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //         ),
-                //         const SizedBox(height: 4),
-                //         GestureDetector(
-                //           onTap: () {
-                //             Navigator.pop(context);
-                //             Navigator.push(
-                //               context,
-                //               MaterialPageRoute(
-                //                 builder: (context) =>
-                //                     DeptProfileScreen(isAppBarHide: true),
-                //               ),
-                //             );
-                //           },
-                //           child: Text(
-                //             AppLocalizations.of(context)!.updateProfile,
-                //             //"Update Profile",
-                //             style: TextStyle(
-                //               fontSize: 14,
-                //               color: kViewAllColor,
-                //               fontWeight: FontWeight.w600,
-                //               decoration: TextDecoration.none,
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // ),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    'assets/icons/close.svg',
-                    width: 25,
-                    height: 25,
+
+                // =========================
+                // Close Button
+                // =========================
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SvgPicture.asset(
+                        'assets/icons/close.svg',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
                   ),
                 ),
               ],

@@ -1129,6 +1129,20 @@ abstract class AppLocalizations {
   String get thankNiceDay;
   String get internDept;
   String get internOffice;
+  String get empExchange;
+  String get MYSY2021;
+  String get joinOver;
+  String get joinComp;
+  String get appSuccJoin;
+  String get joinPend;
+  String get appWaitJoin;
+  String get total;
+  String get applications;
+  String get completed;
+  String get pending;
+  String get overComp;
+  String get attendOver;
+  String get monthlyAttendStatus;
 
 }
 

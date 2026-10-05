@@ -64,9 +64,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context)!.dashboard,
-            style: TextStyle(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
           ),
           centerTitle: true,
@@ -81,15 +84,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 return PopupMenuButton<RoleData>(
                   offset: const Offset(0, 10), // opens below button
                   position: PopupMenuPosition.under,
+                  // constraints: BoxConstraints(
+                  //   minWidth: MediaQuery.of(context).size.width * 0.95,
+                  //   maxWidth: MediaQuery.of(context).size.width * 0.95,
+                  // ),
+
+                  // Don't use 95% screen width here
                   constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.95,
-                    maxWidth: MediaQuery.of(context).size.width * 0.95,
+                    minWidth: 220,
+                    maxWidth: MediaQuery.of(context).size.width * 0.75,
                   ),
                   child: Container(
-                    margin: const EdgeInsets.only(right: 12),
+                    margin: const EdgeInsets.only(right: 6),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
+                      horizontal: 10,
+                      vertical: 7,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.blue,
@@ -100,17 +109,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: [
                         Icon(Icons.manage_accounts,
                             color: Colors.white, size: 18),
-                        SizedBox(width: 6),
+                        SizedBox(width: 4),
                         Text(
                           AppLocalizations.of(context)!.role,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
+                            fontSize: 13,
                           ),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 2),
                         Icon(Icons.keyboard_arrow_down,
-                            color: Colors.white),
+                            color: Colors.white, size: 20),
                       ],
                     ),
                   ),
@@ -181,6 +191,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           role.roleName ??
                                           "")
                                           : (role.roleName ?? ""),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
@@ -216,7 +228,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 8),
+              //padding: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.only(
+                left: 2,
+                right: 6,
+              ),
               child: SizedBox(
                 width: 80,
                 child: LanguageToggleSwitch(),
@@ -225,9 +241,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
 
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(14),
+        // body: SingleChildScrollView(
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(14),
+        //     child: Column(
+        //       children: [
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 40),
             child: Column(
               children: [
                 /// TOP WELCOME CARD
@@ -295,7 +316,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 _actionCard(
                   iconPath: "assets/images/BackgroundPlus.svg",
-                  title: AppLocalizations.of(context)!.newReg,
+                  // title: AppLocalizations.of(context)!.newReg,
+                  title: AppLocalizations.of(context)!.jobFairReg,
                   subTitle: AppLocalizations.of(context)!.regNewForEvent,
                   iconBg: const Color(0xff8D4AF2),
                   onTap: () {
@@ -326,6 +348,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 //     );
                 //   },
                 // ),
+
+                const SizedBox(height: 40),
 
               ],
             ),
@@ -457,7 +481,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           flex: 3,
                           child: Text(
-                            AppLocalizations.of(context)!.ofcName,
+                            // AppLocalizations.of(context)!.ofcName,
+                            AppLocalizations.of(context)!.empExchange + ":-",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Color(0xff344054),
@@ -491,114 +516,128 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Drawer(
       child: ListView(
         children: [
+          // ===== Header =====
           Container(
-            padding:
-            const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 16,
+              right: 16,
+              bottom: 20,
+            ),
             color: Colors.white,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Profile avatar + progress
-                      Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Transform.rotate(
-                            angle: 2.00,
-                            child: SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: CircularProgressIndicator(
-                                value: 0.7, // 70%
-                                strokeWidth: 7,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(kViewAllColor),
-                              ),
-                            ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // =========================
+                    // Application Logo
+                    // =========================
+                    Image.asset(
+                      "assets/logos/logo.png",
+                      height: 60,
+                      fit: BoxFit.contain,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // =========================
+                    // Application Name
+                    // =========================
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff152238),
+                            height: 1.3,
+                            letterSpacing: 0.3,
                           ),
-                          ClipOval(
-                            child: Image.network(
-                              UserData().model.value.latestPhotoPath.toString(),
-                              width: MediaQuery.of(context).size.width * 0.18,
-                              height: MediaQuery.of(context).size.width * 0.18,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  Images.placeholder,
-                                  width: MediaQuery.of(context).size.width * 0.18,
-                                  height: MediaQuery.of(context).size.width * 0.18,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
-                          ),
-                          // ✅ Moved and adjusted this Positioned widget
-                          Positioned(
-                            right: -10, // half outside
-                            top: 5, // vertically centered on right side
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: FFF2EDColor,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 2,
-                                    offset: Offset(1, 1),
-                                  ),
-                                ],
-                              ),
-                              child: const Text(
-                                "70%",
-                                style: TextStyle(
-                                  color: kDarkOrangeColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width :MediaQuery.of(context).size.width * 0.20,
-                            child:  Text(
-                              // "Demo User",
-                              UserData().model.value.displayName ?? "",
-                             // UserData().model.value.name ?? "",
-                              overflow: TextOverflow.ellipsis,
+                          children: [
+                            TextSpan(
+                              text: "Employment Exchange Management System\n",
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                        ],
+                            TextSpan(
+                              text: "(EEMS 2.0)",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff1683FF),
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // =========================
+                    // Profile + User Name
+                    // =========================
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            UserData().model.value.latestPhotoPath.toString(),
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                Images.placeholder,
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: Text(
+                            UserData().model.value.displayName ?? "",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff152238),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                // Close button
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    'assets/icons/close.svg',
-                    width: 25,
-                    height: 25,
+
+                // =========================
+                // Close Button
+                // =========================
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SvgPicture.asset(
+                        'assets/icons/close.svg',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -607,6 +646,63 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Container(
               margin: EdgeInsets.only(left: 50),
               child: Divider(height: 1,color: E3E5F9Color,)),
+
+          // ===== Exchange Details =====
+          Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xffF7F9FC),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: const Color(0xffE4E9F2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                // Row(
+                //   children: [
+                //     Container(
+                //       width: 34,
+                //       height: 34,
+                //       decoration: BoxDecoration(
+                //         color: const Color(0xffE8F2FF),
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       child: const Icon(
+                //         Icons.business_outlined,
+                //         size: 19,
+                //         color: Color(0xff1683FF),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10),
+                //     Expanded(
+                //       child: Text(
+                //         AppLocalizations.of(context)!.empExchange,
+                //         style: const TextStyle(
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w700,
+                //           color: Color(0xff152238),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
+               // const SizedBox(height: 14),
+
+                // Exchange Name
+                _drawerInfoRow(
+                  icon: Icons.account_balance_outlined,
+                  label: AppLocalizations.of(context)!.empExchange,
+                  value: UserData().model.value.office,
+                ),
+              ],
+            ),
+          ),
+
           ListTile(
             leading: SvgPicture.asset('assets/icons/home.svg',color: grayLightColor,
                 width: 20, height: 20),
@@ -665,6 +761,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  Widget _drawerInfoRow({
+    required IconData icon,
+    required String label,
+    required String? value,
+  }) {
+    final displayValue =
+    (value == null || value.trim().isEmpty) ? "-" : value.trim();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            size: 17,
+            color: const Color(0xff667085),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff667085),
+                  letterSpacing: 0.2,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                displayValue,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff344054),
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   //============================================================
   // WELCOME CARD
   //============================================================

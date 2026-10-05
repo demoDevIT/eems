@@ -544,14 +544,47 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// HEADER
-                      const Center(
-                        child: Text(
-                          "Mark Attendance",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                      // const Center(
+                      //   child: Text(
+                      //     "Mark Attendance",
+                      //     style: TextStyle(
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
+                      //
+                      // const SizedBox(height: 20),
+
+                      Row(
+                        children: [
+                          const Expanded(
+                            child: Center(
+                              child: Text(
+                                "Mark Attendance",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            borderRadius: BorderRadius.circular(20),
+                            child: const Padding(
+                              padding: EdgeInsets.all(4),
+                              child: Icon(
+                                Icons.close,
+                                size: 24,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
 
                       const SizedBox(height: 20),

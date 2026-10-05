@@ -2364,16 +2364,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get applyJobFair => "जॉब फेयर के लिए अप्लाई करें";
 
   @override
-  String get quickActs => "त्वरित कार्रवाई";
+  String get quickActs => "जॉब फेयर के लिए तुरंत किए जाने वाले काम";
 
   @override
-  String get scanQRInstantCheckIn => "तुरंत चेक-इन के लिए अपने इवेंट का QR कोड स्कैन करें।";
+  String get scanQRInstantCheckIn => "तुरंत चेक-इन के लिए अपने जॉब फेयर इवेंट का QR कोड स्कैन करें।";
 
   @override
   String get eventRegNoMobNo => "इवेंट रजिस्ट्रेशन नंबर / मोबाइल नंबर";
 
   @override
-  String get enterRegNoMobile => "विवरण जानने के लिए अपना रजिस्ट्रेशन नंबर/मोबाइल नंबर दर्ज करें।";
+  String get enterRegNoMobile => "जॉब फेयर की जानकारी पाने के लिए अपना रजिस्ट्रेशन नंबर/मोबाइल नंबर डालें।";
 
   @override
   String get newReg => "नया रजिस्ट्रेशन";
@@ -2419,5 +2419,47 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get internOffice => "इंटर्नशिप कार्यालय";
+
+  @override
+  String get empExchange => "EMP एक्सचेंज";
+
+  @override
+  String get MYSY2021 => "मुख्यमंत्री युवा संबल योजना - 2021";
+
+  @override
+  String get joinOver => "शामिल होने का विवरण";
+
+  @override
+  String get joinComp => "शामिल होने की प्रक्रिया पूरी हुई";
+
+  @override
+  String get appSuccJoin => "एप्लीकेशन सफलतापूर्वक जुड़ गए";
+
+  @override
+  String get joinPend => "शामिल होना लंबित है";
+
+  @override
+  String get appWaitJoin => "शामिल होने के लिए लंबित आवेदन";
+
+  @override
+  String get total => "कुल";
+
+  @override
+  String get applications => "एप्लीकेशन";
+
+  @override
+  String get completed => "पूरे किए गए";
+
+  @override
+  String get pending => "लंबित";
+
+  @override
+  String get overComp => "कुल मिलाकर पूरा होना";
+
+  @override
+  String get attendOver => "हाज़िरी अवलोकन";
+
+  @override
+  String get monthlyAttendStatus => "मासिक उपस्थिति पूरी होने और लंबित प्रगति का विवरण";
 
 }

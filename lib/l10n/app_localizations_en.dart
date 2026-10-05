@@ -2364,16 +2364,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get applyJobFair => "Apply for Job Fair";
 
   @override
-  String get quickActs => "QUICK ACTIONS";
+  String get quickActs => "QUICK JOB FAIR ACTIONS";
 
   @override
-  String get scanQRInstantCheckIn => "Scan your event QR code for instant check-in";
+  String get scanQRInstantCheckIn => "Scan your job fair event QR code for instant check-in";
 
   @override
   String get eventRegNoMobNo => "Event Reg. No. / Mobile No.";
 
   @override
-  String get enterRegNoMobile => "Enter your Registration No./Mobile No. to find details";
+  String get enterRegNoMobile => "Enter your Registration No./Mobile No. to find job fair details";
 
   @override
   String get newReg => "New Registration";
@@ -2419,5 +2419,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get internOffice => "Internship Office";
+
+  @override
+  String get empExchange => "Emp exchange";
+
+  @override
+  String get MYSY2021 => "Mukhyamantri Yuva Sambal Yojana - 2021";
+
+  @override
+  String get joinOver => "Joining Overview";
+
+  @override
+  String get joinComp => "JOINING COMPLETED";
+
+  @override
+  String get appSuccJoin => "Applications successfully joined";
+
+  @override
+  String get joinPend => "JOINING PENDING";
+
+  @override
+  String get appWaitJoin => "Applications waiting for joining";
+
+  @override
+  String get total => "Total";
+
+  @override
+  String get applications => "Applications";
+
+  @override
+  String get completed => "COMPLETED";
+
+  @override
+  String get pending => "PENDING";
+
+  @override
+  String get overComp => "OVERALL COMPLETION";
+
+  @override
+  String get attendOver => "Attendance Overview";
+
+  @override
+  String get monthlyAttendStatus => "Monthly attendance completion & pending progress";
 
 }

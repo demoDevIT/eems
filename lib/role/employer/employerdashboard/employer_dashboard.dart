@@ -648,6 +648,7 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
       child: ListView(
         children: [
           // ===== Header =====
+          // ===== Header =====
           Container(
             padding: const EdgeInsets.only(
               top: 40,
@@ -656,75 +657,142 @@ class _EmployerDashboardState extends State<EmployerDashboard> {
               bottom: 20,
             ),
             color: Colors.white,
-            child: Row(
+            child: Stack(
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // =========================
+                    // Application Logo
+                    // =========================
+                    Image.asset(
+                      "assets/logos/logo.png",
+                      height: 60,
+                      fit: BoxFit.contain,
+                    ),
 
-                /// Profile Image
-                ClipOval(
-                  child: Image.network(
-                    UserData().model.value.latestPhotoPath.toString(),
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) {
-                      return Image.asset(
-                        "assets/images/placeholder.png",
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                ),
+                    const SizedBox(height: 8),
 
-                const SizedBox(width: 12),
-
-                /// Name + Update Profile
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        UserData().model.value.branchName.toString(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                    // =========================
+                    // Application Name
+                    // =========================
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff152238),
+                            height: 1.3,
+                            letterSpacing: 0.3,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Employment Exchange Management System\n",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "(EEMS 2.0)",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xff1683FF),
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: 4),
+                    const SizedBox(height: 20),
 
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.updateProfile,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: kViewAllColor,
-                            fontWeight: FontWeight.w600,
+                    // =========================
+                    // Employer Profile
+                    // =========================
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipOval(
+                          child: Image.network(
+                            UserData().model.value.latestPhotoPath.toString(),
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) {
+                              return Image.asset(
+                                "assets/images/placeholder.png",
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                UserData().model.value.branchName.toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xff152238),
+                                ),
+                              ),
+
+                              const SizedBox(height: 4),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.updateProfile,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: kViewAllColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
 
-                /// Close Icon
-                SizedBox(
-                  width: 30,
+                // =========================
+                // Close Button
+                // =========================
+                Positioned(
+                  top: 0,
+                  right: 0,
                   child: InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: SvgPicture.asset(
-                      "assets/icons/close.svg",
-                      width: 20,
-                      height: 20,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SvgPicture.asset(
+                        "assets/icons/close.svg",
+                        width: 25,
+                        height: 25,
+                      ),
                     ),
                   ),
                 ),
