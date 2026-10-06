@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../constants/constants.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/global.dart';
 import 'modal/financial_year_modal.dart';
@@ -151,7 +152,7 @@ class _DeptJoinPendingListScreenState
                   borderRadius: BorderRadius.circular(8),
                   child: item.photo != null && item.photo!.isNotEmpty
                       ? Image.network(
-                    item.photo!,
+                    Constants.showPdfUrl + item.photo!,
                     height: 90,
                     width: 90,
                     fit: BoxFit.cover,

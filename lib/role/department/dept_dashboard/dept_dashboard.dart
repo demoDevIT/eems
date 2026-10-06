@@ -1925,370 +1925,848 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     );
   }
 
-  /// Side Drawer
+  /// Side Drawer - Screenshot matched UI
   Drawer _buildSideDrawer() {
+    final user = UserData().model.value;
+
+    // Create initials like "VB"
+    String getInitials(String? name) {
+      if (name == null || name.trim().isEmpty) return "U";
+
+      final parts = name.trim().split(RegExp(r'\s+'));
+
+      if (parts.length >= 2) {
+        return "${parts.first[0]}${parts.last[0]}".toUpperCase();
+      }
+
+      return parts.first.substring(0, 1).toUpperCase();
+    }
+
     return Drawer(
-      child: ListView(
-        children: [
-          // ===== Header =====
-          // ===== Header =====
-          Container(
-            padding: const EdgeInsets.only(
-              top: 40,
-              left: 16,
-              right: 16,
-              bottom: 20,
-            ),
-            color: Colors.white,
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // =========================
-                    // Application Logo
-                    // =========================
-                    Image.asset(
-                      "assets/logos/logo.png",
-                      height: 60,
+      width: MediaQuery.of(context).size.width * 0.74,
+      backgroundColor: Colors.white,
+      child: SafeArea(
+        child: Column(
+          children: [
+            // =========================================================
+            // TOP HEADER
+            // =========================================================
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 12, 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Logo
+                  SizedBox(
+                    width: 55,
+                    height: 45,
+                    child: Image.asset(
+                      // "assets/logos/logo.png",
+                      "assets/logos/EEMSLOGO.png",
                       fit: BoxFit.contain,
                     ),
+                  ),
 
-                    const SizedBox(height: 8),
+                  const SizedBox(width: 8),
 
-                    // =========================
-                    // Application Name
-                    // =========================
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff152238),
-                            height: 1.3,
-                            letterSpacing: 0.3,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Employment Exchange Management System\n",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            TextSpan(
-                              text: "(EEMS 2.0)",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xff1683FF),
-                                letterSpacing: 0.8,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // =========================
-                    // Profile + User Information
-                    // =========================
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipOval(
-                          child: Image.network(
-                            UserData().model.value.latestPhotoPath.toString(),
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/images/placeholder.png',
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ),
-                        ),
-
-                        const SizedBox(width: 12),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                UserData().model.value.name.toString(),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-
-                              const SizedBox(height: 4),
-
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DeptProfileScreen(isAppBarHide: true),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  AppLocalizations.of(context)!.updateProfile,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: kViewAllColor,
-                                    fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                // =========================
-                // Close Button
-                // =========================
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () => Navigator.pop(context),
-                    borderRadius: BorderRadius.circular(20),
+                  // Application title
+                  Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: SvgPicture.asset(
-                        'assets/icons/close.svg',
-                        width: 25,
-                        height: 25,
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Employment Exchange",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff152238),
+                              height: 1.15,
+                            ),
+                          ),
+                          const Text(
+                            "Management System",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff152238),
+                              height: 1.15,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          const Text(
+                            "(EEMS 2.0)",
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff1683FF),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
 
-// ===== Internship Details =====
-          Container(
-            margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: const Color(0xffF7F9FC),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: const Color(0xffE4E9F2),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    Container(
+                  // Close button
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
                       width: 34,
                       height: 34,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffE8F2FF),
-                        borderRadius: BorderRadius.circular(10),
+                      decoration: const BoxDecoration(
+                        color: Color(0xffF2F5FA),
+                        shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.school_outlined,
-                        size: 19,
-                        color: Color(0xff1683FF),
+                        Icons.close,
+                        size: 18,
+                        color: Color(0xff667085),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "Internship Details",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff152238),
+                  ),
+                ],
+              ),
+            ),
+
+            // Divider
+            Container(
+              height: 1,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              color: const Color(0xffE5EAF2),
+            ),
+
+            // =========================================================
+            // SCROLLABLE CONTENT
+            // =========================================================
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                children: [
+                  // =====================================================
+                  // USER PROFILE CARD
+                  // =====================================================
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF1F7FF),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Profile header
+                        Row(
+                          children: [
+                            // Initial avatar
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                getInitials(user.name),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff315BEA),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 10),
+
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user.name?.toUpperCase() ?? "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff152238),
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 3),
+
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DeptProfileScreen(
+                                                isAppBarHide: true,
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .updateProfile,
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xff1683FF),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        const Icon(
+                                          Icons.north_east,
+                                          size: 12,
+                                          color: Color(0xff1683FF),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 20,
+                              color: Color(0xff1769E0),
+                            ),
+                          ],
                         ),
+
+                        const SizedBox(height: 14),
+
+                        // =================================================
+                        // Internship Department
+                        // =================================================
+                        _drawerInfoText(
+                          label: AppLocalizations.of(context)!.internDept,
+                          value: user.deptNameEn,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // =================================================
+                        // Internship Office
+                        // =================================================
+                        _drawerInfoText(
+                          label: AppLocalizations.of(context)!.internOffice,
+                          value: user.allotDeptName,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // =================================================
+                        // Exchange Name
+                        // =================================================
+                        _drawerInfoText(
+                          label: AppLocalizations.of(context)!.exchangeName,
+                          value: user.exchangeName,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  // =====================================================
+                  // WORKSPACE
+                  // =====================================================
+                  const Padding(
+                    padding: EdgeInsets.only(left: 2),
+                    child: Text(
+                      "WORKSPACE",
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff667085),
                       ),
                     ),
-                  ],
-                ),
+                  ),
 
-                const SizedBox(height: 14),
+                  const SizedBox(height: 6),
 
-                // Internship Department
-                _drawerInfoRow(
-                  icon: Icons.account_balance_outlined,
-                  label: AppLocalizations.of(context)!.internDept,
-                  value: UserData().model.value.deptNameEn,
-                ),
+                  // Dashboard
+                  _drawerMenuItem(
+                    icon: Icons.dashboard_outlined,
+                    title: AppLocalizations.of(context)!.dashboard,
+                    selected: true,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
 
-                const SizedBox(height: 12),
+                  const SizedBox(height: 6),
 
-                // Divider
-                Container(
-                  height: 1,
-                  color: const Color(0xffE5EAF2),
-                ),
+                  // Request DMap
+                  _drawerMenuItem(
+                    icon: Icons.description_outlined,
+                    title: AppLocalizations.of(context)!.requestDMap,
+                    onTap: () {
+                      Navigator.pop(context);
 
-                const SizedBox(height: 12),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RequestMapScreen(),
+                        ),
+                      );
+                    },
+                  ),
 
-                // Internship Office
-                _drawerInfoRow(
-                  icon: Icons.business_outlined,
-                  label: AppLocalizations.of(context)!.internOffice,
-                  value: UserData().model.value.allotDeptName,
-                ),
+                  const SizedBox(height: 6),
 
-                const SizedBox(height: 12),
+                  // Grievance / Feedback
+                  _drawerMenuItem(
+                    icon: Icons.chat_bubble_outline,
+                    title: AppLocalizations.of(context)!.grievfeedbak,
+                    onTap: () {
+                      Navigator.pop(context);
 
-                // Divider
-                Container(
-                  height: 1,
-                  color: const Color(0xffE5EAF2),
-                ),
-
-                const SizedBox(height: 12),
-
-                // Internship Office
-                _drawerInfoRow(
-                  icon: Icons.business_outlined,
-                  label: AppLocalizations.of(context)!.exchangeName,
-                  value: UserData().model.value.exchangeName,
-                ),
-
-              ],
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GrievanceScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          const SizedBox(height: 4),
-          ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: Text(AppLocalizations.of(context)!.dashboard,
-                style: TextStyle(fontSize: 14)),
-            onTap: () {
-              Navigator.pop(context); // Already on dashboard
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.request_page),
-            title: Text(AppLocalizations.of(context)!.requestDMap,
-                style: TextStyle(fontSize: 14)),
-            // onTap: () {
-            //   Navigator.pop(context); // Already on dashboard
-            // },
-            onTap: () async {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RequestMapScreen(),
+            // =========================================================
+            // BOTTOM LOGOUT
+            // =========================================================
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Color(0xffE5EAF2),
+                    width: 1,
+                  ),
                 ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.request_page),
-            title: Text(AppLocalizations.of(context)!.grievfeedbak,
-                style: TextStyle(fontSize: 14)),
-            // onTap: () {
-            //   Navigator.pop(context); // Already on dashboard
-            // },
-            onTap: () async {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GrievanceScreen(),
-                ),
-              );
-            },
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 50),
-            child: const Divider(height: 1, color: E3E5F9Color),
-          ),
+              ),
+              child: _drawerMenuItem(
+                icon: Icons.logout_outlined,
+                title: AppLocalizations.of(context)!.logout,
+                showArrow: false,
+                onTap: () async {
+                  Navigator.pop(context);
 
-          // ===== Logout =====
-          ListTile(
-            leading: SvgPicture.asset(
-              'assets/icons/logout.svg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.cover,
-            ),
-            title: Text(
-              AppLocalizations.of(context)!.logout,
-              style: Styles.mediumTextStyle(size: 14),
-            ),
-            onTap: () async {
-              Navigator.pop(context); // Close the drawer
-              showLogoutDialog(
-                context,
-                AppLocalizations.of(context)!.logout,
-                AppLocalizations.of(context)!.logoutConfirmMsg,
-                AppLocalizations.of(context)!.logoutThankYouText,
-                (value) async {
-                  if (value.toString() == "success") {
-                    final pref = AppSharedPref();
+                  showLogoutDialog(
+                    context,
+                    AppLocalizations.of(context)!.logout,
+                    AppLocalizations.of(context)!.logoutConfirmMsg,
+                    AppLocalizations.of(context)!.logoutThankYouText,
+                        (value) async {
+                      if (value.toString() == "success") {
+                        final pref = AppSharedPref();
 
-                    // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
-                    // commonRepo.dioClient.clearAuthToken();
+                        UserData().model.value.isLogin = false;
+                        UserData().model.value.userId = null;
 
-                    // Clear login session only
-                    UserData().model.value.isLogin = false;
-                    UserData().model.value.userId = null;
-                    // UserData().model.value.postalAddress = null;
-                    // UserData().model.value.empNumber = null;
-                    await pref.remove('UserData');
-                    print(
-                        "========== AFTER LOGOUT COMPLETE USER MODEL ==========");
-                    print(
-                      const JsonEncoder.withIndent('  ')
-                          .convert(UserData().model.value.toJson()),
-                    );
-                    print("=========================================");
+                        await pref.remove('UserData');
 
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
-                      (route) => false,
-                    );
-
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (BuildContext context) =>
-                    //     const LoginScreen(),
-                    //   ),
-                    // );
-                  }
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
+                          ),
+                              (route) => false,
+                        );
+                      }
+                    },
+                  );
                 },
-              );
-            },
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
+
+  /// ===============================================================
+  /// Profile information row
+  /// ===============================================================
+  Widget _drawerInfoText({
+    required String label,
+    required String? value,
+  }) {
+    final displayValue =
+    (value == null || value.trim().isEmpty) ? "-" : value.trim();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 9,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff718096),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          displayValue,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: Color(0xff344054),
+            height: 1.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  /// ===============================================================
+  /// Drawer menu item
+  /// ===============================================================
+  Widget _drawerMenuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    bool selected = false,
+    bool showArrow = true,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          height: 52,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          decoration: BoxDecoration(
+            color: selected
+                ? const Color(0xffEAF1FF)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 21,
+                color: selected
+                    ? const Color(0xff315BEA)
+                    : const Color(0xff344054),
+              ),
+
+              const SizedBox(width: 12),
+
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight:
+                    selected ? FontWeight.w600 : FontWeight.w500,
+                    color: selected
+                        ? const Color(0xff315BEA)
+                        : const Color(0xff152238),
+                  ),
+                ),
+              ),
+
+              if (showArrow)
+                Icon(
+                  Icons.chevron_right,
+                  size: 20,
+                  color: selected
+                      ? const Color(0xff315BEA)
+                      : const Color(0xff718096),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Side Drawer
+//   Drawer _buildSideDrawer() {
+//     return Drawer(
+//       child: ListView(
+//         children: [
+//           // ===== Header =====
+//           // ===== Header =====
+//           Container(
+//             padding: const EdgeInsets.only(
+//               top: 40,
+//               left: 16,
+//               right: 16,
+//               bottom: 20,
+//             ),
+//             color: Colors.white,
+//             child: Stack(
+//               children: [
+//                 Column(
+//                   crossAxisAlignment: CrossAxisAlignment.center,
+//                   children: [
+//                     // =========================
+//                     // Application Logo
+//                     // =========================
+//                     Image.asset(
+//                       "assets/logos/logo.png",
+//                       height: 60,
+//                       fit: BoxFit.contain,
+//                     ),
+//
+//                     const SizedBox(height: 8),
+//
+//                     // =========================
+//                     // Application Name
+//                     // =========================
+//                     Padding(
+//                       padding: EdgeInsets.symmetric(horizontal: 8),
+//                       child: RichText(
+//                         textAlign: TextAlign.center,
+//                         text: TextSpan(
+//                           style: TextStyle(
+//                             fontSize: 15,
+//                             fontWeight: FontWeight.w700,
+//                             color: Color(0xff152238),
+//                             height: 1.3,
+//                             letterSpacing: 0.3,
+//                           ),
+//                           children: [
+//                             TextSpan(
+//                               text: "Employment Exchange Management System\n",
+//                               style: TextStyle(
+//                                 fontWeight: FontWeight.w900,
+//                               ),
+//                             ),
+//                             TextSpan(
+//                               text: "(EEMS 2.0)",
+//                               style: TextStyle(
+//                                 fontSize: 14,
+//                                 fontWeight: FontWeight.w800,
+//                                 color: Color(0xff1683FF),
+//                                 letterSpacing: 0.8,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//
+//                     const SizedBox(height: 20),
+//
+//                     // =========================
+//                     // Profile + User Information
+//                     // =========================
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+//                       children: [
+//                         ClipOval(
+//                           child: Image.network(
+//                             UserData().model.value.latestPhotoPath.toString(),
+//                             width: 60,
+//                             height: 60,
+//                             fit: BoxFit.cover,
+//                             errorBuilder: (context, error, stackTrace) {
+//                               return Image.asset(
+//                                 'assets/images/placeholder.png',
+//                                 width: 60,
+//                                 height: 60,
+//                                 fit: BoxFit.cover,
+//                               );
+//                             },
+//                           ),
+//                         ),
+//
+//                         const SizedBox(width: 12),
+//
+//                         Expanded(
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Text(
+//                                 UserData().model.value.name.toString(),
+//                                 maxLines: 2,
+//                                 overflow: TextOverflow.ellipsis,
+//                                 style: const TextStyle(
+//                                   fontSize: 16,
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//
+//                               const SizedBox(height: 4),
+//
+//                               GestureDetector(
+//                                 onTap: () {
+//                                   Navigator.pop(context);
+//
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) =>
+//                                           DeptProfileScreen(isAppBarHide: true),
+//                                     ),
+//                                   );
+//                                 },
+//                                 child: Text(
+//                                   AppLocalizations.of(context)!.updateProfile,
+//                                   style: TextStyle(
+//                                     fontSize: 14,
+//                                     color: kViewAllColor,
+//                                     fontWeight: FontWeight.w600,
+//                                     decoration: TextDecoration.none,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//
+//                 // =========================
+//                 // Close Button
+//                 // =========================
+//                 Positioned(
+//                   top: 0,
+//                   right: 0,
+//                   child: InkWell(
+//                     onTap: () => Navigator.pop(context),
+//                     borderRadius: BorderRadius.circular(20),
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(4),
+//                       child: SvgPicture.asset(
+//                         'assets/icons/close.svg',
+//                         width: 25,
+//                         height: 25,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           const Divider(height: 1),
+//
+// // ===== Internship Details =====
+//           Container(
+//             margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+//             padding: const EdgeInsets.all(14),
+//             decoration: BoxDecoration(
+//               color: const Color(0xffF7F9FC),
+//               borderRadius: BorderRadius.circular(14),
+//               border: Border.all(
+//                 color: const Color(0xffE4E9F2),
+//               ),
+//             ),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 // Header
+//                 Row(
+//                   children: [
+//                     Container(
+//                       width: 34,
+//                       height: 34,
+//                       decoration: BoxDecoration(
+//                         color: const Color(0xffE8F2FF),
+//                         borderRadius: BorderRadius.circular(10),
+//                       ),
+//                       child: const Icon(
+//                         Icons.school_outlined,
+//                         size: 19,
+//                         color: Color(0xff1683FF),
+//                       ),
+//                     ),
+//                     const SizedBox(width: 10),
+//                     Expanded(
+//                       child: Text(
+//                         "Internship Details",
+//                         style: const TextStyle(
+//                           fontSize: 14,
+//                           fontWeight: FontWeight.w700,
+//                           color: Color(0xff152238),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//
+//                 const SizedBox(height: 14),
+//
+//                 // Internship Department
+//                 _drawerInfoRow(
+//                   icon: Icons.account_balance_outlined,
+//                   label: AppLocalizations.of(context)!.internDept,
+//                   value: UserData().model.value.deptNameEn,
+//                 ),
+//
+//                 const SizedBox(height: 12),
+//
+//                 // Divider
+//                 Container(
+//                   height: 1,
+//                   color: const Color(0xffE5EAF2),
+//                 ),
+//
+//                 const SizedBox(height: 12),
+//
+//                 // Internship Office
+//                 _drawerInfoRow(
+//                   icon: Icons.business_outlined,
+//                   label: AppLocalizations.of(context)!.internOffice,
+//                   value: UserData().model.value.allotDeptName,
+//                 ),
+//
+//                 const SizedBox(height: 12),
+//
+//                 // Divider
+//                 Container(
+//                   height: 1,
+//                   color: const Color(0xffE5EAF2),
+//                 ),
+//
+//                 const SizedBox(height: 12),
+//
+//                 // Internship Office
+//                 _drawerInfoRow(
+//                   icon: Icons.business_outlined,
+//                   label: AppLocalizations.of(context)!.exchangeName,
+//                   value: UserData().model.value.exchangeName,
+//                 ),
+//
+//               ],
+//             ),
+//           ),
+//
+//           const SizedBox(height: 4),
+//           ListTile(
+//             leading: const Icon(Icons.dashboard),
+//             title: Text(AppLocalizations.of(context)!.dashboard,
+//                 style: TextStyle(fontSize: 14)),
+//             onTap: () {
+//               Navigator.pop(context); // Already on dashboard
+//             },
+//           ),
+//           ListTile(
+//             leading: const Icon(Icons.request_page),
+//             title: Text(AppLocalizations.of(context)!.requestDMap,
+//                 style: TextStyle(fontSize: 14)),
+//             // onTap: () {
+//             //   Navigator.pop(context); // Already on dashboard
+//             // },
+//             onTap: () async {
+//               Navigator.pop(context);
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => const RequestMapScreen(),
+//                 ),
+//               );
+//             },
+//           ),
+//           ListTile(
+//             leading: const Icon(Icons.request_page),
+//             title: Text(AppLocalizations.of(context)!.grievfeedbak,
+//                 style: TextStyle(fontSize: 14)),
+//             // onTap: () {
+//             //   Navigator.pop(context); // Already on dashboard
+//             // },
+//             onTap: () async {
+//               Navigator.pop(context);
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => GrievanceScreen(),
+//                 ),
+//               );
+//             },
+//           ),
+//           Container(
+//             margin: const EdgeInsets.only(left: 50),
+//             child: const Divider(height: 1, color: E3E5F9Color),
+//           ),
+//
+//           // ===== Logout =====
+//           ListTile(
+//             leading: SvgPicture.asset(
+//               'assets/icons/logout.svg',
+//               width: 20,
+//               height: 20,
+//               fit: BoxFit.cover,
+//             ),
+//             title: Text(
+//               AppLocalizations.of(context)!.logout,
+//               style: Styles.mediumTextStyle(size: 14),
+//             ),
+//             onTap: () async {
+//               Navigator.pop(context); // Close the drawer
+//               showLogoutDialog(
+//                 context,
+//                 AppLocalizations.of(context)!.logout,
+//                 AppLocalizations.of(context)!.logoutConfirmMsg,
+//                 AppLocalizations.of(context)!.logoutThankYouText,
+//                 (value) async {
+//                   if (value.toString() == "success") {
+//                     final pref = AppSharedPref();
+//
+//                     // final commonRepo = Provider.of<CommonRepo>(context, listen: false);
+//                     // commonRepo.dioClient.clearAuthToken();
+//
+//                     // Clear login session only
+//                     UserData().model.value.isLogin = false;
+//                     UserData().model.value.userId = null;
+//                     // UserData().model.value.postalAddress = null;
+//                     // UserData().model.value.empNumber = null;
+//                     await pref.remove('UserData');
+//                     print(
+//                         "========== AFTER LOGOUT COMPLETE USER MODEL ==========");
+//                     print(
+//                       const JsonEncoder.withIndent('  ')
+//                           .convert(UserData().model.value.toJson()),
+//                     );
+//                     print("=========================================");
+//
+//                     Navigator.pushAndRemoveUntil(
+//                       context,
+//                       MaterialPageRoute(builder: (_) => const LoginScreen()),
+//                       (route) => false,
+//                     );
+//
+//                     // Navigator.of(context).push(
+//                     //   MaterialPageRoute(
+//                     //     builder: (BuildContext context) =>
+//                     //     const LoginScreen(),
+//                     //   ),
+//                     // );
+//                   }
+//                 },
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
   Widget _drawerInfoRow({
     required IconData icon,

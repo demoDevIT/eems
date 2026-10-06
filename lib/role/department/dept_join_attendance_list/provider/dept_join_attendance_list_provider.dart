@@ -301,6 +301,7 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
         "FYID": selectedYearObj?.name,
         //filterSelectedYear, //2026
         "MonthId": filterSelectedMonthNumber,
+        "JobSeekerUserId": jobSeekerId,
         //2
         "RoleId": UserData().model.value.roleId,
         "FromDate": null,

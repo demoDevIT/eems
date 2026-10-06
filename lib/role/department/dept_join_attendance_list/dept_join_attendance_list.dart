@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/role/department/dept_join_attendance_list/modal/year_modal.dart';
+import '../../../constants/constants.dart';
 import '../../../l10n/app_localizations.dart';
 import 'modal/dept_join_attendance_modal.dart';
 import 'modal/financial_year_modal.dart';
@@ -70,7 +71,7 @@ class _DeptJoinAttendanceListScreenState
       await provider.getDeptJoinAttendanceListApi(
         context,
         registrationNumber: widget.registrationNumber ?? "",
-        jobSeekerId: null,
+        jobSeekerId: widget.jobSeekerId ?? "",
         userId: null,
         page: 1,
         resetPage: true,
@@ -259,29 +260,31 @@ class _DeptJoinAttendanceListScreenState
           children: [
 
             /// 🔹 TOP SECTION (Photo + Basic Info)
+            ///
+
+            /// 🔹 TOP SECTION (Photo + Name + Registration No.)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// Candidate Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: item.latestPhoto != null && item.latestPhoto!.isNotEmpty
+                      ? Image.network(
+                    Constants.showPdfUrl + item.latestPhoto!,
+                    height: 90,
+                    width: 90,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _placeholderImage();
+                    },
+                  )
+                      : _placeholderImage(),
+                ),
 
-                /// Candidate Image (Future Ready)
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(8),
-                //   child: (item.photo != null && item.photo!.isNotEmpty)
-                //       ? Image.network(
-                //     item.photo!, // 🔥 Change key later if needed
-                //     height: 90,
-                //     width: 90,
-                //     fit: BoxFit.cover,
-                //     errorBuilder: (context, error, stackTrace) {
-                //       return _placeholderImage();
-                //     },
-                //   )
-                //       : _placeholderImage(),
-                // ),
-                //
-                // const SizedBox(width: 14),
+                const SizedBox(width: 14),
 
-                /// Name + Mobile
+                /// Name + Registration No.
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,31 +297,12 @@ class _DeptJoinAttendanceListScreenState
                         ),
                       ),
                       const SizedBox(height: 6),
-                      // RichText(
-                      //   text: TextSpan(
-                      //     style: const TextStyle(color: Colors.black87, fontSize: 16),
-                      //     children: [
-                      //       const TextSpan(
-                      //         text: "Mobile: ",
-                      //         style: TextStyle(fontWeight: FontWeight.bold),
-                      //       ),
-                      //       TextSpan(text: item.mobi ?? "-"),
-                      //     ],
-                      //   ),
-                      // ),
-
-                      // RichText(
-                      //   text: TextSpan(
-                      //     style: const TextStyle(color: Colors.black87, fontSize: 16),
-                      //     children: [
-                      //       const TextSpan(
-                      //         text: "Department: ",
-                      //         style: TextStyle(fontWeight: FontWeight.bold),
-                      //       ),
-                      //       TextSpan(text: item.departmentNameEn ?? "-"),
-                      //     ],
-                      //   ),
-                      // ),
+                      Text(
+                        "${AppLocalizations.of(context)!.regNo}${item.registrationNo ?? "-"}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -327,7 +311,75 @@ class _DeptJoinAttendanceListScreenState
 
             const SizedBox(height: 15),
 
-            _row(AppLocalizations.of(context)!.registrationNo, item.registrationNo),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //
+            //     /// Candidate Image (Future Ready)
+            //     // ClipRRect(
+            //     //   borderRadius: BorderRadius.circular(8),
+            //     //   child: (item.photo != null && item.photo!.isNotEmpty)
+            //     //       ? Image.network(
+            //     //     item.photo!, // 🔥 Change key later if needed
+            //     //     height: 90,
+            //     //     width: 90,
+            //     //     fit: BoxFit.cover,
+            //     //     errorBuilder: (context, error, stackTrace) {
+            //     //       return _placeholderImage();
+            //     //     },
+            //     //   )
+            //     //       : _placeholderImage(),
+            //     // ),
+            //     //
+            //     // const SizedBox(width: 14),
+            //
+            //     /// Name + Mobile
+            //     Expanded(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             item.name ?? "-",
+            //             style: const TextStyle(
+            //               fontSize: 16,
+            //               fontWeight: FontWeight.bold,
+            //             ),
+            //           ),
+            //           const SizedBox(height: 6),
+            //           // RichText(
+            //           //   text: TextSpan(
+            //           //     style: const TextStyle(color: Colors.black87, fontSize: 16),
+            //           //     children: [
+            //           //       const TextSpan(
+            //           //         text: "Mobile: ",
+            //           //         style: TextStyle(fontWeight: FontWeight.bold),
+            //           //       ),
+            //           //       TextSpan(text: item.mobi ?? "-"),
+            //           //     ],
+            //           //   ),
+            //           // ),
+            //
+            //           // RichText(
+            //           //   text: TextSpan(
+            //           //     style: const TextStyle(color: Colors.black87, fontSize: 16),
+            //           //     children: [
+            //           //       const TextSpan(
+            //           //         text: "Department: ",
+            //           //         style: TextStyle(fontWeight: FontWeight.bold),
+            //           //       ),
+            //           //       TextSpan(text: item.departmentNameEn ?? "-"),
+            //           //     ],
+            //           //   ),
+            //           // ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
+
+            const SizedBox(height: 15),
+
+          //  _row(AppLocalizations.of(context)!.registrationNo, item.registrationNo),
             _row(AppLocalizations.of(context)!.fName, item.fName),
             _row(AppLocalizations.of(context)!.gender, item.gender),
             _row(AppLocalizations.of(context)!.category, item.category),

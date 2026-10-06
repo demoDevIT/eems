@@ -70,6 +70,7 @@ class DeptJoinAttendanceItem {
       String? attendanceStatus;
       int? enableMarkAttendance;
       String? attendanceLetter;
+      String? latestPhoto;
 
 
 
@@ -115,6 +116,7 @@ class DeptJoinAttendanceItem {
       this.attendanceStatus,
       this.enableMarkAttendance,
       this.attendanceLetter,
+      this.latestPhoto,
   });
 
   factory DeptJoinAttendanceItem.fromJson(Map<String, dynamic> json) {
@@ -160,6 +162,7 @@ class DeptJoinAttendanceItem {
         attendanceStatus: json['AttendanceStatus'],
         enableMarkAttendance: json['EnableToMarkAttendance'],
         attendanceLetter: json['AttendanceLetter'],
+        latestPhoto: json['LatestPhoto'],
     );
   }
 }
