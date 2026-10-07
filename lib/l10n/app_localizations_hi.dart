@@ -2462,4 +2462,7 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get monthlyAttendStatus => "मासिक उपस्थिति पूरी होने और लंबित प्रगति का विवरण";
 
+  @override
+  String get eligibleDate => "इंटर्नशिप की आखिरी तारीख";
+
 }

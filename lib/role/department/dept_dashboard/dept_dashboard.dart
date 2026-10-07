@@ -1842,7 +1842,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            UserData().model.value.allotDeptName,
+                            UserData().model.value.allotDeptName ?? "",
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,

@@ -71,6 +71,9 @@ class DeptJoinAttendanceItem {
       int? enableMarkAttendance;
       String? attendanceLetter;
       String? latestPhoto;
+      String? approvalDate;
+      String? eligibleDate;
+      String? rowColor;
 
 
 
@@ -117,6 +120,9 @@ class DeptJoinAttendanceItem {
       this.enableMarkAttendance,
       this.attendanceLetter,
       this.latestPhoto,
+      this.approvalDate,
+      this.eligibleDate,
+      this.rowColor,
   });
 
   factory DeptJoinAttendanceItem.fromJson(Map<String, dynamic> json) {
@@ -163,6 +169,9 @@ class DeptJoinAttendanceItem {
         enableMarkAttendance: json['EnableToMarkAttendance'],
         attendanceLetter: json['AttendanceLetter'],
         latestPhoto: json['LatestPhoto'],
+        approvalDate: json['ApplicationApprovalDate'],
+        eligibleDate: json['EligibleDate'],
+        rowColor: json['RowColor'],
     );
   }
 }

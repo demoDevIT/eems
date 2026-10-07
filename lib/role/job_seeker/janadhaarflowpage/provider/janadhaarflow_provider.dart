@@ -74,6 +74,9 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             body);
         //latest changes, now api having parameters
 
+
+
+
         //earlier blank body
         // Map<String, dynamic> body = {};
         // ApiResponse apiResponse = await commonRepo.post(
@@ -107,9 +110,9 @@ class JanAadhaarFlowProvider with ChangeNotifier {
           final sm = FetchMemberListModal.fromJson(responseData);
 
           notifyListeners();
-          // if (sm.state == 200) { //test with live
+           if (sm.state == 200) { //test with live
             print("a2");
-            if (sm.state == 1) { //test with sandbox
+           // if (sm.state == 1) { //test with sandbox
             fetchMemberList.clear();
             fetchMemberList.addAll(sm.data!.response!.data!);
             currentStep = FlowStep.memberList;
@@ -129,18 +132,18 @@ class JanAadhaarFlowProvider with ChangeNotifier {
         } else {
           print("a4");
           currentStep = FlowStep.memberList;
-          fetchMemberList.addAll([
-            FetchMemberDataResponse(
-              mEMBERID: 45053402607,
-              nAMEEN: "D*e*a* K*m*r G*p*a",
-              mEMBERTYPE: "MEM",
-            ),
-            FetchMemberDataResponse(
-              mEMBERID: 32687381288,
-              nAMEEN: "J*o*i G*y*l",
-              mEMBERTYPE: "HOF",
-            ),
-          ]);
+          // fetchMemberList.addAll([
+          //   FetchMemberDataResponse(
+          //     mEMBERID: 45053402607,
+          //     nAMEEN: "D*e*a* K*m*r G*p*a",
+          //     mEMBERTYPE: "MEM",
+          //   ),
+          //   FetchMemberDataResponse(
+          //     mEMBERID: 32687381288,
+          //     nAMEEN: "J*o*i G*y*l",
+          //     mEMBERTYPE: "HOF",
+          //   ),
+          // ]);
           notifyListeners();
           return FetchMemberListModal(
             state: 0,
@@ -225,8 +228,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
             responseData = jsonDecode(responseData);
           }
           final sm = GenerateOTPModal.fromJson(responseData);
-         //   if (sm.state == 400) { //live
-          if (sm.state == 2) { //sandbox
+            if (sm.state == 400) { //live
+         // if (sm.state == 2) { //sandbox
             print("b2");
             tid = sm.data!.response!.tid.toString();
             currentStep = FlowStep.otp;

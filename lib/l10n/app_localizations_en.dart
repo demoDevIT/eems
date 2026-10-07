@@ -2462,4 +2462,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get monthlyAttendStatus => "Monthly attendance completion & pending progress";
 
+  @override
+  String get eligibleDate => "Last Date of Intersnhip";
+
 }

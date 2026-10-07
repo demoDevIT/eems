@@ -1143,6 +1143,7 @@ abstract class AppLocalizations {
   String get overComp;
   String get attendOver;
   String get monthlyAttendStatus;
+  String get eligibleDate;
 
 }
 

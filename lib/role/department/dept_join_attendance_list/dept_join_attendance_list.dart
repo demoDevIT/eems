@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:rajemployment/role/department/dept_join_attendance_list/modal/year_modal.dart';
 import '../../../constants/constants.dart';
@@ -35,9 +36,34 @@ class DeptJoinAttendanceListScreen extends StatefulWidget {
 class _DeptJoinAttendanceListScreenState
     extends State<DeptJoinAttendanceListScreen> {
 
+  final ScrollController _listScrollController = ScrollController();
+
+  bool _isFilterExpanded = true;
+
+  Color _getRowColor(String? colorCode) {
+    if (colorCode == null || colorCode.trim().isEmpty) {
+      return Colors.white;
+    }
+
+    try {
+      String hex = colorCode.trim().replaceFirst('#', '');
+
+      // Add alpha channel if API gives #RRGGBB
+      if (hex.length == 6) {
+        hex = 'FF$hex';
+      }
+
+      return Color(int.parse(hex, radix: 16));
+    } catch (e) {
+      return Colors.white;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    _listScrollController.addListener(_handleListScroll);
 
     /// 🔹 Call APIs after first frame
     Future.microtask(() async {
@@ -80,6 +106,23 @@ class _DeptJoinAttendanceListScreenState
     });
   }
 
+  void _handleListScroll() {
+    if (_isFilterExpanded &&
+        _listScrollController.hasClients &&
+        _listScrollController.position.userScrollDirection !=
+            ScrollDirection.idle) {
+      setState(() {
+        _isFilterExpanded = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _listScrollController.removeListener(_handleListScroll);
+    _listScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,16 +179,33 @@ class _DeptJoinAttendanceListScreenState
                   children: [
                     Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.all(16),
+                        controller: _listScrollController,
+                        //padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
                         itemCount: provider.attendanceList.length,
                         itemBuilder: (context, index) {
                           final item = provider.attendanceList[index];
-                          return _pendingCard(context, provider, item);
+                          //return _pendingCard(context, provider, item);
+
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: _getRowColor(item.rowColor),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: _pendingCard(
+                              context,
+                              provider,
+                              item,
+                            ),
+                          );
+
                         },
                       ),
                     ),
 
                     /// PAGINATION
+                    if (provider.attendanceList.length > 10)
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).padding.bottom + 10,
@@ -250,6 +310,7 @@ class _DeptJoinAttendanceListScreenState
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
+      color: _getRowColor(item.rowColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -296,9 +357,23 @@ class _DeptJoinAttendanceListScreenState
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 3),
                       Text(
                         "${AppLocalizations.of(context)!.regNo}${item.registrationNo ?? "-"}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        "${AppLocalizations.of(context)!.gender}"+": "+"${item.gender ?? "-"}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        "${AppLocalizations.of(context)!.dob}"+": "+"${item.dob ?? "-"}",
                         style: const TextStyle(
                           fontSize: 14,
                         ),
@@ -381,10 +456,12 @@ class _DeptJoinAttendanceListScreenState
 
           //  _row(AppLocalizations.of(context)!.registrationNo, item.registrationNo),
             _row(AppLocalizations.of(context)!.fName, item.fName),
-            _row(AppLocalizations.of(context)!.gender, item.gender),
+          //  _row(AppLocalizations.of(context)!.gender, item.gender),
             _row(AppLocalizations.of(context)!.category, item.category),
-            _row(AppLocalizations.of(context)!.dob, item.dob),
+          //  _row(AppLocalizations.of(context)!.dob, item.dob),
+            _row(AppLocalizations.of(context)!.approvalDate, _formatDate(item.approvalDate)),
             _row(AppLocalizations.of(context)!.joinDate, _formatDate(item.joinDate)),
+            _row(AppLocalizations.of(context)!.eligibleDate, _formatDate(item.eligibleDate)),
             _fileRow(
               label: AppLocalizations.of(context)!.joinLetter,
               fileUrl: item.pdfPath,
@@ -409,6 +486,18 @@ class _DeptJoinAttendanceListScreenState
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+
+                /// 🔹 VIEW TRAIL
+                OutlinedButton(
+                  onPressed: () {
+                    // TODO: Add View Trail action
+                  },
+                  child: const Text("View Trail"),
+                ),
+
+                /// 🔹 SPACE
+                if (item.enableMarkAttendance == 1)
+                  const SizedBox(width: 8),
 
                 /// 🔹 IF NOT MARKED
                 if (item.enableMarkAttendance == 1)
@@ -557,126 +646,559 @@ class _DeptJoinAttendanceListScreenState
       DeptJoinAttendanceListProvider provider,
       ) {
     return Container(
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.fromLTRB(10, 6, 10, 6),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: const Color(0xFFF3F8F5), // light green/grey background
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade200,
+        ),
       ),
       child: Column(
         children: [
+          /// TOP RIGHT - EXPAND / COLLAPSE
+          /// FILTER HEADING + EXPAND / COLLAPSE
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 5, 8, 3),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Filter',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
 
-          /// 🔹 Registration No
-          TextField(
-            controller: provider.regNoController,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.registrationNo,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {
+                    setState(() {
+                      _isFilterExpanded = !_isFilterExpanded;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: AnimatedRotation(
+                      turns: _isFilterExpanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 12),
-
-          /// 🔹 Year + Month Row
-          Row(
-            children: [
-
-              /// YEAR
-              Expanded(
-                child: DropdownButtonFormField<YearData>(
-                  value: provider.selectedYearObj,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.year,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+          /// FILTER BODY
+          AnimatedSize(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            child: _isFilterExpanded
+                ? Padding(
+              padding: const EdgeInsets.fromLTRB(
+                10,
+                0,
+                10,
+                10,
+              ),
+              child: Column(
+                children: [
+                  /// REGISTRATION NUMBER
+                  TextField(
+                    controller: provider.regNoController,
+                    style: const TextStyle(
+                      fontSize: 13,
+                    ),
+                    decoration: InputDecoration(
+                      labelText:
+                      AppLocalizations.of(context)!
+                          .registrationNo,
+                      labelStyle: const TextStyle(
+                        fontSize: 12,
+                      ),
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
                     ),
                   ),
-                  items: provider.yearListApi.map((year) {
-                    return DropdownMenuItem(
-                      value: year,
-                      child: Text(year.name?.toString() ?? ""),
-                    );
-                  }).toList(),
-                  onChanged: (value) async {
-                    provider.selectedYearObj = value;
-                    provider.filterSelectedYear = value?.dropID;
 
-                    await provider.search(context);
-                  },
-                ),
-              ),
+                  const SizedBox(height: 8),
 
-              const SizedBox(width: 10),
+                  /// YEAR + MONTH
+                  Row(
+                    children: [
+                      /// YEAR
+                      Expanded(
+                        child:
+                        DropdownButtonFormField<YearData>(
+                          value: provider.selectedYearObj,
+                          isDense: true,
+                          decoration: InputDecoration(
+                            labelText:
+                            AppLocalizations.of(context)!
+                                .year,
+                            labelStyle: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            isDense: true,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding:
+                            const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color:
+                                Colors.grey.shade300,
+                              ),
+                            ),
+                            enabledBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color:
+                                Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: provider.yearListApi
+                              .map((year) {
+                            return DropdownMenuItem<
+                                YearData>(
+                              value: year,
+                              child: Text(
+                                year.name?.toString() ??
+                                    "",
+                                style:
+                                const TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) async {
+                            provider.selectedYearObj =
+                                value;
+                            provider.filterSelectedYear =
+                                value?.dropID;
 
-              /// MONTH
-              Expanded(
-                child: DropdownButtonFormField<MonthData>(
-                  value: provider.selectedMonthObj,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.month,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                            await provider
+                                .search(context);
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(width: 8),
+
+                      /// MONTH
+                      Expanded(
+                        child:
+                        DropdownButtonFormField<
+                            MonthData>(
+                          value:
+                          provider.selectedMonthObj,
+                          isDense: true,
+                          decoration: InputDecoration(
+                            labelText:
+                            AppLocalizations.of(context)!
+                                .month,
+                            labelStyle: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            isDense: true,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding:
+                            const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color:
+                                Colors.grey.shade300,
+                              ),
+                            ),
+                            enabledBorder:
+                            OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color:
+                                Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                          items: provider.monthListApi
+                              .map((m) {
+                            return DropdownMenuItem<
+                                MonthData>(
+                              value: m,
+                              child: Text(
+                                m.name ?? "",
+                                style:
+                                const TextStyle(
+                                  fontSize: 13,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) async {
+                            provider.selectedMonthObj =
+                                value;
+                            provider
+                                .filterSelectedMonthNumber =
+                                value?.dropID;
+
+                            await provider
+                                .search(context);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  items: provider.monthListApi
-                      .map((m) => DropdownMenuItem(
-                    value: m,
-                    child: Text(m.name ?? ""),
-                  ))
-                      .toList(),
-                  onChanged: (value) async {
-                    provider.selectedMonthObj = value;
-                    provider.filterSelectedMonthNumber = value?.dropID;
 
-                    await provider.search(context);
-                  },
-                ),
+                  const SizedBox(height: 8),
+
+                  /// SEARCH + CLEAR
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 36,
+                          child: ElevatedButton(
+                            style:
+                            ElevatedButton.styleFrom(
+                              padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              shape:
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    8),
+                              ),
+                            ),
+                            onPressed: () {
+                              provider.search(context);
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .search,
+                              style: const TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 8),
+
+                      Expanded(
+                        child: SizedBox(
+                          height: 36,
+                          child: OutlinedButton(
+                            style:
+                            OutlinedButton.styleFrom(
+                              padding:
+                              const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              backgroundColor:
+                              Colors.white,
+                              shape:
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    8),
+                              ),
+                            ),
+                            onPressed: () {
+                              provider.clearSearch();
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .clear,
+                              style: const TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  /// LEGEND
+                  _buildAttendanceLegend(context),
+                ],
               ),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-
-          /// 🔹 Buttons
-          Row(
-            children: [
-
-              /// SEARCH
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    provider.search(context);
-                  },
-                  child: Text(AppLocalizations.of(context)!.search),
-                ),
-              ),
-
-              const SizedBox(width: 10),
-
-              /// CLEAR
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    provider.clearSearch();
-                  },
-                  child: Text(AppLocalizations.of(context)!.clear),
-                ),
-              ),
-            ],
+            )
+                : const SizedBox.shrink(),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildAttendanceLegend(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 7,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.grey.shade200,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Row Information",
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 5),
+
+          _legendItem(
+            color: Colors.green,
+            text:
+            "Highlighted rows indicate special cases whose attendance has been verified by the DEO",
+          ),
+
+          const SizedBox(height: 4),
+
+          _legendItem(
+            color: Colors.red,
+            text:
+            "Red rows indicate candidates who are over the maximum age limit",
+          ),
+
+          const SizedBox(height: 4),
+
+          _legendItem(
+            color: Colors.amber,
+            text:
+            "Yellow rows indicate candidates who have completed two years of internship",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _legendItem({
+    required Color color,
+    required String text,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 3),
+          width: 9,
+          height: 9,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+
+        const SizedBox(width: 7),
+
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 11,
+              height: 1.25,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget _filterCard(
+  //     BuildContext context,
+  //     DeptJoinAttendanceListProvider provider,
+  //     ) {
+  //   return Container(
+  //     margin: const EdgeInsets.all(12),
+  //     padding: const EdgeInsets.all(12),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(12),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black12,
+  //           blurRadius: 6,
+  //           offset: const Offset(0, 2),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       children: [
+  //
+  //         /// 🔹 Registration No
+  //         TextField(
+  //           controller: provider.regNoController,
+  //           decoration: InputDecoration(
+  //             labelText: AppLocalizations.of(context)!.registrationNo,
+  //             border: OutlineInputBorder(
+  //               borderRadius: BorderRadius.circular(10),
+  //             ),
+  //           ),
+  //         ),
+  //
+  //         const SizedBox(height: 12),
+  //
+  //         /// 🔹 Year + Month Row
+  //         Row(
+  //           children: [
+  //
+  //             /// YEAR
+  //             Expanded(
+  //               child: DropdownButtonFormField<YearData>(
+  //                 value: provider.selectedYearObj,
+  //                 decoration: InputDecoration(
+  //                   labelText: AppLocalizations.of(context)!.year,
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(10),
+  //                   ),
+  //                 ),
+  //                 items: provider.yearListApi.map((year) {
+  //                   return DropdownMenuItem(
+  //                     value: year,
+  //                     child: Text(year.name?.toString() ?? ""),
+  //                   );
+  //                 }).toList(),
+  //                 onChanged: (value) async {
+  //                   provider.selectedYearObj = value;
+  //                   provider.filterSelectedYear = value?.dropID;
+  //
+  //                   await provider.search(context);
+  //                 },
+  //               ),
+  //             ),
+  //
+  //             const SizedBox(width: 10),
+  //
+  //             /// MONTH
+  //             Expanded(
+  //               child: DropdownButtonFormField<MonthData>(
+  //                 value: provider.selectedMonthObj,
+  //                 decoration: InputDecoration(
+  //                   labelText: AppLocalizations.of(context)!.month,
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(10),
+  //                   ),
+  //                 ),
+  //                 items: provider.monthListApi
+  //                     .map((m) => DropdownMenuItem(
+  //                   value: m,
+  //                   child: Text(m.name ?? ""),
+  //                 ))
+  //                     .toList(),
+  //                 onChanged: (value) async {
+  //                   provider.selectedMonthObj = value;
+  //                   provider.filterSelectedMonthNumber = value?.dropID;
+  //
+  //                   await provider.search(context);
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //
+  //         const SizedBox(height: 12),
+  //
+  //         /// 🔹 Buttons
+  //         Row(
+  //           children: [
+  //
+  //             /// SEARCH
+  //             Expanded(
+  //               child: ElevatedButton(
+  //                 onPressed: () {
+  //                   provider.search(context);
+  //                 },
+  //                 child: Text(AppLocalizations.of(context)!.search),
+  //               ),
+  //             ),
+  //
+  //             const SizedBox(width: 10),
+  //
+  //             /// CLEAR
+  //             Expanded(
+  //               child: OutlinedButton(
+  //                 onPressed: () {
+  //                   provider.clearSearch();
+  //                 },
+  //                 child: Text(AppLocalizations.of(context)!.clear),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   String _getMonthName(int month) {
     const months = [
       "Jan","Feb","Mar","Apr","May","Jun",
