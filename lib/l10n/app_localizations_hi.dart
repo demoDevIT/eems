@@ -2465,4 +2465,13 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get eligibleDate => "इंटर्नशिप की आखिरी तारीख";
 
+  @override
+  String get highLightColor => "हाइलाइट की गई पंक्तियाँ उन खास मामलों को दिखाती हैं जिनकी उपस्थिति DEO द्वारा वेरिफ़ाई की गई है।";
+
+  @override
+  String get redColor => "लाल रंग की पंक्तियाँ उन उम्मीदवारों को दर्शाती हैं जिनकी आयु अधिकतम सीमा से अधिक है।";
+
+  @override
+  String get yellowColor => "पीली पंक्तियाँ उन उम्मीदवारों को दर्शाती हैं जिन्होंने दो साल की इंटर्नशिप पूरी कर ली है।";
+
 }

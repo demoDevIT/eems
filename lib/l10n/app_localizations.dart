@@ -1144,6 +1144,9 @@ abstract class AppLocalizations {
   String get attendOver;
   String get monthlyAttendStatus;
   String get eligibleDate;
+  String get highLightColor;
+  String get redColor;
+  String get yellowColor;
 
 }
 

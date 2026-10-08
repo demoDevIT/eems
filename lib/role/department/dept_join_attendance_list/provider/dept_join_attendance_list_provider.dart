@@ -16,6 +16,7 @@ import '../../../../utils/progress_dialog.dart';
 import '../../../../utils/user_new.dart';
 import '../../../../utils/utility_class.dart';
 import '../../esign_webview/esign_webview_screen.dart';
+import '../modal/attendance_trail_modal.dart';
 import '../modal/dept_join_attendance_modal.dart';
 import '../modal/financial_year_modal.dart';
 import '../modal/level_name_modal.dart';
@@ -416,6 +417,671 @@ class DeptJoinAttendanceListProvider extends ChangeNotifier {
     await getDeptJoinAttendanceListApi(
       context,
       page: currentPage - 1,
+    );
+  }
+
+  Future<AttendanceTrailModal?> getAttendanceTrail(
+      BuildContext context,
+      DeptJoinAttendanceItem item,
+      ) async {
+    final isInternet = await UtilityClass.checkInternetConnectivity();
+
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return null;
+    }
+
+    try {
+      ProgressDialog.showLoadingDialog(context);
+
+      // API requires:
+      // Common/GetAttendanceLogByJobseekerIDYearMonth
+      // ?JobseekerID=767753&Year=0&MonthID=08
+
+      final jobSeekerId = item.jobSeekerID;
+
+      if (jobSeekerId == null) {
+        ProgressDialog.closeLoadingDialog(context);
+
+        showAlertError(
+          "Job Seeker ID not found",
+          context,
+        );
+
+        return null;
+      }
+
+      final monthId = item.monthId?.toString().padLeft(2, '0') ?? "08";
+
+      final url =
+          "Common/GetAttendanceLogByJobseekerIDYearMonth"
+          "?JobseekerID=$jobSeekerId"
+          "&Year=0"
+          "&MonthID=$monthId";
+
+      print("========== ATTENDANCE TRAIL GET API ==========");
+      print(url);
+      print("==============================================");
+
+      ApiResponse apiResponse = await commonRepo.get(url);
+
+      ProgressDialog.closeLoadingDialog(context);
+
+      if (apiResponse.response?.statusCode == 200) {
+        dynamic responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final trailModal =
+        AttendanceTrailModal.fromJson(responseData);
+
+        if (trailModal.state == 200) {
+          if (trailModal.data != null &&
+              trailModal.data!.isNotEmpty) {
+            _showAttendanceTrailPopup(
+              context,
+              trailModal.data!,
+            );
+          } else {
+            showAlertError(
+              trailModal.message?.isNotEmpty == true
+                  ? trailModal.message!
+                  : "No attendance trail found",
+              context,
+            );
+          }
+
+          return trailModal;
+        } else {
+          showAlertError(
+            trailModal.message?.isNotEmpty == true
+                ? trailModal.message!
+                : "No attendance trail found",
+            context,
+          );
+
+          return trailModal;
+        }
+      } else {
+        showAlertError(
+          "Something went wrong",
+          context,
+        );
+
+        return AttendanceTrailModal(
+          state: 0,
+          message: "Something went wrong",
+        );
+      }
+    } catch (e) {
+      ProgressDialog.closeLoadingDialog(context);
+
+      showAlertError(
+        e.toString(),
+        context,
+      );
+
+      return AttendanceTrailModal(
+        state: 0,
+        message: e.toString(),
+      );
+    }
+  }
+
+  void _showAttendanceTrailPopup(
+      BuildContext context,
+      List<AttendanceTrailData> trailList,
+      ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 18,
+            vertical: 30,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.82,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 18, 12, 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 38,
+                        width: 38,
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade50,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.history,
+                          color: Colors.blue.shade700,
+                          size: 21,
+                        ),
+                      ),
+
+                      const SizedBox(width: 12),
+
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Attendance Trail",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              "Attendance activity history",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(dialogContext);
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Icon(
+                            Icons.close,
+                            size: 21,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Trail list
+                Flexible(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 18, 16, 20),
+                    shrinkWrap: true,
+                    itemCount: trailList.length,
+                    itemBuilder: (context, index) {
+                      final trail = trailList[index];
+
+                      return _attendanceTrailItem(
+                        context: context,
+                        trail: trail,
+                        index: index,
+                        isLast: index == trailList.length - 1,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _attendanceTrailItem({
+    required BuildContext context,
+    required AttendanceTrailData trail,
+    required int index,
+    required bool isLast,
+  }) {
+    final status = trail.currentStatus?.trim() ?? "";
+
+    Color statusColor;
+
+    switch (status.toLowerCase()) {
+      case "verified":
+        statusColor = Colors.green;
+        break;
+
+      case "submitted":
+        statusColor = Colors.orange;
+        break;
+
+      case "rejected":
+        statusColor = Colors.red;
+        break;
+
+      default:
+        statusColor = Colors.blue;
+    }
+
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Timeline
+          SizedBox(
+            width: 34,
+            child: Column(
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.12),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: statusColor.withOpacity(0.35),
+                    ),
+                  ),
+                  child: Icon(
+                    _getTrailIcon(status),
+                    size: 16,
+                    color: statusColor,
+                  ),
+                ),
+
+                if (!isLast)
+                  Expanded(
+                    child: Container(
+                      width: 1.5,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          // Content
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: Colors.grey.shade200,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Status + action date
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          status.isNotEmpty ? status : "Attendance Update",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: statusColor,
+                          ),
+                        ),
+                      ),
+
+                      if (trail.actionDate != null &&
+                          trail.actionDate!.trim().isNotEmpty)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Text(
+                            trail.actionDate!.trim(),
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 13),
+
+                  // Divider
+                  Divider(
+                    height: 1,
+                    color: Colors.grey.shade200,
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  _trailInfoRow(
+                    icon: Icons.badge_outlined,
+                    label: "Action Taken By",
+                    value: UserData().model.value.sso,
+                  ),
+
+                  _trailInfoRow(
+                    icon: Icons.calendar_today_outlined,
+                    label: "Joining Date",
+                    value: trail.joiningDate,
+                  ),
+
+                  _trailInfoRow(
+                    icon: Icons.calendar_month_outlined,
+                    label: "Attendance Month",
+                    value: trail.attendanceMonth,
+                  ),
+
+                  _trailInfoRow(
+                    icon: Icons.info_outline,
+                    label: "Status",
+                    value: trail.currentStatus,
+                    valueColor: statusColor,
+                  ),
+
+                  _trailInfoRow(
+                    icon: Icons.comment_outlined,
+                    label: "Remarks",
+                    value: trail.remarks,
+                  ),
+
+                  _trailPdfRow(
+                    label: "Last Uploaded Letter",
+                    fileUrl: trail.lastLetter,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _trailInfoRow({
+    required IconData icon,
+    required String label,
+    required String? value,
+    Color? valueColor,
+  }) {
+    final displayValue =
+    value?.trim().isNotEmpty == true ? value!.trim() : "-";
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 11),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Icon(
+          //   icon,
+          //   size: 16,
+          //   color: Colors.grey.shade500,
+          // ),
+          //
+          // const SizedBox(width: 8),
+
+          SizedBox(
+            width: 88,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11.5,
+                color: Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
+          Expanded(
+            child: Text(
+              displayValue,
+              style: TextStyle(
+                fontSize: 12.5,
+                color: valueColor ?? Colors.black87,
+                fontWeight: valueColor != null
+                    ? FontWeight.w600
+                    : FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _trailPdfRow({
+    required String label,
+    required String? fileUrl,
+  }) {
+    final hasFile =
+        fileUrl != null && fileUrl.trim().isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Icon(
+          //   Icons.picture_as_pdf_outlined,
+          //   size: 16,
+          //   color: Colors.grey.shade500,
+          // ),
+          //
+          // const SizedBox(width: 8),
+
+          SizedBox(
+            width: 88,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11.5,
+                color: Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
+          Expanded(
+            child: hasFile
+                ? Align(
+              alignment: Alignment.centerLeft,
+              child: Tooltip(
+                message: "Open PDF",
+                child: InkWell(
+                  onTap: () async {
+                    await downloadAndOpenPdf(fileUrl!);
+                  },
+                  borderRadius: BorderRadius.circular(6),
+                  child: const Padding(
+                    padding: EdgeInsets.all(3),
+                    child: Icon(
+                      Icons.picture_as_pdf,
+                      color: Colors.red,
+                      size: 27,
+                    ),
+                  ),
+                ),
+              ),
+            )
+                : const Text(
+              "-",
+              style: TextStyle(
+                fontSize: 12.5,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getTrailIcon(String status) {
+    switch (status.toLowerCase()) {
+      case "verified":
+        return Icons.verified_outlined;
+
+      case "submitted":
+        return Icons.upload_file_outlined;
+
+      case "rejected":
+        return Icons.close_outlined;
+
+      default:
+        return Icons.edit_note_outlined;
+    }
+  }
+
+  // Widget _trailPdfRow({
+  //   required BuildContext context,
+  //   required String label,
+  //   required String? fileUrl,
+  // }) {
+  //   final hasFile = fileUrl != null && fileUrl.trim().isNotEmpty;
+  //
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 8),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         SizedBox(
+  //           width: 145,
+  //           child: Text(
+  //             "$label:",
+  //             style: const TextStyle(
+  //               fontSize: 13,
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.black87,
+  //             ),
+  //           ),
+  //         ),
+  //
+  //         Expanded(
+  //           child: hasFile
+  //               ? InkWell(
+  //             onTap: () async {
+  //               await downloadAndOpenPdf(fileUrl!);
+  //             },
+  //             borderRadius: BorderRadius.circular(6),
+  //             child: const Padding(
+  //               padding: EdgeInsets.symmetric(
+  //                 vertical: 4,
+  //                 horizontal: 2,
+  //               ),
+  //               child: Row(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   Icon(
+  //                     Icons.picture_as_pdf,
+  //                     color: Colors.red,
+  //                     size: 28,
+  //                   ),
+  //                   SizedBox(width: 6),
+  //                   Text(
+  //                     "View PDF",
+  //                     style: TextStyle(
+  //                       color: Colors.blue,
+  //                       fontSize: 13,
+  //                       decoration: TextDecoration.underline,
+  //                       fontWeight: FontWeight.w500,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           )
+  //               : const Text(
+  //             "-",
+  //             style: TextStyle(
+  //               fontSize: 13,
+  //               color: Colors.black87,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget _trailRow(
+      String label,
+      String? value,
+      ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 145,
+            child: Text(
+              "$label:",
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Text(
+              value?.trim().isNotEmpty == true
+                  ? value!.trim()
+                  : "-",
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

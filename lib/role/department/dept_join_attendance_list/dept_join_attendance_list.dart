@@ -469,8 +469,8 @@ class _DeptJoinAttendanceListScreenState
                 provider.downloadAndOpenPdf(item.pdfPath!);
               },
             ),
-            _row(AppLocalizations.of(context)!.attendYear, item.year?.toString()),
-            _row(AppLocalizations.of(context)!.attendMonth, item.monthName),
+            _row(AppLocalizations.of(context)!.attendMonth + "/" + AppLocalizations.of(context)!.year, item.monthName.toString() + ", " + item.year.toString()),
+            // _row(AppLocalizations.of(context)!.attendMonth, item.monthName),
             _row(AppLocalizations.of(context)!.attendUploadOn, item.attendanceUploadedOn),
             _row(AppLocalizations.of(context)!.attendStatus, item.attendanceStatus),
             _fileRow(
@@ -489,8 +489,11 @@ class _DeptJoinAttendanceListScreenState
 
                 /// 🔹 VIEW TRAIL
                 OutlinedButton(
-                  onPressed: () {
-                    // TODO: Add View Trail action
+                  onPressed: () async {
+                    await provider.getAttendanceTrail(
+                      context,
+                      item,
+                    );
                   },
                   child: const Text("View Trail"),
                 ),
@@ -1004,36 +1007,36 @@ class _DeptJoinAttendanceListScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Row Information",
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          // const Text(
+          //   "Row Information",
+          //   style: TextStyle(
+          //     fontSize: 12,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
 
           const SizedBox(height: 5),
 
           _legendItem(
             color: Colors.green,
-            text:
-            "Highlighted rows indicate special cases whose attendance has been verified by the DEO",
+            text: AppLocalizations.of(context)!.highLightColor
+            // "Highlighted rows indicate special cases whose attendance has been verified by the DEO",
           ),
 
           const SizedBox(height: 4),
 
           _legendItem(
             color: Colors.red,
-            text:
-            "Red rows indicate candidates who are over the maximum age limit",
+            text: AppLocalizations.of(context)!.redColor
+           // "Red rows indicate candidates who are over the maximum age limit",
           ),
 
           const SizedBox(height: 4),
 
           _legendItem(
             color: Colors.amber,
-            text:
-            "Yellow rows indicate candidates who have completed two years of internship",
+            text: AppLocalizations.of(context)!.yellowColor
+           // "Yellow rows indicate candidates who have completed two years of internship",
           ),
         ],
       ),

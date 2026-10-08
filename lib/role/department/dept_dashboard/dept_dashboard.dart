@@ -70,12 +70,15 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          AppLocalizations.of(context)!.dashboard, //"Dashboard",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+        title: Transform.translate(
+          offset: const Offset(-15, 0), // move 15px to the left
+          child: Text(
+            AppLocalizations.of(context)!.dashboard, //"Dashboard",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         actions: [
@@ -230,28 +233,28 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       body: Consumer<DepartmentDashboardProvider>(
         builder: (context, provider, _) {
           return SafeArea(
-            child:
-            // SingleChildScrollView(
-            //   physics: const BouncingScrollPhysics(),
-            //   padding: const EdgeInsets.all(16),
-            //   // padding: const EdgeInsets.symmetric(
-            //   //   horizontal: 12,
-            //   //   vertical: 10,
-            //   // ),
-            //   child: Column(
-            RefreshIndicator(
-              onRefresh: _refreshDashboard,
-              color: const Color(0xff1683FF),
-              backgroundColor: Colors.white,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics(),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                child: Column(
+              child:
+                  // SingleChildScrollView(
+                  //   physics: const BouncingScrollPhysics(),
+                  //   padding: const EdgeInsets.all(16),
+                  //   // padding: const EdgeInsets.symmetric(
+                  //   //   horizontal: 12,
+                  //   //   vertical: 10,
+                  //   // ),
+                  //   child: Column(
+                  RefreshIndicator(
+            onRefresh: _refreshDashboard,
+            color: const Color(0xff1683FF),
+            backgroundColor: Colors.white,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   /// Scheme Title
@@ -312,7 +315,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
 
                   const SizedBox(height: 10),
 
-                   /// Reg No Search Field
+                  /// Reg No Search Field
                   // if (provider.showRegSearch) ...[
                   //   Container(
                   //     decoration: BoxDecoration(
@@ -419,7 +422,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                                   ),
                                 ),
                               ),
-
                               InkWell(
                                 onTap: () {
                                   provider.showRegSearch = false;
@@ -454,7 +456,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                               fontSize: 13,
                             ),
                             decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.enterRegNo,
+                              hintText:
+                                  AppLocalizations.of(context)!.enterRegNo,
                               prefixIcon: const Icon(
                                 Icons.badge_outlined,
                                 size: 19,
@@ -584,7 +587,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ],
                   ),
 
-
                   const SizedBox(height: 16),
                   _buildJoiningAttendanceOverview(),
                   const SizedBox(height: 20),
@@ -616,8 +618,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 ],
               ),
             ),
-            )
-          );
+          ));
         },
       ),
     );
@@ -700,9 +701,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
       },
       // child: AnimatedContainer(
       child: Container(
-      // duration: const Duration(milliseconds: 200),
-         width: double.infinity,
-         height: double.infinity,
+        // duration: const Duration(milliseconds: 200),
+        width: double.infinity,
+        height: double.infinity,
         // alignment: Alignment.center,
         decoration: BoxDecoration(
           color: selected ? const Color(0xff4A5BE8) : Colors.transparent,
@@ -783,7 +784,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      AppLocalizations.of(context)!.internJoin, // "Internship Joining",
+                      AppLocalizations.of(context)!.internJoin,
+                      // "Internship Joining",
                       style: TextStyle(
                         fontSize: 12,
                         color: Color(0xff718096),
@@ -793,41 +795,36 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
             _buildJoiningMainCard(),
-
             const SizedBox(height: 14),
-
             _buildStatusCard(
               icon: Icons.check,
               iconBackground: const Color(0xffD5F7E1),
               iconColor: const Color(0xff00A65A),
-              title: AppLocalizations.of(context)!.joinComp, //"JOINING COMPLETED",
+              title: AppLocalizations.of(context)!.joinComp,
+              //"JOINING COMPLETED",
               value: completed.toString(),
-              subtitle: AppLocalizations.of(context)!.appSuccJoin, //"Applications successfully joined",
+              subtitle: AppLocalizations.of(context)!.appSuccJoin,
+              //"Applications successfully joined",
               percentage: percentage,
               percentageColor: const Color(0xff00A65A),
             ),
-
             const SizedBox(height: 12),
-
             _buildStatusCard(
               icon: Icons.access_time,
               iconBackground: const Color(0xfffff0ce),
               iconColor: const Color(0xffff9800),
-              title: AppLocalizations.of(context)!.joinPend, //"JOINING PENDING",
+              title: AppLocalizations.of(context)!.joinPend,
+              //"JOINING PENDING",
               value: pending.toString(),
-              subtitle: AppLocalizations.of(context)!.appWaitJoin, //"Applications waiting for joining",
-              percentage: total == 0
-                  ? "0%"
-                  : "${((pending / total) * 100).round()}%",
+              subtitle: AppLocalizations.of(context)!.appWaitJoin,
+              //"Applications waiting for joining",
+              percentage:
+                  total == 0 ? "0%" : "${((pending / total) * 100).round()}%",
               percentageColor: const Color(0xffff9800),
             ),
-
             const SizedBox(height: 14),
-
             _buildOverallCompletion(),
           ],
         );
@@ -869,13 +866,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                         value: completion,
                         strokeWidth: 13,
                         backgroundColor: const Color(0xffF0F3FA),
-                        valueColor:
-                        const AlwaysStoppedAnimation<Color>(
+                        valueColor: const AlwaysStoppedAnimation<Color>(
                           Color(0xff00A65A),
                         ),
                       ),
                     ),
-
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -886,7 +881,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             color: Color(0xff718096),
                           ),
                         ),
-
                         Text(
                           total.toString(),
                           style: const TextStyle(
@@ -895,9 +889,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                             color: Color(0xff152238),
                           ),
                         ),
-
                         Text(
-                          AppLocalizations.of(context)!.applications, //"Applications",
+                          AppLocalizations.of(context)!.applications,
+                          //"Applications",
                           style: TextStyle(
                             fontSize: 11,
                             color: Color(0xff718096),
@@ -908,7 +902,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   ],
                 ),
               ),
-
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -927,38 +920,32 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 14),
-
               Row(
                 children: [
                   Expanded(
                     child: _buildJoiningSummaryBox(
-                      title: AppLocalizations.of(context)!.completed, //"COMPLETED",
+                      title: AppLocalizations.of(context)!.completed,
+                      //"COMPLETED",
                       value: completed.toString(),
                       percentage: total == 0
                           ? "0%"
                           : "${((completed / total) * 100).round()}%",
-                      backgroundColor:
-                      const Color(0xffD5F7E1),
-                      percentageColor:
-                      const Color(0xff00A65A),
+                      backgroundColor: const Color(0xffD5F7E1),
+                      percentageColor: const Color(0xff00A65A),
                     ),
                   ),
-
                   const SizedBox(width: 14),
-
                   Expanded(
                     child: _buildJoiningSummaryBox(
-                      title: AppLocalizations.of(context)!.pending, //"PENDING",
+                      title: AppLocalizations.of(context)!.pending,
+                      //"PENDING",
                       value: pending.toString(),
                       percentage: total == 0
                           ? "0%"
                           : "${((pending / total) * 100).round()}%",
-                      backgroundColor:
-                      const Color(0xfffff0ce),
-                      percentageColor:
-                      const Color(0xffff9800),
+                      backgroundColor: const Color(0xfffff0ce),
+                      percentageColor: const Color(0xffff9800),
                     ),
                   ),
                 ],
@@ -1118,8 +1105,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
         final completed = provider.joiningCompleted;
         final pending = provider.joiningPending;
         final percentage = provider.joiningCompletionPercentage;
-        final percentageText =
-            provider.joiningCompletionPercentageText;
+        final percentageText = provider.joiningCompletionPercentageText;
 
         return Container(
           width: double.infinity,
@@ -1139,11 +1125,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 children: [
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.overComp, //"OVERALL COMPLETION",
+                          AppLocalizations.of(context)!.overComp,
+                          //"OVERALL COMPLETION",
                           style: TextStyle(
                             fontSize: 10,
                             color: Color(0xff667085),
@@ -1161,7 +1147,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       ],
                     ),
                   ),
-
                   Container(
                     width: 42,
                     height: 42,
@@ -1176,28 +1161,21 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 10),
-
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: LinearProgressIndicator(
                   value: percentage,
                   minHeight: 8,
-                  backgroundColor:
-                  const Color(0xffC6DDF5),
-                  valueColor:
-                  const AlwaysStoppedAnimation<Color>(
+                  backgroundColor: const Color(0xffC6DDF5),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
                     Color(0xff1683FF),
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
-
               Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
@@ -1216,7 +1194,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                       ),
                     ],
                   ),
-
                   Text(
                     "$pending Pending",
                     style: const TextStyle(
@@ -1272,11 +1249,11 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                 ),
                 const SizedBox(width: 12),
                 Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.attendOver, //"Attendance Overview",
+                      AppLocalizations.of(context)!.attendOver,
+                      //"Attendance Overview",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -1285,7 +1262,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      AppLocalizations.of(context)!.monthlyAttendStatus, //"Monthly attendance completion & pending progress",
+                      AppLocalizations.of(context)!.monthlyAttendStatus,
+                      //"Monthly attendance completion & pending progress",
                       style: TextStyle(
                         fontSize: 11,
                         color: Color(0xff718096),
@@ -1330,8 +1308,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     title: "Verified",
                     value: verified.toString(),
                     icon: Icons.badge_outlined,
-                    backgroundColor:
-                    const Color(0xffDDF2FF),
+                    backgroundColor: const Color(0xffDDF2FF),
                     color: const Color(0xff1683FF),
                   ),
                 ),
@@ -1341,8 +1318,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     title: "Submitted",
                     value: submitted.toString(),
                     icon: Icons.check,
-                    backgroundColor:
-                    const Color(0xffD7F7E2),
+                    backgroundColor: const Color(0xffD7F7E2),
                     color: const Color(0xff00A65A),
                   ),
                 ),
@@ -1359,8 +1335,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     title: "Sendback",
                     value: sendback.toString(),
                     icon: Icons.undo,
-                    backgroundColor:
-                    const Color(0xffF0E5FF),
+                    backgroundColor: const Color(0xffF0E5FF),
                     color: const Color(0xff8B5CF6),
                   ),
                 ),
@@ -1370,8 +1345,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     title: "Pending",
                     value: pending.toString(),
                     icon: Icons.access_time,
-                    backgroundColor:
-                    const Color(0xfffff0ce),
+                    backgroundColor: const Color(0xfffff0ce),
                     color: const Color(0xffff9800),
                   ),
                 ),
@@ -1432,9 +1406,9 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
   }
 
   Widget _buildAttendanceMonthDropdown(
-      DepartmentDashboardProvider provider,
-      BuildContext context,
-      ) {
+    DepartmentDashboardProvider provider,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1447,7 +1421,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           ),
         ),
         const SizedBox(height: 6),
-
         Container(
           height: 44,
           padding: const EdgeInsets.symmetric(
@@ -1472,17 +1445,17 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               items: provider.attendanceMonths
                   .map(
                     (month) => DropdownMenuItem<String>(
-                  value: month,
-                  child: Text(
-                    month,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff152238),
+                      value: month,
+                      child: Text(
+                        month,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff152238),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )
+                  )
                   .toList(),
               onChanged: (value) async {
                 if (value == null) return;
@@ -1532,8 +1505,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               ),
             ),
             child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   value,
@@ -2095,9 +2067,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                                       color: Color(0xff152238),
                                     ),
                                   ),
-
                                   const SizedBox(height: 3),
-
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.pop(context);
@@ -2107,8 +2077,8 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               DeptProfileScreen(
-                                                isAppBarHide: true,
-                                              ),
+                                            isAppBarHide: true,
+                                          ),
                                         ),
                                       );
                                     },
@@ -2271,7 +2241,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     AppLocalizations.of(context)!.logout,
                     AppLocalizations.of(context)!.logoutConfirmMsg,
                     AppLocalizations.of(context)!.logoutThankYouText,
-                        (value) async {
+                    (value) async {
                       if (value.toString() == "success") {
                         final pref = AppSharedPref();
 
@@ -2285,7 +2255,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                           MaterialPageRoute(
                             builder: (_) => const LoginScreen(),
                           ),
-                              (route) => false,
+                          (route) => false,
                         );
                       }
                     },
@@ -2299,7 +2269,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     );
   }
 
-
   /// ===============================================================
   /// Profile information row
   /// ===============================================================
@@ -2308,7 +2277,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     required String? value,
   }) {
     final displayValue =
-    (value == null || value.trim().isEmpty) ? "-" : value.trim();
+        (value == null || value.trim().isEmpty) ? "-" : value.trim();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2337,7 +2306,6 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     );
   }
 
-
   /// ===============================================================
   /// Drawer menu item
   /// ===============================================================
@@ -2357,9 +2325,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
-            color: selected
-                ? const Color(0xffEAF1FF)
-                : Colors.transparent,
+            color: selected ? const Color(0xffEAF1FF) : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -2371,23 +2337,19 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
                     ? const Color(0xff315BEA)
                     : const Color(0xff344054),
               ),
-
               const SizedBox(width: 12),
-
               Expanded(
                 child: Text(
                   title,
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight:
-                    selected ? FontWeight.w600 : FontWeight.w500,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                     color: selected
                         ? const Color(0xff315BEA)
                         : const Color(0xff152238),
                   ),
                 ),
               ),
-
               if (showArrow)
                 Icon(
                   Icons.chevron_right,
@@ -2774,7 +2736,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
     required String? value,
   }) {
     final displayValue =
-    (value == null || value.trim().isEmpty) ? "-" : value.trim();
+        (value == null || value.trim().isEmpty) ? "-" : value.trim();
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2858,9 +2820,7 @@ class _DepartmentDashboardPageState extends State<DepartmentDashboardPage> {
               height: 50,
               fit: BoxFit.contain,
             ),
-
             const SizedBox(height: 7),
-
             Text(
               title,
               textAlign: TextAlign.center,

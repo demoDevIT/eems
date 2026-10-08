@@ -2465,4 +2465,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get eligibleDate => "Last Date of Intersnhip";
 
+  @override
+  String get highLightColor => "Highlighted rows indicate special cases whose attendance has been verified by the DEO";
+
+  @override
+  String get redColor => "Red rows indicate candidates who are over the maximum age limit";
+
+  @override
+  String get yellowColor => "Yellow rows indicate candidates who have completed two years of internship";
+
 }
