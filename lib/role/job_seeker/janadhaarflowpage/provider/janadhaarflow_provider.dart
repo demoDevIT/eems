@@ -17,6 +17,7 @@ import '../../otr_form/otr_form.dart';
 import '../janadhaarflowpage_screen.dart';
 import '../modal/fetch_member_list_modal.dart';
 import '../modal/generate_otp_modal.dart';
+import '../modal/jobseeker_member_id_details_modal.dart';
 
 class JanAadhaarFlowProvider with ChangeNotifier {
   final CommonRepo commonRepo;
@@ -34,6 +35,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
   List<FetchJanAdharResponseData> feachJanAadhaarDataList = [];
 
   List<FetchMemberDataResponse> fetchMemberList = [];
+
+  Map<String, JobseekerMemberIdDetails> memberIdDetailsMap = {};
 
   String memberID = "";
   String tid = "";
@@ -115,6 +118,17 @@ class JanAadhaarFlowProvider with ChangeNotifier {
            // if (sm.state == 1) { //test with sandbox
             fetchMemberList.clear();
             fetchMemberList.addAll(sm.data!.response!.data!);
+
+            // Get MEMBER_IDs from Jan Aadhaar API response
+            final List<String> memberIds = fetchMemberList
+                .map((member) => member.mEMBERID.toString())
+                .toList();
+
+            print("Jan Aadhaar Member IDs => $memberIds");
+
+// Call second API
+             await fetchMemberIdDetailsApi(context, memberIds);
+
             currentStep = FlowStep.memberList;
             notifyListeners();
             return sm;
@@ -132,6 +146,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
         } else {
           print("a4");
           currentStep = FlowStep.memberList;
+          //**********SANDBOX/Testing*********
           // fetchMemberList.addAll([
           //   FetchMemberDataResponse(
           //     mEMBERID: 45053402607,
@@ -144,6 +159,7 @@ class JanAadhaarFlowProvider with ChangeNotifier {
           //     mEMBERTYPE: "HOF",
           //   ),
           // ]);
+          //**********SANDBOX/Testing*********
           notifyListeners();
           return FetchMemberListModal(
             state: 0,
@@ -162,6 +178,133 @@ class JanAadhaarFlowProvider with ChangeNotifier {
       print("a6");
       showAlertError(
           AppLocalizations.of(context)!.internet_connection, context);
+    }
+  }
+
+  Future<JobseekerMemberIdDetailsModal?> fetchMemberIdDetailsApi(
+      BuildContext context, List<String> memberIds) async {
+
+    if (memberIds.isEmpty) {
+      return null;
+    }
+
+    final isInternet =
+    await UtilityClass.checkInternetConnectivity();
+
+    if (!isInternet) {
+      showAlertError(
+        AppLocalizations.of(context)!.internet_connection,
+        context,
+      );
+      return null;
+    }
+
+    try {
+      final String memberIdsString = memberIds.join(',');
+
+      final Map<String, dynamic> body = {
+        "MemberIds": [
+          memberIdsString,
+        ]
+      };
+
+      print("Member IDs => $memberIds");
+      print("Member Details Request => $body");
+
+      final ApiResponse apiResponse = await commonRepo.post(
+        // "https://eems.devitsandbox.com/mobileapi/api/Common/GetJobseekerMemberIdDetails",
+        "Common/GetJobseekerMemberIdDetails",
+        body,
+      );
+
+      print(
+        "Member Details Response => ${apiResponse.response?.data}",
+      );
+
+      if (apiResponse.response != null &&
+          apiResponse.response?.statusCode == 200) {
+
+        var responseData = apiResponse.response?.data;
+
+        if (responseData is String) {
+          responseData = jsonDecode(responseData);
+        }
+
+        final result =
+        JobseekerMemberIdDetailsModal.fromJson(responseData);
+
+        print("State => ${result.state}");
+        print("Message => ${result.message}");
+
+        // API returns State = 200
+        if (result.state == 200) {
+
+          // Clear old values
+          memberIdDetailsMap.clear();
+
+          if (result.data != null) {
+            for (final item in result.data!) {
+
+              if (item.memberId != null) {
+
+                final String memberId =
+                item.memberId.toString();
+
+                memberIdDetailsMap[memberId] = item;
+
+                print(
+                  "Member ID: $memberId | "
+                      "Flag: ${item.flag} | "
+                      "Message: ${item.message}",
+                );
+              }
+            }
+          }
+
+          print(
+            "Member ID Details Map => $memberIdDetailsMap",
+          );
+
+          notifyListeners();
+
+          return result;
+        }
+
+        showAlertError(
+          result.message?.isNotEmpty == true
+              ? result.message!
+              : "Unable to fetch member details",
+          context,
+        );
+
+        return result;
+      }
+
+      showAlertError(
+        "Something went wrong while fetching member details",
+        context,
+      );
+
+      return JobseekerMemberIdDetailsModal(
+        state: 0,
+        message: "Something went wrong",
+      );
+
+    } catch (err) {
+
+      print(
+        "fetchMemberIdDetailsApi error => $err",
+      );
+
+      showAlertError(
+        err.toString(),
+        context,
+      );
+
+      return JobseekerMemberIdDetailsModal(
+        state: 0,
+        message: err.toString(),
+      );
     }
   }
 
@@ -495,8 +638,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
 
         ProgressDialog.closeLoadingDialog(context);
         if (apiResponse.response != null &&
-            apiResponse.response?.statusCode == 200) { //correct 200
-          //apiResponse.response?.statusCode == 300 //for testing with static data
+            apiResponse.response?.statusCode == 200) { //correct 200 LIVE
+          //apiResponse.response?.statusCode == 300 //for testing with static data / SANDBOX
           var responseData = apiResponse.response?.data;
           if (responseData is String) {
             responseData = jsonDecode(responseData);
@@ -678,6 +821,8 @@ class JanAadhaarFlowProvider with ChangeNotifier {
 
     feachJanAadhaarDataList.clear();
     fetchMemberList.clear();
+    memberIdDetailsMap.clear();
+
 
     memberID = "";
     tid = "";

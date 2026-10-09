@@ -144,6 +144,23 @@ class LoginProvider with ChangeNotifier {
     //   ),
     // );
     // return null;
+
+    // Navigator.of(context).push(
+    //   RightToLeftRoute(
+    //     page: RoleSelectionScreen(
+    //       // ssoId: SSOIDController.text,
+    //       // userID: "",
+    //         ssoId: SSOIDController.text,
+    //         userID: "",// ✅ pass SSO
+    //         displayName: "demoTesting",
+    //         mobileNo: "9876543210"
+    //
+    //     ),
+    //     duration: const Duration(milliseconds: 500),
+    //     startOffset: const Offset(-1.0, 0.0),
+    //   ),
+    // );
+    // return null;
     var isInternet = await UtilityClass.checkInternetConnectivity();
     if (isInternet) {
       try {
@@ -176,7 +193,7 @@ class LoginProvider with ChangeNotifier {
             "Password": pass,
             "DeviceID": deviceId,
             "IPv4": ipAddress,
-             "BypassSSO": true //true for sandbox, remove for live
+             "BypassSSO": true //uncomment for sandbox, comment for live, uncomment for testing
           };
         }
 
@@ -265,11 +282,14 @@ class LoginProvider with ChangeNotifier {
                   // UserData().model.value.gENDER = sm.data!.gender;
 
 
+                  //************WITHOUT OTP**********//
                   await saveRememberMeData();
                   getDeptBasicDetails(
                       context, sm.data!.userID.toString(), sm.data!.roleID,
                       ssoId, sm.data!.internshipDeptID, sm.data!.internshipDeptTypeID);
+                  //************WITHOUT OTP**********//
 
+                  //************SEND OTP / LIVE**********//
                   // await saveRememberMeData();
                   //
                   // bool otpSent = await loginHistoryMessagesApi(
@@ -312,6 +332,7 @@ class LoginProvider with ChangeNotifier {
                   //     );
                   //   },
                   // );
+                  //************SEND OTP / LIVE**********//
 
                   return sm;
 
@@ -340,7 +361,7 @@ class LoginProvider with ChangeNotifier {
                     );
                   } else {
 
-
+                //************WITHOUT OTP**********//
                   print("Redirecting to DashboardScreen");
                   await saveRememberMeData();
                   UserData().model.value.userId = sm.data!.userID;
@@ -364,15 +385,17 @@ class LoginProvider with ChangeNotifier {
                       startOffset: const Offset(-1.0, 0.0),
                     ),
                   );
+                //************WITHOUT OTP**********//
 
-                  await getJobFairUserDetails(
-                    context,
-                    switchRoleID: sm.data!.roleID,
-                    switchOfficeID: sm.data!.officeID,
-                    intDeptTypeID: sm.data!.internshipDeptTypeID,
-                    intDeptID: sm.data!.internshipDeptID,
-                  );
+                //  // await getJobFairUserDetails(
+                //  //   context,
+                //  //   switchRoleID: sm.data!.roleID,
+                //  //   switchOfficeID: sm.data!.officeID,
+                //  //   intDeptTypeID: sm.data!.internshipDeptTypeID,
+                //  //   intDeptID: sm.data!.internshipDeptID,
+                //  // );
 
+                  //************SEND OTP / LIVE**********//
                   // bool otpSent = await loginHistoryMessagesApi(
                   //   context,
                   //   sm.data!.mobileno,
@@ -412,6 +435,8 @@ class LoginProvider with ChangeNotifier {
                   //     );
                   //   },
                   // );
+                  //************SEND OTP / LIVE**********//
+
                 }
                   // loginHistoryMessagesApi(context, sm.data!.mobileno, sm.data!.userID, sm.data!.roleID);
                   // getJobFairUserDetails(

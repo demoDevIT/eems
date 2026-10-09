@@ -240,7 +240,17 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
             SizedBox(height: SizeConfig.screenHeight! * 0.025),
             ...List.generate(
                 provider.fetchMemberList.length,
-                (index) => Container(
+        (index) {
+
+      final member = provider.fetchMemberList[index];
+
+      final String currentMemberId =
+      member.mEMBERID.toString();
+
+      final memberDetails =
+      provider.memberIdDetailsMap[currentMemberId];
+
+      return Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
                       decoration: BoxDecoration(
@@ -481,37 +491,92 @@ class _JanAadhaarFlowPageState extends State<JanAadhaarFlowPage> {
                             ),
 
                             hSpace(5),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.30,
-                              height: 35,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kbuttonColor,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+
+// ------------------------------------------
+// CONDITIONAL GET OTP / ALREADY APPLIED
+// ------------------------------------------
+
+                            if (memberDetails?.flag == 1)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  memberDetails?.message?.isNotEmpty == true
+                                      ? memberDetails!.message!
+                                      : "Already Applied",
+                                  textAlign: TextAlign.center,
+                                  style: UtilityClass.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.green,
                                   ),
                                 ),
-                                onPressed:  () {
-                                  provider.memberID =  provider.fetchMemberList[index].mEMBERID.toString();
-                                  provider.generateOTPApi(context, provider.fetchMemberList[index].mEMBERID.toString());
+                              )
+                            else
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.30,
+                                height: 35,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kbuttonColor,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    provider.memberID = currentMemberId;
 
-                                },
-                                child: Text(
-                                  "Get OTP",
-                                  style: UtilityClass.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: kWhite,
+                                    provider.generateOTPApi(
+                                      context,
+                                      currentMemberId,
+                                    );
+                                  },
+                                  child: Text(
+                                    "Get OTP",
+                                    style: UtilityClass.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: kWhite,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+
                             hSpace(5),
+
+                            // hSpace(5),
+                            //
+                            // SizedBox(
+                            //   width: MediaQuery.of(context).size.width * 0.30,
+                            //   height: 35,
+                            //   child: ElevatedButton(
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor: kbuttonColor,
+                            //       foregroundColor: Colors.white,
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(12),
+                            //       ),
+                            //     ),
+                            //     onPressed:  () {
+                            //       provider.memberID =  provider.fetchMemberList[index].mEMBERID.toString();
+                            //       provider.generateOTPApi(context, provider.fetchMemberList[index].mEMBERID.toString());
+                            //
+                            //     },
+                            //     child: Text(
+                            //       "Get OTP",
+                            //       style: UtilityClass.poppins(
+                            //         fontSize: 16,
+                            //         fontWeight: FontWeight.w600,
+                            //         color: kWhite,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // hSpace(5),
                           ],
                         ),
                       ),
-                    )),
+                    );}),
 
 
           ],
